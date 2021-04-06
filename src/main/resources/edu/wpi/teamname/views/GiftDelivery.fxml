@@ -3,15 +3,16 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GiftDelivery">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GiftDelivery">
    <children>
       <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,7 +23,7 @@
                         <Font name="System Bold" size="30.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="25.0" />
+                        <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
                </children>
@@ -30,9 +31,38 @@
                   <Insets bottom="525.0" />
                </VBox.margin>
             </VBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" ripplerFill="#173c5f" style="-fx-background-color: #9d9c9c;" text="Back to Home">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.1" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="368.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxWidth="122.0" prefWidth="122.0" ripplerFill="#173c5f" style="-fx-background-color: #dddddd;" text="Submit">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.1" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
          </children>
       </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="75.0">
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0">
          <children>
             <Label text="Please fill out the fields below to send a gift to a patient. " textFill="WHITE">
                <VBox.margin>
@@ -98,7 +128,7 @@
                   <Font size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets left="125.0" top="20.0" />
+                  <Insets left="125.0" top="15.0" />
                </VBox.margin>
             </JFXTextField>
             <Label text="Please enter an email address to receive a confirmation." textFill="WHITE">
@@ -111,23 +141,12 @@
             </Label>
             <JFXTextField focusColor="WHITE" maxWidth="300.0" promptText="Email Address" style="-fx-prompt-text-fill: rgba(255,255,255,0.5);" unFocusColor="WHITE">
                <VBox.margin>
-                  <Insets left="125.0" top="20.0" />
+                  <Insets left="125.0" top="15.0" />
                </VBox.margin>
                <font>
                   <Font size="16.0" />
                </font>
             </JFXTextField>
-            <JFXButton alignment="CENTER" buttonType="RAISED" ripplerFill="#8d8d8d" style="-fx-background-color: #dddddd;" text="Back to Home">
-               <VBox.margin>
-                  <Insets bottom="15.0" left="800.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <DropShadow offsetX="1.0" offsetY="1.0" />
-               </effect>
-            </JFXButton>
          </children>
       </VBox>
    </children>
