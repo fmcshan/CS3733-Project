@@ -35,7 +35,7 @@
                   <Insets bottom="30.0" />
                </VBox.margin>
                <children>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" ripplerFill="#173c5f" style="-fx-background-color: #9d9c9c;" text="Back to Home">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#serviceRequests" ripplerFill="#173c5f" style="-fx-background-color: #9d9c9c;" text="Back to Home">
                      <font>
                         <Font size="16.0" />
                      </font>
