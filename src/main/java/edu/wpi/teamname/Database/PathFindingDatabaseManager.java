@@ -13,7 +13,7 @@ public class PathFindingDatabaseManager {
     private static PathFindingDatabaseManager instance= null;
     String username = "admin" ;
     String password = "admin";
-    boolean credentials= false;
+   // boolean credentials= false;
 
     public static void startDB(String username, String password){
         if(instance == null){
@@ -41,7 +41,7 @@ public class PathFindingDatabaseManager {
           try{
 
               connection = DriverManager.getConnection(DB_URL);
-              System.out.println("Database myDB created");
+            //  System.out.println("Database myDB created");
           }
           catch(SQLException e){
               System.out.println("connection failed");
@@ -78,7 +78,7 @@ public class PathFindingDatabaseManager {
         }
         public void createTables(){
         try{Statement statement = connection.createStatement();
-            System.out.println("statement established");
+            //System.out.println("statement established");
             dropNodeTable();
 
           //  statement1.execute(
@@ -87,7 +87,7 @@ public class PathFindingDatabaseManager {
 
             statement.execute("CREATE TABLE nodeTable(node_ID varchar(45) NOT NULL, x_coord integer NOT NULL, y_coord integer NOT NULL, floor varchar(45), building varchar(45),node_type varchar(45), long_name varchar(45), short_name varchar (45), PRIMARY KEY (node_ID))");
        // statement.execute("CREATE NODETABLE(NODEID VARCHAR(45) NOT NULL, XCOORD INTEGER NOT NULL, YCOORD INTEGER NOT NULL, FLOOR INTEGER NOT NULL , BUILDING VARCHAR(45), NODETYPE VARCHAR(45), LONGNAME VARCHAR(45), SHORTNAME VARCHAR(45), PRIMARY KEY (NODEID))");
-            System.out.println("NODETABLE CREATED");
+           // System.out.println("NODETABLE CREATED");
         }
 
 
@@ -171,31 +171,26 @@ e.printStackTrace();
                 Statement statement = connection.createStatement();
                 ResultSet nodesData = statement.executeQuery("SELECT * FROM nodeTable");
             while(nodesData.next()){
-            List<String> node = new ArrayList<>();
-//            node.add(nodesData.getString("node_ID"));
+                System.out.println(nodesData.getString("node_ID")
+                        +"\t"+ nodesData.getString("x_coord")
+                        +"\t"+ nodesData.getString("y_coord")
+                        +"\t"+ nodesData.getString("floor")
+                        +"\t"+ nodesData.getString("building")
+                        +"\t"+ nodesData.getString("node_type")
+                        +"\t"+ nodesData.getString("long_name")
+                        +"\t"+ nodesData.getString("short_name"));
+
+//                System.out.print(nodesData.getString("x_coord"));
 //
-//            node.add(nodesData.getString("x_coord"));
-//
-//            node.add(nodesData.getString("y_coord"));
-//            node.add(nodesData.getString("floor"));
-//            node.add(nodesData.getString("building"));
-//            node.add(nodesData.getString("node_type"));
-//            node.add(nodesData.getString("long_name"));
-//            node.add(nodesData.getString("short_name"));
-
-                System.out.println(nodesData.getString("node_ID"));
-
-                System.out.print(nodesData.getString("x_coord"));
-
-                System.out.print(nodesData.getString("y_coord"));
-                System.out.print(nodesData.getString("floor"));
-                System.out.print(nodesData.getString("building"));
-                System.out.print(nodesData.getString("node_type"));
-                System.out.print(nodesData.getString("long_name"));
-                System.out.print(nodesData.getString("short_name"));
+//                System.out.print(nodesData.getString("y_coord"));
+//                System.out.print(nodesData.getString("floor"));
+//                System.out.print(nodesData.getString("building"));
+//                System.out.print(nodesData.getString("node_type"));
+//                System.out.print(nodesData.getString("long_name"));
+//                System.out.print(nodesData.getString("short_name"));
                // System.out.println(node);
 
-            nodes.add(node);
+
             } }
             catch (SQLException e){}
             return nodes;
@@ -209,16 +204,9 @@ e.printStackTrace();
             Statement statement = connection.createStatement();
             ResultSet edgesData = statement.executeQuery("SELECT * FROM edgeTable");
             while(edgesData.next()){
-                List<String> edge = new ArrayList<>();
-                edge.add(edgesData.getString("edge_ID"));
+               // List<String> edge = new ArrayList<>();
+                System.out.println(edgesData.getString("edge_ID") +"\t"+ edgesData.getString("starting_Node")+"\t" + edgesData.getString("finishing_Node"));
 
-                edge.add(edgesData.getString("starting_Node"));
-
-                edge.add(edgesData.getString("finishing_Node"));
-
-                // System.out.println(node);
-
-                edges.add(edge);
             } }
         catch (SQLException e){}
         return edges;
