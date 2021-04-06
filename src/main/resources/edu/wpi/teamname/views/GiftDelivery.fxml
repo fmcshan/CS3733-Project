@@ -103,7 +103,7 @@
                   <Font size="16.0" />
                </font>
             </JFXCheckBox>
-            <JFXTextField focusColor="WHITE" maxWidth="200.0" style="-fx-prompt-text-fill: rgba(255,255,255,0.5);" unFocusColor="WHITE">
+            <JFXTextField focusColor="WHITE" maxWidth="200.0" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
                <VBox.margin>
                   <Insets left="200.0" top="-31.0" />
                </VBox.margin>
@@ -122,7 +122,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <JFXTextField focusColor="WHITE" maxWidth="125.0" promptText="Room Number" style="-fx-prompt-text-fill: rgba(255,255,255,0.5);" unFocusColor="WHITE">
+            <JFXTextField focusColor="WHITE" maxWidth="125.0" promptText="Room Number" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -138,7 +138,7 @@
                   <Insets left="75.0" top="25.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField focusColor="WHITE" maxWidth="300.0" promptText="Email Address" style="-fx-prompt-text-fill: rgba(255,255,255,0.5);" unFocusColor="WHITE">
+            <JFXTextField focusColor="WHITE" maxWidth="300.0" promptText="Email Address" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
                <VBox.margin>
                   <Insets left="125.0" top="15.0" />
                </VBox.margin>
