@@ -6,20 +6,18 @@ import java.util.List;
 import java.util.Set;
 
 public class PathFindingDatabaseManager {
-    final String DB_URL = "jdbc:derby:MyDB;";
+    final String DB_URL = "jdbc:derby:BWDB;"; //
 
     Connection connection = null;
     //Statement statement = null;
     private static PathFindingDatabaseManager instance= null;
-    String username = "admin" ;
-    String password = "admin";
-   // boolean credentials= false;
-
+   private PathFindingDatabaseManager(){};
     public static void startDB(String username, String password){
         if(instance == null){
             instance= new PathFindingDatabaseManager();
+          instance.createDB();
         }
-        instance.createDB();
+
         instance.accessDB(username, password);
         instance.createTables();
         instance.insertNodesIntoDatabase();
@@ -40,13 +38,16 @@ public class PathFindingDatabaseManager {
 
           try{
 
-              connection = DriverManager.getConnection(DB_URL);
+              connection = DriverManager.getConnection("jdbc:derby:BWDB;");
             //  System.out.println("Database myDB created");
           }
           catch(SQLException e){
               System.out.println("connection failed");
-              e.printStackTrace();
-              return;
+              try{
+              connection = DriverManager.getConnection("jdbc:derby:BWDB;create=true");}
+              catch(SQLException i){e.printStackTrace();return;}
+
+
           }
       }
 
@@ -78,7 +79,7 @@ public class PathFindingDatabaseManager {
         }
         public void createTables(){
         try{Statement statement = connection.createStatement();
-            //System.out.println("statement established");
+            System.out.println("statement established");
             dropNodeTable();
 
           //  statement1.execute(

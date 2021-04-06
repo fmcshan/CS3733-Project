@@ -76,7 +76,7 @@ public class LDB {
                 "1 \u002D Node Information\n"
                         + "2 \u002D Update Node Coordinate\n"
                         + "3 \u002D Update Node Location LongName\n"
-                        + "4 \u002D Edge Information"
+                        + "4 \u002D Edge Information\n"
                         + "5 \u002D Exit Program");
         System.out.println();
         System.out.println("--------------------");
