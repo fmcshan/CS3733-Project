@@ -9,6 +9,12 @@ import java.io.IOException;
 
 public class ServiceRequests {
     public void floralDelivery(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/FloralDelivery.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void foodDelivery(ActionEvent actionEvent) {
