@@ -8,20 +8,26 @@ import java.util.Set;
 public class PathFindingDatabaseManager {
     final String DB_URL = "jdbc:derby:BWDB;"; //
 
-    Connection connection = null;
+    Connection connection;
     //Statement statement = null;
     private static PathFindingDatabaseManager instance= null;
-   private PathFindingDatabaseManager(){};
+   private PathFindingDatabaseManager(){connection = null;};
     public static void startDB(String username, String password){
         if(instance == null){
             instance= new PathFindingDatabaseManager();
           instance.createDB();
-        }
+          instance.accessDB(username, password);
 
-        instance.accessDB(username, password);
+        }
         instance.createTables();
         instance.insertNodesIntoDatabase();
         instance.insertEdgesIntoDatabase();
+
+
+
+
+
+
 
 
 
@@ -45,7 +51,8 @@ public class PathFindingDatabaseManager {
               System.out.println("connection failed");
               try{
               connection = DriverManager.getConnection("jdbc:derby:BWDB;create=true");}
-              catch(SQLException i){e.printStackTrace();return;}
+              catch(SQLException i){e.printStackTrace();
+              return;}
 
 
           }
@@ -77,30 +84,59 @@ public class PathFindingDatabaseManager {
         public static PathFindingDatabaseManager getInstance() {
          return instance;
         }
-        public void createTables(){
-        try{Statement statement = connection.createStatement();
-            System.out.println("statement established");
-            dropNodeTable();
+        public void createTables() {
+            try {
+                Statement statement = connection.createStatement();
+                try {
+                    System.out.println("statement established");
 
-          //  statement1.execute(
-              //      "CREATE TABLE navaaa(edge_ID varchar(45), xcoord integer, PRIMARY KEY(edge_ID))");
+                    dropNodeTable();
+
+                    //  statement1.execute(
+                    //      "CREATE TABLE navaaa(edge_ID varchar(45), xcoord integer, PRIMARY KEY(edge_ID))");
 
 
-            statement.execute("CREATE TABLE nodeTable(node_ID varchar(45) NOT NULL, x_coord integer NOT NULL, y_coord integer NOT NULL, floor varchar(45), building varchar(45),node_type varchar(45), long_name varchar(45), short_name varchar (45), PRIMARY KEY (node_ID))");
-       // statement.execute("CREATE NODETABLE(NODEID VARCHAR(45) NOT NULL, XCOORD INTEGER NOT NULL, YCOORD INTEGER NOT NULL, FLOOR INTEGER NOT NULL , BUILDING VARCHAR(45), NODETYPE VARCHAR(45), LONGNAME VARCHAR(45), SHORTNAME VARCHAR(45), PRIMARY KEY (NODEID))");
-           // System.out.println("NODETABLE CREATED");
+                    statement.execute("CREATE TABLE nodeTable(node_ID varchar(45) NOT NULL, " +
+                            "x_coord integer NOT NULL, " +
+                            "y_coord integer NOT NULL, " +
+                            "floor varchar(45), " +
+                            "building varchar(45)," +
+                            "node_type varchar(45), " +
+                            "long_name varchar(45), " +
+                            "short_name varchar (45), " +
+                            "PRIMARY KEY (node_ID))");
+                    // statement.execute("CREATE NODETABLE(NODEID VARCHAR(45) NOT NULL, XCOORD INTEGER NOT NULL, YCOORD INTEGER NOT NULL, FLOOR INTEGER NOT NULL , BUILDING VARCHAR(45), NODETYPE VARCHAR(45), LONGNAME VARCHAR(45), SHORTNAME VARCHAR(45), PRIMARY KEY (NODEID))");
+                    // System.out.println("NODETABLE CREATED");
+                } catch (SQLException e) {
+                    System.out.println("error generating NODETABLE");
+                }
+
+                  dropEdgeTable();
+
+                try {
+
+
+                    statement.execute("CREATE TABLE EDGETABLE(edge_ID varchar(45) NOT NULL, " +
+                            "starting_Node varchar(45) NOT NULL, " +
+                            "finishing_Node varchar(45) NOT NULL, " +
+                            "PRIMARY KEY (edge_ID))");
+
+
+//            statement.execute("CREATE TABLE edgeTable(edge_ID varchar(45) NOT NULL, " +
+//                    "starting_Node varchar(45) NOT NULL, " +
+//                    "finishing_Node varchar(45) NOT NULL, " +
+//                    "PRIMARY KEY (edge_ID))");
+                    System.out.println("EDGETABLE CREATED");
+                } // +"FOREIGN KEY (starting_Node) REFERENCES nodeTable(node_ID),"
+                //+ "FOREIGN KEY (finishing_Node) REFERENCES nodeTable(node_ID))"
+                catch (SQLException e) {
+                    System.out.println("Error creating EDGETABLE");
+                }
+            }
+            catch (SQLException e){
+                System.out.println("error generating statement");
+            }
         }
-
-
-        catch (SQLException e){
-            System.out.println("error generating NODETABLE");
-        }
-        try{Statement statement = connection.createStatement();
-            dropEdgeTable();
-            statement.execute("CREATE TABLE edgeTable(edge_ID varchar(45) NOT NULL, starting_Node varchar(45) NOT NULL, finishing_Node varchar(45) NOT NULL, PRIMARY KEY (edge_ID))");}
-        catch (SQLException e){ System.out.println("EDGETABLE CREATED");}
-    }
-
 
     public void insertNodesIntoDatabase(){
         List<List<String>> allNodesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
@@ -146,31 +182,42 @@ e.printStackTrace();
            }
         }
     }
-    public void insertEdgesIntoDatabase(){
+    public void insertEdgesIntoDatabase() {
         List<List<String>> allEdgesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
+        //System.out.println(allEdgesData);
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);
-        for( List<String> singleEdgeData : allEdgesData){
-            try {Statement statement = connection.createStatement();
-                statement.executeUpdate("INSERT INTO edgeTable (edge_ID, starting_Node, finishing_Node) " +
+        for (List<String> singleEdgeData : allEdgesData) {
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("INSERT INTO EDGETABLE (edge_ID, starting_Node, finishing_Node) " +
                         "VALUES('"
                         + singleEdgeData.get(0)
                         + "','"
                         + singleEdgeData.get(1)
-                        +"','"
-                        + singleEdgeData.get(2)+"')");
+                        + "','"
+                        + singleEdgeData.get(2) + "')");
+//                System.out.println(singleEdgeData.get(0));
+//                System.out.println(singleEdgeData.get(1));
+//                System.out.println(singleEdgeData.get(2));
                 //System.out.println(node);
+            //    System.out.println("edge inserted into Database");
 
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println(" error inserting edges into the database");
             }
-        }}
+        }
+    }
+
         public ArrayList<List<String>> retrieveNodesFromDatabase(){
             ArrayList<List<String>> nodes = new ArrayList<>();
             try{
+
                 Statement statement = connection.createStatement();
+
                 ResultSet nodesData = statement.executeQuery("SELECT * FROM nodeTable");
+               //System.out.println("working!!!");
             while(nodesData.next()){
                 System.out.println(nodesData.getString("node_ID")
                         +"\t"+ nodesData.getString("x_coord")
@@ -181,7 +228,7 @@ e.printStackTrace();
                         +"\t"+ nodesData.getString("long_name")
                         +"\t"+ nodesData.getString("short_name"));
 
-//                System.out.print(nodesData.getString("x_coord"));
+                System.out.print(nodesData.getString("x_coord"));
 //
 //                System.out.print(nodesData.getString("y_coord"));
 //                System.out.print(nodesData.getString("floor"));
@@ -203,13 +250,22 @@ e.printStackTrace();
         ArrayList<List<String>> edges = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
-            ResultSet edgesData = statement.executeQuery("SELECT * FROM edgeTable");
+            System.out.println("statement created");
+            ResultSet edgesData = statement.executeQuery("SELECT * FROM EDGETABLE");
+            // ResultSet edgesData = statement2.executeQuery("SELECT * FROM edgeTable");
+            System.out.println("query exeuted");
             while(edgesData.next()){
                // List<String> edge = new ArrayList<>();
-                System.out.println(edgesData.getString("edge_ID") +"\t"+ edgesData.getString("starting_Node")+"\t" + edgesData.getString("finishing_Node"));
+                System.out.println(edgesData.getString("edge_ID")
+                        +"\t"+ edgesData.getString("starting_Node")
+                        +"\t" + edgesData.getString("finishing_Node"));
+               // System.out.println("we got into the printing statement");
 
             } }
-        catch (SQLException e){}
+        catch (SQLException e){
+            System.out.println("error accessing edges");
+            e.printStackTrace();
+        }
         return edges;
 
 
@@ -227,7 +283,7 @@ e.printStackTrace();
         try{
             Statement statement = connection.createStatement();
 
-            statement.execute("DROP TABLE edgeTable");
+            statement.execute("DROP TABLE EDGETABLE");
         }
         catch(SQLException s){
             System.out.println("error dropping edgeTable");
