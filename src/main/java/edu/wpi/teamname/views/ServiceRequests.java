@@ -18,6 +18,12 @@ public class ServiceRequests {
     }
 
     public void foodDelivery(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/FoodDelivery.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void medicineDelivery(ActionEvent actionEvent) {
