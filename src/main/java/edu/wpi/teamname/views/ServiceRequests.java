@@ -50,6 +50,6 @@ public class ServiceRequests {
     public void facilitiesMaintenance(ActionEvent actionEvent) {
     }
 
-    public void computerService(ActionEvent actionEvent) {
+    public void computerServices(ActionEvent actionEvent) {
     }
 }
