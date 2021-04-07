@@ -96,9 +96,7 @@ public class PathFindingDatabaseManager {
                     //      "CREATE TABLE navaaa(edge_ID varchar(45), xcoord integer, PRIMARY KEY(edge_ID))");
 
 
-                    statement.execute("CREATE TABLE nodeTable(node_ID varchar(45) NOT NULL, " +
-                            "x_coord integer NOT NULL, " +
-                            "y_coord integer NOT NULL, " +
+                    statement.execute("CREATE TABLE nodeTable(node_ID varchar(45) NOT NULL, x_coord integer NOT NULL, y_coord integer NOT NULL, " +
                             "floor varchar(45), " +
                             "building varchar(45)," +
                             "node_type varchar(45), " +
