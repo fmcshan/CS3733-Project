@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SanitationServices">
+   <children>
+      <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Sanitation Services Form" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="525.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#serviceRequests" ripplerFill="#173c5f" style="-fx-background-color: #9d9c9c;" text="Back to Home">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.1" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="368.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxWidth="122.0" prefWidth="122.0" ripplerFill="#173c5f" style="-fx-background-color: #dddddd;" text="Submit">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.1" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Label text="Please fill out the fields to request the sanitation staff." textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="40.0" top="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label text="Please enter the reason you need the sanitation staff." textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="75.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField focusColor="WHITE" maxWidth="200.0" promptText="Reason" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
+               <VBox.margin>
+                  <Insets left="125.0" top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXTextField>
+            <Label text="Please enter the location you would like sanitized." textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="75.0" top="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <JFXTextField focusColor="WHITE" maxWidth="125.0" promptText="Location" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="125.0" top="15.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Please select the level of urgency." textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="75.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+            <HBox>
+               <children>
+                  <JFXCheckBox checkedColor="WHITE" text="High" textFill="WHITE" unCheckedColor="#828282">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="125.0" top="15.0" />
+                     </HBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox checkedColor="WHITE" text="Medium" textFill="WHITE" unCheckedColor="#828282">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </HBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox checkedColor="WHITE" text="Low" textFill="WHITE" unCheckedColor="#828282">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </HBox.margin>
+                  </JFXCheckBox>
+               </children>
+            </HBox>
+            <Label text="Please enter your employee ID to receive a confirmation." textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="75.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField focusColor="WHITE" maxWidth="300.0" promptText="Employee ID" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
+               <VBox.margin>
+                  <Insets left="125.0" top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXTextField>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

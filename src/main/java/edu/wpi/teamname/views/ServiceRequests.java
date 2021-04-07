@@ -17,6 +17,15 @@ public class ServiceRequests {
         }
     }
 
+    public void sanitationServices(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/SanitationServices.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void foodDelivery(ActionEvent actionEvent) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/FoodDelivery.fxml"));
@@ -42,9 +51,6 @@ public class ServiceRequests {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void sanitationServices(ActionEvent actionEvent) {
     }
 
     public void laundryServices(ActionEvent actionEvent) {
