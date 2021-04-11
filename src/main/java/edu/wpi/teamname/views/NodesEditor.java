@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import javafx.beans.property.SimpleStringProperty;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 public class NodesEditor {
 
@@ -15,7 +16,12 @@ public class NodesEditor {
 
     NodesEditor(String nodeID, int xcoord, int ycoord, String floor, String age, String nodeType, String longName, String shortName) {
         this.nodeID = new SimpleStringProperty(nodeID);
-        this.xcoord = new int(xcoord);
-
+        this.xcoord = xcoord;
+        this.ycoord = ycoord;
+        this.floor = new SimpleStringProperty(floor);
+        this.age = new SimpleStringProperty(age);
+        this.nodeType = new SimpleStringProperty(nodeType);
+        this.longName = new SimpleStringProperty(longName);
+        this.shortName = new SimpleStringProperty(shortName);
     }
 }
