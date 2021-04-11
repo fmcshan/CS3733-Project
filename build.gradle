@@ -37,6 +37,7 @@ dependencies {
 
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
+            'com.google.firebase:firebase-admin:7.1.1', // Firebase admin sdk
     )
 //These are test dependencies. These are only used for running verification tasks via Gradle.
     testCompile(
