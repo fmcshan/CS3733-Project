@@ -8,23 +8,31 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class PathFindingDatabaseManager {
     private static final PathFindingDatabaseManager instance = new PathFindingDatabaseManager();
-    private PathFindingDatabaseManager() {};
+
+    private PathFindingDatabaseManager() {
+    }
+
+    ;
     private Firestore db;
 
     public void startDb() {
         initDb();
-        insertNodesIntoDatabase();
-        insertEdgesIntoDatabase();
+//        insertNodesIntoDatabase();
+//        insertEdgesIntoDatabase();
     }
 
     public static synchronized PathFindingDatabaseManager getInstance() {
@@ -79,7 +87,7 @@ public class PathFindingDatabaseManager {
                     node.put("longName", singleNodeData.get(6));
                     node.put("shortName", singleNodeData.get(7));
 
-                        batch.set(nodeRef, node);
+                    batch.set(nodeRef, node);
 
                 } catch (Exception e) {
                     System.out.println("error inserting node into the batch");
@@ -94,7 +102,9 @@ public class PathFindingDatabaseManager {
                 e.printStackTrace();
             }
         });
-    };
+    }
+
+    ;
 
     public void insertEdgesIntoDatabase() {
         List<List<String>> allEdgesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
@@ -128,67 +138,45 @@ public class PathFindingDatabaseManager {
         });
     }
 
-//    public ArrayList<List<String>> retrieveNodesFromDatabase() {
-//        ArrayList<List<String>> nodes = new ArrayList<>();
-//        try {
-//
-//            Statement statement = connection.createStatement();
-//
-//            ResultSet nodesData = statement.executeQuery("SELECT * FROM nodeTable");
-//            //System.out.println("working!!!");
-//            while (nodesData.next()) {
-//                System.out.println(nodesData.getString("node_ID")
-//                        + "\t" + nodesData.getString("x_coord")
-//                        + "\t" + nodesData.getString("y_coord")
-//                        + "\t" + nodesData.getString("floor")
-//                        + "\t" + nodesData.getString("building")
-//                        + "\t" + nodesData.getString("node_type")
-//                        + "\t" + nodesData.getString("long_name")
-//                        + "\t" + nodesData.getString("short_name"));
-//
-//                System.out.print(nodesData.getString("x_coord"));
-////
-////                System.out.print(nodesData.getString("y_coord"));
-////                System.out.print(nodesData.getString("floor"));
-////                System.out.print(nodesData.getString("building"));
-////                System.out.print(nodesData.getString("node_type"));
-////                System.out.print(nodesData.getString("long_name"));
-////                System.out.print(nodesData.getString("short_name"));
-//                // System.out.println(node);
-//
-//
-//            }
-//        } catch (SQLException e) {
-//        }
-//        return nodes;
-//
-//
-//    }
+    public JSONObject getRequestJson(String _url) throws IOException {
+        URL url = new URL(_url);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
 
-//    public ArrayList<List<String>> retrieveEdgesFromDatabase() {
-//        ArrayList<List<String>> edges = new ArrayList<>();
-//        try {
-//            Statement statement = connection.createStatement();
-//            System.out.println("statement created");
-//            ResultSet edgesData = statement.executeQuery("SELECT * FROM EDGETABLE");
-//            // ResultSet edgesData = statement2.executeQuery("SELECT * FROM edgeTable");
-//            System.out.println("query exeuted");
-//            while (edgesData.next()) {
-//                // List<String> edge = new ArrayList<>();
-//                System.out.println(edgesData.getString("edge_ID")
-//                        + "\t" + edgesData.getString("starting_Node")
-//                        + "\t" + edgesData.getString("finishing_Node"));
-//                // System.out.println("we got into the printing statement");
-//
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("error accessing edges");
-//            e.printStackTrace();
-//        }
-//        return edges;
-//
-//
-//    }
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
 
+        return new JSONObject(response.toString());
+    }
 
+    public JSONArray getNodes() {
+        ArrayList<List<String>> nodes = new ArrayList<>();
+        try {
+            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes?cache=true");
+            return nodeList.getJSONArray("data");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONArray getEdges() {
+        ArrayList<List<String>> nodes = new ArrayList<>();
+        try {
+            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges?cache=true");
+            return nodeList.getJSONArray("data");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }
