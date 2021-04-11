@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+    <children>
+        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="700.0" fitWidth="10000.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Documents/College/CS3733/Project%20C%20map%20-%20Cropped.png" />
+               </image>
+            </ImageView>
+         </children>
+        </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label text="Navigation">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your destination to recieve a path." wrappingWidth="203.1826171875">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <VBox maxWidth="200.0">
+               <children>
+                  <Label text="From" textFill="#868686">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox layoutX="35.0" layoutY="103.0" maxWidth="200.0">
+               <children>
+                  <Label text="To" textFill="#868686">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+    </children>
+</AnchorPane>
