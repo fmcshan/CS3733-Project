@@ -16,6 +16,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Algo.Parser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,8 +33,7 @@ public class PathFindingDatabaseManager {
 
     public void startDb() {
         initDb();
-//        insertNodesIntoDatabase();
-//        insertEdgesIntoDatabase();
+        System.out.println(getNodes());
     }
 
     public static synchronized PathFindingDatabaseManager getInstance() {
@@ -155,28 +156,62 @@ public class PathFindingDatabaseManager {
         return new JSONObject(response.toString());
     }
 
-    public JSONArray getNodes() {
+    private JSONArray getNodesInteral() {
         ArrayList<List<String>> nodes = new ArrayList<>();
         try {
             JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes?cache=true");
             return nodeList.getJSONArray("data");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new JSONArray();
     }
 
-    public JSONArray getEdges() {
-        ArrayList<List<String>> nodes = new ArrayList<>();
+    private JSONArray getEdgesInternal() {
         try {
             JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges?cache=true");
             return nodeList.getJSONArray("data");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new JSONArray();
     }
-    
+
+    private static ArrayList<Node> parseNodes(JSONArray nodesData, JSONArray edgeData) {
+        ArrayList<Node> nodesList = new ArrayList<>();
+        HashMap<String, Node> nodeMap = new HashMap<String, Node>();
+        for(int n = 0; n < nodesData.length(); n++)
+        {
+            JSONObject node = nodesData.getJSONObject(n);
+            Node newNode = new Node(
+                    node.getString("id"),
+                    Integer.parseInt(node.getString("x")),
+                    Integer.parseInt(node.getString("y")),
+                    node.getString("level"),
+                    node.getString("building"),
+                    node.getString("type"),
+                    node.getString("longName"),
+                    node.getString("shortName")
+            );
+            nodeMap.put(node.getString("id"), newNode);
+            nodesList.add(newNode);
+        }
+
+        for(int n = 0; n < edgeData.length(); n++)
+        {
+            JSONObject edge = edgeData.getJSONObject(n);
+            if (nodeMap.containsKey(edge.getString("start")) && nodeMap.containsKey(edge.getString("end"))) {
+                Node startNode = nodeMap.get(edge.getString("start"));
+                Node endNode = nodeMap.get(edge.getString("start"));
+                startNode.addEdges(endNode, 1);
+            }
+        }
+        return nodesList;
+    }
+
+    public ArrayList<Node> getNodes() {
+        JSONArray nodes = getNodesInteral();
+        JSONArray edges = getEdgesInternal();
+        return parseNodes(nodes, edges);
+    }
 }
