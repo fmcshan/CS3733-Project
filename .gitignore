@@ -160,3 +160,5 @@ gradle-app.setting
 
 # End of https://www.gitignore.io/api/java,macos,gradle,intellij+all
 
+# Service accounts
+3733-firebase-service-account.json
