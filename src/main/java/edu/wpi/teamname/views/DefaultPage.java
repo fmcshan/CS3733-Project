@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.TreeTableColumn;
 
 import java.io.IOException;
 
@@ -25,7 +26,7 @@ public class DefaultPage {
     public void edgesEditor(ActionEvent actionEvent) {
     }
 
-    public void nodesEditor(ActionEvent actionEvent) {
+    public void nodesEditor(ActionEvent actionEvent) { loadScene("NodesEditor");
     }
 
     public void serviceRequests(ActionEvent actionEvent) {
