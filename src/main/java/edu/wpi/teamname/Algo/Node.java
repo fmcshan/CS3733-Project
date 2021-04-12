@@ -1,6 +1,8 @@
 package edu.wpi.teamname.Algo;
 
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <h1>Node</h1>
@@ -11,7 +13,7 @@ public class Node {
     /**
      * Hashtable of nodes connected to this node
      */
-    private Hashtable<Node, Integer> edges;
+    private List<Node> edges;
     /**
      * The Node's ID
      */
@@ -28,6 +30,35 @@ public class Node {
      * The Node's short name
      */
     private String shortName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     /**
      * THe floor the node is located on
      */
@@ -73,7 +104,7 @@ public class Node {
      * @param y      y value of the node's location
      * @param edges  Hashtable representing node and its associated cost
      */
-    public Node(String nodeID, int x, int y, Hashtable<Node, Integer> edges) {
+    public Node(String nodeID, int x, int y, List<Node> edges) {
         //coordinates
         this.x = x;
         this.y = y;
@@ -119,7 +150,8 @@ public class Node {
         this.y = y;
 
         //edges
-        this.edges = new Hashtable<>();
+        this.edges = new LinkedList<Node>();
+
 
         //nodeInfo
         this.nodeID = nodeID;
@@ -239,7 +271,7 @@ public class Node {
      * @param cost Integer representing the cost of the edge
      */
     public void addEdges(Node aNode, int cost) {
-        this.edges.put(aNode, cost);
+        this.edges.put(aNode);
         aNode.edges.put(this, cost);
     }
 
