@@ -26,7 +26,9 @@ public class DefaultPage {
     public void edgesEditor(ActionEvent actionEvent) {
     }
 
-    public void nodesEditor(ActionEvent actionEvent) { loadScene("NodesEditor");
+    public void nodesEditor(ActionEvent actionEvent) {
+        loadScene("NodesEditor");
+
     }
 
     public void serviceRequests(ActionEvent actionEvent) {

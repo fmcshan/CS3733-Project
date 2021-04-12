@@ -36,6 +36,35 @@ public class Node {
      * The building the node is located in
      */
     private String building;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     /**
      * The nodeType for the node
      */
