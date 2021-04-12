@@ -16,9 +16,9 @@
     <children>
         <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="700.0" fitWidth="10000.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="700.0" fitWidth="1000.0">
                <image>
-                  <Image url="@../../../../../../../../../Documents/College/CS3733/Project%20C%20map%20-%20Cropped.png" />
+                  <Image url="@Brigham%20and%20Women's%20Hospital%20-%20Cropped.png" />
                </image>
             </ImageView>
          </children>
