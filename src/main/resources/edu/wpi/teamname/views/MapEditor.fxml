@@ -18,7 +18,7 @@
          <children>
             <ImageView fitHeight="700.0" fitWidth="1000.0">
                <image>
-                  <Image url="@Brigham%20and%20Women's%20Hospital%20-%20Cropped.png" />
+                  <Image url="@Brigham_and_Women's_Hospital_Cropped.png" />
                </image>
             </ImageView>
          </children>
