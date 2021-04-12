@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.NodesEditor">
     <children>
         <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -31,21 +31,18 @@
         </VBox>
         <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
          <children>
-            <JFXTreeTableView fx:id="myTable" editable="true" prefWidth="938.0" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <columns>
-                  <TreeTableColumn fx:id="nodeId" prefWidth="117.25" text="Node ID" />
-                  <TreeTableColumn prefWidth="117.25" text="X Coordinate" fx:id="xCoord" />
-                  <TreeTableColumn fx:id="yCoord" prefWidth="117.25" text="Y Coordinate" />
-                  <TreeTableColumn fx:id="floor" prefWidth="117.25" text="Floor" />
-                  <TreeTableColumn fx:id="building" prefWidth="117.25" text="Building" />
-                  <TreeTableColumn fx:id="nodeType" prefWidth="117.25" text="Node Type" />
-                  <TreeTableColumn fx:id="shortName" prefWidth="117.25" text="Short Name" />
-                  <TreeTableColumn fx:id="longName" prefWidth="117.25" text="Long Name" />
-               </columns>
-            </JFXTreeTableView>
+            <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="nodeIDCol" prefWidth="117.25" text="Node ID" />
+                <TableColumn prefWidth="117.25" text="X-Coordinate" fx:id="xCoordCol" />
+                  <TableColumn fx:id="yCoordCol" prefWidth="117.25" text="Y-Coordinate" />
+                  <TableColumn fx:id="floorCol" prefWidth="117.25" text="Floor" />
+                  <TableColumn fx:id="buildingCol" prefWidth="117.25" text="Building" />
+                  <TableColumn fx:id="nodeTypeCol" prefWidth="117.25" text="Node Type" />
+                  <TableColumn fx:id="shortNameCol" prefWidth="117.25" text="Short Name" />
+                  <TableColumn fx:id="longNameCol" prefWidth="117.25" text="Long Name" />
+              </columns>
+            </TableView>
          </children>
         </VBox>
     </children>
