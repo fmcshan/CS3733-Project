@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Algo;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -11,7 +12,7 @@ public class Node {
     /**
      * Hashtable of nodes connected to this node
      */
-    private Hashtable<Node, Integer> edges;
+    private ArrayList<Node> edges;
     /**
      * The Node's ID
      */
@@ -73,7 +74,7 @@ public class Node {
      * @param y      y value of the node's location
      * @param edges  Hashtable representing node and its associated cost
      */
-    public Node(String nodeID, int x, int y, Hashtable<Node, Integer> edges) {
+    public Node(String nodeID, int x, int y, ArrayList<Node> edges) {
         //coordinates
         this.x = x;
         this.y = y;
@@ -96,7 +97,7 @@ public class Node {
         this.nodeID = nodeID;
         this.x = x;
         this.y = y;
-        this.edges = new Hashtable<>();
+        this.edges = new ArrayList<Node>();
         this.costSoFar = Double.POSITIVE_INFINITY;
         this.AStarScore = Double.POSITIVE_INFINITY;
     }
@@ -119,7 +120,7 @@ public class Node {
         this.y = y;
 
         //edges
-        this.edges = new Hashtable<>();
+        this.edges = new ArrayList<>();
 
         //nodeInfo
         this.nodeID = nodeID;
@@ -236,11 +237,11 @@ public class Node {
     /**
      * Adds an edge to the current node
      * @param aNode Node used to add an edge from current Node
-     * @param cost Integer representing the cost of the edge
+     *
      */
-    public void addEdges(Node aNode, int cost) {
-        this.edges.put(aNode, cost);
-        aNode.edges.put(this, cost);
+    public void addEdge(Node aNode) {
+        this.edges.add(aNode);
+        aNode.edges.add(this);
     }
 
     /**
@@ -248,7 +249,7 @@ public class Node {
      *
      * @return An ArrayList of nodes connected to this node
      */
-    public Hashtable<Node, Integer> getEdges() {
+    public ArrayList<Node> getEdges() {
         return this.edges;
     }
 

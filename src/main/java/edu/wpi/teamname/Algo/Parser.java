@@ -66,8 +66,8 @@ public class Parser {
         for (Node node : nodesList) {
             for (List<String> edgesDatum : edgesData) {
                 if (node.getNodeID().equals(edgesDatum.get(1))){
-                    node.addEdges(nodesList.get(Parser.indexOfNode(nodesList, edgesDatum.get(2))), 1);
-                    nodesList.get(Parser.indexOfNode(nodesList, edgesDatum.get(2))).addEdges(node, 1);
+                    node.addEdge(nodesList.get(Parser.indexOfNode(nodesList, edgesDatum.get(2))));
+                    nodesList.get(Parser.indexOfNode(nodesList, edgesDatum.get(2))).addEdge(node);
                 }
             }
         }
