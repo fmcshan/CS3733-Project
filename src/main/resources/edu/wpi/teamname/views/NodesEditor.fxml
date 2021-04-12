@@ -33,14 +33,14 @@
          <children>
             <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="nodeIDCol" prefWidth="117.25" text="Node ID" />
-                <TableColumn prefWidth="117.25" text="X-Coordinate" fx:id="xCoordCol" />
-                  <TableColumn fx:id="yCoordCol" prefWidth="117.25" text="Y-Coordinate" />
-                  <TableColumn fx:id="floorCol" prefWidth="117.25" text="Floor" />
-                  <TableColumn fx:id="buildingCol" prefWidth="117.25" text="Building" />
-                  <TableColumn fx:id="nodeTypeCol" prefWidth="117.25" text="Node Type" />
-                  <TableColumn fx:id="shortNameCol" prefWidth="117.25" text="Short Name" />
-                  <TableColumn fx:id="longNameCol" prefWidth="117.25" text="Long Name" />
+                <TableColumn fx:id="nodeIDCol" prefWidth="107.25" text="Node ID" />
+                <TableColumn prefWidth="94.22222222222" text="X-Coordinate" fx:id="xCoordCol" />
+                  <TableColumn fx:id="yCoordCol" prefWidth="94.22222222222" text="Y-Coordinate" />
+                  <TableColumn fx:id="floorCol" prefWidth="54.22222222222" text="Floor" />
+                  <TableColumn fx:id="buildingCol" prefWidth="107.25" text="Building" />
+                  <TableColumn fx:id="nodeTypeCol" prefWidth="107.25" text="Node Type" />
+                  <TableColumn fx:id="shortNameCol" prefWidth="167.25" text="Short Name" />
+                  <TableColumn fx:id="longNameCol" prefWidth="206.33333333" text="Long Name" />
               </columns>
             </TableView>
          </children>
