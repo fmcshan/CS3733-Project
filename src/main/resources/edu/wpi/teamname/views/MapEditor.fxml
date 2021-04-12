@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,17 +23,23 @@
             </ImageView>
          </children>
         </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 25;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
             <Label text="Navigation">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </Label>
             <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your destination to recieve a path." wrappingWidth="203.1826171875">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </Text>
             <VBox maxWidth="200.0">
                <children>
@@ -43,7 +51,7 @@
                   <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
                </children>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
             </VBox>
             <VBox layoutX="35.0" layoutY="103.0" maxWidth="200.0">
@@ -56,10 +64,28 @@
                   <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" />
                </children>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
             </VBox>
          </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="GREY" />
+         </effect>
+      </VBox>
+      <VBox alignment="BOTTOM_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXButton style="-fx-background-color: white;" text="Exit">
+               <VBox.margin>
+                  <Insets bottom="15.0" right="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="GREY" />
+         </effect>
       </VBox>
     </children>
 </AnchorPane>
