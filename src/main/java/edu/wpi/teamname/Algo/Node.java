@@ -24,7 +24,7 @@ public class Node {
     /**
      * The Node's full name
      */
-    private String fullName;
+    private String longName;
     /**
      * The Node's short name
      */
@@ -106,7 +106,7 @@ public class Node {
      * Overloaded constructor that loads all of the info from the original constructor
      * as well as other extraneous info related to a node
      * @param nodeID    nodeID for this node
-     * @param fullName the full name of the node
+     * @param longName the full name of the node
      * @param shortName the short name of the node
      * @param floor the floor the node is located on
      * @param building the building the node is located in
@@ -114,7 +114,7 @@ public class Node {
      * @param x         x value of the node's location
      * @param y         y value of the node's location
      */
-    public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String fullName, String shortName) {
+    public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String longName, String shortName) {
         //coordinates
         this.x = x;
         this.y = y;
@@ -124,7 +124,7 @@ public class Node {
 
         //nodeInfo
         this.nodeID = nodeID;
-        this.fullName = fullName;
+        this.longName = longName;
         this.shortName = shortName;
         this.floor = floor;
         this.building = building;
@@ -186,7 +186,7 @@ public class Node {
         nodeInfo.put("floor", this.floor);
         nodeInfo.put("building", this.building);
         nodeInfo.put("nodeType", this.nodeType);
-        nodeInfo.put("fullName", this.fullName);
+        nodeInfo.put("longName", this.longName);
         nodeInfo.put("shortName", this.shortName);
 
         return nodeInfo;
