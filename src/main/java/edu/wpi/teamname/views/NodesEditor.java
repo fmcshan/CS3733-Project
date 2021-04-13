@@ -11,65 +11,53 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class NodesEditor {
 
- @FXML private TableView nodeTable;
- @FXML private TableColumn nodeIDCol;
- @FXML private TableColumn xCoordCol;
- @FXML private TableColumn yCoordCol;
- @FXML private TableColumn floorCol;
- @FXML private TableColumn buildingCol;
- @FXML private TableColumn nodeTypeCol;
- @FXML private TableColumn longNameCol;
- @FXML private TableColumn shortNameCol;
- @FXML private JFXTextField loadCSVFileName;
+    @FXML
+    private TableView nodeTable;
+    @FXML
+    private TableColumn nodeIDCol;
+    @FXML
+    private TableColumn xCoordCol;
+    @FXML
+    private TableColumn yCoordCol;
+    @FXML
+    private TableColumn floorCol;
+    @FXML
+    private TableColumn buildingCol;
+    @FXML
+    private TableColumn nodeTypeCol;
+    @FXML
+    private TableColumn longNameCol;
+    @FXML
+    private TableColumn shortNameCol;
+    @FXML
+    private JFXTextField loadCSVFileName;
+    private Node currentlySelected = null; // Track currently selected row
 
- private HashMap<Integer, Node> changes = new HashMap<Integer, Node>();
- private String defaultCSV = "L1Nodes.csv";
- private Node currentlySelected = null;
-
+    /**
+     * Clears the current table, then loads the specified csv (loadCSVFileName text input) into nodeTable
+     */
     public void loadCSVToTable() {
-        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/" + loadCSVFileName.getText());
-        defaultCSV = loadCSVFileName.getText();
+        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/" + loadCSVFileName.getText()); // Load new CSV
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
 
-        nodeTable.getItems().clear();
-
-        /**
-         * For each node in the list of node data, get each parameter to populate the table
-         */
-        for (List<String> singleNodeData : allNodesData) {
-            nodeTable.getItems().add(new Node(singleNodeData.get(0),
-                    Integer.parseInt(singleNodeData.get(1)),
-                    Integer.parseInt(singleNodeData.get(2)),
-                    singleNodeData.get(3),
-                    singleNodeData.get(4),
-                    singleNodeData.get(5),
-                    singleNodeData.get(6),
-                    singleNodeData.get(7)));
-        }
-    }
-
-    public void addNodeToTable() {
-        ArrayList<Node> allNodesData = new ArrayList<Node>();
-        nodeTable.getItems().forEach(n -> {
-            allNodesData.add((Node) n);
-        });
-        allNodesData.add(new Node("Node ID", 0, 0, "Floor", "Building", "Node Type", "Long Name", "Short Name"));
-        nodeTable.getItems().clear();
+        nodeTable.getItems().clear(); // Clear table
 
         allNodesData.forEach(n -> {
-            nodeTable.getItems().add(n);
-        });
-        nodeTable.getSortOrder().addAll(xCoordCol, yCoordCol);
+            nodeTable.getItems().add(new Node(n.get(0), Integer.parseInt(n.get(1)), Integer.parseInt(n.get(2)), n.get(3), n.get(4), n.get(5), n.get(6), n.get(7)));
+        }); // Populate table
     }
 
     /**
-     * Populates the table with the Node Data from L1Nodes.csv
+     * Populates nodeTable with the Node data from L1Nodes.csv
      */
     public void initialize() {
         nodeIDCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -90,97 +78,87 @@ public class NodesEditor {
         longNameCol.setCellValueFactory(new PropertyValueFactory<>("longName"));
         shortNameCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
-        loadCSVFileName.setText(defaultCSV);
-        loadCSVToTable();
+        loadCSVFileName.setText("L1Nodes.csv"); // Set input text to default file
+        loadCSVToTable(); // Load file to table
 
         nodeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (Node) newSelection;
+            currentlySelected = (Node) newSelection; // Listen for row selection events
         });
     }
 
-    public void trackChange(TableColumn.CellEditEvent editCell) {
-        Node node = (Node) editCell.getRowValue();
-        String newValue = (String) editCell.getNewValue();
-        String nodeID = node.getNodeID();
-        String nodeX = String.valueOf(node.getX());
-        String nodeY = String.valueOf(node.getY());
-        String nodeFloor = node.getFloor();
-        String nodeBuilding = node.getBuilding();
-        String nodeType = node.getNodeType();
-        String nodeLongName = node.getLongName();
-        String nodeShortName = node.getShortName();
-        switch (editCell.getTablePosition().getColumn()) {
-            case 0:
-                nodeID = newValue;
-                break;
-            case 1:
-                nodeX = newValue;
-                break;
-            case 2:
-                nodeY = newValue;
-                break;
-            case 3:
-                nodeFloor = newValue;
-                break;
-            case 4:
-                nodeBuilding = newValue;
-                break;
-            case 5:
-                nodeType = newValue;
-                break;
-            case 6:
-                nodeLongName = newValue;
-                break;
-            case 7:
-                nodeShortName = newValue;
-                break;
-        }
+    /**
+     * Called on cell edit; rewrites row with change
+     *
+     * @param editCell Cell edit event
+     */
+    public void changeCellEvent(TableColumn.CellEditEvent editCell) {
+        int c = editCell.getTablePosition().getColumn(); // Edited col index
+        int r = editCell.getTablePosition().getRow(); // Edited row index
+        Node node = (Node) editCell.getRowValue(); // Current row
+        String newValue = String.valueOf(editCell.getNewValue()); // Get new edit cell value
+        Node newNode = new Node(
+                c == 0 ? newValue : node.getNodeID(),
+                c == 1 ? Integer.parseInt(newValue) : node.getX(),
+                c == 2 ? Integer.parseInt(newValue) : node.getY(),
+                c == 3 ? newValue : node.getFloor(),
+                c == 4 ? newValue : node.getBuilding(),
+                c == 5 ? newValue : node.getNodeType(),
+                c == 6 ? newValue : node.getLongName(),
+                c == 7 ? newValue : node.getShortName()
+        ); // Create a new node with new cell value
 
-        Node newNode = new Node(nodeID, Integer.parseInt(nodeX), Integer.parseInt(nodeY), nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName);
-        changes.put(editCell.getTablePosition().getRow(), newNode);
+        nodeTable.getItems().remove(r);
+        nodeTable.getItems().add(r, newNode);
     }
 
-    public void changeCellEvent(TableColumn.CellEditEvent editCell) {
-            trackChange(editCell);
- }
-
+    /**
+     * Called on loadCSV button click, loads the specified csv (loadCSVFileName text input) into nodeTable
+     *
+     * @param actionEvent Button click event
+     */
     public void loadCSV(ActionEvent actionEvent) {
         loadCSVToTable();
     }
 
+    /**
+     * Saves the table to the specified csv file (loadCSVFileName text input)
+     *
+     * @param actionEvent Button click event
+     */
     public void saveCSV(ActionEvent actionEvent) {
         ArrayList<Node> nodes = new ArrayList<Node>();
-        final int[] i = {0};
         nodeTable.getItems().forEach(n -> {
-            if (changes.containsKey(i[0])) {
-                nodes.add((changes.get(i[0])));
-            } else {
-                nodes.add((Node) n);
-            }
-            i[0]++;
+            nodes.add((Node) n);
         });
-        CSVOperator.writeCSV(nodes, loadCSVFileName.getText(), "beans");
+        CSVOperator.writeCSV(nodes, loadCSVFileName.getText(), "beans"); // Write nodes to csv
     }
 
+    /**
+     * Deletes the currently selected row
+     *
+     * @param actionEvent Button click event
+     */
     public void deleteNode(ActionEvent actionEvent) {
-        if (currentlySelected == null) {return;}
-
-        ArrayList<Node> allNodesData = new ArrayList<Node>();
-        nodeTable.getItems().forEach(n -> {
-            if (n != currentlySelected) {
-                allNodesData.add((Node) n);
-            }
-        });
-        nodeTable.getItems().clear();
-
-        allNodesData.forEach(n -> {
-            nodeTable.getItems().add(n);
-        });
+        if (currentlySelected != null) { // If a row is selected
+            nodeTable.getItems().remove(currentlySelected); // Delete row
+        }
     }
 
+    /**
+     * Adds a node/row to nodeTable
+     *
+     * @param actionEvent Button click event
+     */
     public void addNode(ActionEvent actionEvent) {
-        addNodeToTable();
+        nodeTable.getItems().add(0, new Node(
+                "Node ID",
+                0,
+                0,
+                "Floor",
+                "Building",
+                "Node Type",
+                "Long Name",
+                "Short Name"
+        )); // Add node to nodeTable
     }
 }
-
-

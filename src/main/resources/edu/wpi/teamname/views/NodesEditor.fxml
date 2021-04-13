@@ -91,8 +91,8 @@
             <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="nodeIDCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node ID" />
-                <TableColumn prefWidth="94.22222222222" text="X-Coordinate" fx:id="xCoordCol" />
-                  <TableColumn fx:id="yCoordCol" prefWidth="94.22222222222" text="Y-Coordinate" />
+                <TableColumn prefWidth="94.22222222222" onEditCommit="#changeCellEvent" text="X-Coordinate" fx:id="xCoordCol" />
+                  <TableColumn fx:id="yCoordCol" onEditCommit="#changeCellEvent" prefWidth="94.22222222222" text="Y-Coordinate" />
                   <TableColumn fx:id="floorCol" onEditCommit="#changeCellEvent" prefWidth="54.22222222222" text="Floor" />
                   <TableColumn fx:id="buildingCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Building" />
                   <TableColumn fx:id="nodeTypeCol" onEditCommit="#changeCellEvent" text="Node Type" />
