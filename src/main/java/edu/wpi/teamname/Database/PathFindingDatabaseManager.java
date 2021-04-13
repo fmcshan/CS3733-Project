@@ -73,7 +73,7 @@ public class PathFindingDatabaseManager {
         for (int n = 0; n < edgeData.length(); n++) {
             JSONObject edge = edgeData.getJSONObject(n);
             if (nodeMap.containsKey(edge.getString("start")) && nodeMap.containsKey(edge.getString("end"))) {
-                Node startNode = nodeMap.get(edge.getString("start"));
+                Node startNode = nodeMap.get(edge.getString("end"));
                 Node endNode = nodeMap.get(edge.getString("start"));
                 startNode.addEdge(endNode);
                 //System.out.println(startNode.getEdges());

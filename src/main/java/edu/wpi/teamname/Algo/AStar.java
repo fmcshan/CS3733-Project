@@ -48,7 +48,7 @@ public class AStar {
     public void displayPath(){
         Stack<Node> finalPath = this.getPath(); //
         while (!finalPath.isEmpty())
-            System.out.println(finalPath.pop().getNodeInfo().get("fullName"));
+            System.out.println(finalPath.pop().getNodeInfo().get("longName"));
     }
 
     /**
@@ -150,10 +150,12 @@ public class AStar {
 
     public static void main(String[] args) {
         //TODO make nodeID take click instance/drop-down  menu
+
+
+        ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
         Stopwatch timer = new Stopwatch();
-        ArrayList<Node> nodes = Parser.loadNodesandEdges();
-        Node start = nodes.get(Parser.indexOfNode(nodes, "EEXIT00201"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "GDEPT00403"));
+        Node start = nodes.get(Parser.indexOfNode(nodes, "CCONF001L1"));
+        Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00ML1"));
         AStar example = new AStar(nodes, start, goal);
         System.out.println(timer.elapsedTime());
     }
