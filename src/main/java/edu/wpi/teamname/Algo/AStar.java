@@ -158,5 +158,7 @@ public class AStar {
         Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00ML1"));
         AStar example = new AStar(nodes, start, goal);
         System.out.println(timer.elapsedTime());
+
+        //PathFindingDatabaseManager.getInstance().getNodes();
     }
 }
