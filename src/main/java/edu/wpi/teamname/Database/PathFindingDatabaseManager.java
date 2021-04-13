@@ -67,23 +67,19 @@ public class PathFindingDatabaseManager {
                     node.getString("shortName")
             );
             nodeMap.put(node.getString("id"), newNode);
-
-            for (int m = 0; m < edgeData.length(); m++) {
-                JSONObject edge = edgeData.getJSONObject(m);
-                if (nodeMap.containsKey(edge.getString("end")) && (newNode.getNodeID()).equals(edge.getString("start"))) {
-                    System.out.println(newNode.getNodeID());
-                   // Node startNode = nodeMap.get(edge.getString("start"));
-                   Node endNode = nodeMap.get(edge.getString("end"));
-                   //startNode.addEdge(endNode);
-
-                    newNode.addEdge(endNode);
-//                    if( newNode.getNodeID().equals("GHALL005L1")){
-//                        System.out.println("gothere");
-//                        System.out.println(newNode.getEdges().toString());}
-                        }
-            }
             nodesList.add(newNode);
+        }
 
+        for (int n = 0; n < edgeData.length(); n++) {
+            JSONObject edge = edgeData.getJSONObject(n);
+            if (nodeMap.containsKey(edge.getString("start")) && nodeMap.containsKey(edge.getString("end"))) {
+                Node startNode = nodeMap.get(edge.getString("start"));
+                Node endNode = nodeMap.get(edge.getString("end"));
+                startNode.addEdge(endNode);
+                endNode.addEdge(startNode);
+                System.out.println(startNode.getNodeID());
+                System.out.println(endNode.getNodeID());
+            }
         }
         return nodesList;
     }
