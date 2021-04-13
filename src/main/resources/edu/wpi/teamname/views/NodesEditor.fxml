@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -27,11 +29,51 @@
                         <Insets />
                     </VBox.margin>
                 </VBox>
+            <VBox alignment="CENTER">
+               <children>
+                  <JFXButton buttonType="RAISED" maxWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Add">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                     </effect>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" maxWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Delete">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                     </effect>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" maxWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Save">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                     </effect>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets right="875.0" top="200.0" />
+               </VBox.margin>
+            </VBox>
             </children>
         </VBox>
-        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
+        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
          <children>
-            <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="nodeIDCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node ID" />
                 <TableColumn prefWidth="94.22222222222" text="X-Coordinate" fx:id="xCoordCol" />
@@ -39,8 +81,8 @@
                   <TableColumn fx:id="floorCol" onEditCommit="#changeCellEvent" prefWidth="54.22222222222" text="Floor" />
                   <TableColumn fx:id="buildingCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Building" />
                   <TableColumn fx:id="nodeTypeCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node Type" />
-                  <TableColumn fx:id="shortNameCol" onEditCommit="#changeCellEvent" prefWidth="167.25" text="Short Name" />
-                  <TableColumn fx:id="longNameCol" onEditCommit="#changeCellEvent" prefWidth="206.33333333" text="Long Name" />
+                  <TableColumn fx:id="shortNameCol" onEditCommit="#changeCellEvent" prefWidth="137.25" text="Short Name" />
+                  <TableColumn fx:id="longNameCol" onEditCommit="#changeCellEvent" prefWidth="156.33333333" text="Long Name" />
               </columns>
             </TableView>
          </children>
