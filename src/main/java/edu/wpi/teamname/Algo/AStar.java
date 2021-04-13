@@ -1,9 +1,11 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Stack;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+
 /**
  * <h1>AStar Pathfinding</h1>
  * AStar Pathfinding Algorithm that navigates a map of provided nodes
@@ -150,15 +152,11 @@ public class AStar {
 
     public static void main(String[] args) {
         //TODO make nodeID take click instance/drop-down  menu
-
-
-        ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
         Stopwatch timer = new Stopwatch();
-        Node start = nodes.get(Parser.indexOfNode(nodes, "CCONF001L1"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00ML1"));
+        ArrayList<Node> nodes = Parser.loadNodesandEdges();
+        Node start = nodes.get(Parser.indexOfNode(nodes, "EEXIT00201"));
+        Node goal = nodes.get(Parser.indexOfNode(nodes, "GDEPT00403"));
         AStar example = new AStar(nodes, start, goal);
         System.out.println(timer.elapsedTime());
-
-        //PathFindingDatabaseManager.getInstance().getNodes();
     }
 }
