@@ -20,7 +20,7 @@ public class MapEditor {
     JFXComboBox<String> fromCombo;
 
     public void initialize() {
-        PathFindingDatabaseManager.getNodes().forEach(n -> {
+        PathFindingDatabaseManager.getInstance().getNodes().forEach(n -> {
             toCombo.getItems().add(n.getLongName());
             fromCombo.getItems().add(n.getLongName());
         });
