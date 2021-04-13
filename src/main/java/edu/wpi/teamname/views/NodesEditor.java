@@ -130,7 +130,7 @@ public class NodesEditor {
         nodeTable.getItems().forEach(n -> {
             nodes.add((Node) n);
         });
-        CSVOperator.writeCSV(nodes, loadCSVFileName.getText(), "beans"); // Write nodes to csv
+        CSVOperator.writeNodeCSV(nodes, loadCSVFileName.getText()); // Write nodes to csv
     }
 
     /**

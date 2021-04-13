@@ -27,7 +27,7 @@
                 </HBox>
                 <HBox alignment="TOP_CENTER" maxHeight="75.0" minHeight="50.0" prefHeight="50.0" prefWidth="700.0">
                     <children>
-                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#addNode" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Add">
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#addEdge" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Add">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -38,7 +38,7 @@
                                 <Insets bottom="100.0" right="20.0" />
                             </HBox.margin>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#deleteNode" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Delete">
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#deleteEdge" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Delete">
                             <font>
                                 <Font size="16.0" />
                             </font>

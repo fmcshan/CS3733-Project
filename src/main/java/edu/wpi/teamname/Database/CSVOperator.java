@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Database;
 
+import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -45,13 +46,10 @@ public class CSVOperator {
             nodeBuilder.append(node.getFloor() + ",");
             nodeBuilder.append(node.getBuilding() + ",");
             nodeBuilder.append(node.getNodeType() + ",");
-            nodeBuilder.append(node.getFullName() + ",");
+            nodeBuilder.append(node.getLongName() + ",");
             nodeBuilder.append(node.getShortName() + "\n");
 
-            //for(Node node: node.g)
-
         }
-
 
         try {
             File node = new File(System.getProperty("user.dir") + "\\newNodes.csv");
@@ -61,41 +59,21 @@ public class CSVOperator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
-    public static void writeEdgeCSV(ArrayList<String> edges, String edgeCSVName) {
+    public static void writeEdgeCSV(ArrayList<Edge> edges, String edgeCSVName) {
         StringBuilder edgeBuilder = new StringBuilder();
-        boolean isStart = true;
-        String startTemp = "beans"; //temporarily store the start edge
 
-        edgeBuilder.append("edgeID,startNode,endNode\n");
+        edgeBuilder.append("edgeId,startNode,endNode\n");
 
-        for (String edge : edges) {
-            if (isStart) {
-                startTemp = edge;
-                isStart = false;
-            } else {
-                edgeBuilder.append(startTemp + "_" + edge + ",");
-                edgeBuilder.append(startTemp + ",");
-                edgeBuilder.append(edge + "\n");
-                isStart = true;
-            }
+        for (Edge edge : edges) {
+
+            edgeBuilder.append(edge.getEdgeID() + ",");
+            edgeBuilder.append(edge.getStartNode() + ",");
+            edgeBuilder.append(edge.getEndNode() + "\n");
+
         }
-/*
-        class Edge {
-            String nodeA;
-            String nodeB;
 
-            public Edge(String nodeA, String nodeB) {
-
-                this.nodeA = nodeA;
-                this.nodeB = nodeB;
-                new IntegerStringConverter();
-            }
-        }
-*/
         try {
             File edge = new File(System.getProperty("user.dir") + "\\newEdges.csv");
             try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
