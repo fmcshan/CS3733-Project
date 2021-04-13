@@ -3,6 +3,7 @@ package edu.wpi.teamname.Algo;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -70,6 +71,25 @@ public class AStar {
 
         return finalPath;
     }
+
+    /**
+     * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
+     * @return Stack containing the solution path for algorithm
+     */
+    private Stack<Hashtable<String, Integer>> getXYPath() {
+        Stack<Hashtable<String, Integer>> finalXYPath = new Stack<Hashtable<String, Integer>>(); //Stack containing the final path of our algorithm
+
+
+        Node current = goal;
+        while (current.getParent() != null){
+            finalXYPath.push(current.getCoords());
+            current = current.getParent();
+        }
+        finalXYPath.push(start.getCoords()); //Pushes the starting node on to the stack
+
+        return finalXYPath;
+    }
+
 
     /**
      * <b>*For JUnit Testing*</b> This method returns a list of nodes from start to finish that represents
