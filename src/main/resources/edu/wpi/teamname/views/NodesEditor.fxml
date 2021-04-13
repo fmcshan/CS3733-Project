@@ -33,14 +33,14 @@
          <children>
             <TableView fx:id="nodeTable" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="nodeIDCol" prefWidth="107.25" text="Node ID" />
+                <TableColumn fx:id="nodeIDCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node ID" />
                 <TableColumn prefWidth="94.22222222222" text="X-Coordinate" fx:id="xCoordCol" />
                   <TableColumn fx:id="yCoordCol" prefWidth="94.22222222222" text="Y-Coordinate" />
-                  <TableColumn fx:id="floorCol" prefWidth="54.22222222222" text="Floor" />
-                  <TableColumn fx:id="buildingCol" prefWidth="107.25" text="Building" />
-                  <TableColumn fx:id="nodeTypeCol" prefWidth="107.25" text="Node Type" />
-                  <TableColumn fx:id="shortNameCol" prefWidth="167.25" text="Short Name" />
-                  <TableColumn fx:id="longNameCol" prefWidth="206.33333333" text="Long Name" />
+                  <TableColumn fx:id="floorCol" onEditCommit="#changeCellEvent" prefWidth="54.22222222222" text="Floor" />
+                  <TableColumn fx:id="buildingCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Building" />
+                  <TableColumn fx:id="nodeTypeCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node Type" />
+                  <TableColumn fx:id="shortNameCol" onEditCommit="#changeCellEvent" prefWidth="167.25" text="Short Name" />
+                  <TableColumn fx:id="longNameCol" onEditCommit="#changeCellEvent" prefWidth="206.33333333" text="Long Name" />
               </columns>
             </TableView>
          </children>

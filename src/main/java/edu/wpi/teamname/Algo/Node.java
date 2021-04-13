@@ -1,5 +1,7 @@
 package edu.wpi.teamname.Algo;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.util.Hashtable;
 
 /**
