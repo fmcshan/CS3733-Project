@@ -1,5 +1,7 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -48,7 +50,7 @@ public class AStar {
     public void displayPath(){
         Stack<Node> finalPath = this.getPath(); //
         while (!finalPath.isEmpty())
-            System.out.println(finalPath.pop().getNodeInfo().get("fullName"));
+            System.out.println(finalPath.pop().getNodeInfo().get("longName"));
     }
 
     /**
