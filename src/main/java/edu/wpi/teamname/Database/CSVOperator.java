@@ -97,7 +97,7 @@ public class CSVOperator {
         }
 */
         try {
-            File edges = new File(System.getProperty("user.dir") + "\\newEdges.csv");
+            File edge = new File(System.getProperty("user.dir") + "\\newEdges.csv");
             try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
                 fr.write(edgeBuilder.toString());
             }
