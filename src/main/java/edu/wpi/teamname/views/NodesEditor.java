@@ -28,6 +28,7 @@ public class NodesEditor {
 
  private HashMap<Integer, Node> changes = new HashMap<Integer, Node>();
  private String defaultCSV = "L1Nodes.csv";
+ private Node currentlySelected = null;
 
     public void loadCSVToTable() {
         List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/" + loadCSVFileName.getText());
@@ -91,6 +92,10 @@ public class NodesEditor {
 
         loadCSVFileName.setText(defaultCSV);
         loadCSVToTable();
+
+        nodeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            currentlySelected = (Node) newSelection;
+        });
     }
 
     public void trackChange(TableColumn.CellEditEvent editCell) {
@@ -158,7 +163,19 @@ public class NodesEditor {
     }
 
     public void deleteNode(ActionEvent actionEvent) {
+        if (currentlySelected == null) {return;}
 
+        ArrayList<Node> allNodesData = new ArrayList<Node>();
+        nodeTable.getItems().forEach(n -> {
+            if (n != currentlySelected) {
+                allNodesData.add((Node) n);
+            }
+        });
+        nodeTable.getItems().clear();
+
+        allNodesData.forEach(n -> {
+            nodeTable.getItems().add(n);
+        });
     }
 
     public void addNode(ActionEvent actionEvent) {
