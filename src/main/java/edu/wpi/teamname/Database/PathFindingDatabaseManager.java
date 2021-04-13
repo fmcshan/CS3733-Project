@@ -77,10 +77,9 @@ public class PathFindingDatabaseManager {
                 Node endNode = nodeMap.get(edge.getString("end"));
                 startNode.addEdge(endNode);
                 endNode.addEdge(startNode);
-                System.out.println(startNode.getNodeID());
-                System.out.println(endNode.getNodeID());
             }
         }
+
         return nodesList;
     }
 
