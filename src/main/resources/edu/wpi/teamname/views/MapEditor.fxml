@@ -74,13 +74,16 @@
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
-      <VBox alignment="BOTTOM_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <effect>
-            <DropShadow blurType="GAUSSIAN" color="GREY" />
-         </effect>
+      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
+            <JFXComboBox fx:id="toCombo" focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </JFXComboBox>
+         </children>
       </VBox>
-      <JFXComboBox fx:id="fromCombo" focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="180.0" AnchorPane.rightAnchor="50.0" />
-      <JFXComboBox fx:id="toCombo" focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="110.0" AnchorPane.rightAnchor="50.0" />
       <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0">
          <children>
             <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#returnHome" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Back">
