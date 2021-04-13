@@ -75,7 +75,8 @@ public class PathFindingDatabaseManager {
             if (nodeMap.containsKey(edge.getString("start")) && nodeMap.containsKey(edge.getString("end"))) {
                 Node startNode = nodeMap.get(edge.getString("start"));
                 Node endNode = nodeMap.get(edge.getString("start"));
-                startNode.addEdges(endNode, 1);
+                startNode.addEdge(endNode);
+                //System.out.println(startNode.getEdges());
             }
         }
         return nodesList;
