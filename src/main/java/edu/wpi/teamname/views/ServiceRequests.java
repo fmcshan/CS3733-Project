@@ -54,6 +54,12 @@ public class ServiceRequests {
     }
 
     public void laundryServices(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/LaundryServices.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void patientTransportation(ActionEvent actionEvent) {

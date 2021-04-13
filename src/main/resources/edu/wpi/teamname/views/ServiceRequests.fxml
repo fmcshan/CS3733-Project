@@ -50,7 +50,7 @@
                   <Insets top="10.0" />
                </padding>
             </Separator>
-            <JFXButton buttonType="RAISED" onAction="#foodDelivery" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Food Delivery">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#foodDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Food Delivery">
                <font>
                   <Font size="20.0" />
                </font>
@@ -58,7 +58,7 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#medicineDelivery" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Medicine Delivery">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#medicineDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Medicine Delivery">
                <font>
                   <Font size="20.0" />
                </font>
@@ -66,7 +66,7 @@
                   <Insets top="60.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#laundryServices" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Laundry Services">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#laundryServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Laundry Services">
                <font>
                   <Font size="20.0" />
                </font>
@@ -91,7 +91,7 @@
                   <Insets top="10.0" />
                </padding>
             </Separator>
-            <JFXButton buttonType="RAISED" onAction="#floralDelivery" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Floral Delivery">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#floralDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Floral Delivery">
                <font>
                   <Font size="20.0" />
                </font>
@@ -99,7 +99,7 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#giftDelivery" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Gift Delivery">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#giftDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Gift Delivery">
                <font>
                   <Font size="20.0" />
                </font>
@@ -127,7 +127,7 @@
                   <Insets top="10.0" />
                </padding>
             </Separator>
-            <JFXButton buttonType="RAISED" onAction="#facilitiesMaintenance" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Facilities Maintenance">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#facilitiesMaintenance" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Facilities Maintenance">
                <font>
                   <Font size="20.0" />
                </font>
@@ -135,7 +135,7 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#sanitationServices" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Sanitation Services">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#sanitationServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Sanitation Services">
                <font>
                   <Font size="20.0" />
                </font>
@@ -143,7 +143,7 @@
                   <Insets top="60.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#patientTransportation" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Patient Transportation">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#patientTransportation" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Patient Transportation">
                <font>
                   <Font size="20.0" />
                </font>
@@ -151,7 +151,7 @@
                   <Insets top="60.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onAction="#computerServices" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Computer Services">
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#computerServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Computer Services">
                <font>
                   <Font size="20.0" />
                </font>
