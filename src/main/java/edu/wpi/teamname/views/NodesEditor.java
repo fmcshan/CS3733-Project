@@ -1,7 +1,7 @@
 package edu.wpi.teamname.views;//package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.CSVReader;
+import edu.wpi.teamname.Database.CSVOperator;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,7 +47,7 @@ public class NodesEditor {
         longNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         shortNameCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
-        List<List<String>> allNodesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
+        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
@@ -77,7 +77,7 @@ public class NodesEditor {
                 node.getFloor(),
                 node.getBuilding(),
                 node.getNodeType(),
-                node.getFullName(),
+                node.getLongName(),
                 node.getShortName()
         };
         changes.put(editCell.getTablePosition().getRow(), currentRow);

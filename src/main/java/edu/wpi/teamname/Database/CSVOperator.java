@@ -55,7 +55,7 @@ public class CSVOperator {
         nodeBuilder.append(node.getFloor()+ ",");
         nodeBuilder.append(node.getBuilding()+",");
         nodeBuilder.append(node.getNodeType()+",");
-        nodeBuilder.append(node.getFullName()+",");
+        nodeBuilder.append(node.getLongName()+",");
         nodeBuilder.append(node.getShortName()+"\n");
 
         //for(Node node: node.g)

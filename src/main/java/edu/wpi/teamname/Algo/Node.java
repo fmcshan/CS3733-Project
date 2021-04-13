@@ -1,10 +1,7 @@
 package edu.wpi.teamname.Algo;
 
-import javafx.beans.property.SimpleStringProperty;
-
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * <h1>Node</h1>
@@ -15,7 +12,7 @@ public class Node {
     /**
      * Hashtable of nodes connected to this node
      */
-    private List<Node> edges;
+    private ArrayList<Node> edges;
     /**
      * The Node's ID
      */
@@ -27,40 +24,11 @@ public class Node {
     /**
      * The Node's full name
      */
-    private String fullName;
+    private String longName;
     /**
      * The Node's short name
      */
     private String shortName;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public String getBuilding() {
-        return building;
-    }
-
-    public String getNodeType() {
-        return nodeType;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     /**
      * THe floor the node is located on
      */
@@ -69,35 +37,6 @@ public class Node {
      * The building the node is located in
      */
     private String building;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public String getBuilding() {
-        return building;
-    }
-
-    public String getNodeType() {
-        return nodeType;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     /**
      * The nodeType for the node
      */
@@ -127,6 +66,34 @@ public class Node {
      */
     private double AStarScore;
 
+    public String getLongName() {
+        return longName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     /**
      * Minimal constructor that loads the x, and y coordinates, as well as the edges connected to the constructor
      *
@@ -135,7 +102,7 @@ public class Node {
      * @param y      y value of the node's location
      * @param edges  Hashtable representing node and its associated cost
      */
-    public Node(String nodeID, int x, int y, List<Node> edges) {
+    public Node(String nodeID, int x, int y, ArrayList<Node> edges) {
         //coordinates
         this.x = x;
         this.y = y;
@@ -158,7 +125,7 @@ public class Node {
         this.nodeID = nodeID;
         this.x = x;
         this.y = y;
-        this.edges = new Hashtable<>();
+        this.edges = new ArrayList<Node>();
         this.costSoFar = Double.POSITIVE_INFINITY;
         this.AStarScore = Double.POSITIVE_INFINITY;
     }
@@ -167,7 +134,7 @@ public class Node {
      * Overloaded constructor that loads all of the info from the original constructor
      * as well as other extraneous info related to a node
      * @param nodeID    nodeID for this node
-     * @param fullName the full name of the node
+     * @param longName the full name of the node
      * @param shortName the short name of the node
      * @param floor the floor the node is located on
      * @param building the building the node is located in
@@ -175,18 +142,17 @@ public class Node {
      * @param x         x value of the node's location
      * @param y         y value of the node's location
      */
-    public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String fullName, String shortName) {
+    public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String longName, String shortName) {
         //coordinates
         this.x = x;
         this.y = y;
 
         //edges
-        this.edges = new LinkedList<Node>();
-
+        this.edges = new ArrayList<>();
 
         //nodeInfo
         this.nodeID = nodeID;
-        this.fullName = fullName;
+        this.longName = longName;
         this.shortName = shortName;
         this.floor = floor;
         this.building = building;
@@ -248,7 +214,7 @@ public class Node {
         nodeInfo.put("floor", this.floor);
         nodeInfo.put("building", this.building);
         nodeInfo.put("nodeType", this.nodeType);
-        nodeInfo.put("fullName", this.fullName);
+        nodeInfo.put("longName", this.longName);
         nodeInfo.put("shortName", this.shortName);
 
         return nodeInfo;
@@ -299,11 +265,11 @@ public class Node {
     /**
      * Adds an edge to the current node
      * @param aNode Node used to add an edge from current Node
-     * @param cost Integer representing the cost of the edge
+     *
      */
-    public void addEdges(Node aNode, int cost) {
-        this.edges.put(aNode);
-        aNode.edges.put(this, cost);
+    public void addEdge(Node aNode) {
+        this.edges.add(aNode);
+        aNode.edges.add(this);
     }
 
     /**
@@ -311,7 +277,7 @@ public class Node {
      *
      * @return An ArrayList of nodes connected to this node
      */
-    public Hashtable<Node, Integer> getEdges() {
+    public ArrayList<Node> getEdges() {
         return this.edges;
     }
 
