@@ -91,9 +91,9 @@
                   <TableColumn fx:id="yCoordCol" prefWidth="94.22222222222" text="Y-Coordinate" />
                   <TableColumn fx:id="floorCol" onEditCommit="#changeCellEvent" prefWidth="54.22222222222" text="Floor" />
                   <TableColumn fx:id="buildingCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Building" />
-                  <TableColumn fx:id="nodeTypeCol" onEditCommit="#changeCellEvent" prefWidth="107.25" text="Node Type" />
+                  <TableColumn fx:id="nodeTypeCol" onEditCommit="#changeCellEvent" text="Node Type" />
                   <TableColumn fx:id="shortNameCol" onEditCommit="#changeCellEvent" prefWidth="137.25" text="Short Name" />
-                  <TableColumn fx:id="longNameCol" onEditCommit="#changeCellEvent" prefWidth="156.33333333" text="Long Name" />
+                  <TableColumn fx:id="longNameCol" onEditCommit="#changeCellEvent" prefWidth="163.0" text="Long Name" />
               </columns>
             </TableView>
          </children>

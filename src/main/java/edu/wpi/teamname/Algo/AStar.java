@@ -17,7 +17,7 @@ public class AStar {
     /**
      * The starting node
      */
-    private Node start;
+    private Node start; //i hear you. You cant hear me tho
     /**
      * The ending node
      */
@@ -96,7 +96,7 @@ public class AStar {
             current = openNodes.poll();
 
             //Iterates through the neighbors of each node popped from the Priority Queue
-            for (Node neighbor : current.getEdges().keySet()) {
+            for (Node neighbor : current.getEdges()) {
                 tentativeScore = (current.getCostSoFar() + distance(current, neighbor)); //Sets tentative score to the cost of taking this path to the neighbor
                 if (tentativeScore < neighbor.getCostSoFar()){ //Checks if the current path to neighbor is cheaper than any other we've encountered
                     neighbor.setParent(current);

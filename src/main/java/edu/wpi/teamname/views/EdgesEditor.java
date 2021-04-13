@@ -1,7 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXTreeTableView;
-import edu.wpi.teamname.Database.CSVReader;
+import edu.wpi.teamname.Database.CSVOperator;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;

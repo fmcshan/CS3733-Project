@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;//package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,7 +45,7 @@ public class NodesEditor {
         floorCol.setCellValueFactory(new PropertyValueFactory<>("floor"));
         buildingCol.setCellValueFactory(new PropertyValueFactory<>("building"));
         nodeTypeCol.setCellValueFactory(new PropertyValueFactory<>("nodeType"));
-        longNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        longNameCol.setCellValueFactory(new PropertyValueFactory<>("longName"));
         shortNameCol.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
         List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
@@ -86,6 +87,18 @@ public class NodesEditor {
     public void changeCellEvent(TableColumn.CellEditEvent editCell) {
             trackChange(editCell);
  }
+
+    public void loadCSV(ActionEvent actionEvent) {
+    }
+
+    public void saveCSV(ActionEvent actionEvent) {
+    }
+
+    public void deleteNode(ActionEvent actionEvent) {
+    }
+
+    public void addNode(ActionEvent actionEvent) {
+    }
 }
 
 
