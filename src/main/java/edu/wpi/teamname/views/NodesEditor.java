@@ -2,15 +2,20 @@ package edu.wpi.teamname.views;//package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.App;
 import edu.wpi.teamname.Database.CSVOperator;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -160,5 +165,18 @@ public class NodesEditor {
                 "Long Name",
                 "Short Name"
         )); // Add node to nodeTable
+    }
+
+    public void exitApplication(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    public void returnHome(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

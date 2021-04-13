@@ -2,14 +2,19 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
+import edu.wpi.teamname.App;
 import edu.wpi.teamname.Database.CSVOperator;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -130,5 +135,18 @@ public class EdgesEditor {
                 "Start Node",
                 "End Node"
         )); // Add edge to edgeTable
+    }
+
+    public void returnHome(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void exitApplication(ActionEvent actionEvent) {
+        Platform.exit();
     }
 }

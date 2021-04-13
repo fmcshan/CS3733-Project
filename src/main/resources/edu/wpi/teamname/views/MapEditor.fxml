@@ -8,6 +8,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -74,21 +75,31 @@
          </effect>
       </VBox>
       <VBox alignment="BOTTOM_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <JFXButton style="-fx-background-color: white;" text="Exit">
-               <VBox.margin>
-                  <Insets bottom="15.0" right="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-         </children>
          <effect>
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
       <JFXComboBox fx:id="fromCombo" focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="180.0" AnchorPane.rightAnchor="50.0" />
       <JFXComboBox fx:id="toCombo" focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="110.0" AnchorPane.rightAnchor="50.0" />
+      <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0">
+         <children>
+            <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#returnHome" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Back">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" spread="0.21" />
+               </effect>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#exitApplication" prefWidth="75.0" ripplerFill="#9a3c2b" style="-fx-background-color: TOMATO;" text="Exit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
