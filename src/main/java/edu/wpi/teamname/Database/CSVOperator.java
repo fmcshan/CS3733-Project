@@ -35,7 +35,6 @@ public class CSVOperator {
     public static void writeNodeCSV(ArrayList<Node> nodes, String nodeCSVName) {
         StringBuilder nodeBuilder = new StringBuilder();
 
-
         nodeBuilder.append("nodeId,xcoord,ycoord,level,building,nodetype,type,longname,shortname\n");
 
         for (Node node : nodes) {
@@ -59,10 +58,6 @@ public class CSVOperator {
             try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + nodeCSVName)) {
                 fr.write(nodeBuilder.toString());
             }
-            File edges = new File(System.getProperty("user.dir") + "\\newEdges.csv");
-            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
-                fr.write(edgeBuilder.toString());
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,11 +66,24 @@ public class CSVOperator {
     }
 
     public static void writeEdgeCSV(ArrayList<String> edges, String edgeCSVName) {
-
-
         StringBuilder edgeBuilder = new StringBuilder();
+        boolean isStart = true;
+        String startTemp = "beans"; //temporarily store the start edge
 
+        edgeBuilder.append("edgeID,startNode,endNode\n");
 
+        for (String edge : edges) {
+            if (isStart) {
+                startTemp = edge;
+                isStart = false;
+            } else {
+                edgeBuilder.append(startTemp + "_" + edge + ",");
+                edgeBuilder.append(startTemp + ",");
+                edgeBuilder.append(edge + "\n");
+                isStart = true;
+            }
+        }
+/*
         class Edge {
             String nodeA;
             String nodeB;
@@ -87,8 +95,15 @@ public class CSVOperator {
                 new IntegerStringConverter();
             }
         }
-
-
+*/
+        try {
+            File edges = new File(System.getProperty("user.dir") + "\\newEdges.csv");
+            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
+                fr.write(edgeBuilder.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
