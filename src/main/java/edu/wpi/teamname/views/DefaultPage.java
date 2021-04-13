@@ -24,6 +24,7 @@ public class DefaultPage {
     }
 
     public void edgesEditor(ActionEvent actionEvent) {
+        loadScene("EdgesEditor");
     }
 
     public void nodesEditor(ActionEvent actionEvent) {
