@@ -21,6 +21,7 @@ public class DefaultPage {
     }
 
     public void pathFinding(ActionEvent actionEvent) {
+        loadScene("MapEditor");
     }
 
     public void edgesEditor(ActionEvent actionEvent) {

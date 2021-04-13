@@ -6,8 +6,6 @@ import javafx.scene.control.Label;
 
 public class FoodDelivery extends MasterRequest {
 
-    JFXComboBox<Label> jfxCombo = new JFXComboBox<Label>();
-
     @FXML
     JFXComboBox<String> comboBox;
     public void initialize() {

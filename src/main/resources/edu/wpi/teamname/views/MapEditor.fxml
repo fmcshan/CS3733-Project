@@ -12,25 +12,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditor">
     <children>
-        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="700.0" fitWidth="1000.0">
+            <ImageView fitHeight="700.0" fitWidth="1000.0" preserveRatio="true" VBox.vgrow="ALWAYS">
                <image>
-                  <Image url="@Brigham_and_Women's_Hospital_Cropped.png" />
+                  <Image url="@brighamandwomens.png" />
                </image>
             </ImageView>
          </children>
         </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 25;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
+      <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 25;" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="25.0">
          <children>
             <Label text="Navigation">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets top="20.0" />
                </VBox.margin>
             </Label>
             <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your destination to recieve a path." wrappingWidth="203.1826171875">
@@ -48,7 +48,6 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
                </children>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -60,8 +59,10 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
                   </Label>
-                  <JFXComboBox focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" />
                </children>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -87,5 +88,7 @@
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
+      <JFXComboBox fx:id="fromCombo" focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="180.0" AnchorPane.rightAnchor="50.0" />
+      <JFXComboBox fx:id="toCombo" focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE" AnchorPane.bottomAnchor="110.0" AnchorPane.rightAnchor="50.0" />
     </children>
 </AnchorPane>

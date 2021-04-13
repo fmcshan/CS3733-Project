@@ -188,7 +188,7 @@ public class PathFindingDatabaseManager {
      * @return A json object
      * @throws IOException
      */
-    public JSONObject getRequestJson(String _url) throws IOException {
+    public static JSONObject getRequestJson(String _url) throws IOException {
         URL url = new URL(_url);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -209,7 +209,7 @@ public class PathFindingDatabaseManager {
      * Nodes are handled internally as a json object
      * @return A json array of nodes.
      */
-    private JSONArray getNodesInteral() {
+    private static JSONArray getNodesInteral() {
         ArrayList<List<String>> nodes = new ArrayList<>();
         try {
             JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes?cache=true");
@@ -224,7 +224,7 @@ public class PathFindingDatabaseManager {
      * Edges are handled internally as a json object
      * @return A json array of edges.
      */
-    private JSONArray getEdgesInternal() {
+    private static JSONArray getEdgesInternal() {
         try {
             JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges?cache=true");
             return nodeList.getJSONArray("data");
@@ -238,7 +238,7 @@ public class PathFindingDatabaseManager {
      * Return an arraylist of node classes
      * @return An arraylist of node classes
      */
-    public ArrayList<Node> getNodes() {
+    public static ArrayList<Node> getNodes() {
         JSONArray nodes = getNodesInteral();
         JSONArray edges = getEdgesInternal();
         return parseNodes(nodes, edges);
