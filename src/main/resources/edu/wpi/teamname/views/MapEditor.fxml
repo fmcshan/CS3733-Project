@@ -13,11 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditor">
+<AnchorPane fx:id="anchor" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditor">
     <children>
         <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="700.0" fitWidth="1000.0" preserveRatio="true" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="hospitalMap" preserveRatio="true" VBox.vgrow="ALWAYS">
                <image>
                   <Image url="@brighamandwomens.png" />
                </image>
@@ -74,7 +74,7 @@
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
-      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
          <children>
             <JFXComboBox fx:id="fromCombo" focusColor="WHITE" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
             <JFXComboBox fx:id="toCombo" focusColor="WHITE" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE">
