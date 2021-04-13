@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Node;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,37 +31,26 @@ public class CSVOperator {
         }
         return allElements;
     }
-    public static void writeCSV (ArrayList<Node> nodes, String nodeCSVName, String edgeCSVName)
-    {
- StringBuilder nodeBuilder = new StringBuilder();
- StringBuilder edgeBuilder = new StringBuilder();
 
-   class Edge{
-       String nodeA;
-       String nodeB;
-       public Edge (String nodeA, String nodeB){
+    public static void writeNodeCSV(ArrayList<Node> nodes, String nodeCSVName) {
+        StringBuilder nodeBuilder = new StringBuilder();
 
-           this.nodeA = nodeA;
-           this.nodeB = nodeB;
+        nodeBuilder.append("nodeId,xcoord,ycoord,level,building,nodetype,type,longname,shortname\n");
 
-       }
-   }
-   nodeBuilder.append("nodeId,xcoord,ycoord,level,building,nodetype,type,longname,shortname\n");
+        for (Node node : nodes) {
 
-   for (Node node : nodes){
+            nodeBuilder.append(node.getNodeID() + ",");
+            nodeBuilder.append(node.getX() + ",");
+            nodeBuilder.append(node.getY() + ",");
+            nodeBuilder.append(node.getFloor() + ",");
+            nodeBuilder.append(node.getBuilding() + ",");
+            nodeBuilder.append(node.getNodeType() + ",");
+            nodeBuilder.append(node.getFullName() + ",");
+            nodeBuilder.append(node.getShortName() + "\n");
 
-        nodeBuilder.append(node.getNodeID()+ ",");
-        nodeBuilder.append(node.getX()+ ",");
-        nodeBuilder.append(node.getY()+ ",");
-        nodeBuilder.append(node.getFloor()+ ",");
-        nodeBuilder.append(node.getBuilding()+",");
-        nodeBuilder.append(node.getNodeType()+",");
-        nodeBuilder.append(node.getLongName()+",");
-        nodeBuilder.append(node.getShortName()+"\n");
+            //for(Node node: node.g)
 
-        //for(Node node: node.g)
-
-   }
+        }
 
 
         try {
@@ -68,14 +58,52 @@ public class CSVOperator {
             try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + nodeCSVName)) {
                 fr.write(nodeBuilder.toString());
             }
-            File edges = new File(System.getProperty("user.dir") + "\\newEdges.csv");
-            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" +edgeCSVName)) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void writeEdgeCSV(ArrayList<String> edges, String edgeCSVName) {
+        StringBuilder edgeBuilder = new StringBuilder();
+        boolean isStart = true;
+        String startTemp = "beans"; //temporarily store the start edge
+
+        edgeBuilder.append("edgeID,startNode,endNode\n");
+
+        for (String edge : edges) {
+            if (isStart) {
+                startTemp = edge;
+                isStart = false;
+            } else {
+                edgeBuilder.append(startTemp + "_" + edge + ",");
+                edgeBuilder.append(startTemp + ",");
+                edgeBuilder.append(edge + "\n");
+                isStart = true;
+            }
+        }
+/*
+        class Edge {
+            String nodeA;
+            String nodeB;
+
+            public Edge(String nodeA, String nodeB) {
+
+                this.nodeA = nodeA;
+                this.nodeB = nodeB;
+                new IntegerStringConverter();
+            }
+        }
+*/
+        try {
+            File edge = new File(System.getProperty("user.dir") + "\\newEdges.csv");
+            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
                 fr.write(edgeBuilder.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 }
