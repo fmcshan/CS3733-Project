@@ -67,6 +67,13 @@ public class ServiceRequests {
     }
 
     public void facilitiesMaintenance(ActionEvent actionEvent) {
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/FacilitiesMaintenance.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void computerServices(ActionEvent actionEvent) {
