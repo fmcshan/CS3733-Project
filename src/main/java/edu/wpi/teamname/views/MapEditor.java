@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
@@ -9,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -16,14 +19,21 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Observable;
 
 
 public class MapEditor {
+
+    @FXML
+    private Path tonysPath;
     @FXML
     private AnchorPane anchor;
     @FXML
@@ -33,10 +43,70 @@ public class MapEditor {
     @FXML
     private ImageView hospitalMap;
 
+    ArrayList<Node> listOfNodes = new ArrayList<>();
+    HashMap<String, Node> nodesMap = new HashMap<>();
+    ArrayList<Node> currentPath = new ArrayList<>();
+
     public void initialize() {
-        PathFindingDatabaseManager.getInstance().getNodes().forEach(n -> {
-            toCombo.getItems().add(n.getLongName());
-            fromCombo.getItems().add(n.getLongName());
+
+        tonysPath.getElements().clear();
+
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() >= 0) {
+                drawPath(currentPath);
+            }
+        });
+
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() >= 0) {
+                drawPath(currentPath);
+            }
+        });
+
+//        Callback<ListView<Node>, ListCell<Node>> cellFactory = new Callback<ListView<Node>, ListCell<Node>>() {
+//
+//            @Override
+//            public ListCell<Node> call(ListView<Node> l) {
+//                return new ListCell<Node>() {
+//
+//                    @Override
+//                    protected void updateItem(Node item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (item == null || empty) {
+//                            setGraphic(null);
+//                        } else {
+//                            setText(item.getLongName());
+//                        }
+//                    }
+//                };
+//            }
+//        };
+//
+//        fromCombo.setConverter(new StringConverter<String>() {
+//            @Override
+//            public String toString(Node node) {
+//                if (node == null){
+//                    return null;
+//                } else {
+//                    return node.getLongName();
+//                }
+//            }
+//
+//            @Override
+//            public Node fromString(String string) {
+//                return null;
+//            }
+//        });
+//
+//        fromCombo.setButtonCell(cellFactory.call(null));
+//        fromCombo.setCellFactory(cellFactory);
+
+        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+
+        listOfNodes.forEach(n -> {
+            nodesMap.put(n.getNodeID(), n);
+            toCombo.getItems().add(n.getNodeID());
+            fromCombo.getItems().add(n.getNodeID());
         });
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
@@ -44,20 +114,26 @@ public class MapEditor {
     }
 
     public void drawPath(ArrayList<Node> listOfNodes) {
-        double mapWidth = hospitalMap.getFitWidth();
-        double mapHeight = hospitalMap.getFitHeight();
-        int fileWidth = 996;
-        int fileHeight = 676;
-        double fileFxWidthRatio = fileWidth / mapWidth;
-        double fileFxHeightRatio = fileHeight / mapHeight;
-        Node firstNode = listOfNodes.remove(0);
+        if (listOfNodes.size() < 1) {
+            return;
+        }
+        currentPath = listOfNodes;
+        tonysPath.getElements().clear();
+        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        double fileWidth = hospitalMap.getImage().getWidth();
+        double fileHeight = hospitalMap.getImage().getHeight();
+        double fileFxWidthRatio = mapWidth / fileWidth;
+        double fileFxHeightRatio = mapHeight / fileHeight;
+        Node firstNode = listOfNodes.get(0);
         MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
         Collection<LineTo> collection = new ArrayList<>();
-
+        tonysPath.getElements().add(start);
+        System.out.println(fileFxWidthRatio);
         listOfNodes.forEach(n -> {
-            collection.add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
+            tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
         });
-        Path path = new Path(start, (PathElement) collection);
+        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
         path.setFill(Color.TOMATO);
         path.setStrokeWidth(4);
     }
@@ -73,5 +149,19 @@ public class MapEditor {
 
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
+    }
+
+    public void calcPath(ActionEvent actionEvent) {
+        if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
+            return;
+        }
+        if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
+            return;
+        }
+        Node startNode = nodesMap.get(fromCombo.getValue());
+        Node endNode = nodesMap.get(toCombo.getValue());
+        AStar AStar = new AStar(listOfNodes, startNode, endNode);
+        ArrayList<Node> path = AStar.returnPath();
+        drawPath(path);
     }
 }
