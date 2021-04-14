@@ -131,7 +131,7 @@
                   <Insets left="75.0" top="15.0" />
                </VBox.margin>
             </Label>
-            <JFXTextArea focusColor="WHITE" prefHeight="75.0" promptText="Reason" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
+            <JFXTextArea focusColor="WHITE" prefHeight="50.0" promptText="Reason" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
                <VBox.margin>
                   <Insets left="125.0" right="250.0" top="10.0" />
                </VBox.margin>
@@ -144,7 +144,7 @@
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="75.0" top="10.0" />
+                  <Insets left="75.0" top="15.0" />
                </VBox.margin>
             </Label>
             <JFXTextField focusColor="WHITE" maxWidth="125.0" promptText="Employee ID" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
@@ -152,7 +152,7 @@
                   <Font size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets left="125.0" top="15.0" />
+                  <Insets left="125.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
             </children>
