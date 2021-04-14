@@ -156,6 +156,12 @@ public class AStar {
         double flatDistance = Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
         String afloor = a.getNodeInfo().get("floor");
         String bfloor = b.getNodeInfo().get("floor");
+        if (afloor.equals("G")) {
+            afloor = "0";
+        }
+        if (bfloor.equals("G")) {
+            bfloor = "0";
+        }
         if (afloor.equals("L1")||afloor.equals("L2"))
             if (afloor.equals("L1"))
                 afloor = "0";
