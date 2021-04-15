@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.EdgesEditor">
+    <children>
+        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0">
+                    <children>
+                        <Label text="Edge Editor" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="30.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="TOP_CENTER" maxHeight="75.0" minHeight="50.0" prefHeight="50.0" prefWidth="700.0">
+                    <children>
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#addEdge" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Add">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets bottom="100.0" right="20.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#deleteEdge" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Delete">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets bottom="100.0" right="20.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#saveCSV" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Save">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets bottom="100.0" right="20.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#loadCSV" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Load">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" spread="0.21" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets bottom="100.0" right="20.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXTextField fx:id="loadCSVFileName" focusColor="WHITE" promptText="File Name" style="-fx-prompt-text-fill: #808080; -fx-text-inner-color: white;" unFocusColor="WHITE">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </JFXTextField>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
+            <children>
+                <TableView fx:id="edgeTable" editable="true" prefHeight="200.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="edgeIDCol" onEditCommit="#changeCellEvent" prefWidth="312.6666666666" text="Edge ID" />
+                        <TableColumn fx:id="startNodeCol" onEditCommit="#changeCellEvent" prefWidth="312.6666666666" text="Start Node" />
+                        <TableColumn fx:id="endNodeCol" onEditCommit="#changeCellEvent" prefWidth="312.6666666666" text="End Node" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#returnHome" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Back">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" spread="0.21" />
+               </effect>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#exitApplication" prefWidth="75.0" ripplerFill="#9a3c2b" style="-fx-background-color: TOMATO;" text="Exit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+    </children>
+</AnchorPane>

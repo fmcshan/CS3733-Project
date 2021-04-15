@@ -3,6 +3,7 @@ package edu.wpi.teamname.Algo;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -72,6 +73,25 @@ public class AStar {
     }
 
     /**
+     * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
+     * @return Stack containing the solution path for algorithm
+     */
+    private Stack<Hashtable<String, Integer>> getXYPath() {
+        Stack<Hashtable<String, Integer>> finalXYPath = new Stack<Hashtable<String, Integer>>(); //Stack containing the final path of our algorithm
+
+
+        Node current = goal;
+        while (current.getParent() != null){
+            finalXYPath.push(current.getCoords());
+            current = current.getParent();
+        }
+        finalXYPath.push(start.getCoords()); //Pushes the starting node on to the stack
+
+        return finalXYPath;
+    }
+
+
+    /**
      * <b>*For JUnit Testing*</b> This method returns a list of nodes from start to finish that represents
      * the path of the AStar algorithm
      * @return a List of nodes representing the path of the algorithm
@@ -136,6 +156,12 @@ public class AStar {
         double flatDistance = Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
         String afloor = a.getNodeInfo().get("floor");
         String bfloor = b.getNodeInfo().get("floor");
+        if (afloor.equals("G")) {
+            afloor = "0";
+        }
+        if (bfloor.equals("G")) {
+            bfloor = "0";
+        }
         if (afloor.equals("L1")||afloor.equals("L2"))
             if (afloor.equals("L1"))
                 afloor = "0";

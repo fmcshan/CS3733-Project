@@ -110,7 +110,7 @@ public class PathFindingDatabaseManager {
      * Read the provided CSV and insert nodes into the database
      */
     private void insertNodesIntoDatabase() {
-        List<List<String>> allNodesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
+        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
@@ -151,7 +151,7 @@ public class PathFindingDatabaseManager {
      * Read the provided CSV and insert edges into the database
      */
     public void insertEdgesIntoDatabase() {
-        List<List<String>> allEdgesData = CSVReader.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
+        List<List<String>> allEdgesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);

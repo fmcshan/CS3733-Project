@@ -66,6 +66,34 @@ public class Node {
      */
     private double AStarScore;
 
+    public String getLongName() {
+        return longName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     /**
      * Minimal constructor that loads the x, and y coordinates, as well as the edges connected to the constructor
      *

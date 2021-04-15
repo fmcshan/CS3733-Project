@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ServiceRequests">
+   <children>
+      <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Brigham and Women's Hospital Request Forms" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="525.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="675.0" AnchorPane.topAnchor="125.0">
+         <children>
+            <Label text="For Patients:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Separator maxWidth="200.0" opacity="0.4" prefWidth="200.0">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Separator>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#foodDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Food Delivery">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#medicineDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Medicine Delivery">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#laundryServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Laundry Services">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="125.0">
+         <children>
+            <Label text="For Visitors:" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <Separator maxWidth="200.0" opacity="0.4" prefWidth="200.0">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Separator>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#floralDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Floral Delivery">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#giftDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Gift Delivery">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="675.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
+         <children>
+            <Label text="For Staff:" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets top="25.0" />
+               </padding>
+            </Label>
+            <Separator maxWidth="200.0" opacity="0.4" prefWidth="200.0">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Separator>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#facilitiesMaintenance" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Facilities Maintenance">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#sanitationServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Sanitation Services">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#patientTransportation" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Patient Transportation">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#computerServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Computer Services">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXButton buttonType="RAISED" maxWidth="75.0" onAction="#returnHome" prefWidth="75.0" ripplerFill="#8d8d8d" style="-fx-background-color: white;" text="Back">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" spread="0.21" />
+               </effect>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#exitApplication" prefWidth="75.0" ripplerFill="#9a3c2b" style="-fx-background-color: TOMATO;" text="Exit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
