@@ -4,12 +4,14 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
@@ -37,9 +39,9 @@ public class MapEditor {
     @FXML
     private AnchorPane anchor;
     @FXML
-    private JFXComboBox<String> toCombo;
+    private ComboBox<String> toCombo;
     @FXML
-    private JFXComboBox<String> fromCombo;
+    private ComboBox<String> fromCombo;
     @FXML
     private ImageView hospitalMap;
 
@@ -52,13 +54,13 @@ public class MapEditor {
         tonysPath.getElements().clear();
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() >= 0) {
+            if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
         });
 
         anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() >= 0) {
+            if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
         });
@@ -113,11 +115,11 @@ public class MapEditor {
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
     }
 
-    public void drawPath(ArrayList<Node> listOfNodes) {
-        if (listOfNodes.size() < 1) {
+    public void drawPath(ArrayList<Node> _listOfNodes) {
+        if (_listOfNodes.size() < 1) {
             return;
         }
-        currentPath = listOfNodes;
+        currentPath = _listOfNodes;
         tonysPath.getElements().clear();
         double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
         double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
@@ -125,17 +127,17 @@ public class MapEditor {
         double fileHeight = hospitalMap.getImage().getHeight();
         double fileFxWidthRatio = mapWidth / fileWidth;
         double fileFxHeightRatio = mapHeight / fileHeight;
-        Node firstNode = listOfNodes.get(0);
+        Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
-        Collection<LineTo> collection = new ArrayList<>();
+//        Collection<LineTo> collection = new ArrayList<>();
         tonysPath.getElements().add(start);
         System.out.println(fileFxWidthRatio);
-        listOfNodes.forEach(n -> {
+        _listOfNodes.forEach(n -> {
             tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
         });
-        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
-        path.setFill(Color.TOMATO);
-        path.setStrokeWidth(4);
+//        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
+//        path.setFill(Color.TOMATO);
+//        path.setStrokeWidth(4);
     }
 
     public void returnHome(ActionEvent actionEvent) {

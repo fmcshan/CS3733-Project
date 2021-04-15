@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -77,14 +77,13 @@
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
-      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
+      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
          <children>
-            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
-            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE">
+            <ComboBox fx:id="fromCombo" onAction="#calcPath" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6;">
                <VBox.margin>
-                  <Insets top="25.0" />
-               </VBox.margin>
-            </JFXComboBox>
+                  <Insets bottom="30.0" />
+               </VBox.margin></ComboBox>
+            <ComboBox fx:id="toCombo" onAction="#calcPath" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd;" />
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0">
