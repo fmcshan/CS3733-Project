@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,7 +21,7 @@ public class MapEditor {
     JFXComboBox<String> fromCombo;
 
     public void initialize() {
-        PathFindingDatabaseManager.getInstance().getNodes().forEach(n -> {
+        DatabaseThread.getInstance().getNodes().forEach(n -> {
             toCombo.getItems().add(n.getLongName());
             fromCombo.getItems().add(n.getLongName());
         });
