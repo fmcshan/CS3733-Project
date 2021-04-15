@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -17,8 +17,8 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchor" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditor">
-    <children>
-        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <children>
+      <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fx:id="hospitalMap" preserveRatio="true" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
                <image>
@@ -26,7 +26,7 @@
                </image>
             </ImageView>
          </children>
-        </VBox>
+      </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 25;" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="25.0">
          <children>
             <Label text="Navigation">
@@ -77,14 +77,13 @@
             <DropShadow blurType="GAUSSIAN" color="GREY" />
          </effect>
       </VBox>
-      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
+      <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
          <children>
-            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 20;" unFocusColor="WHITE" />
-            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 20;" unFocusColor="WHITE">
+            <ComboBox fx:id="fromCombo" onAction="#calcPath" prefWidth="200.0" promptText="Current Location" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6;">
                <VBox.margin>
-                  <Insets top="25.0" />
-               </VBox.margin>
-            </JFXComboBox>
+                  <Insets bottom="30.0" />
+               </VBox.margin></ComboBox>
+            <ComboBox fx:id="toCombo" onAction="#calcPath" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd;" />
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="75.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0">
@@ -108,12 +107,12 @@
          </children>
       </HBox>
       <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
-          <elements>
-              <MoveTo x="5000.0" y="2500.0" />
-              <LineTo x="1000.0" y="1000.0" />
-              <LineTo x="500.0" y="500.0" />
+         <elements>
+            <MoveTo x="5000.0" y="2500.0" />
+            <LineTo x="1000.0" y="1000.0" />
+            <LineTo x="500.0" y="500.0" />
             <LineTo />
-          </elements>
+         </elements>
       </Path>
-    </children>
+   </children>
 </AnchorPane>
