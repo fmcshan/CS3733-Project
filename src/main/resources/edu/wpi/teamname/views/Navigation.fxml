@@ -2,8 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -103,13 +103,13 @@
                         </FontAwesomeIconView>
                      </children>
                      <padding>
-                        <Insets left="5.0" right="12.0" />
+                        <Insets left="6.0" right="15.0" />
                      </padding>
                   </VBox>
                </graphic>
             </JFXButton>
          </children></VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="1175.0" AnchorPane.topAnchor="35.0">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="425.0" AnchorPane.rightAnchor="1185.0" AnchorPane.topAnchor="45.0">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
@@ -119,26 +119,26 @@
                   <Font name="System Bold" size="48.0" />
                </font>
                <VBox.margin>
-                  <Insets right="25.0" top="25.0" />
+                  <Insets right="50.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your destination to recieve a path." wrappingWidth="248.51593017578125">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and your destination to recieve a path." wrappingWidth="314.51593017578125">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets left="20.0" />
                </VBox.margin>
             </Text>
             <Label text="From" textFill="#868686">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets right="225.0" top="60.0" />
+                  <Insets right="275.0" top="50.0" />
                </VBox.margin>
             </Label>
-            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="260.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -148,13 +148,13 @@
             </JFXComboBox>
             <Label text="To" textFill="#868686">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets right="240.0" top="20.0" />
+                  <Insets right="285.0" top="25.0" />
                </VBox.margin>
             </Label>
-            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="260.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                <padding>
                   <Insets left="10.0" />
                </padding>
