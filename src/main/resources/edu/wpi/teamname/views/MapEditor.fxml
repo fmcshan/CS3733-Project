@@ -22,7 +22,7 @@
          <children>
             <ImageView fx:id="hospitalMap" preserveRatio="true" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
                <image>
-                  <Image url="@brighamandwomens.png" />
+                  <Image url="@../images/brighamandwomens.png" />
                </image>
             </ImageView>
          </children>
