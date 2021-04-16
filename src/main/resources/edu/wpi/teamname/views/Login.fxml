@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -214,7 +217,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Navigation">
+            <Label text="Login">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
@@ -222,7 +225,7 @@
                   <Insets left="25.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to recieve a path." wrappingWidth="315.0">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your admin credentials." wrappingWidth="315.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -230,38 +233,47 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </Text>
-            <Label text="From" textFill="#868686">
+            <JFXTextField focusColor="WHITE" prefHeight="50.0" prefWidth="300.0" promptText="Username" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="WHITE">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" top="50.0" />
+               </VBox.margin>
                <font>
-                  <Font size="16.0" />
+                  <Font size="24.0" />
                </font>
+            </JFXTextField>
+            <JFXPasswordField focusColor="WHITE" promptText="Password" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="WHITE">
                <VBox.margin>
-                  <Insets left="25.0" right="275.0" top="50.0" />
+                  <Insets left="25.0" right="25.0" top="25.0" />
                </VBox.margin>
-            </Label>
-            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets left="25.0" top="5.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <Label text="To" textFill="#868686">
                <font>
-                  <Font size="16.0" />
+                  <Font size="24.0" />
                </font>
+            </JFXPasswordField>
+            <HBox alignment="CENTER">
                <VBox.margin>
-                  <Insets left="25.0" right="285.0" top="25.0" />
+                  <Insets top="600.0" />
                </VBox.margin>
-            </Label>
-            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets left="25.0" top="5.0" />
-               </VBox.margin>
-            </JFXComboBox>
+               <children>
+                  <JFXButton alignment="CENTER" prefWidth="275.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Login" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" top="8.0" />
+                     </padding>
+                     <effect>
+                        <DropShadow>
+                           <input>
+                              <InnerShadow />
+                           </input>
+                        </DropShadow>
+                     </effect>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

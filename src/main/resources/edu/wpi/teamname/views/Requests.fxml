@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Navigation">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Requests">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -214,7 +214,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Navigation">
+            <Label text="Requests">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
@@ -222,7 +222,7 @@
                   <Insets left="25.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to recieve a path." wrappingWidth="315.0">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select which type of request you would like to make." wrappingWidth="315.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -230,7 +230,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </Text>
-            <Label text="From" textFill="#868686">
+            <Label text="Type" textFill="#868686">
                <font>
                   <Font size="16.0" />
                </font>
@@ -238,23 +238,7 @@
                   <Insets left="25.0" right="275.0" top="50.0" />
                </VBox.margin>
             </Label>
-            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets left="25.0" top="5.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <Label text="To" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="285.0" top="25.0" />
-               </VBox.margin>
-            </Label>
-            <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+            <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Request" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                <padding>
                   <Insets left="10.0" />
                </padding>
