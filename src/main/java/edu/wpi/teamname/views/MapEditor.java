@@ -199,7 +199,6 @@
 //
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
@@ -211,21 +210,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Observable;
 
 
 public class MapEditor {
@@ -233,7 +225,8 @@ public class MapEditor {
     @FXML
     private Path tonysPath;
     @FXML
-    private AnchorPane anchor;
+    private AnchorPane anchor,topElements;
+
     @FXML
     private ComboBox<String> toCombo;
     @FXML
@@ -245,11 +238,15 @@ public class MapEditor {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<Node> currentPath = new ArrayList<>();
     double mapWidth;
-        double mapHeight;
+    double mapHeight;
     double fileWidth;
     double fileHeight;
     double fileFxWidthRatio;
     double fileFxHeightRatio;
+    Node startNode;
+    Node endNode;
+
+    @FXML
     public void initialize() {
 
         tonysPath.getElements().clear();
@@ -277,6 +274,8 @@ public class MapEditor {
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
+        rezisingInfo();
+        displayNodes();
     }
 public void rezisingInfo(){
      mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
@@ -291,7 +290,7 @@ public void rezisingInfo(){
             return;
         }
         rezisingInfo();
-        displayNodes ();
+       displayNodes ();
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
 
@@ -320,17 +319,43 @@ public void rezisingInfo(){
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
     }
+public void getAndDrawPathWithCombos(){
+    if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
+        return;
+    }
+    if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
+        return;}
+    startAndEndNodes(nodesMap.get(fromCombo.getValue()));
+    startAndEndNodes(nodesMap.get(toCombo.getValue()));
+    //calcAndDrawPath(nodesMap.get(fromCombo.getValue()),nodesMap.get(toCombo.getValue()));
+}
+    public void startAndEndNodes(Node node){
+        if(startNode == null ){
+            startNode = node;
+            if(endNode!=null){
+                calcAndDrawPath();
+            }
+            return;
+        }
+        if(startNode != null && endNode ==null){
+            endNode = node;
 
-    public void calcPath(ActionEvent actionEvent) {
-        if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
-            return;
+            calcAndDrawPath();
+
+            startNode=null;
+            endNode= null;
+
         }
-        if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
-            return;
-        }
-        Node startNode = nodesMap.get(fromCombo.getValue());
-        Node endNode = nodesMap.get(toCombo.getValue());
+
+
+    }
+    public void calcAndDrawPath() {
+
+
         AStar AStar = new AStar(listOfNodes, startNode, endNode);
+        System.out.println("startNode: "+startNode.getLongName() + " nodeID: "+ startNode.getNodeID());
+        System.out.println("endNode :"+ endNode.getLongName()+ " nodeID: "+ endNode.getNodeID());
+
         ArrayList<Node> path = AStar.returnPath();
         drawPath(path);
     }
@@ -338,23 +363,37 @@ public void rezisingInfo(){
     public void displayNodes () {
         ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
         HashMap<String, Node> map = new HashMap();
+
+        rezisingInfo();
         for (Node n : nodes) {
             map.put(n.getNodeID(), n);
-            System.out.println(n.getNodeType());
+         //   System.out.println(n.getNodeType());
             Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 5);
+            circle = (Circle) clickNode(circle,n);
             circle.setFill(Color.OLIVE);
-            anchor.getChildren().add(circle);
-            System.out.println("ADDED");
+            topElements.getChildren().add(circle);
+         //   System.out.println("ADDED");
         }
 
         for (Node n : nodes) {
 
-            for(Node e :n.getEdges()){
-                if(map.containsKey(e.getNodeID())){
-                    Line edge = LineBuilder.create().startX(n.getX()*fileFxWidthRatio).startY(n.getY()*fileFxHeightRatio).endX(e.getX()*fileFxWidthRatio).endY(e.getY()*fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
-                    anchor.getChildren().add(edge);
+            for (Node e : n.getEdges()) {
+                if (map.containsKey(e.getNodeID())) {
+                    Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(e.getX() * fileFxWidthRatio).endY(e.getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
+                    topElements.getChildren().add(edge);
                 }
             }
         }
+    }
+
+    protected javafx.scene.Node clickNode(javafx.scene.Node circle, Node node) {
+        circle.setOnMouseClicked(
+                t -> {
+                    circle.setStyle("-fx-cursor: hand");
+                    startAndEndNodes((node));
+
+                });
+        circle.setStyle("-fx-cursor: hand");
+        return circle;
     }
 }
