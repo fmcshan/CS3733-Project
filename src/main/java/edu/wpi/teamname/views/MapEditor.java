@@ -49,6 +49,10 @@ public class MapEditor {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<Node> currentPath = new ArrayList<>();
 
+    public ImageView getHospitalMap(){
+        return this.hospitalMap;
+    }
+
     public void initialize() {
 
         tonysPath.getElements().clear();
