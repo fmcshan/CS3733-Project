@@ -8,29 +8,30 @@ import javafx.scene.layout.HBox;
 
 public class ZoomPan {
 
-    public static void getHospitalMap(ImageView map){
-        double width = map.getFitWidth(); //get the width associated with the width
-        double height = map.getFitHeight(); //get the height associated with the height
-
-        map.setPreserveRatio(false); //make sure that the image (the map) is bound to its original image dimensions (aka the aspect ratio)
+    public static void getHospitalMap(ImageView hospitalMap){
+        double width = hospitalMap.getFitWidth(); //get the width associated with the width
+        double height = hospitalMap.getFitHeight(); //get the height associated with the height
+        hospitalMap.setPreserveRatio(false); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
 
         ObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
-        map.setOnMousePressed(mouseEvent -> {
-            Point2D pointOfMouseClick = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+        hospitalMap.setOnMousePressed(mouseEvent -> {
+            Point2D pointOfMouseClick = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             mouseClickDown.set(pointOfMouseClick);
         });
 
-        map.setOnMouseDragged(mouseEvent -> {
-            Point2D pointToDragFrom = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+        hospitalMap.setOnMouseDragged(mouseEvent -> {
+            Point2D pointToDragFrom = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
-            shiftedImage(map, valueOfShift);
-            mouseClickDown.set(viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
+            System.out.println("Origin Point: " + pointToDragFrom);
+            System.out.println("Value Of Shift: " +valueOfShift);
+            shiftedImage(hospitalMap, valueOfShift);
+            mouseClickDown.set(viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
 
-        map.setOnScroll(mouseEvent ->  {
+        hospitalMap.setOnScroll(mouseEvent ->  {
             double getDifference = mouseEvent.getDeltaY();
-            Rectangle2D viewportOfImage = map.getViewport();
+            Rectangle2D viewportOfImage = hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);
             double minPixels = 10;
@@ -45,7 +46,7 @@ public class ZoomPan {
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
 
-            Point2D mouseCursorLocationOnMap = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D mouseCursorLocationOnMap = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
 
             double scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
             double scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
@@ -60,13 +61,16 @@ public class ZoomPan {
             double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
 
             Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
-            map.setViewport(newViewPort);
+
+            System.out.println("Mouse Cursor Location For Zoom: " + mouseCursorLocationOnMap);
+            System.out.println("Value of Scoll: " + getDifference);
+            hospitalMap.setViewport(newViewPort);
         });
 
 
-        map.setOnMouseClicked(mouseEvent -> {
+        hospitalMap.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2){
-                reset(map, width, height);
+                reset(hospitalMap, width, height);
             }
         });
     }
