@@ -1,20 +1,8 @@
 package edu.wpi.teamname.Authentication;
 
-import edu.wpi.teamname.Python.Requests;
-import edu.wpi.teamname.Python.Response;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import edu.wpi.teamname.simplify.Requests;
+import edu.wpi.teamname.simplify.Response;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AuthenticationManager {
     private static final AuthenticationManager instance = new AuthenticationManager();
@@ -37,6 +25,7 @@ public class AuthenticationManager {
         data.put("password", _password);
         data.put("returnSecureToken", "true");
 
+        // Authentication endpoint
         Response res = Requests.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDmVqldcnj6B21Ah339Zj_aJgC7p5Jq1zE", data);
 
         JSONObject payload = res.json();

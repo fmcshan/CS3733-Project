@@ -1,4 +1,4 @@
-package edu.wpi.teamname.Python;
+package edu.wpi.teamname.simplify;
 
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import org.apache.http.HttpHeaders;
@@ -13,10 +13,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Requests {
