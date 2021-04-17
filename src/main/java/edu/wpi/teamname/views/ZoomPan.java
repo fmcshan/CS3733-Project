@@ -6,7 +6,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class Zoom {
+public class ZoomPan {
 
     public static void getHospitalMap(ImageView map){
         double width = map.getFitWidth(); //get the width associated with the width
