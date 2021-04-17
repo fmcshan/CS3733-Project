@@ -1,19 +1,10 @@
 package edu.wpi.teamname.views;
-import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class Zoom {
 
@@ -26,22 +17,66 @@ public class Zoom {
         ObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
         map.setOnMousePressed(mouseEvent -> {
-            Point2D pointOfMouseClick = viewportToImage(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D pointOfMouseClick = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             mouseClickDown.set(pointOfMouseClick);
         });
 
         map.setOnMouseDragged(mouseEvent -> {
-            Point2D pointToDragFrom = viewportToImage(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D pointToDragFrom = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
             shiftedImage(map, valueOfShift);
-            mouseClickDown.set(viewportToImage(map, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
+            mouseClickDown.set(viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
+        });
+
+        map.setOnScroll(mouseEvent ->  {
+            double getDifference = mouseEvent.getDeltaY();
+            Rectangle2D viewportOfImage = map.getViewport();
+
+            double scaleDifference = Math.pow(1.01, getDifference);
+            double minPixels = 10;
+
+            double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
+            double lowestBoundaryHeight = minPixels / viewportOfImage.getHeight();
+            double minimumZoomScale = Math.min(lowestBoundaryWidth, lowestBoundaryHeight);
+
+            double highestBoundaryWidth = width / viewportOfImage.getWidth();
+            double highestBoundaryHeight = height / viewportOfImage.getHeight();
+            double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
+
+            double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
+
+            Point2D mouseCursorLocationOnMap = viewportToImageView(map, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+
+            double scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
+            double scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
+
+            double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
+            double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
+
+            double widthDifferenceBetweenScaledAndNormal = width - scaledWidth;
+            double heightDifferenceBetweenScaledAndNormal = height - scaledHeight;
+
+            double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
+            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
+
+            Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
+            map.setViewport(newViewPort);
         });
 
 
-
+        map.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2){
+                reset(map, width, height);
+            }
+        });
     }
 
-    public static Point2D viewportToImage(ImageView inputMap, Point2D mapCoordinates) {
+    private static void reset(ImageView map, double width, double height) {
+        Rectangle2D newViewPort = new Rectangle2D(0, 0, width, height);
+        map.setViewport(newViewPort);
+    }
+
+    public static Point2D viewportToImageView(ImageView inputMap, Point2D mapCoordinates) {
         Bounds bounds = inputMap.getBoundsInLocal();
         double xProportion = mapCoordinates.getX() / bounds.getWidth();
         double yProportion =mapCoordinates.getY() / bounds.getHeight();
@@ -50,26 +85,8 @@ public class Zoom {
         return new Point2D(viewport.getMinX() + xProportion * viewport.getWidth(), viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
-    private static double calculateEnsureRange(double value, double min, double max) {
-        return Math.min(Math.max(value, min), max);
-    }
-
-    private static boolean inRange(double value, double min, double max) {
-        return (value>= min) && (value<= max);
-    }
-
     private static double ensureRange(double value, double min, double max) {
-        boolean isInRange = inRange(value, min, max);
-        double returnVal = -1.0;
-
-        if (isInRange){
-            returnVal = calculateEnsureRange(value, min, max);
-        } else {
-            system.out.println("You messed up");
-            returnVal = calculateEnsureRange(value, min, max);
-        }
-
-        return returnVal;
+        return Math.min(Math.max(value, min), max);
     }
 
     public static void shiftedImage(ImageView inputMap, Point2D changeInShift) {
@@ -91,7 +108,8 @@ public class Zoom {
         double viewportMinWidth = ensureRange(viewportMinXCoord - changeInX, 0, viewportMaxWidth);
         double viewportMinHeight = ensureRange(viewportMinYCoord - changeInY, 0, viewportMaxHeight);
 
-        inputMap.setViewport(new Rectange2D());
+        inputMap.setViewport(new Rectangle2D(viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight()));
+
     }
 
 }
