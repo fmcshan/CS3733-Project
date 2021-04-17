@@ -74,10 +74,18 @@
                   <Insets bottom="15.0" right="15.0" />
                </VBox.margin>
                <children>
+                  <JFXButton buttonType="RAISED" onAction="#registerUser" ripplerFill="#ebdbd8" style="-fx-background-color: #ff6347;" text="Register">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
                   <JFXButton buttonType="RAISED" onAction="#exitApplication" ripplerFill="#c94d37" style="-fx-background-color: #ff6347;" text="Exit">
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets left="350.0" />
+                     </HBox.margin>
                   </JFXButton>
                </children>
             </HBox>

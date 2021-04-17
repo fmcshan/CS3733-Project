@@ -39,4 +39,8 @@ public class DefaultPage {
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
     }
+
+    public void registerUser(ActionEvent actionEvent) {
+        loadScene("UserRegistration");
+    }
 }
