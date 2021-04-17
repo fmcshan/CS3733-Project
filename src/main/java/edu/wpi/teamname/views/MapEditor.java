@@ -237,33 +237,21 @@ public class MapEditor {
     ArrayList<Node> listOfNodes = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<Node> currentPath = new ArrayList<>();
-    double mapWidth;
-    double mapHeight;
-    double fileWidth;
-    double fileHeight;
-    double fileFxWidthRatio;
-    double fileFxHeightRatio;
+    double mapWidth= 1000.0;
+    double mapHeight = 680.0;
+    double fileWidth =5000.0;
+    double fileHeight = 3400.0;
+    double fileFxWidthRatio= mapWidth / fileWidth;
+    double fileFxHeightRatio= mapHeight / fileHeight;
     Node startNode;
     Node endNode;
+    boolean start= true;
 
     @FXML
     public void initialize() {
 
         tonysPath.getElements().clear();
-
-        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() > 0) {
-                drawPath(currentPath);
-            }
-        });
-
-        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() > 0) {
-                drawPath(currentPath);
-            }
-        });
-
-
+        OnWindowSizeChanged();
         listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
@@ -274,16 +262,48 @@ public class MapEditor {
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
-        rezisingInfo();
+       // rezisingInfo();
+        if( start){
         displayNodes();
+        start =false;}
+        else{
+            topElements.getChildren().clear();
+            rezisingInfo();
+            displayNodes();
+        }
     }
 public void rezisingInfo(){
      mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+    System.out.println("mapWidth: "+ mapWidth);
      mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+    System.out.println("mapHeight: "+mapHeight);
      fileWidth = hospitalMap.getImage().getWidth();
+    System.out.println("fileWidth: "+ fileWidth);
      fileHeight = hospitalMap.getImage().getHeight();
+    System.out.println("fileHeight: "+ fileHeight);
      fileFxWidthRatio = mapWidth / fileWidth;
      fileFxHeightRatio = mapHeight / fileHeight;
+}
+public void OnWindowSizeChanged(){
+
+    anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+        if (currentPath.size() > 0) {
+            drawPath(currentPath);
+        }
+        topElements.getChildren().clear();
+        rezisingInfo();
+        displayNodes();
+    });
+
+    anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+        if (currentPath.size() > 0) {
+            drawPath(currentPath);
+        }
+        topElements.getChildren().clear();
+        rezisingInfo();
+        displayNodes();
+    });
+
 }
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
@@ -295,10 +315,11 @@ public void rezisingInfo(){
         tonysPath.getElements().clear();
 
         Node firstNode = _listOfNodes.get(0);
+
         MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
 //        Collection<LineTo> collection = new ArrayList<>();
         tonysPath.getElements().add(start);
-        System.out.println(fileFxWidthRatio);
+       // System.out.println(fileFxWidthRatio);
         _listOfNodes.forEach(n -> {
             tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
         });
@@ -325,11 +346,11 @@ public void getAndDrawPathWithCombos(){
     }
     if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
         return;}
-    startAndEndNodes(nodesMap.get(fromCombo.getValue()));
-    startAndEndNodes(nodesMap.get(toCombo.getValue()));
+    assignStartAndEndNodes(nodesMap.get(fromCombo.getValue()));
+    assignStartAndEndNodes(nodesMap.get(toCombo.getValue()));
     //calcAndDrawPath(nodesMap.get(fromCombo.getValue()),nodesMap.get(toCombo.getValue()));
 }
-    public void startAndEndNodes(Node node){
+    public void assignStartAndEndNodes(Node node){
         if(startNode == null ){
             startNode = node;
             if(endNode!=null){
@@ -355,7 +376,6 @@ public void getAndDrawPathWithCombos(){
         AStar AStar = new AStar(listOfNodes, startNode, endNode);
         System.out.println("startNode: "+startNode.getLongName() + " nodeID: "+ startNode.getNodeID());
         System.out.println("endNode :"+ endNode.getLongName()+ " nodeID: "+ endNode.getNodeID());
-
         ArrayList<Node> path = AStar.returnPath();
         drawPath(path);
     }
@@ -363,12 +383,14 @@ public void getAndDrawPathWithCombos(){
     public void displayNodes () {
         ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
         HashMap<String, Node> map = new HashMap();
-
-        rezisingInfo();
+        System.out.println("got here");
+        //rezisingInfo();
         for (Node n : nodes) {
             map.put(n.getNodeID(), n);
          //   System.out.println(n.getNodeType());
-            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 5);
+            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+            System.out.println(fileFxWidthRatio);
+            System.out.println(fileFxHeightRatio);
             circle = (Circle) clickNode(circle,n);
             circle.setFill(Color.OLIVE);
             topElements.getChildren().add(circle);
@@ -384,13 +406,22 @@ public void getAndDrawPathWithCombos(){
                 }
             }
         }
+        if( startNode !=null){
+        Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
+        startCircle.setFill(Color.MAGENTA);
+        topElements.getChildren().add(startCircle);}
+        if(endNode !=null){
+            Circle endCircle = new Circle(endNode.getX() * fileFxWidthRatio, endNode.getY() * fileFxHeightRatio, 8);
+            endCircle.setFill(Color.MAROON);
+            topElements.getChildren().add(endCircle);
+        }
     }
 
     protected javafx.scene.Node clickNode(javafx.scene.Node circle, Node node) {
         circle.setOnMouseClicked(
                 t -> {
                     circle.setStyle("-fx-cursor: hand");
-                    startAndEndNodes((node));
+                    assignStartAndEndNodes((node));
 
                 });
         circle.setStyle("-fx-cursor: hand");
