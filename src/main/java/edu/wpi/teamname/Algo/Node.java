@@ -272,6 +272,10 @@ public class Node {
         aNode.edges.add(this);
     }
 
+    public void setEdges(ArrayList<Node> edges) {
+        this.edges = edges;
+    }
+
     /**
      * Retrieves all the nodes connected to this node
      *

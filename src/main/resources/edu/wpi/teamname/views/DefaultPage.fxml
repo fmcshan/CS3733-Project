@@ -51,7 +51,7 @@
                         <Insets top="75.0" />
                      </VBox.margin>
                       </JFXButton>
-                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#pathFinding" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Pathfinding">
+                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#pathFinding" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Navigation">
                           <font>
                               <Font size="20.0" />
                           </font>
@@ -59,6 +59,14 @@
                         <Insets top="75.0" />
                      </VBox.margin>
                       </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="379.0" layoutY="284.0" minWidth="200.0" onAction="#editMap" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Map Editor">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="60.0" />
+                     </VBox.margin>
+                  </JFXButton>
                       <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#serviceRequests" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Service Requests">
                           <font>
                               <Font size="20.0" />

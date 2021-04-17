@@ -20,9 +20,11 @@ public class DefaultPage {
     }
 
     public void pathFinding(ActionEvent actionEvent) {
-        loadScene("MapEditor");
+        loadScene("Navigation");
     }
-
+public void editMap(ActionEvent e){
+        loadScene("MapEditor");
+}
     public void edgesEditor(ActionEvent actionEvent) {
         loadScene("EdgesEditor");
     }
