@@ -47,7 +47,7 @@ public class AStar {
 
     /**
      * Resets the parents and costs of all nodes in the provided arraylist of nodes
-     * @param nodes an ArrayList of Nodes to be resetted
+     * @param nodes an ArrayList of Nodes to be reset
      */
     private void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
