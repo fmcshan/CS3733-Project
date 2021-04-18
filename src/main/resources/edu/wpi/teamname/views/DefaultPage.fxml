@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Separator?>
@@ -118,12 +117,12 @@
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
-                           <graphic>
-                              <FontAwesomeIconView fill="#c3c3c3" glyphName="SHIELD" size="48" />
-                           </graphic>
                            <HBox.margin>
                               <Insets left="250.0" />
                            </HBox.margin>
+                           <graphic>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="SHIELD_OUTLINE" size="52" />
+                           </graphic>
                         </JFXButton>
                      </children>
                      <VBox.margin>
