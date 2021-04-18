@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,90 +17,105 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 
-public class MapEditor {
+public class MapEditor implements Initializable {
 
-//    @FXML
+    //    @FXML
 //    private Path tonysPath;
     @FXML
-    private AnchorPane anchor,topElements;
+    private AnchorPane anchor, topElements;
 
-//    @FXML
+    //    @FXML
 //    private ComboBox<String> toCombo;
 //    @FXML
 //    private ComboBox<String> fromCombo;
     @FXML
     private ImageView hospitalMap;
+    Node nodeBeingDragged;
+    Node newNode;
 
-   // ArrayList<Node> listOfNodes = new ArrayList<>();
+    // ArrayList<Node> listOfNodes = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<Node> currentPath = new ArrayList<>();
-    double mapWidth= 1000.0;
-    double mapHeight = 680.0;
-    double fileWidth =5000.0;
-    double fileHeight = 3400.0;
-    double fileFxWidthRatio= mapWidth / fileWidth;
-    double fileFxHeightRatio= mapHeight / fileHeight;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
     Node startNode;
     Node endNode;
-    boolean start= true;
-    boolean once =true;
+    boolean start = true;
+    boolean once = true;
     HashMap<String, Node> map = new HashMap();
     ArrayList<Node> nodesReferenceList;
 
     @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-        if( once== true){
-            nodesReferenceList = PathFindingDatabaseManager.getInstance().getNodes(); once=false;}
+
+
+        if (once == true) {
+            nodesReferenceList = PathFindingDatabaseManager.getInstance().getNodes();
+            once = false;
+        }
+        rezisingInfo();
         OnWindowSizeChanged();
-      //  listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+        //  listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
 
     }
-public void rezisingInfo(){
-     mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-    System.out.println("mapWidth: "+ mapWidth);
-     mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-    System.out.println("mapHeight: "+mapHeight);
-     fileWidth = hospitalMap.getImage().getWidth();
-    System.out.println("fileWidth: "+ fileWidth);
-     fileHeight = hospitalMap.getImage().getHeight();
-    System.out.println("fileHeight: "+ fileHeight);
-     fileFxWidthRatio = mapWidth / fileWidth;
-     fileFxHeightRatio = mapHeight / fileHeight;
-}
-public void updateMap(){
-    topElements.getChildren().clear();
-    rezisingInfo();
-    displayNodes();
-    displayEdges();
-}
-public void OnWindowSizeChanged(){
 
-    anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
-        if (currentPath.size() > 0) {
-          //  drawPath(currentPath);
-        }
+    public void rezisingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        System.out.println("mapWidth: " + mapWidth);
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        System.out.println("mapHeight: " + mapHeight);
+        fileWidth = hospitalMap.getImage().getWidth();
+        System.out.println("fileWidth: " + fileWidth);
+        fileHeight = hospitalMap.getImage().getHeight();
+        System.out.println("fileHeight: " + fileHeight);
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
 
-updateMap();
-    });
+    public void updateMap() {
+        topElements.getChildren().clear();
+        rezisingInfo();
+        displayNodes();
+        displayEdges();
+    }
 
-    anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
-        if (currentPath.size() > 0) {
-           // drawPath(currentPath);
-        }
-       updateMap();
-    });
+    public void OnWindowSizeChanged() {
 
-}
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                //  drawPath(currentPath);
+            }
+
+           updateMap();
+        });
+
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                // drawPath(currentPath);
+            }
+
+
+         updateMap();
+        });
+
+    }
 
 //        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
 //        path.setFill(Color.TOMATO);
@@ -120,10 +136,7 @@ updateMap();
     }
 
 
-
-
-
-    public void displayNodes () {
+    public void displayNodes() {
 
         System.out.println("got here");
         rezisingInfo();
@@ -131,50 +144,61 @@ updateMap();
         for (Node n : nodesReferenceList) {
 
             map.put(n.getNodeID(), n);
-         //   System.out.println(n.getNodeType());
+            //   System.out.println(n.getNodeType());
             Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
             System.out.println(fileFxWidthRatio);
             System.out.println(fileFxHeightRatio);
-            circle = (Circle) clickNode(circle,n);
+            circle = (Circle) clickNode(circle, n);
             circle.setFill(Color.OLIVE);
             topElements.getChildren().add(circle);
-         //   System.out.println("ADDED");
+            //   System.out.println("ADDED");
         }
 
 
-        if( startNode !=null){
-        Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
-        startCircle.setFill(Color.MAGENTA);
-        topElements.getChildren().add(startCircle);}
-        if(endNode !=null){
+        if (startNode != null) {
+            Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
+            startCircle.setFill(Color.MAGENTA);
+            topElements.getChildren().add(startCircle);
+        }
+        if (endNode != null) {
             Circle endCircle = new Circle(endNode.getX() * fileFxWidthRatio, endNode.getY() * fileFxHeightRatio, 8);
             endCircle.setFill(Color.MAROON);
             topElements.getChildren().add(endCircle);
         }
     }
-public void displayEdges(){
 
-    for (Node n : nodesReferenceList) {
+    public void displayEdges() {
+        if (newNode != null) {
+            nodesReferenceList.add(0, newNode);
+            map.put(newNode.getNodeID(),newNode);
+        }
+        for (Node n : nodesReferenceList) {
 
-        for (Node e : n.getEdges()) {
-            if (map.containsKey(e.getNodeID()) && map.containsKey(n.getNodeID())) {
-                Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(map.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(map.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
-                topElements.getChildren().add(edge);
+            for (Node e : n.getEdges()) {
+                if (map.containsKey(e.getNodeID()) && map.containsKey(n.getNodeID())) {
+                    Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(map.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(map.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
+                    topElements.getChildren().add(edge);
+                }
             }
         }
+        if (nodeBeingDragged != null) {
+      nodesReferenceList.remove(0);
+            }
     }
-}
-int newNodeINdex;
-    Node newNode;
-    Node nodeBeingDragged;
+
+    int newNodeINdex;
+
+
 
     protected javafx.scene.Node clickNode(javafx.scene.Node circle, Node node) {
+
         circle.setOnMouseClicked(
                 t -> {
-                   circle.setStyle("-fx-cursor: hand");});
-        circle.setOnMouseDragged(t-> {
+                    circle.setStyle("-fx-cursor: hand");
+                });
 
-        Circle newCircle = (Circle)topElements.getChildren().get(topElements.getChildren().indexOf(circle));
+        circle.setOnMouseDragged(t -> {
+            Circle newCircle = (Circle) topElements.getChildren().get(topElements.getChildren().indexOf(circle));
             newCircle.setFill(Color.DARKORCHID);
             newCircle.setCenterX(t.getX());
             newCircle.setCenterY(t.getY());
@@ -183,59 +207,61 @@ int newNodeINdex;
 //            System.out.print("old x " + node.getX() +"\t");
 //            System.out.println("new Y "+ node.getY());
             nodeBeingDragged = node;
-            newNode = new Node (node.getNodeID(),(int)(newCircle.getCenterX()/fileFxWidthRatio),(int)(newCircle.getCenterY()/fileFxHeightRatio),node.getFloor(), node.getBuilding(),
+            if (nodesReferenceList.contains(node)){nodesReferenceList.remove(node);}
+            newNode = new Node(node.getNodeID(), (int) (newCircle.getCenterX() / fileFxWidthRatio), (int) (newCircle.getCenterY() / fileFxHeightRatio), node.getFloor(), node.getBuilding(),
                     node.getNodeType(), node.getLongName(), node.getShortName());
-          newNode.setEdges(node.getEdges());
-            if(!nodesReferenceList.isEmpty() ){ //&& nodes.contains(node)
-               // System.out.println("ready to change nodes");
-                //nodes.remove();
-                 newNodeINdex= nodesReferenceList.indexOf(node);}
-//                if(newNode != null){
-//                    //nodes.remove(node);
-//                    System.out.println("got into if");
-//                    nodesReferenceList.set(newNodeINdex,newNode);}
-               // System.out.println("node index: "+ nodesReferenceList.indexOf(node));
+            newNode.setEdges(node.getEdges());
+            if (!nodesReferenceList.isEmpty()) { //&& nodes.contains(node)
+                newNodeINdex = nodesReferenceList.indexOf(node);
+               // nodesReferenceList.remove(newNodeINdex);
+            }
+            for (int i = 0; i < topElements.getChildren().size(); i++) {
+                if (topElements.getChildren().get(i) instanceof Line) {
+                    topElements.getChildren().remove(i);
 
-
-
-
-    });
-        if(newNode != null){
+                }
+            }
+            //displayNodes();
+            displayEdges();
+        });
+        if (newNode != null) {
             //nodes.remove(node);
             System.out.println("got into if");
-        nodesReferenceList.set(newNodeINdex,newNode);
-       // displayNodes();
-       // updateMap();
+            nodesReferenceList.set(newNodeINdex, newNode);
 
-           // List<Node> nodesToBeUpdated= getNodesWithThisNodeAsEdge(nodesReferenceList, nodeBeingDragged);
+            //updateMap();
+
+            // List<Node> nodesToBeUpdated= getNodesWithThisNodeAsEdge(nodesReferenceList, nodeBeingDragged);
 //            for (Node e:nodesToBeUpdated){
 //            System.out.println(e.getLongName());};
-           // changeEdges(nodesToBeUpdated,nodeBeingDragged,newNode);
+            // changeEdges(nodesToBeUpdated,nodeBeingDragged,newNode);
         }
-      //updateMap();
-       circle.setStyle("-fx-cursor: hand");
-        return circle;}
+        //updateMap();
+        circle.setStyle("-fx-cursor: hand");
+        return circle;
+    }
 
 
-    public  List<Node> getNodesWithThisNodeAsEdge(List<Node> nodes, Node connectedNode) {
+    public List<Node> getNodesWithThisNodeAsEdge(List<Node> nodes, Node connectedNode) {
         return nodes.stream()
                 .filter(n -> n.getEdges().contains(connectedNode))
                 .collect(Collectors.toList());
     }
-    private void changeEdges (List<Node> nodes, Node currentConnectedNode, Node newConnectedNode){
-        List<Node>newNodesList = nodesReferenceList;
-        for(Node n : nodes){
+
+    private void changeEdges(List<Node> nodes, Node currentConnectedNode, Node newConnectedNode) {
+        List<Node> newNodesList = nodesReferenceList;
+        for (Node n : nodes) {
             ArrayList<Node> previousEdges = n.getEdges();
-            for(int i =0; i< previousEdges.size();i++){
-                if(previousEdges.get(i).getNodeID().equals(currentConnectedNode)){
-                    previousEdges.set(i,newConnectedNode);
+            for (int i = 0; i < previousEdges.size(); i++) {
+                if (previousEdges.get(i).getNodeID().equals(currentConnectedNode)) {
+                    previousEdges.set(i, newConnectedNode);
                 }
 
             }
             nodesReferenceList.forEach(l -> {
-                if (l.getNodeID().equals(n.getNodeID()))
-                { l.setEdges(previousEdges);
-               }
+                if (l.getNodeID().equals(n.getNodeID())) {
+                    l.setEdges(previousEdges);
+                }
             });
         }
 //        for(Node n: nodes){
@@ -250,3 +276,4 @@ int newNodeINdex;
 
     }
 }
+
