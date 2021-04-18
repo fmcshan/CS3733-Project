@@ -50,9 +50,9 @@ public class MapEditor implements Initializable {
     double fileFxHeightRatio = mapHeight / fileHeight;
     Node startNode;
     Node endNode;
-    boolean start = true;
+    //boolean start = true;
     boolean once = true;
-    HashMap<String, Node> map = new HashMap();
+    HashMap<String, Node> loadedMap = new HashMap();
     ArrayList<Node> nodesReferenceList;
     Set<Node> nodeSet = new HashSet<>();
 
@@ -66,11 +66,13 @@ public class MapEditor implements Initializable {
             nodesReferenceList = PathFindingDatabaseManager.getInstance().getNodes();
              nodeSet = new HashSet<>(nodesReferenceList);
              nodeSet.addAll(nodesReferenceList);
+             for(Node n: nodeSet){
+                 loadedMap.put(n.getNodeID(),n);
+             }
             once = false;
         }
         rezisingInfo();
         OnWindowSizeChanged();
-        //  listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
@@ -93,8 +95,9 @@ public class MapEditor implements Initializable {
     public void updateMap() {
         topElements.getChildren().clear();
         rezisingInfo();
-        displayNodes();
+
         displayEdges();
+        displayNodes();
     }
 
     public void OnWindowSizeChanged() {
@@ -141,12 +144,11 @@ public class MapEditor implements Initializable {
 
         //System.out.println("got here");
         rezisingInfo();
-        map.clear();
+       // map.clear();
         ArrayList<Node> nodesList = new ArrayList<>(nodeSet);
         for (Node n : nodesList) {
 
-            map.put(n.getNodeID(), n);
-            //   System.out.println(n.getNodeType());
+
             Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
             //System.out.println(fileFxWidthRatio);
            // System.out.println(fileFxHeightRatio);
@@ -170,24 +172,26 @@ public class MapEditor implements Initializable {
     }
 
     public void displayEdges() {
-        if (newNode != null) {
+        if (newNode != nodeBeingDragged) {
             //nodesReferenceList.add(0, newNode);
-            nodeSet.add(newNode);
-            map.put(newNode.getNodeID(),newNode);
+            if(!nodeSet.add(newNode)) {
+                nodeSet.remove(newNode);
+                nodeSet.add(newNode);
+            }
+          loadedMap.put(newNode.getNodeID(),newNode);
         }
-        ArrayList<Node> nodesList = new ArrayList<>(nodeSet);
-        for (Node n : nodesList) {
+
+        for (Node n : nodeSet) {
 
             for (Node e : n.getEdges()) {
-                if (map.containsKey(e.getNodeID()) && map.containsKey(n.getNodeID())) {
-                    Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(map.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(map.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
+                if (nodeSet.contains(e) && nodeSet.contains(n)) {
+                    System.out.println("HERERERER");
+                    Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(loadedMap.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(loadedMap.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
                     topElements.getChildren().add(edge);
                 }
             }
         }
-//        if (newNode != null&&nodeBeingDragged.getNodeID().equals(newNode.getNodeID())) {
-//     nodesReferenceList.remove(0);
-//            }
+
     }
 
     int newNodeINdex;
@@ -219,33 +223,25 @@ public class MapEditor implements Initializable {
             newNode = new Node(node.getNodeID(), (int) (newCircle.getCenterX() / fileFxWidthRatio), (int) (newCircle.getCenterY() / fileFxHeightRatio), node.getFloor(), node.getBuilding(),
                     node.getNodeType(), node.getLongName(), node.getShortName());
             newNode.setEdges(node.getEdges());
-//            if (!nodesReferenceList.isEmpty()) { //&& nodes.contains(node)
-//                newNodeINdex = nodesReferenceList.indexOf(node);
-//               // nodesReferenceList.remove(newNodeINdex);
-//            }
+
             for (int i = 0; i < topElements.getChildren().size(); i++) {
-                if (topElements.getChildren().get(i) instanceof Line) {
+                if (topElements.getChildren().get(i)!= newCircle) {
                     topElements.getChildren().remove(i);
 
                 }
             }
-            //displayNodes();
+
             displayEdges();
+            displayNodes();
+
         });
         if (newNode != null) {
-            //nodes.remove(node);
-            System.out.println("got into if");
-          //  nodesReferenceList.set(newNodeINdex, newNode);
-            nodeSet.add(newNode);
-          //displayEdges();
-            //updateMap();
 
-            // List<Node> nodesToBeUpdated= getNodesWithThisNodeAsEdge(nodesReferenceList, nodeBeingDragged);
-//            for (Node e:nodesToBeUpdated){
-//            System.out.println(e.getLongName());};
-            // changeEdges(nodesToBeUpdated,nodeBeingDragged,newNode);
+            System.out.println("got into if");
+
+            nodeSet.add(newNode);
+
         }
-        //updateMap();
         circle.setStyle("-fx-cursor: hand");
         return circle;
     }
