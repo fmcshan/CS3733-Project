@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -36,5 +37,11 @@ public class Login {
         } else {
             failedLogin.setText("");
         }
+
+        AuthenticationManager.getInstance().loginWithEmailAndPassword(emailField.getText(), passwordField.getText());
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            failedLogin.setText("Incorrect Password");
+        }
+        System.out.println(AuthenticationManager.getInstance().isAuthenticated());
     }
 }
