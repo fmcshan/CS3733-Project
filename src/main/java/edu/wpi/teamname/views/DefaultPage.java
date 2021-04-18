@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Database.SocketManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -38,5 +39,6 @@ public class DefaultPage {
 
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
+        SocketManager.getInstance().stopDataSocket();
     }
 }

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class SocketManager {
     private static final SocketManager instance = new SocketManager();
     private ArrayList<Node> nodes = new ArrayList<Node>();
+
+    WebSocketClient nonAuthClient;
+
     private boolean dataSocketOpen = false;
     private boolean authDataSocketOpen;
 
@@ -24,9 +27,16 @@ public class SocketManager {
         if (!dataSocketOpen) {
             try {
                 WebSocketClient client = new Socket(new URI("ws://localhost:8000/ws/pipeline/"));
+                this.nonAuthClient = client;
                 client.connect();
                 dataSocketOpen = true;
             } catch (Exception e) {e.printStackTrace();}
+        }
+    }
+
+    public void stopDataSocket() {
+        if (this.nonAuthClient != null) {
+            this.nonAuthClient.close();
         }
     }
 }
