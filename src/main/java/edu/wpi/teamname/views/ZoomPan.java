@@ -23,8 +23,6 @@ public class ZoomPan {
         hospitalMap.setOnMouseDragged(mouseEvent -> {
             Point2D pointToDragFrom = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
-            System.out.println("Origin Point: " + pointToDragFrom);
-            System.out.println("Value Of Shift: " +valueOfShift);
             shiftedImage(hospitalMap, valueOfShift);
             mouseClickDown.set(viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
@@ -62,8 +60,6 @@ public class ZoomPan {
 
             Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
 
-            System.out.println("Mouse Cursor Location For Zoom: " + mouseCursorLocationOnMap);
-            System.out.println("Value of Scoll: " + getDifference);
             hospitalMap.setViewport(newViewPort);
         });
 
