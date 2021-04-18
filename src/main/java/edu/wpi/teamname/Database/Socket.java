@@ -28,7 +28,7 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake data) {
-        System.out.println("Tony has joined the server.");
+        System.out.println("Non authenticated socket opened.");
     }
 
     @Override

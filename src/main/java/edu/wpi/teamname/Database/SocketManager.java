@@ -26,7 +26,7 @@ public class SocketManager {
     public void startDataSocket() {
         if (!dataSocketOpen) {
             try {
-                WebSocketClient client = new Socket(new URI("ws://localhost:8000/ws/pipeline/"));
+                WebSocketClient client = new Socket(new URI("wss://soft-eng-3733-rest-api-9l83t.ondigitalocean.app/ws/pipeline/"));
                 this.nonAuthClient = client;
                 client.connect();
                 dataSocketOpen = true;
