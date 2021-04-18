@@ -68,6 +68,6 @@ public class DefaultPage {
     }
 
     public void registerUser(ActionEvent actionEvent) {
-        loadScene("UserRegistration");
+        //loadScene("UserRegistration");
     }
 }

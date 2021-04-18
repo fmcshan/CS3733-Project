@@ -40,15 +40,10 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXTextField phoneInput;
 
-    public void checkName() {
-        if(!(nameInput.getText().contains(" "))){
-
-        }
-    }
-
     public void submitRegistration(ActionEvent actionEvent) {
         try {
-            if (nameInput.getText().contains(" ")) {
+            String regexPattern = "\\d{3}-\\d{3}-\\d{4}"; //phone number pattern
+            if (nameInput.getText().contains(" ") && phoneInput.getText().matches(regexPattern)) {
                 LocalDate localDate = dateOfBirth.getValue();
                 String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
 
@@ -78,6 +73,7 @@ public class UserRegistration extends MasterRequest {
                 Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/RegistrationConfirmation.fxml"));
                 App.getPrimaryStage().getScene().setRoot(root);
             } else {
+                /*
                 Stage stage = new Stage();
                 stage.setTitle("Submission Error");
                 TilePane tilepane = new TilePane();
@@ -90,6 +86,7 @@ public class UserRegistration extends MasterRequest {
                 label.setMinHeight(80);
                 stage.show();
                 popup.show(stage);
+                */
             }
         } catch (IOException ex) {
             ex.printStackTrace();
