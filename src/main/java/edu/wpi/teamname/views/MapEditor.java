@@ -18,10 +18,7 @@ import javafx.scene.shape.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -40,6 +37,7 @@ public class MapEditor implements Initializable {
     private ImageView hospitalMap;
     Node nodeBeingDragged;
     Node newNode;
+    Node previousNodeDragged;
 
     // ArrayList<Node> listOfNodes = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -56,6 +54,7 @@ public class MapEditor implements Initializable {
     boolean once = true;
     HashMap<String, Node> map = new HashMap();
     ArrayList<Node> nodesReferenceList;
+    Set<Node> nodeSet = new HashSet<>();
 
     @FXML
     @Override
@@ -65,6 +64,8 @@ public class MapEditor implements Initializable {
 
         if (once == true) {
             nodesReferenceList = PathFindingDatabaseManager.getInstance().getNodes();
+             nodeSet = new HashSet<>(nodesReferenceList);
+             nodeSet.addAll(nodesReferenceList);
             once = false;
         }
         rezisingInfo();
@@ -78,13 +79,13 @@ public class MapEditor implements Initializable {
 
     public void rezisingInfo() {
         mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        System.out.println("mapWidth: " + mapWidth);
+        //System.out.println("mapWidth: " + mapWidth);
         mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        System.out.println("mapHeight: " + mapHeight);
+       // System.out.println("mapHeight: " + mapHeight);
         fileWidth = hospitalMap.getImage().getWidth();
-        System.out.println("fileWidth: " + fileWidth);
+        //System.out.println("fileWidth: " + fileWidth);
         fileHeight = hospitalMap.getImage().getHeight();
-        System.out.println("fileHeight: " + fileHeight);
+       // System.out.println("fileHeight: " + fileHeight);
         fileFxWidthRatio = mapWidth / fileWidth;
         fileFxHeightRatio = mapHeight / fileHeight;
     }
@@ -138,16 +139,17 @@ public class MapEditor implements Initializable {
 
     public void displayNodes() {
 
-        System.out.println("got here");
+        //System.out.println("got here");
         rezisingInfo();
         map.clear();
-        for (Node n : nodesReferenceList) {
+        ArrayList<Node> nodesList = new ArrayList<>(nodeSet);
+        for (Node n : nodesList) {
 
             map.put(n.getNodeID(), n);
             //   System.out.println(n.getNodeType());
             Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
-            System.out.println(fileFxWidthRatio);
-            System.out.println(fileFxHeightRatio);
+            //System.out.println(fileFxWidthRatio);
+           // System.out.println(fileFxHeightRatio);
             circle = (Circle) clickNode(circle, n);
             circle.setFill(Color.OLIVE);
             topElements.getChildren().add(circle);
@@ -169,10 +171,12 @@ public class MapEditor implements Initializable {
 
     public void displayEdges() {
         if (newNode != null) {
-            nodesReferenceList.add(0, newNode);
+            //nodesReferenceList.add(0, newNode);
+            nodeSet.add(newNode);
             map.put(newNode.getNodeID(),newNode);
         }
-        for (Node n : nodesReferenceList) {
+        ArrayList<Node> nodesList = new ArrayList<>(nodeSet);
+        for (Node n : nodesList) {
 
             for (Node e : n.getEdges()) {
                 if (map.containsKey(e.getNodeID()) && map.containsKey(n.getNodeID())) {
@@ -181,9 +185,9 @@ public class MapEditor implements Initializable {
                 }
             }
         }
-        if (nodeBeingDragged != null) {
-      nodesReferenceList.remove(0);
-            }
+//        if (newNode != null&&nodeBeingDragged.getNodeID().equals(newNode.getNodeID())) {
+//     nodesReferenceList.remove(0);
+//            }
     }
 
     int newNodeINdex;
@@ -207,14 +211,18 @@ public class MapEditor implements Initializable {
 //            System.out.print("old x " + node.getX() +"\t");
 //            System.out.println("new Y "+ node.getY());
             nodeBeingDragged = node;
-            if (nodesReferenceList.contains(node)){nodesReferenceList.remove(node);}
+
+            if (nodesReferenceList.contains(node)|| nodeSet.contains(node))
+            {//nodesReferenceList.remove(node);
+            nodeSet.remove(node);}
+
             newNode = new Node(node.getNodeID(), (int) (newCircle.getCenterX() / fileFxWidthRatio), (int) (newCircle.getCenterY() / fileFxHeightRatio), node.getFloor(), node.getBuilding(),
                     node.getNodeType(), node.getLongName(), node.getShortName());
             newNode.setEdges(node.getEdges());
-            if (!nodesReferenceList.isEmpty()) { //&& nodes.contains(node)
-                newNodeINdex = nodesReferenceList.indexOf(node);
-               // nodesReferenceList.remove(newNodeINdex);
-            }
+//            if (!nodesReferenceList.isEmpty()) { //&& nodes.contains(node)
+//                newNodeINdex = nodesReferenceList.indexOf(node);
+//               // nodesReferenceList.remove(newNodeINdex);
+//            }
             for (int i = 0; i < topElements.getChildren().size(); i++) {
                 if (topElements.getChildren().get(i) instanceof Line) {
                     topElements.getChildren().remove(i);
@@ -227,8 +235,9 @@ public class MapEditor implements Initializable {
         if (newNode != null) {
             //nodes.remove(node);
             System.out.println("got into if");
-            nodesReferenceList.set(newNodeINdex, newNode);
-
+          //  nodesReferenceList.set(newNodeINdex, newNode);
+            nodeSet.add(newNode);
+          //displayEdges();
             //updateMap();
 
             // List<Node> nodesToBeUpdated= getNodesWithThisNodeAsEdge(nodesReferenceList, nodeBeingDragged);
