@@ -1,5 +1,5 @@
 package edu.wpi.teamname.Authentication;
 
-interface AuthListener {
+public interface AuthListener {
     void userLogin();
 }

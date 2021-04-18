@@ -3,6 +3,8 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Authentication.AuthListener;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +15,13 @@ import javafx.scene.layout.VBox;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class DefaultPage {
+public class DefaultPage implements AuthListener {
 
     @FXML
     private VBox popPop;
+
+    @FXML
+    private VBox adminPop;
 
     @FXML
     private JFXButton navButton;
@@ -32,16 +37,29 @@ public class DefaultPage {
 
     String openWindow = "";
 
-    public void loadWindow(String fileName, String windowName) {
+    public void initialize() {
+        AuthenticationManager.getInstance().addListener(this);
+    }
+
+    public void loadWindowPopPop(String fileName, String windowName) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindow(windowName, root);
+            openWindowPopPop(windowName, root);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void openWindow(String windowName, Parent root) {
+    public void loadWindowAdminPop(String fileName, String windowName) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
+            openWindowAdminPop(windowName, root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void openWindowPopPop(String windowName, Parent root) {
         popPop.getChildren().clear();
         if (!windowName.equals(openWindow)) {
             popPop.getChildren().add(root);
@@ -51,19 +69,34 @@ public class DefaultPage {
         openWindow = "";
     }
 
+    public void openWindowAdminPop(String windowName, Parent root) {
+        adminPop.getChildren().clear();
+        if (!windowName.equals(openWindow)) {
+            adminPop.getChildren().add(root);
+            openWindow = windowName;
+            return;
+        }
+        openWindow = "";
+    }
+
     public void toggleNav(ActionEvent actionEvent) {
-        loadWindow("Navigation", "navBar");
+        loadWindowPopPop("Navigation", "navBar");
     }
 
     public void openRequests(ActionEvent actionEvent) {
-        loadWindow("Requests", "reqBar");
+        loadWindowPopPop("Requests", "reqBar");
     }
 
     public void openLogin(ActionEvent actionEvent) {
-        loadWindow("Login", "loginBar");
+        loadWindowPopPop("Login", "loginBar");
     }
 
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
+    }
+
+    @Override
+    public void userLogin() {
+        loadWindowAdminPop("MapEditorButton", "mapButton");
     }
 }

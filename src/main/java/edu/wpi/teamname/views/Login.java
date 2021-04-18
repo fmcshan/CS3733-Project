@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,7 @@ import org.apache.commons.validator.EmailValidator;
 
 import java.io.IOException;
 
-public class Login implements AuthListener {
+public class Login {
 
     @FXML
     private JFXTextField emailField;
@@ -24,29 +25,7 @@ public class Login implements AuthListener {
     @FXML
     private Label failedLogin;
 
-    @FXML
-    private JFXButton Login;
-
     String openWindow = "";
-
-    public void loadWindow(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindow(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void openWindow(String windowName, Parent root) {
-        adminPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            adminPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
 
     public boolean isValidEmail(String email) {
         // create the EmailValidator instance
@@ -70,9 +49,6 @@ public class Login implements AuthListener {
         AuthenticationManager.getInstance().loginWithEmailAndPassword(emailField.getText(), passwordField.getText());
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             failedLogin.setText("Incorrect Password");
-        }
-        else {
-            loadWindow("Map Editor", "mapButton");
         }
     }
 }
