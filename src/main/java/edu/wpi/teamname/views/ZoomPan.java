@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 
 public class ZoomPan {
 
-    public static void getHospitalMap(ImageView hospitalMap, double width,double height){
+    public static void getHospitalMap(ImageView hospitalMap, double width, double height){
         //get the height associated with the height
         hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(hospitalMap, width, height);

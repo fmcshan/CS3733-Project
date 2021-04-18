@@ -89,6 +89,45 @@ public class MapEditor implements Initializable {
         });
 
 
+
+//        Callback<ListView<Node>, ListCell<Node>> cellFactory = new Callback<ListView<Node>, ListCell<Node>>() {
+//
+//            @Override
+//            public ListCell<Node> call(ListView<Node> l) {
+//                return new ListCell<Node>() {
+//
+//                    @Override
+//                    protected void updateItem(Node item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (item == null || empty) {
+//                            setGraphic(null);
+//                        } else {
+//                            setText(item.getLongName());
+//                        }
+//                    }
+//                };
+//            }
+//        };
+//
+//        fromCombo.setConverter(new StringConverter<String>() {
+//            @Override
+//            public String toString(Node node) {
+//                if (node == null){
+//                    return null;
+//                } else {
+//                    return node.getLongName();
+//                }
+//            }
+//
+//            @Override
+//            public Node fromString(String string) {
+//                return null;
+//            }
+//        });
+//
+//        fromCombo.setButtonCell(cellFactory.call(null));
+//        fromCombo.setCellFactory(cellFactory);
+
         listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
@@ -100,21 +139,7 @@ public class MapEditor implements Initializable {
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
 
-        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
-        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
-        //hospitalMap.fitWidthProperty().addListener(
         ZoomPan.getHospitalMap(hospitalMap, mapWidth,mapHeight);
-        hospitalMap.onScrollProperty().addListener(
-                (obs, oldVal, newVal) -> {
-                    if (hospitalMap != null && hospitalMap.getFitWidth() > 0){
-                        ZoomPan.getHospitalMap(hospitalMap,mapWidth,mapHeight);
-                        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
-                        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
-                    }
-                });
-        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
-        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
-        //hospitalMap.fitWidthProperty().setValue(1001);
     }
 
 

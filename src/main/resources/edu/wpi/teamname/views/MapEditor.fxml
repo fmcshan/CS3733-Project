@@ -20,7 +20,7 @@
 
 <AnchorPane fx:id="anchor" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditor">
     <children>
-      <StackPane alignment="TOP_LEFT" layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane alignment="TOP_LEFT" layoutX="459.0" layoutY="14.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fx:id="hospitalMap" preserveRatio="true" style="-fx-background-color: black;">
                <image>
