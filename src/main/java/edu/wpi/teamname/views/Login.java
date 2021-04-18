@@ -1,12 +1,18 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import org.apache.commons.validator.EmailValidator;
+
+import java.io.IOException;
 
 public class Login {
 
@@ -18,6 +24,8 @@ public class Login {
 
     @FXML
     private Label failedLogin;
+
+    String openWindow = "";
 
     public boolean isValidEmail(String email) {
         // create the EmailValidator instance
@@ -42,6 +50,5 @@ public class Login {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             failedLogin.setText("Incorrect Password");
         }
-        System.out.println(AuthenticationManager.getInstance().isAuthenticated());
     }
 }
