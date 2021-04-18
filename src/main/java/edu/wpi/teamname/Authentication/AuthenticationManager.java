@@ -20,6 +20,7 @@ public class AuthenticationManager {
     }
 
     public void loginWithEmailAndPassword(String _email, String _password) {
+        try {
         JSONObject data = new JSONObject();
         data.put("email", _email);
         data.put("password", _password);
@@ -35,6 +36,9 @@ public class AuthenticationManager {
                 payload.getString("email"),
                 payload.getString("localId")
         );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void signOut() {
