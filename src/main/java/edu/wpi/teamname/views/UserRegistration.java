@@ -38,6 +38,10 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXCheckBox physicalTherapyCheckbox;
     @FXML
+    public JFXCheckBox otherCheckbox;
+    @FXML
+    public JFXTextField otherInput;
+    @FXML
     public JFXTextField phoneInput;
 
     public void submitRegistration(ActionEvent actionEvent) {
