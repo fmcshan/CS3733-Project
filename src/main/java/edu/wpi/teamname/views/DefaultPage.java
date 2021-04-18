@@ -1,11 +1,9 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Controller for DefaultPage.fxml
@@ -35,16 +32,12 @@ public class DefaultPage implements AuthListener {
     @FXML
     private Path tonysPath; // this is Tony's path
     @FXML
-    private AnchorPane anchor; //
+    private AnchorPane anchor; // the foundation of the image (needs to be replaced by a stack pane or vbox that has the proportions of the map)
     @FXML
-    private ImageView hospitalMap;
+    private ImageView hospitalMap; // the map itself
 
-    String openWindow = "";
-    ArrayList<Node> currentPath = new ArrayList<>();
-
-    public VBox getPopPop() {
-        return popPop;
-    }
+    String openWindow = ""; // used to check which window is currently open
+    ArrayList<Node> currentPath = new ArrayList<>(); // the current list of nodes
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
