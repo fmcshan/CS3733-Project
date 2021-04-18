@@ -4,6 +4,7 @@ import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.simplify.Shutdown;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,18 +20,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller for DefaultPage.fxml
+ * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
+ */
 public class DefaultPage implements AuthListener {
 
     @FXML
-    private VBox popPop;
+    private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
-    private VBox adminPop;
+    private VBox adminPop; // vbox to populate Map Editor button
     @FXML
-    private VBox requestPop;
+    private VBox requestPop; // vbox to populate Submitted Requests button
     @FXML
-    private Path tonysPath;
+    private Path tonysPath; // this is Tony's path
     @FXML
-    private AnchorPane anchor;
+    private AnchorPane anchor; //
     @FXML
     private ImageView hospitalMap;
 
@@ -133,7 +138,7 @@ public class DefaultPage implements AuthListener {
     }
 
     public void exitApplication(ActionEvent actionEvent) {
-        Platform.exit();
+        Shutdown.getInstance().exit();
     }
 
     public void drawPath(ArrayList<Node> _listOfNodes) {

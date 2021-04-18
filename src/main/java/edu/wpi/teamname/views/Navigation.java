@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,17 +14,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller for Navigation.fxml
+ * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
+ */
 public class Navigation {
 
     @FXML
-    private ComboBox<String> toCombo;
+    private ComboBox<String> toCombo; // destination drop down
     @FXML
-    private ComboBox<String> fromCombo;
+    private ComboBox<String> fromCombo; // start location drop down
     @FXML
-    private DefaultPage defaultPage;
+    private DefaultPage defaultPage; // DefaultPage.fxml controller
 
-    ArrayList<Node> listOfNodes = new ArrayList<>();
-    HashMap<String, Node> nodesMap = new HashMap<>();
+    ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
+    HashMap<String, Node> nodesMap = new HashMap<>(); //
     String openWindow = "";
 
     /**
@@ -78,6 +83,7 @@ public class Navigation {
 //        fromCombo.setCellFactory(cellFactory);
 
         listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // get nodes from database
+//        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
@@ -106,24 +112,28 @@ public class Navigation {
                 }
             });
             Parent root = loader.load();
-            defaultPage.openWindowPopPop("navBar", root); //
+            defaultPage.openWindowPopPop("navBar", root); // open/close navigation bar
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * When both comboboxes are filled calculate a path using AStar
+     * @param actionEvent
+     */
     public void calcPath(ActionEvent actionEvent) {
-        if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
+        if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
-        if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
+        if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
-        Node startNode = nodesMap.get(fromCombo.getValue());
-        Node endNode = nodesMap.get(toCombo.getValue());
-        AStar AStar = new AStar(listOfNodes, startNode, endNode);
-        ArrayList<Node> path = AStar.returnPath();
-        defaultPage.drawPath(path);
+        Node startNode = nodesMap.get(fromCombo.getValue()); // get starting location
+        Node endNode = nodesMap.get(toCombo.getValue()); // get ending location
+        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
+        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
+        defaultPage.drawPath(path); // draw the path on the map
     }
 }
