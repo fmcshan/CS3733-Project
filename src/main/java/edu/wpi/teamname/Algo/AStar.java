@@ -1,6 +1,6 @@
 package edu.wpi.teamname.Algo;
 
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -36,7 +36,7 @@ public class AStar {
      * @param goal the ending node
      */
     public AStar(ArrayList nodes, Node start, Node goal) {
-        this.resetNodes(nodes); //reset all provided nodes before pathfinding
+        this.resetNodes(nodes);
         this.start = start;
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
         this.goal = goal;
@@ -45,10 +45,6 @@ public class AStar {
         this.displayPath();
     }
 
-    /**
-     * Resets the parents and costs of all nodes in the provided arraylist of nodes
-     * @param nodes an ArrayList of Nodes to be reset
-     */
     private void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             if (node.getParent() != null) {

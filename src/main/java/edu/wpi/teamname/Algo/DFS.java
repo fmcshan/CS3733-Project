@@ -1,6 +1,6 @@
 package edu.wpi.teamname.Algo;
 
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
 

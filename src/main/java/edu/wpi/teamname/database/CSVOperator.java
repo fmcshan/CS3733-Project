@@ -1,8 +1,7 @@
-package edu.wpi.teamname.Database;
+package edu.wpi.teamname.database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.io.*;
 import java.util.ArrayList;
