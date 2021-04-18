@@ -11,7 +11,8 @@ public class ZoomPan {
     public static void getHospitalMap(ImageView hospitalMap){
         double width = hospitalMap.getFitWidth(); //get the width associated with the width
         double height = hospitalMap.getFitHeight(); //get the height associated with the height
-        hospitalMap.setPreserveRatio(false); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
+        hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
+        reset(hospitalMap, width, height);
 
         ObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 

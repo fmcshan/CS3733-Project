@@ -14,6 +14,8 @@ public class DefaultPage {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
             App.getPrimaryStage().getScene().setRoot(root);
+//            MapEditor mapEditor = new MapEditor();
+//            ZoomPan.getHospitalMap(mapEditor.getHospitalMap());
         } catch (IOException ex) {
             ex.printStackTrace();
         }

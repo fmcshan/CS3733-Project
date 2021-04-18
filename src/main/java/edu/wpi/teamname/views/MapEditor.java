@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -32,13 +33,11 @@ import javafx.util.StringConverter;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Observable;
+import java.net.URL;
+import java.util.*;
 
 
-public class MapEditor {
+public class MapEditor implements Initializable {
 
     @FXML
     private Path tonysPath;
@@ -66,7 +65,10 @@ public class MapEditor {
         return this.hospitalMap;
     }
 
-    public void initialize() {
+
+    @FXML
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
         tonysPath.getElements().clear();
 
@@ -133,8 +135,20 @@ public class MapEditor {
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
 
-
-        ZoomPan.getHospitalMap(hospitalMap);
+        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
+        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
+        //hospitalMap.fitWidthProperty().addListener(
+        hospitalMap.fitWidthProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    if (hospitalMap != null && hospitalMap.getFitWidth() > 0){
+                        ZoomPan.getHospitalMap(hospitalMap);
+                        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
+                        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
+                    }
+                });
+        //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
+        System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
+        //hospitalMap.fitWidthProperty().setValue(1001);
     }
 
 
@@ -191,30 +205,30 @@ public class MapEditor {
         drawPath(path);
     }
 
-    public void panImage(MouseEvent mouseEvent) {
-        double width = hospitalMap.getFitWidth(); //get the width associated with the width
-        double height = hospitalMap.getFitHeight(); //get the height associated with the height
-
-        pointA = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-    }
-
-    public void zoomImage(ScrollEvent scrollEvent) {
-        double width = hospitalMap.getFitWidth(); //get the width associated with the width
-        double height = hospitalMap.getFitHeight(); //get the height associated with the height
-
-
-    }
-
-    public void endPoint(MouseEvent mouseEvent) {
-        pointB = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-    }
-
-    public static Point2D viewportToImageView(ImageView inputMap, Point2D mapCoordinates) {
-        Bounds bounds = inputMap.getBoundsInLocal();
-        double xProportion = mapCoordinates.getX() / bounds.getWidth();
-        double yProportion =mapCoordinates.getY() / bounds.getHeight();
-
-        Rectangle2D viewport = inputMap.getViewport();
-        return new Point2D(viewport.getMinX() + xProportion * viewport.getWidth(), viewport.getMinY() + yProportion * viewport.getHeight());
-    }
+//    public void panImage(MouseEvent mouseEvent) {
+//        double width = hospitalMap.getFitWidth(); //get the width associated with the width
+//        double height = hospitalMap.getFitHeight(); //get the height associated with the height
+//
+//        pointA = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+//    }
+//
+//    public void zoomImage(ScrollEvent scrollEvent) {
+//        double width = hospitalMap.getFitWidth(); //get the width associated with the width
+//        double height = hospitalMap.getFitHeight(); //get the height associated with the height
+//
+//
+//    }
+//
+//    public void endPoint(MouseEvent mouseEvent) {
+//        pointB = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+//    }
+//
+//    public static Point2D viewportToImageView(ImageView inputMap, Point2D mapCoordinates) {
+//        Bounds bounds = inputMap.getBoundsInLocal();
+//        double xProportion = mapCoordinates.getX() / bounds.getWidth();
+//        double yProportion =mapCoordinates.getY() / bounds.getHeight();
+//
+//        Rectangle2D viewport = inputMap.getViewport();
+//        return new Point2D(viewport.getMinX() + xProportion * viewport.getWidth(), viewport.getMinY() + yProportion * viewport.getHeight());
+//    }
 }
