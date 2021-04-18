@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.App;
 import javafx.event.ActionEvent;
@@ -15,13 +16,15 @@ import javafx.scene.Scene;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class UserRegistration extends MasterRequest {
 
     @FXML
     public JFXTextField nameInput;
     @FXML
-    public JFXTextField birthdayInput;
+    public JFXDatePicker dateOfBirth;
     @FXML
     public JFXCheckBox emergencyRoomCheckbox;
     @FXML
@@ -35,8 +38,7 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXCheckBox physicalTherapyCheckbox;
     @FXML
-    public JFXTextField emailInput;
-
+    public JFXTextField phoneInput;
 
     public void checkName() {
         if(!(nameInput.getText().contains(" "))){
@@ -46,7 +48,33 @@ public class UserRegistration extends MasterRequest {
 
     public void submitRegistration(ActionEvent actionEvent) {
         try {
-            if(nameInput.getText().contains(" ")) {
+            if (nameInput.getText().contains(" ")) {
+                LocalDate localDate = dateOfBirth.getValue();
+                String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
+
+                ArrayList<String> reasonsForVisit = new ArrayList<String>();
+                if (emergencyRoomCheckbox.isSelected()) {
+                    reasonsForVisit.add("Emergency Room");
+                }
+                if (xrayCheckbox.isSelected()) {
+                    reasonsForVisit.add("XRay");
+                }
+                if (mriCheckbox.isSelected()) {
+                    reasonsForVisit.add("MRI");
+                }
+                if (eyeExamCheckbox.isSelected()) {
+                    reasonsForVisit.add("Eye Exam");
+                }
+                if (labWorkCheckbox.isSelected()) {
+                    reasonsForVisit.add("Lab Work");
+                }
+                if (physicalTherapyCheckbox.isSelected()) {
+                    reasonsForVisit.add("Physical Therapy");
+                }
+
+                //submit
+                edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+
                 Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/RegistrationConfirmation.fxml"));
                 App.getPrimaryStage().getScene().setRoot(root);
             } else {

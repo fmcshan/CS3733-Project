@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -63,7 +64,7 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0">
          <children>
-            <Label text="Please fill in the following fields to complete registration." textFill="WHITE">
+            <Label text="Please fill in the following fields to complete registration:" textFill="WHITE">
                <VBox.margin>
                   <Insets left="40.0" top="25.0" />
                </VBox.margin>
@@ -95,14 +96,11 @@
                   <Insets left="75.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="birthdayInput" focusColor="WHITE" maxWidth="125.0" promptText="Date of Birth" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
+            <JFXDatePicker fx:id="dateOfBirth" defaultColor="#a9abab">
                <VBox.margin>
                   <Insets left="125.0" top="15.0" />
                </VBox.margin>
-            </JFXTextField>
+            </JFXDatePicker>
             <Label text="Please select your reason(s) for visiting the hospital today:" textFill="WHITE">
                <font>
                   <Font size="18.0" />
@@ -160,7 +158,7 @@
                </children>
             </HBox>
             <HBox />
-            <Label text="Please enter your email address to receive a confirmation of your visit:" textFill="WHITE">
+            <Label text="Please enter your phone number to receive a confirmation of your visit:" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -168,7 +166,7 @@
                   <Insets left="75.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="emailInput" focusColor="WHITE" maxWidth="300.0" promptText="Email Address" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
+            <JFXTextField fx:id="phoneInput" focusColor="WHITE" maxWidth="300.0" promptText="Phone Number" style="-fx-prompt-text-fill: rgba(255,255,255,0.5); -fx-text-inner-color: white;" unFocusColor="WHITE">
                <VBox.margin>
                   <Insets left="125.0" top="15.0" />
                </VBox.margin>
