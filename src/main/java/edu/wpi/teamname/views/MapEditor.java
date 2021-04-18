@@ -145,8 +145,8 @@ public class MapEditor implements Initializable {
         //System.out.println("got here");
         rezisingInfo();
        // map.clear();
-        ArrayList<Node> nodesList = new ArrayList<>(nodeSet);
-        for (Node n : nodesList) {
+
+        for (Node n : nodeSet) {
 
 
             Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
@@ -194,7 +194,7 @@ public class MapEditor implements Initializable {
 
     }
 
-    int newNodeINdex;
+
 
 
 
