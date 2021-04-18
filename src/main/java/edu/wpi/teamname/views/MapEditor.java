@@ -3,6 +3,8 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Database.DatabaseThread;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -92,7 +94,7 @@ public class MapEditor {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
             nodesMap.put(n.getNodeID(), n);

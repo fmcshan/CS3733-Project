@@ -10,10 +10,11 @@ import java.util.HashMap;
 
 public class Parser {
     public static Node parseNode(JSONObject _node) {
+        _node = _node.getJSONObject("fields");
         return new Node(
                 _node.getString("nodeId"),
-                Integer.parseInt(_node.getString("x")),
-                Integer.parseInt(_node.getString("y")),
+                _node.getInt("x"),
+                _node.getInt("y"),
                 _node.getString("level"),
                 _node.getString("building"),
                 _node.getString("nodeType"),
@@ -31,6 +32,7 @@ public class Parser {
     };
 
     public static Edge parseEdge(JSONObject _edge) {
+        _edge = _edge.getJSONObject("fields");
         return new Edge(
                 _edge.getString("edgeId"),
                 _edge.getString("startNode"),

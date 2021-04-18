@@ -4,15 +4,22 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class LocalStorage {
     private static final LocalStorage instance = new LocalStorage();
+    private List<DataListener> listeners = new ArrayList<DataListener>();
+
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
 
     public static synchronized LocalStorage getInstance() {
         return instance;
+    }
+
+    public void addListener(DataListener toAdd) {
+        listeners.add(toAdd);
     }
 
     public ArrayList<Node> getNodes() {
@@ -37,6 +44,11 @@ public class LocalStorage {
 
     public void setNodes(ArrayList<Node> nodes) {
         this.nodes = nodes;
+        for (DataListener dl : listeners) {
+            try {
+                dl.nodesSet(nodes);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
     }
 
     public ArrayList<Edge> getEdges() {
@@ -61,6 +73,11 @@ public class LocalStorage {
 
     public void setEdges(ArrayList<Edge> edges) {
         this.edges = edges;
+        for (DataListener dl : listeners) {
+            try {
+                dl.edgesSet(edges);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
     }
 
 }
