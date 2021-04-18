@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class AsynchronousQueue extends Thread {
     private static final AsynchronousQueue instance = new AsynchronousQueue();
     private LinkedList<AsynchronousTask> tasks = new LinkedList<AsynchronousTask>();
-    private int queueSize = tasks.size();
+    private boolean processTasks = true;
 
     private AsynchronousQueue() {
 
@@ -18,7 +18,7 @@ public class AsynchronousQueue extends Thread {
 
     public void handleRequests() {
         try {
-            while (true) {
+            while (processTasks) {
                 if (tasks.size() == 0) {
                     Thread.sleep(100);
                 } else {
@@ -42,6 +42,10 @@ public class AsynchronousQueue extends Thread {
 
     public void add(AsynchronousTask task) {
         tasks.add(task);
+    }
+
+    public void stopProcessing() {
+        processTasks = false;
     }
 
     public void run() {
