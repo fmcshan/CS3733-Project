@@ -1,8 +1,6 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.teamname.App;
+import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import javafx.application.Platform;
@@ -10,35 +8,47 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
-import java.awt.event.MouseEvent;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DefaultPage implements AuthListener {
 
     @FXML
     private VBox popPop;
-
     @FXML
     private VBox adminPop;
-
     @FXML
-    private JFXButton navButton;
-
+    private Path tonysPath;
     @FXML
-    private JFXButton reqButton;
-
+    private AnchorPane anchor;
     @FXML
-    private JFXButton exitApplication;
-
-    @FXML
-    private FontAwesomeIconView adminButton;
+    private ImageView hospitalMap;
 
     String openWindow = "";
+    ArrayList<Node> currentPath = new ArrayList<>();
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
+
+        tonysPath.getElements().clear();
+
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
+            }
+        });
+
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
+            }
+        });
     }
 
     public void loadWindowPopPop(String fileName, String windowName) {
@@ -95,7 +105,28 @@ public class DefaultPage implements AuthListener {
         Platform.exit();
     }
 
-    @Override
+    public void drawPath(ArrayList<Node> _listOfNodes) {
+        if (_listOfNodes.size() < 1) {
+            return;
+        }
+        currentPath = _listOfNodes;
+        tonysPath.getElements().clear();
+        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        double fileWidth = hospitalMap.getImage().getWidth();
+        double fileHeight = hospitalMap.getImage().getHeight();
+        double fileFxWidthRatio = mapWidth / fileWidth;
+        double fileFxHeightRatio = mapHeight / fileHeight;
+        Node firstNode = _listOfNodes.get(0);
+        MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
+        tonysPath.getElements().add(start);
+        System.out.println(fileFxWidthRatio);
+        _listOfNodes.forEach(n -> {
+            tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
+        });
+    }
+
+            @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
     }

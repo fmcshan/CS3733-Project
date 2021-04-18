@@ -129,15 +129,11 @@ public class MapEditor {
         double fileFxHeightRatio = mapHeight / fileHeight;
         Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
-//        Collection<LineTo> collection = new ArrayList<>();
         tonysPath.getElements().add(start);
         System.out.println(fileFxWidthRatio);
         _listOfNodes.forEach(n -> {
             tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
         });
-//        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
-//        path.setFill(Color.TOMATO);
-//        path.setStrokeWidth(4);
     }
 
     public void returnHome(ActionEvent actionEvent) {

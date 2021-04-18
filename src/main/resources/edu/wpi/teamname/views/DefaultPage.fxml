@@ -11,9 +11,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.LineTo?>
+<?import javafx.scene.shape.MoveTo?>
+<?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
       <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,7 +25,7 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <ImageView fitHeight="1000.0" fitWidth="1800.0" pickOnBounds="true" preserveRatio="true" scaleX="0.95" scaleY="0.95" scaleZ="0.0">
+                  <ImageView fx:id="hospitalMap" fitHeight="1000.0" fitWidth="1800.0" pickOnBounds="true" preserveRatio="true" scaleX="0.95" scaleY="0.95" scaleZ="0.0">
                      <image>
                         <Image url="@../images/brighamandwomens.png" />
                      </image>
@@ -231,5 +234,12 @@
          </children>
       </VBox>
       <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="350.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="50.0" />
+      <Path fx:id="tonysPath" fill="#ff634700" layoutX="10.0" layoutY="10.0" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
+         <elements>
+            <MoveTo x="800.0" y="800.0" />
+            <LineTo x="600.0" y="600.0" />
+            <LineTo x="500.0" y="500.0" />
+         </elements>
+      </Path>
    </children>
 </AnchorPane>
