@@ -1,7 +1,6 @@
 package edu.wpi.teamname;
 
-import edu.wpi.teamname.database.DatabaseThread;
-import edu.wpi.teamname.simplify.Requests;
+import edu.wpi.teamname.Database.DatabaseThread;
 
 public class Main {
 

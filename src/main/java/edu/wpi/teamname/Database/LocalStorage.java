@@ -1,4 +1,4 @@
-package edu.wpi.teamname.database;
+package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;

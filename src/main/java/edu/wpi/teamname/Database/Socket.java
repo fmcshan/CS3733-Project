@@ -1,9 +1,8 @@
-package edu.wpi.teamname.database;
+package edu.wpi.teamname.Database;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;

@@ -2,7 +2,7 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.fxml.FXML;
 
 import java.util.ArrayList;

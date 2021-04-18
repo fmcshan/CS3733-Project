@@ -1,4 +1,4 @@
-package edu.wpi.teamname.database;
+package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
@@ -57,10 +57,9 @@ public class Parser {
         });
 
         edges.forEach(e -> {
-            if (!edgeMap.containsKey(e.getEdgeID())) {
-                edgeMap.put(e.getStartNode(), new ArrayList<Node>());
+            if (nodeMap.containsKey(e.getStartNode()) && nodeMap.containsKey(e.getEndNode())) {
+                nodeMap.get(e.getStartNode()).addEdge(nodeMap.get(e.getEndNode()));
             }
-            edgeMap.get(e.getStartNode()).add(nodeMap.get(e.getEndNode()));
         });
 
         return nodes;

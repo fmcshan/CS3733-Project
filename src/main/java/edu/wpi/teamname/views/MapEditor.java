@@ -3,7 +3,7 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
-import edu.wpi.teamname.database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

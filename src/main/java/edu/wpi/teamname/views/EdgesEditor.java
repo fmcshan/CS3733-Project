@@ -3,7 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.App;
-import edu.wpi.teamname.database.CSVOperator;
+import edu.wpi.teamname.Database.CSVOperator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

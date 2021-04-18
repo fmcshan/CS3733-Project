@@ -1,4 +1,4 @@
-package edu.wpi.teamname.database;
+package edu.wpi.teamname.Database;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
