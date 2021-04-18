@@ -29,6 +29,8 @@ public class DefaultPage implements AuthListener {
     @FXML
     private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
+    private VBox checkInPop; // vbox to populate Check-in page
+    @FXML
     private VBox adminPop; // vbox to populate Map Editor button
     @FXML
     private VBox requestPop; // vbox to populate Submitted Requests button
@@ -91,6 +93,15 @@ public class DefaultPage implements AuthListener {
         }
     }
 
+    public void loadWindowCheckInPop(String fileName, String windowName) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
+            openWindowCheckInPop(windowName, root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void openWindowPopPop(String windowName, Parent root) {
         popPop.getChildren().clear();
         if (!windowName.equals(openWindow)) {
@@ -121,6 +132,16 @@ public class DefaultPage implements AuthListener {
         openWindow = "";
     }
 
+    public void openWindowCheckInPop(String windowName, Parent root) {
+        checkInPop.getChildren().clear();
+        if (!windowName.equals(openWindow)) {
+            checkInPop.getChildren().add(root);
+            openWindow = windowName;
+            return;
+        }
+        openWindow = "";
+    }
+
     public void toggleNav(ActionEvent actionEvent) {
 
         // load controller here
@@ -136,6 +157,8 @@ public class DefaultPage implements AuthListener {
     public void openLogin(ActionEvent actionEvent) {
         loadWindowPopPop("Login", "loginBar");
     }
+
+    public void openCheckIn(ActionEvent actionEvent) { loadWindowCheckInPop("UserRegistration", "registrationButton"); }
 
     public void exitApplication(ActionEvent actionEvent) {
         Shutdown.getInstance().exit();
@@ -170,9 +193,5 @@ public class DefaultPage implements AuthListener {
 
     public void registerUser(ActionEvent actionEvent) {
         //loadScene("UserRegistration");
-    }
-
-    public void openCheckIn(ActionEvent actionEvent) {
-        loadWindowPopPop("UserRegistration", "registrationButton");
     }
 }
