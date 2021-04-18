@@ -8,9 +8,8 @@ import javafx.scene.layout.HBox;
 
 public class ZoomPan {
 
-    public static void getHospitalMap(ImageView hospitalMap){
-        double width = hospitalMap.getFitWidth(); //get the width associated with the width
-        double height = hospitalMap.getFitHeight(); //get the height associated with the height
+    public static void getHospitalMap(ImageView hospitalMap, double width,double height){
+        //get the height associated with the height
         hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(hospitalMap, width, height);
 
@@ -31,7 +30,7 @@ public class ZoomPan {
         });
 
         hospitalMap.setOnScroll(mouseEvent ->  {
-            double getDifference = mouseEvent.getDeltaY();
+            double getDifference = -mouseEvent.getDeltaY();
             Rectangle2D viewportOfImage = hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);

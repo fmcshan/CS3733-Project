@@ -52,6 +52,9 @@ public class MapEditor implements Initializable {
 
     private Point2D pointA;
     private Point2D pointB;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
 
     //private final String image = "edu/wpi/teamname/views/brighamandwomens.png";
     //Image hospitalMapImage = new Image(image);
@@ -71,7 +74,8 @@ public class MapEditor implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         tonysPath.getElements().clear();
-
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
@@ -84,45 +88,6 @@ public class MapEditor implements Initializable {
             }
         });
 
-
-
-//        Callback<ListView<Node>, ListCell<Node>> cellFactory = new Callback<ListView<Node>, ListCell<Node>>() {
-//
-//            @Override
-//            public ListCell<Node> call(ListView<Node> l) {
-//                return new ListCell<Node>() {
-//
-//                    @Override
-//                    protected void updateItem(Node item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (item == null || empty) {
-//                            setGraphic(null);
-//                        } else {
-//                            setText(item.getLongName());
-//                        }
-//                    }
-//                };
-//            }
-//        };
-//
-//        fromCombo.setConverter(new StringConverter<String>() {
-//            @Override
-//            public String toString(Node node) {
-//                if (node == null){
-//                    return null;
-//                } else {
-//                    return node.getLongName();
-//                }
-//            }
-//
-//            @Override
-//            public Node fromString(String string) {
-//                return null;
-//            }
-//        });
-//
-//        fromCombo.setButtonCell(cellFactory.call(null));
-//        fromCombo.setCellFactory(cellFactory);
 
         listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
@@ -138,10 +103,11 @@ public class MapEditor implements Initializable {
         //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
         System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
         //hospitalMap.fitWidthProperty().addListener(
-        hospitalMap.fitWidthProperty().addListener(
+        ZoomPan.getHospitalMap(hospitalMap, mapWidth,mapHeight);
+        hospitalMap.onScrollProperty().addListener(
                 (obs, oldVal, newVal) -> {
                     if (hospitalMap != null && hospitalMap.getFitWidth() > 0){
-                        ZoomPan.getHospitalMap(hospitalMap);
+                        ZoomPan.getHospitalMap(hospitalMap,mapWidth,mapHeight);
                         //System.out.println("onScrollProperty before: "+ hospitalMap.onScrollProperty());
                         System.out.println(".fitWidthProperty() before: "+ hospitalMap.fitWidthProperty());
                     }
