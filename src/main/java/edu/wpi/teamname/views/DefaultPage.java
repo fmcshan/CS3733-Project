@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DefaultPage implements AuthListener {
 
@@ -23,6 +25,8 @@ public class DefaultPage implements AuthListener {
     private VBox popPop;
     @FXML
     private VBox adminPop;
+    @FXML
+    private VBox requestPop;
     @FXML
     private Path tonysPath;
     @FXML
@@ -32,6 +36,10 @@ public class DefaultPage implements AuthListener {
 
     String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
+
+    public VBox getPopPop() {
+        return popPop;
+    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
@@ -69,6 +77,15 @@ public class DefaultPage implements AuthListener {
         }
     }
 
+    public void loadWindowRequestPop(String fileName, String windowName) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
+            openWindowRequestPop(windowName, root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void openWindowPopPop(String windowName, Parent root) {
         popPop.getChildren().clear();
         if (!windowName.equals(openWindow)) {
@@ -89,8 +106,22 @@ public class DefaultPage implements AuthListener {
         openWindow = "";
     }
 
+    public void openWindowRequestPop(String windowName, Parent root) {
+        requestPop.getChildren().clear();
+        if (!windowName.equals(openWindow)) {
+            requestPop.getChildren().add(root);
+            openWindow = windowName;
+            return;
+        }
+        openWindow = "";
+    }
+
     public void toggleNav(ActionEvent actionEvent) {
-        loadWindowPopPop("Navigation", "navBar");
+
+        // load controller here
+        Navigation navigation = new Navigation(this);
+
+        navigation.loadNav();
     }
 
     public void openRequests(ActionEvent actionEvent) {
@@ -129,5 +160,6 @@ public class DefaultPage implements AuthListener {
             @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
+        loadWindowRequestPop("SubmittedRequests", "reqButton");
     }
 }
