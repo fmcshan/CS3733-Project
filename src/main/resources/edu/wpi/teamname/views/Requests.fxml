@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
+   <children>
+      <Label text="Requests">
+         <font>
+            <Font name="System Bold" size="48.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" top="20.0" />
+         </VBox.margin>
+      </Label>
+      <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the service request you would like to make." wrappingWidth="300.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" />
+         </VBox.margin>
+      </Text>
+      <Label text="Type" textFill="#868686">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" right="275.0" top="50.0" />
+         </VBox.margin>
+      </Label>
+      <JFXComboBox fx:id="requestsBox" focusColor="WHITE" prefWidth="300.0" promptText="Requests" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+         <VBox.margin>
+            <Insets left="25.0" top="5.0" />
+         </VBox.margin>
+      </JFXComboBox>
+   </children>
+</VBox>

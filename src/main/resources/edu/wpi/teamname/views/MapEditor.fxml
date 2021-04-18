@@ -20,9 +20,9 @@
     <children>
         <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #d8d9d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="hospitalMap" preserveRatio="true" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="hospitalMap" preserveRatio="true" scaleX="0.75" scaleY="0.75" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
                <image>
-                  <Image url="@brighamandwomens.png" />
+                  <Image url="@../images/brighamandwomens.png" />
                </image>
             </ImageView>
          </children>

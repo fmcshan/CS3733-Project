@@ -36,13 +36,26 @@ public class AStar {
      * @param goal the ending node
      */
     public AStar(ArrayList nodes, Node start, Node goal) {
-        this.nodes = nodes;
+        this.resetNodes(nodes); //reset all provided nodes before pathfinding
         this.start = start;
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
         this.goal = goal;
         openNodes = new PriorityQueue<>(new NodeComparator()); //Instantiates the priority queue with our overwrited comparator
         this.process();
         this.displayPath();
+    }
+
+    /**
+     * Resets the parents and costs of all nodes in the provided arraylist of nodes
+     * @param nodes an ArrayList of Nodes to be reset
+     */
+    private void resetNodes(ArrayList<Node> nodes) {
+        for (Node node : nodes) {
+            if (node.getParent() != null) {
+                node.setParent(null);
+            }
+            node.setCostSoFar(Double.POSITIVE_INFINITY);
+        }
     }
 
     /**
@@ -63,7 +76,7 @@ public class AStar {
 
 
         Node current = goal;
-        while (current.getParent() != null){
+        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())){
             finalPath.push(current);
             current = current.getParent();
         }
@@ -179,10 +192,13 @@ public class AStar {
     public static void main(String[] args) {
         //TODO make nodeID take click instance/drop-down  menu
         Stopwatch timer = new Stopwatch();
-        ArrayList<Node> nodes = Parser.loadNodesandEdges();
-        Node start = nodes.get(Parser.indexOfNode(nodes, "EEXIT00201"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "GDEPT00403"));
+        ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
+        //Node start = nodes.get(Parser.indexOfNode(nodes, "AREST00101"));
+        //Node goal = nodes.get(Parser.indexOfNode(nodes, "AREST00103"));
+        Node start = nodes.get(1);
+        Node goal = nodes.get(30);
         AStar example = new AStar(nodes, start, goal);
+
         System.out.println(timer.elapsedTime());
     }
 }
