@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Authentication;
 
+import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Requests;
 import edu.wpi.teamname.simplify.Response;
 import org.json.JSONObject;
@@ -56,6 +57,7 @@ public class AuthenticationManager {
 
     public void signOut() {
         user = null;
+        SocketManager.getInstance().startAuthDataSocket();
     }
 
     public String userId() {
