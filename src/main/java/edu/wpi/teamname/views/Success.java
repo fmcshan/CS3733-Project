@@ -19,7 +19,7 @@ public class Success {
     }
 
     /**
-     * load Navigation bar in the Default Page when button is pressed/ make it disappear
+     * load success bar in the Default Page when button is pressed/ make it disappear
      */
     public void loadSuccess() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Success.fxml"));
@@ -38,15 +38,19 @@ public class Success {
                 }
             });
             Parent root = loader.load();
-            userRegistration.openWindowSuccessPop("successBar", root); // open/close navigation bar
+            userRegistration.openWindowSuccessPop("successBar", root); // open/close success bar
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * When close button is pressed close the window
+     * @param actionEvent
+     */
     public void closeSuccess(ActionEvent actionEvent) {
-        userRegistration.getSuccessPop().getChildren().clear();
-        Bridge.getInstance().close();
+        userRegistration.getSuccessPop().getChildren().clear(); // clear the successPop vbox
+        Bridge.getInstance().close(); // close the window
     }
 }
