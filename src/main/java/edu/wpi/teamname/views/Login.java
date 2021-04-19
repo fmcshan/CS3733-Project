@@ -15,6 +15,10 @@ import org.apache.commons.validator.EmailValidator;
 
 import java.io.IOException;
 
+/**
+ * Controller for Login.fxml
+ * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
+ */
 public class Login {
 
     @FXML
@@ -28,6 +32,11 @@ public class Login {
 
     String openWindow = "";
 
+    /**
+     * Check if the email is valid using EmailValidator
+     * @param email
+     * @return true if the email is valid
+     */
     public boolean isValidEmail(String email) {
         // create the EmailValidator instance
         EmailValidator validator = EmailValidator.getInstance();
@@ -36,6 +45,10 @@ public class Login {
         return validator.isValid(email);
     }
 
+    /**
+     * Once the login button is pressed, check if the email and password are valid
+     * @param event
+     */
     @FXML
     void login(ActionEvent event) {
         String email = emailField.getText();
@@ -52,6 +65,6 @@ public class Login {
             failedLogin.setText("Invalid Credentials");
             return;
         }
-        Bridge.getInstance().close();
+        Bridge.getInstance().close(); //close the window if the user is logged in
     }
 }
