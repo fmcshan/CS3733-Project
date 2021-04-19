@@ -51,8 +51,12 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private JFXButton adminButton;
 
-    String openWindow = "";
+    static String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
+
+    public static void setOpenWindow(String windowName) {
+        openWindow = windowName;
+    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);

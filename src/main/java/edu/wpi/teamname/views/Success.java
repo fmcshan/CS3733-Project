@@ -13,6 +13,8 @@ public class Success {
 
     @FXML
     private UserRegistration userRegistration;
+    @FXML
+    private DefaultPage defaultPage;
 
     public Success(UserRegistration userRegistration) {
         this.userRegistration = userRegistration;
@@ -39,7 +41,6 @@ public class Success {
             });
             Parent root = loader.load();
             userRegistration.openWindowSuccessPop("successBar", root); // open/close success bar
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -63,6 +63,10 @@ public class UserRegistration {
 
     String openWindow = ""; // determines the currently open window in the successPop Vbox
 
+//    public UserRegistration(DefaultPage defaultPage) {
+//        this.defaultPage = defaultPage;
+//    }
+
     /**
      * getter for successPop Vbox
      * @return
@@ -158,6 +162,8 @@ public class UserRegistration {
             if (otherCheckbox.isSelected()) {
                 reasonsForVisit.add(otherInput.getText());
             }
+
+            DefaultPage.setOpenWindow("");
 
             //submit
             edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
