@@ -68,19 +68,13 @@ public class DefaultPage implements AuthListener, CloseListener {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
+            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
         });
 
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
-        });
-
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
-            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
-        });
-
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
     }
