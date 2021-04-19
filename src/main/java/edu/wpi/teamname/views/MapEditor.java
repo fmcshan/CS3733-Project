@@ -70,7 +70,7 @@ public class MapEditor implements Initializable {
         }
         rezisingInfo();
         OnWindowSizeChanged();
-        //  listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+        // listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
