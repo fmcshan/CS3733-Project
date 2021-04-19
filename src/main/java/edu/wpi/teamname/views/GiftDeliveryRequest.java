@@ -249,7 +249,7 @@ public class GiftDeliveryRequest {
             DefaultPage.setOpenWindow("");
 
             //Add this request to our list of requests
-            requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText(), giftSelected));
+            requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
 
             //Close the window after submitting the request
             request.getRequestPop().getChildren().clear(); //Clear the request pop VBox

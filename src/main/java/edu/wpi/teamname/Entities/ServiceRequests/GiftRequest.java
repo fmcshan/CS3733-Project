@@ -3,6 +3,7 @@ package edu.wpi.teamname.Entities.ServiceRequests;
 import java.util.List;
 
 public class GiftRequest extends ServiceRequest{
+    private final String requestType;
     private List<String> giftRequested;
 
     /**
@@ -14,6 +15,7 @@ public class GiftRequest extends ServiceRequest{
      */
     public GiftRequest(String phoneNumber, String location, String requesterName) {
         super(phoneNumber, location, requesterName);
+        this.requestType = "Gift Request";
     }
 
     /**
@@ -28,6 +30,7 @@ public class GiftRequest extends ServiceRequest{
     public GiftRequest(String phoneNumber, String location, String requesterName, List<String> giftRequested) {
         super(phoneNumber, location, requesterName);
         this.giftRequested = giftRequested;
+        this.requestType = "Gift Request";
     }
 
     /**

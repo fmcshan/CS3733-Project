@@ -19,12 +19,17 @@ public abstract class ServiceRequest {
      * Name of the person who requested the service
      */
     private String requesterName;
+    /**
+     * The type of service request
+     */
+    private String requestType;
 
     /**
      * Creates a new Service Request
      * @param phoneNumber Phone number for confirmation
      * @param location Location for the request
      * @param requesterName Name of the person that requested the service
+     * @param requestType
      */
     public ServiceRequest(String phoneNumber, String location, String requesterName) {
         this.phoneNumber = phoneNumber;
