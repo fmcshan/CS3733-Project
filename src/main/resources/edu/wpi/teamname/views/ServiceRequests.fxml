@@ -56,7 +56,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="40.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#medicineDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Medicine Delivery">
@@ -64,7 +64,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#laundryServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Laundry Services">
@@ -72,7 +72,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
          </children>
@@ -97,7 +97,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="40.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#giftDelivery" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Gift Delivery">
@@ -105,7 +105,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
          </children>
@@ -133,7 +133,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="40.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#sanitationServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Sanitation Services">
@@ -141,7 +141,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#patientTransportation" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Patient Transportation">
@@ -149,7 +149,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
             <JFXButton buttonType="RAISED" minWidth="-Infinity" onAction="#computerServices" prefWidth="214.0" ripplerFill="#dddddd" style="-fx-background-color: #eeeeee;" text="Computer Services">
@@ -157,7 +157,7 @@
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="60.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </JFXButton>
          </children>
