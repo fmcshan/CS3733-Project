@@ -161,7 +161,7 @@ public class ZoomPan {
 
     //HashMap<String, Node> map = new HashMap();
     static ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
-    public static void displayNodes(AnchorPane topElements, double mouseScrollVal, double scaledX, double scaledY, double scaledWidth, double scaledHeight) {
+    public static void displayNodes(AnchorPane topElements, ImageView hospitalMap, double scaledX, double scaledY, double scaledWidth, double scaledHeight) {
 
         System.out.println("got here");
         //rezisingInfo();
@@ -172,9 +172,9 @@ public class ZoomPan {
             double mapHeight = 680.0;
             double fileWidth = 5000.0;
             double fileHeight = 3400.0;
-            double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
-            double widthScale = topElements.getWidth() / fileWidth;
-            double heightScale = topElements.getHeight() / fileHeight;
+            //double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
+            double widthScale = scaledWidth / fileWidth;
+            double heightScale = scaledHeight / fileHeight;
             double smallestScale = Math.max(Math.min(heightScale, widthScale), 0);
             System.out.println("smallestScale: " + smallestScale);
             System.out.println("scaledWidth: " + scaledWidth);
