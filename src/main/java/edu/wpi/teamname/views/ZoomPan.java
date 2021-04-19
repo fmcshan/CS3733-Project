@@ -73,7 +73,7 @@ public class ZoomPan {
             double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-            //System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
+            System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             //System.out.println("mouseCursorLocationOnMap" + mouseCursorLocationOnMap);
@@ -99,7 +99,7 @@ public class ZoomPan {
 
             hospitalMap.setViewport(newViewPort);
             inputTopElements.getChildren().clear();
-            displayNodes(inputTopElements, boundariesOfViewPort, widthRatio, heightRatio);
+            displayNodes(inputTopElements, getDifference, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
         });
 
 
@@ -153,48 +153,63 @@ public class ZoomPan {
 
     //HashMap<String, Node> map = new HashMap();
     static ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
-    public static void displayNodes(AnchorPane topElements, double scale, double widthRatio, double heightRatio) {
+    public static void displayNodes(AnchorPane topElements, double mouseScrollVal, double scaledX, double scaledY, double scaledWidth, double scaledHeight) {
 
         System.out.println("got here");
         //rezisingInfo();
         for (Node n : nodes) {
             //map.put(n.getNodeID(), n);
             //   System.out.println(n.getNodeType());
-            double nodeX = n.getX();
-            double nodeY = n.getY();
-
             double mapWidth = 1000.0;
             double mapHeight = 680.0;
             double fileWidth = 5000.0;
             double fileHeight = 3400.0;
+            double scale = Math.pow(1.01, -mouseScrollVal);
 
-            widthRatio = mapWidth / fileWidth;
-            heightRatio = mapHeight / fileHeight;
+            double nodeX = n.getX();
+            double nodeY = n.getY();
 
-            double weightedNodeX = (n.getX() * scale) * widthRatio;
-            double weightedNodeY = (n.getY() * scale) * heightRatio;
             System.out.println("nodeX: " + nodeX);
             System.out.println("nodeY: " + nodeY);
 
-            System.out.println("widthRatio: " + widthRatio);
-            System.out.println("heightRatio: " + heightRatio);
+            System.out.println("scale: " + scale);
 
+            double widthRatio = mapWidth / fileWidth;
+            double heightRatio = mapHeight / fileHeight;
+
+            double weightedNodeX;
+            double weightedNodeY;
+            weightedNodeX = n.getX() * scale;
+            weightedNodeY = n.getY() * scale;
+
+            if(viewportOfImageWidth >= 4999 || viewportOfImageWidth >= 3399 ){
+                weightedNodeX *= widthRatio;
+                weightedNodeY *= heightRatio;
+
+                System.out.println("scaledWidthRatio: " + (scale * widthRatio));
+                System.out.println("scaledHeightRatio: " + (scale * heightRatio));
+
+            }
             System.out.println("weightedNodeX: " + weightedNodeX);
             System.out.println("weightedNodeY: " + weightedNodeY);
-//            double yCoord = ((n.getY() / mapHeight) * viewportHeight) * fileFxHeightRatio;
-//            double xCoord = ((n.getX() / mapWidth) * viewportWidth) * fileFxWidthRatio;
-//            System.out.println("viewportHeight: " + viewportHeight);
-//            System.out.println("viewportWidth: " + viewportWidth);
-//            System.out.println("yCoord: " + yCoord);
-//            System.out.println("xCoord: " + xCoord);
-            Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
 
-//            System.out.println(fileFxWidthRatio);
-//            System.out.println(fileFxHeightRatio);
-//            circle = (Circle) clickNode(circle,n);
-            circle.setFill(Color.OLIVE);
-            topElements.getChildren().add(circle);
-            //   System.out.println("ADDED");
+            double lowerXBound = scaledX;
+            double upperXBound = scaledX + scaledWidth;
+            System.out.println("lowerXBound: " + lowerXBound);
+            System.out.println("upperXBound: " + upperXBound);
+
+            double lowerYBound = scaledY;
+            double upperYBound = scaledY + scaledHeight;
+            System.out.println("lowerYBound: " + lowerYBound);
+            System.out.println("upperYBound: " + upperYBound);
+
+
+
+            if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
+                Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
+                circle.setFill(Color.OLIVE);
+                topElements.getChildren().add(circle);
+            }
         }
     }
 
