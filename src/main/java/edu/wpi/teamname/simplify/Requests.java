@@ -1,5 +1,6 @@
 package edu.wpi.teamname.simplify;
 
+import com.google.api.client.json.Json;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -18,12 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Requests {
-    public static Response post(String _url, JSONObject headers) {
+    public static Response post(String _url, JSONObject body, JSONObject headers) {
         try {
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(_url);
 
             post.addHeader(HttpHeaders.AUTHORIZATION, AuthenticationManager.getInstance().userId());
+
+            if (body != null) {
+                List<NameValuePair> params = new ArrayList<>();
+                params.add(new BasicNameValuePair("data", body.toString()));
+                post.setEntity(new UrlEncodedFormEntity(params));
+            }
 
             if (headers != null) {
                 List<NameValuePair> formData = new ArrayList<NameValuePair>();
@@ -55,6 +62,10 @@ public class Requests {
             e.printStackTrace();
         }
         return new Response(500);
+    }
+
+    public static Response post(String _url, JSONObject body) {
+        return post(_url, body, null);
     }
 
     public static Response post(String _url) {

@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,4 +81,15 @@ public class LocalStorage {
         }
     }
 
+    public void checkinUser(UserRegistration _form) {
+        JSONObject data = new JSONObject();
+        data.put("name", _form.getName());
+        data.put("reason", _form.getReasonsForVisit());
+        data.put("date", _form.getDate());
+        data.put("phone", _form.getPhoneNumber());
+        data.put("ack", _form.isAcknowledged());
+        data.put("ackAt", _form.getAcknowledgedAt());
+
+        System.out.println(data);
+    }
 }
