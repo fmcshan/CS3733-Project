@@ -1,6 +1,8 @@
 package edu.wpi.teamname;
 
 import java.io.IOException;
+
+import edu.wpi.teamname.simplify.Shutdown;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -22,13 +24,16 @@ public class App extends Application {
   public void start(Stage primaryStage) {
     App.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("views/DefaultPage1.fxml"));
+      primaryStage.setOnCloseRequest(e -> {
+        Shutdown.getInstance().exit();
+      });
+      Parent root = FXMLLoader.load(getClass().getResource("views/DefaultPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
     } catch (IOException e) {
       e.printStackTrace();
-      Platform.exit();
+      Shutdown.getInstance().exit();
     }
   }
 

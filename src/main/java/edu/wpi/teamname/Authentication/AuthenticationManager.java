@@ -57,6 +57,9 @@ public class AuthenticationManager {
 
     public void signOut() {
         user = null;
+        for (AuthListener ull : listeners) {
+            ull.userLogout();
+        }
         SocketManager.getInstance().startAuthDataSocket();
     }
 

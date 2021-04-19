@@ -1,8 +1,17 @@
 package edu.wpi.teamname.views;
 
+import com.google.rpc.context.AttributeContext;
+import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +19,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -21,7 +32,7 @@ import java.util.ArrayList;
  * Controller for DefaultPage.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage implements AuthListener {
+public class DefaultPage implements AuthListener, CloseListener {
 
     @FXML
     private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -32,28 +43,41 @@ public class DefaultPage implements AuthListener {
     @FXML
     private Path tonysPath; // this is Tony's path
     @FXML
-    private AnchorPane anchor; // the foundation of the image (needs to be replaced by a stack pane or vbox that has the proportions of the map)
+    private AnchorPane anchor; //
     @FXML
-    private ImageView hospitalMap; // the map itself
+    private ImageView hospitalMap;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private JFXButton adminButton;
 
-    String openWindow = ""; // used to check which window is currently open
-    ArrayList<Node> currentPath = new ArrayList<>(); // the current list of nodes
+    String openWindow = "";
+    ArrayList<Node> currentPath = new ArrayList<>();
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
+        Bridge.getInstance().addCloseListener(this);
 
         tonysPath.getElements().clear();
 
-        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
         });
 
-        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
+        });
+
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+        });
+
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
     }
 
@@ -115,7 +139,8 @@ public class DefaultPage implements AuthListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
-
+        tonysPath.getElements().clear();
+        popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
 
@@ -123,11 +148,22 @@ public class DefaultPage implements AuthListener {
     }
 
     public void openRequests(ActionEvent actionEvent) {
+        popPop.setPrefWidth(350.0);
         loadWindowPopPop("Requests", "reqBar");
     }
 
     public void openLogin(ActionEvent actionEvent) {
-        loadWindowPopPop("Login", "loginBar");
+        popPop.setPrefWidth(350.0);
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            loadWindowPopPop("Login", "loginBar");
+        } else {
+            AuthenticationManager.getInstance().signOut();
+        }
+    }
+
+    public void openCheckIn(ActionEvent actionEvent) {
+        popPop.setPrefWidth(657.0);
+        loadWindowPopPop("UserRegistration", "registrationButton");
     }
 
     public void exitApplication(ActionEvent actionEvent) {
@@ -155,9 +191,28 @@ public class DefaultPage implements AuthListener {
         });
     }
 
-            @Override
+    @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
+        MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
+        signOut.setFill(Paint.valueOf("#c3c3c3"));
+        signOut.setGlyphSize(52);
+        adminButton.setGraphic(signOut);
+    }
+
+    @Override
+    public void userLogout() {
+        adminPop.getChildren().clear();
+        requestPop.getChildren().clear();
+        MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
+        signOut.setFill(Paint.valueOf("#c3c3c3"));
+        signOut.setGlyphSize(52);
+        adminButton.setGraphic(signOut);
+    }
+
+    @Override
+    public void closeButtonPressed() {
+        popPop.getChildren().clear();
     }
 }
