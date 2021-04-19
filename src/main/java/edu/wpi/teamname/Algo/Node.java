@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Objects;
 
 /**
  * <h1>Node</h1>
@@ -272,6 +273,10 @@ public class Node {
         aNode.edges.add(this);
     }
 
+    public void setEdges(ArrayList<Node> edges) {
+        this.edges = edges;
+    }
+
     /**
      * Retrieves all the nodes connected to this node
      *
@@ -289,4 +294,19 @@ public class Node {
     public String getNodeID() {
         return nodeID;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return nodeID.equals(node.nodeID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodeID);
+    }
+
 }
