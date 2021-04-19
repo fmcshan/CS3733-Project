@@ -37,7 +37,7 @@
             <Insets left="25.0" right="275.0" top="50.0" />
          </VBox.margin>
       </Label>
-      <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+      <JFXComboBox fx:id="fromCombo" focusColor="WHITE" onAction="#getFromCombo" prefWidth="300.0" promptText="Current Location" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
          <padding>
             <Insets left="10.0" />
          </padding>
@@ -53,7 +53,7 @@
             <Insets left="25.0" right="285.0" top="25.0" />
          </VBox.margin>
       </Label>
-      <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#calcPath" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+      <JFXComboBox fx:id="toCombo" focusColor="WHITE" onAction="#getToCombo" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
          <padding>
             <Insets left="10.0" />
          </padding>
