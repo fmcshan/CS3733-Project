@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Requests">
    <effect>
       <DropShadow color="#a4a4a4" />
    </effect>
@@ -37,13 +37,10 @@
             <Insets left="25.0" right="275.0" top="50.0" />
          </VBox.margin>
       </Label>
-      <JFXComboBox fx:id="requestsBox" focusColor="WHITE" prefWidth="300.0" promptText="Requests" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
-         <padding>
-            <Insets left="10.0" />
-         </padding>
+      <ComboBox fx:id="requestsBox" onAction="#openForm" prefWidth="300.0" promptText="Requests" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;">
          <VBox.margin>
             <Insets left="25.0" top="5.0" />
          </VBox.margin>
-      </JFXComboBox>
+      </ComboBox>
    </children>
 </VBox>
