@@ -36,8 +36,6 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXCheckBox labWorkCheckbox;
     @FXML
-    public JFXCheckBox checkupCheckbox;
-    @FXML
     public JFXCheckBox physicalTherapyCheckbox;
     @FXML
     public JFXCheckBox otherCheckbox;
@@ -48,9 +46,13 @@ public class UserRegistration extends MasterRequest {
 
     public void submitRegistration(ActionEvent actionEvent) {
         try {
-
             String regexPattern = "\\d{3}-\\d{3}-\\d{4}"; //phone number pattern
-            if (nameInput.getText().contains(" ") && phoneInput.getText().matches(regexPattern)) {
+            if (nameInput.getText().contains(" ")) {
+                if (phoneInput.getText().matches(regexPattern)) {
+                    if (phoneInput.getText().matches(regexPattern)) {
+
+                    }
+                }
                 LocalDate localDate = dateOfBirth.getValue();
                 String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
 
@@ -70,8 +72,8 @@ public class UserRegistration extends MasterRequest {
                 if (labWorkCheckbox.isSelected()) {
                     reasonsForVisit.add("Lab Work");
                 }
-                if (checkupCheckbox.isSelected()) {
-                    reasonsForVisit.add("Checkup");
+                if (otherCheckbox.isSelected()) {
+                    reasonsForVisit.add(otherInput.getText());
                 }
                 if (physicalTherapyCheckbox.isSelected()) {
                     reasonsForVisit.add("Physical Therapy");
