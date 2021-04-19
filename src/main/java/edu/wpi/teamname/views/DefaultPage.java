@@ -36,6 +36,10 @@ public class DefaultPage {
         loadScene("ServiceRequests");
     }
 
+    public void mapEditorGraph(ActionEvent actionEvent) {
+        loadScene("MapEditorGraph");
+    }
+
     public void exitApplication(ActionEvent actionEvent) {
         Platform.exit();
     }

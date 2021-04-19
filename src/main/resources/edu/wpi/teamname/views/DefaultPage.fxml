@@ -74,6 +74,11 @@
                   <Insets bottom="15.0" right="15.0" />
                </VBox.margin>
                <children>
+                  <JFXButton buttonType="RAISED" onAction="#mapEditorGraph" ripplerFill="#c94d37" style="-fx-background-color: #ff6347;" text="Exit">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
                   <JFXButton buttonType="RAISED" onAction="#exitApplication" ripplerFill="#c94d37" style="-fx-background-color: #ff6347;" text="Exit">
                      <font>
                         <Font size="20.0" />
