@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ *
+ * Lauren Sowerbutts, Frank McShan
+ */
 public class UserRegistration {
 
     @FXML
@@ -55,12 +59,18 @@ public class UserRegistration {
     @FXML
     private Label failedPhoneNumber;
     @FXML
-    private VBox successPop;
-    @FXML
-    private DefaultPage defaultPage;
+    private VBox successPop; // this Vbox will be used to display the success page
 
-    String openWindow = "";
+    String openWindow = ""; // determines the currently open window in the successPop Vbox
 
+//    public UserRegistration(DefaultPage defaultPage) {
+//        this.defaultPage = defaultPage;
+//    }
+
+    /**
+     * getter for successPop Vbox
+     * @return
+     */
     public VBox getSuccessPop() {
         return successPop;
     }
@@ -153,6 +163,8 @@ public class UserRegistration {
                 reasonsForVisit.add(otherInput.getText());
             }
 
+            DefaultPage.setOpenWindow("");
+
             //submit
             edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
 
@@ -163,13 +175,18 @@ public class UserRegistration {
         }
     }
 
+    /**
+     * opens an fxml in the successPop Vbox
+     * @param windowName a string that specifies the currently open window in the successPop Vbox
+     * @param root the loaded fxml
+     */
     public void openWindowSuccessPop(String windowName, Parent root) {
-        successPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            successPop.getChildren().add(root);
-            openWindow = windowName;
+        successPop.getChildren().clear(); // clear successPop Vbox
+        if (!windowName.equals(openWindow)) { // if the window name passed in is not equal to the global string openWindow
+            successPop.getChildren().add(root); // Put the loaded fxml in the successPop Vbox
+            openWindow = windowName; // pass in the new window name into global string openWindow
             return;
         }
-        openWindow = "";
+        openWindow = ""; // pass in the empty string to openWindow - when the window is closed
     }
 }
