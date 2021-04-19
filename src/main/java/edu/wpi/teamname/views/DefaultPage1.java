@@ -2,26 +2,24 @@ package edu.wpi.teamname.views;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class DefaultPage1 {
 
     @FXML
     private ImageView hospitalMap;
     @FXML
-    private AnchorPane anchor;
+    private StackPane stackPane;
 
      public void initialize() {
 
-         anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
-
+         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
          });
 
-         anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
-
+         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
          });
 
-         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
-         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
      }
 }

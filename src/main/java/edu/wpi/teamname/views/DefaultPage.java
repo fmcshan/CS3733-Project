@@ -4,7 +4,9 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.simplify.Shutdown;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -155,7 +160,7 @@ public class DefaultPage implements AuthListener {
         });
     }
 
-            @Override
+    @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
