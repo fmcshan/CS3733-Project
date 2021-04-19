@@ -38,6 +38,12 @@ public class DefaultPage implements AuthListener {
     private AnchorPane anchor; //
     @FXML
     private ImageView hospitalMap;
+    @FXML
+    private UserRegistration userRegistration;
+
+//    public DefaultPage(UserRegistration userRegistration) {
+//        this.userRegistration = userRegistration;
+//    }
 
     String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
@@ -122,7 +128,7 @@ public class DefaultPage implements AuthListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
-
+        popPop.setPrefWidth(350);
         // load controller here
         Navigation navigation = new Navigation(this);
 
@@ -130,6 +136,7 @@ public class DefaultPage implements AuthListener {
     }
 
     public void openRequests(ActionEvent actionEvent) {
+        popPop.setPrefWidth(350.0);
         loadWindowPopPop("Requests", "reqBar");
     }
 

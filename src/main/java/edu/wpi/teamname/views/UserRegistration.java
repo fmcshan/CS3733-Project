@@ -10,11 +10,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 
+import javax.swing.*;
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,35 +25,45 @@ import java.util.ArrayList;
 public class UserRegistration {
 
     @FXML
-    public Label failedName;
+    private Label failedName;
     @FXML
-    public JFXTextField nameInput;
+    private JFXTextField nameInput;
     @FXML
-    public Label failedDate;
+    private JFXDatePicker dateOfBirth;
     @FXML
-    public JFXDatePicker dateOfBirth;
+    private Label failedDate;
     @FXML
-    public JFXCheckBox emergencyRoomCheckbox;
+    private JFXCheckBox emergencyRoomCheckbox;
     @FXML
-    public JFXCheckBox xrayCheckbox;
+    private JFXCheckBox xrayCheckbox;
     @FXML
-    public JFXCheckBox mriCheckbox;
+    private JFXCheckBox mriCheckbox;
     @FXML
-    public JFXCheckBox eyeExamCheckbox;
+    private JFXCheckBox eyeExamCheckbox;
     @FXML
-    public JFXCheckBox labWorkCheckbox;
+    private JFXCheckBox labWorkCheckbox;
     @FXML
-    public JFXCheckBox physicalTherapyCheckbox;
+    private JFXCheckBox physicalTherapyCheckbox;
     @FXML
-    public Label failedReason;
+    private JFXCheckBox otherCheckbox;
     @FXML
-    public JFXCheckBox otherCheckbox;
+    private Label failedReason;
     @FXML
-    public JFXTextField otherInput;
+    private JFXTextField otherInput;
     @FXML
-    public Label failedPhoneNumber;
+    private JFXTextField phoneInput;
     @FXML
-    public JFXTextField phoneInput;
+    private Label failedPhoneNumber;
+    @FXML
+    private VBox successPop;
+    @FXML
+    private DefaultPage defaultPage;
+
+    String openWindow = "";
+
+    public VBox getSuccessPop() {
+        return successPop;
+    }
 
     public boolean nameInputValid() {
         return nameInput.getText().contains(" ");
@@ -83,72 +96,81 @@ public class UserRegistration {
     }
 
     public void submitRegistration(ActionEvent actionEvent) {
-        try {
-            if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
-                phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
-                System.out.println(phoneInput.getText());
-            }
-            if (!nameInputValid()) {
-                failedName.setText("Invalid Name Entry");
-            } else {
-                failedName.setText("");
-            }
-
-            if (!dateSelected()) {
-                failedDate.setText("Invalid Date Entry");
-            } else {
-                failedDate.setText("");
-            }
-
-            if (!aCheckboxSelected()) {
-                failedReason.setText("Select a Reason");
-            } else if (!otherCheckboxValid()) {
-                failedReason.setText("Invalid Other Reason");
-            } else {
-                failedReason.setText("");
-            }
-
-            if (!phoneNumberValid()) {
-                failedPhoneNumber.setText("Invalid Phone Number");
-            } else {
-                failedPhoneNumber.setText("");
-            }
-
-            if (nameInputValid() && dateSelected() && aCheckboxSelected() && otherCheckboxValid() && phoneNumberValid()) {
-                LocalDate localDate = dateOfBirth.getValue();
-                String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
-                //System.out.println(date);
-                ArrayList<String> reasonsForVisit = new ArrayList<String>();
-                if (emergencyRoomCheckbox.isSelected()) {
-                    reasonsForVisit.add("Emergency Room");
-                }
-                if (xrayCheckbox.isSelected()) {
-                    reasonsForVisit.add("Radiology");
-                }
-                if (mriCheckbox.isSelected()) {
-                    reasonsForVisit.add("MRI");
-                }
-                if (eyeExamCheckbox.isSelected()) {
-                    reasonsForVisit.add("Eye Exam");
-                }
-                if (labWorkCheckbox.isSelected()) {
-                    reasonsForVisit.add("Lab Work");
-                }
-                if (physicalTherapyCheckbox.isSelected()) {
-                    reasonsForVisit.add("Physical Therapy");
-                }
-                if (otherCheckbox.isSelected()) {
-                    reasonsForVisit.add(otherInput.getText());
-                }
-
-                //submit
-                edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
-
-                Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/RegistrationConfirmation.fxml"));
-                App.getPrimaryStage().getScene().setRoot(root);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
+            phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
+            System.out.println(phoneInput.getText());
         }
+        if (!nameInputValid()) {
+            failedName.setText("Invalid Name Entry");
+        } else {
+            failedName.setText("");
+        }
+
+        if (!dateSelected()) {
+            failedDate.setText("Invalid Date Entry");
+        } else {
+            failedDate.setText("");
+        }
+
+        if (!aCheckboxSelected()) {
+            failedReason.setText("Select a Reason");
+        } else if (!otherCheckboxValid()) {
+            failedReason.setText("Invalid Other Reason");
+        } else {
+            failedReason.setText("");
+        }
+
+        if (!phoneNumberValid()) {
+            failedPhoneNumber.setText("Invalid Phone Number");
+        } else {
+            failedPhoneNumber.setText("");
+        }
+
+        if (nameInputValid() && dateSelected() && aCheckboxSelected() && otherCheckboxValid() && phoneNumberValid()) {
+            LocalDate localDate = dateOfBirth.getValue();
+            String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
+            //System.out.println(date);
+            ArrayList<String> reasonsForVisit = new ArrayList<String>();
+            if (emergencyRoomCheckbox.isSelected()) {
+                reasonsForVisit.add("Emergency Room");
+            }
+            if (xrayCheckbox.isSelected()) {
+                reasonsForVisit.add("Radiology");
+            }
+            if (mriCheckbox.isSelected()) {
+                reasonsForVisit.add("MRI");
+            }
+            if (eyeExamCheckbox.isSelected()) {
+                reasonsForVisit.add("Eye Exam");
+            }
+            if (labWorkCheckbox.isSelected()) {
+                reasonsForVisit.add("Lab Work");
+            }
+            if (physicalTherapyCheckbox.isSelected()) {
+                reasonsForVisit.add("Physical Therapy");
+            }
+            if (otherCheckbox.isSelected()) {
+                reasonsForVisit.add(otherInput.getText());
+            }
+
+            //submit
+            edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+
+            successPop.setPrefWidth(657.0);
+            // load controller here
+            Success success = new Success(this);
+            success.loadSuccess();
+            System.out.println("made it to loadSuccess");
+        }
+    }
+
+    public void openWindowSuccessPop(String windowName, Parent root) {
+        successPop.getChildren().clear();
+        if (!windowName.equals(openWindow)) {
+            successPop.getChildren().add(root);
+            openWindow = windowName;
+            return;
+        }
+        openWindow = "";
     }
 }
