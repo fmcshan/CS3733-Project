@@ -19,10 +19,14 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class UserRegistration extends MasterRequest {
+public class UserRegistration {
 
     @FXML
+    public Label failedName;
+    @FXML
     public JFXTextField nameInput;
+    @FXML
+    public Label failedDate;
     @FXML
     public JFXDatePicker dateOfBirth;
     @FXML
@@ -38,30 +42,88 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXCheckBox physicalTherapyCheckbox;
     @FXML
+    public Label failedReason;
+    @FXML
     public JFXCheckBox otherCheckbox;
     @FXML
     public JFXTextField otherInput;
     @FXML
+    public Label failedPhoneNumber;
+    @FXML
     public JFXTextField phoneInput;
+
+    public boolean nameInputValid() {
+        return nameInput.getText().contains(" ");
+    }
+
+    public boolean dateSelected() {
+        boolean ans = false;
+        if (dateOfBirth.getValue() != null) {
+            LocalDate date = dateOfBirth.getValue();
+            ans = (date.getYear() > 0) && (date.getMonthValue() > 0 && date.getMonthValue() < 13) && (date.getDayOfMonth() > 0 && date.getDayOfMonth() < 32);
+            if ((date.getMonthValue() == 2 && date.getDayOfMonth() > 28) || ((date.getMonthValue() == 4 || date.getMonthValue() == 6 || date.getMonthValue() == 9 || date.getMonthValue() == 11) && date.getDayOfMonth() > 30)) {
+                ans = false;
+            }
+        }
+
+        return ans;
+    }
+
+    public boolean aCheckboxSelected() {
+        return emergencyRoomCheckbox.isSelected() || xrayCheckbox.isSelected() || mriCheckbox.isSelected() || eyeExamCheckbox.isSelected() || labWorkCheckbox.isSelected() || physicalTherapyCheckbox.isSelected() || otherCheckbox.isSelected();
+    }
+
+    public boolean otherCheckboxValid() {
+        return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().equals(""));
+    }
+
+    public boolean phoneNumberValid() {
+        String regexPattern = "\\d{3}-\\d{3}-\\d{4}"; //phone number pattern
+        return phoneInput.getText().matches(regexPattern);
+    }
 
     public void submitRegistration(ActionEvent actionEvent) {
         try {
-            String regexPattern = "\\d{3}-\\d{3}-\\d{4}"; //phone number pattern
-            if (nameInput.getText().contains(" ")) {
-                if (phoneInput.getText().matches(regexPattern)) {
-                    if (phoneInput.getText().matches(regexPattern)) {
+            if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
+                phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
+                System.out.println(phoneInput.getText());
+            }
+            if (!nameInputValid()) {
+                failedName.setText("Invalid Name Entry");
+            } else {
+                failedName.setText("");
+            }
 
-                    }
-                }
+            if (!dateSelected()) {
+                failedDate.setText("Invalid Date Entry");
+            } else {
+                failedDate.setText("");
+            }
+
+            if (!aCheckboxSelected()) {
+                failedReason.setText("Select a Reason");
+            } else if (!otherCheckboxValid()) {
+                failedReason.setText("Invalid Other Reason");
+            } else {
+                failedReason.setText("");
+            }
+
+            if (!phoneNumberValid()) {
+                failedPhoneNumber.setText("Invalid Phone Number");
+            } else {
+                failedPhoneNumber.setText("");
+            }
+
+            if (nameInputValid() && dateSelected() && aCheckboxSelected() && otherCheckboxValid() && phoneNumberValid()) {
                 LocalDate localDate = dateOfBirth.getValue();
                 String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
-
+                //System.out.println(date);
                 ArrayList<String> reasonsForVisit = new ArrayList<String>();
                 if (emergencyRoomCheckbox.isSelected()) {
                     reasonsForVisit.add("Emergency Room");
                 }
                 if (xrayCheckbox.isSelected()) {
-                    reasonsForVisit.add("XRay");
+                    reasonsForVisit.add("Radiology");
                 }
                 if (mriCheckbox.isSelected()) {
                     reasonsForVisit.add("MRI");
@@ -72,11 +134,11 @@ public class UserRegistration extends MasterRequest {
                 if (labWorkCheckbox.isSelected()) {
                     reasonsForVisit.add("Lab Work");
                 }
-                if (otherCheckbox.isSelected()) {
-                    reasonsForVisit.add(otherInput.getText());
-                }
                 if (physicalTherapyCheckbox.isSelected()) {
                     reasonsForVisit.add("Physical Therapy");
+                }
+                if (otherCheckbox.isSelected()) {
+                    reasonsForVisit.add(otherInput.getText());
                 }
 
                 //submit
@@ -84,26 +146,9 @@ public class UserRegistration extends MasterRequest {
 
                 Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/RegistrationConfirmation.fxml"));
                 App.getPrimaryStage().getScene().setRoot(root);
-            } else {
-
-                /*
-                Stage stage = new Stage();
-                stage.setTitle("Submission Error");
-                TilePane tilepane = new TilePane();
-                Scene scene = new Scene(tilepane, 400, 100);
-                stage.setScene(scene);
-                Popup popup = new Popup();
-                Label label = new Label("Error! Please be sure to enter your full name.");;
-                popup.getContent().add(label);
-                label.setMinWidth(80);
-                label.setMinHeight(80);
-                stage.show();
-                popup.show(stage);
-                */
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-
 }
