@@ -97,7 +97,7 @@ public class Navigation {
      * load Navigation bar in the Default Page when button is pressed/ make it disappear
      */
     public void loadNav() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Navigation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Navigation.fxml")); // used to load fxml in it's own controller
         try {
             loader.setControllerFactory(type -> {
                 if (type == Navigation.class) {
