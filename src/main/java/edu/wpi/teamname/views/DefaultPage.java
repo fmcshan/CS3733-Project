@@ -1,18 +1,15 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bridge.Bridge;
 import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -22,7 +19,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Controller for DefaultPage.fxml
