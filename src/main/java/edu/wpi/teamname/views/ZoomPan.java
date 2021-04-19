@@ -175,10 +175,21 @@ public class ZoomPan {
             //double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
             double widthScale = scaledWidth / fileWidth;
             double heightScale = scaledHeight / fileHeight;
-            double smallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-            System.out.println("smallestScale: " + smallestScale);
+            double windowWidth = hospitalMap.getFitWidth() / fileWidth;
+            double windowHeight = hospitalMap.getFitHeight() / fileHeight;
+            double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+            double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+            System.out.println("windowSmallestScale: " + windowSmallestScale);
+            System.out.println("viewportSmallestScale: " + viewportSmallestScale);
+
             System.out.println("scaledWidth: " + scaledWidth);
             System.out.println("scaledHeight: " + scaledHeight);
+
+            System.out.println("windowWidth: " + windowWidth);
+            System.out.println("windowHeight: " + windowHeight);
+
+            System.out.println("hospitalMap.getFitWidth(): " + hospitalMap.getFitWidth());
+            System.out.println("hospitalMap.getFitHeight(): " + hospitalMap.getFitHeight());
             //double scale = Math.pow(1.01, mouseScrollVal);
 
             double nodeX = n.getX();
@@ -195,54 +206,15 @@ public class ZoomPan {
             double heightRatio = mapHeight / fileHeight;
             System.out.println("widthRatio: " + widthRatio);
 
-            //double weightedScale = scale * widthRatio;
-
 
             double weightedNodeX;
             double weightedNodeY;
 
-//            weightedNodeX = n.getX()/smallestScale;
-//            weightedNodeY = n.getY()/smallestScale;
-//            double rescaledX = scaledX * hospitalMap.get();
-//            double rescaledY = scaledY * hospitalMap.getFitHeight();
-
-            weightedNodeX = ((n.getX() - scaledX) / smallestScale)/5;
-            weightedNodeY = ((n.getY() - scaledY) / smallestScale)/5;
-
-
-
-
-//            weightedNodeX = n.getX() * (viewportOfImageWidth/fileWidth);
-//            weightedNodeY = n.getY() * (viewportOfImageHeight/fileHeight);
-
-            //correct location relative to map without zoom and pan
-//            double newWeightedX = weightedNodeX + scaledX;
-//            double newWeightedY = weightedNodeY + scaledY;
-
-
-
-//            if(viewportOfImageWidth >= 4999 || viewportOfImageWidth >= 3399 ){
-//                weightedNodeX *= widthRatio;
-//                weightedNodeY *= heightRatio;
-//
-//                System.out.println("scaledWidthRatio: " + (scale * widthRatio));
-//                System.out.println("scaledHeightRatio: " + (scale * heightRatio));
-//
-//            }
+            weightedNodeX = ((n.getX() - scaledX) / viewportSmallestScale) * windowSmallestScale;
+            weightedNodeY = ((n.getY() - scaledY) / viewportSmallestScale) * windowSmallestScale;
 
             System.out.println("weightedNodeX: " + weightedNodeX);
             System.out.println("weightedNodeY: " + weightedNodeY);
-
-            double lowerXBound = scaledX;
-            double upperXBound = scaledX + scaledWidth;
-            System.out.println("lowerXBound: " + lowerXBound);
-            System.out.println("upperXBound: " + upperXBound);
-
-            double lowerYBound = scaledY;
-            double upperYBound = scaledY + scaledHeight;
-            System.out.println("lowerYBound: " + lowerYBound);
-            System.out.println("upperYBound: " + upperYBound);
-
 
 
             //if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
