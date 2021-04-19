@@ -134,6 +134,7 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void openWindowRequestPop(String windowName, Parent root) {
         requestPop.getChildren().clear();
+        popPop.setPrefWidth(350.0);
         if (!windowName.equals(openWindow)) {
             requestPop.getChildren().add(root);
             openWindow = windowName;
@@ -198,7 +199,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
-        loadWindowRequestPop("SubmittedRequests", "reqButton");
+        loadWindowRequestPop("SubmittedRequestsButton", "reqButton");
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);

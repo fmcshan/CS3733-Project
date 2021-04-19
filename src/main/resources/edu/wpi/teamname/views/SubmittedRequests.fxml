@@ -1,27 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<JFXButton alignment="BASELINE_LEFT" onAction="#openSubmittedRequests" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Submitted Requests" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRequests">
-    <font>
-        <Font size="24.0" />
-    </font>
-    <padding>
-        <Insets bottom="8.0" left="40.0" top="8.0" />
-    </padding>
-    <graphic>
-        <VBox prefHeight="37.0" prefWidth="33.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.UserRegistration">
+    <children>
+        <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
+            <effect>
+                <DropShadow color="#a4a4a4" />
+            </effect>
             <children>
-            <FontAwesomeIconView fill="#c3c3c3" glyphName="CHECK_SQUARE_ALT" size="36" translateY="3.0">
-               <VBox.margin>
-                  <Insets right="10.0" />
-               </VBox.margin>
-            </FontAwesomeIconView>
+                <Label text="Registration Form">
+                    <font>
+                        <Font name="System Bold" size="45.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Label>
+                <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to register:" textAlignment="CENTER" wrappingWidth="375.2413330078125">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Text>
+                <VBox prefHeight="800.0">
+                    <children>
+                        <Label fx:id="failedName" textFill="RED">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Please enter your full name:" textFill="#868686">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <JFXTextField fx:id="nameInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Full Name" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="10.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXTextField>
+                        <Label fx:id="failedDate" textFill="RED">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Please enter your date of birth (mm/dd/yyyy):" textFill="#868686">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <JFXDatePicker fx:id="dateOfBirth" defaultColor="#868686" style="-fx-font-size: 18;">
+                            <VBox.margin>
+                                <Insets left="50.0" top="10.0" />
+                            </VBox.margin>
+                        </JFXDatePicker>
+                        <Label fx:id="failedReason" textFill="RED">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Please select your reason(s) for visting the hospital today:" textFill="#868686">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <JFXCheckBox fx:id="emergencyRoomCheckbox" checkedColor="#0067b1" text="Emergency Room" textFill="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="10.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXCheckBox>
+                        <JFXCheckBox checkedColor="#0067b1" text="Radiology" textFill="#868686" fx:id="xrayCheckbox">
+                            <VBox.margin>
+                                <Insets left="50.0" top="15.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="mriCheckbox" checkedColor="#0067b1" text="MRI" textFill="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="15.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="eyeExamCheckbox" checkedColor="#0067b1" text="Eye Exam" textFill="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="15.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="labWorkCheckbox" checkedColor="#0067b1" text="Lab Work" textFill="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="15.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="physicalTherapyCheckbox" checkedColor="#0067b1" text="Physical Therapy" textFill="#868686">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="15.0" />
+                            </VBox.margin>
+                        </JFXCheckBox>
+                        <HBox alignment="CENTER_LEFT" prefWidth="657.0">
+                            <children>
+                                <JFXCheckBox fx:id="otherCheckbox" checkedColor="#0067b1" text="Other:" textFill="#868686">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="50.0" />
+                                    </HBox.margin>
+                                </JFXCheckBox>
+                                <JFXTextField fx:id="otherInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="10.0" />
+                                    </HBox.margin>
+                                </JFXTextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <Label fx:id="failedPhoneNumber" textFill="RED">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Please enter your phone number to receive a confirmation of your visit:" textFill="#868686">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Phone Number" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                            <VBox.margin>
+                                <Insets left="50.0" top="10.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </JFXTextField>
+                        <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0">
+                            <children>
+                                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRegistration" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </JFXButton>
+                            </children>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="25.0" />
+                    </VBox.margin>
+                </VBox>
             </children>
         </VBox>
-    </graphic>
-</JFXButton>
+        <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    </children>
+</AnchorPane>

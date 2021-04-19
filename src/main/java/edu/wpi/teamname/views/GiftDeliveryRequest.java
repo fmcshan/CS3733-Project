@@ -246,6 +246,8 @@ public class GiftDeliveryRequest {
             if (otherCheckbox.isSelected())
                 giftSelected.add(otherInput.getText());
 
+            DefaultPage.setOpenWindow("");
+
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText(), giftSelected));
 
