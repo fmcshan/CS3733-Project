@@ -51,8 +51,12 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private JFXButton adminButton;
 
-    String openWindow = "";
+    static String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
+
+    public static void setOpenWindow(String windowName) {
+        openWindow = windowName;
+    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
@@ -138,7 +142,7 @@ public class DefaultPage implements AuthListener, CloseListener {
         openWindow = "";
     }
 
-    public void toggleNav(ActionEvent actionEvent) {
+    public void toggleNav() {
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
@@ -147,12 +151,12 @@ public class DefaultPage implements AuthListener, CloseListener {
         navigation.loadNav();
     }
 
-    public void openRequests(ActionEvent actionEvent) {
+    public void openRequests() {
         popPop.setPrefWidth(350.0);
         loadWindowPopPop("Requests", "reqBar");
     }
 
-    public void openLogin(ActionEvent actionEvent) {
+    public void openLogin() {
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             loadWindowPopPop("Login", "loginBar");
@@ -161,7 +165,7 @@ public class DefaultPage implements AuthListener, CloseListener {
         }
     }
 
-    public void openCheckIn(ActionEvent actionEvent) {
+    public void openCheckIn() {
         popPop.setPrefWidth(657.0);
         loadWindowPopPop("UserRegistration", "registrationButton");
     }
