@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.*;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -48,7 +49,7 @@ public class ZoomPan {
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
             //System.out.println("pointToDragFrom" + pointToDragFrom);
             //System.out.println("valueOfShift" + valueOfShift);
-            shiftedImage(hospitalMap, valueOfShift);
+            shiftedImage(hospitalMap, valueOfShift, inputTopElements);
             mouseClickDown.set(viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
 
@@ -60,8 +61,8 @@ public class ZoomPan {
             double scaleDifference = Math.pow(1.01, getDifference);
             System.out.println("scaleDifference: " + scaleDifference);
             double minPixels = 10;
-            viewportOfImageWidth = viewportOfImage.getWidth();
-            viewportOfImageHeight = viewportOfImage.getHeight();
+            //viewportOfImageWidth = viewportOfImage.getWidth();
+            //viewportOfImageHeight = viewportOfImage.getHeight();
             System.out.println("viewportOfImageWidth: " + viewportOfImageWidth);
             System.out.println("viewportOfImageHeight: " + viewportOfImageHeight);
 
@@ -86,6 +87,8 @@ public class ZoomPan {
 
             double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
             double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
+            System.out.println("minXValueOfMouseClick" + minXValueOfMouseClick);
+            System.out.println("minYValueOfMouseClick" + minYValueOfMouseClick);
 
             double widthDifferenceBetweenScaledAndNormal = width - scaledWidth;
             double heightDifferenceBetweenScaledAndNormal = height - scaledHeight;
@@ -101,7 +104,7 @@ public class ZoomPan {
 
             hospitalMap.setViewport(newViewPort);
             inputTopElements.getChildren().clear();
-            displayNodes(mouseEvent, inputTopElements, getDifference, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
+            displayNodes(inputTopElements, hospitalMap, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
         });
 
 
@@ -130,7 +133,7 @@ public class ZoomPan {
         return Math.min(Math.max(value, min), max);
     }
 
-    public static void shiftedImage(ImageView inputMap, Point2D changeInShift) {
+    public static void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
         Rectangle2D theViewPort = inputMap.getViewport();
 
         //Extracting the image's height and width
@@ -151,6 +154,9 @@ public class ZoomPan {
 
         inputMap.setViewport(new Rectangle2D(viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight()));
 
+        topElements.getChildren().clear();
+        displayNodes(topElements, inputMap, viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight());
+
     }
 
     //HashMap<String, Node> map = new HashMap();
@@ -170,11 +176,10 @@ public class ZoomPan {
             double widthScale = topElements.getWidth() / fileWidth;
             double heightScale = topElements.getHeight() / fileHeight;
             double smallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-            System.out.println("topElements.getWidth(): " + topElements.getWidth());
-            System.out.println("topElements.heightScale(): " + topElements.getHeight());
             System.out.println("smallestScale: " + smallestScale);
-            //System.out.println("xScene: " + getScreenX);
-            double scale = Math.pow(1.01, mouseScrollVal);
+            System.out.println("scaledWidth: " + scaledWidth);
+            System.out.println("scaledHeight: " + scaledHeight);
+            //double scale = Math.pow(1.01, mouseScrollVal);
 
             double nodeX = n.getX();
             double nodeY = n.getY();
@@ -183,17 +188,38 @@ public class ZoomPan {
             System.out.println("nodeY: " + nodeY);
 
             //System.out.println("scale: " + scale);
+            System.out.println("scaledX: " + scaledX);
+            System.out.println("scaledY: " + scaledY);
 
             double widthRatio = mapWidth / fileWidth;
             double heightRatio = mapHeight / fileHeight;
+            System.out.println("widthRatio: " + widthRatio);
 
-            double weightedScale = scale * widthRatio;
+            //double weightedScale = scale * widthRatio;
+
 
             double weightedNodeX;
             double weightedNodeY;
 
-            weightedNodeX = n.getX() * smallestScale;
-            weightedNodeY = n.getY() * smallestScale;
+//            weightedNodeX = n.getX()/smallestScale;
+//            weightedNodeY = n.getY()/smallestScale;
+//            double rescaledX = scaledX * hospitalMap.get();
+//            double rescaledY = scaledY * hospitalMap.getFitHeight();
+
+            weightedNodeX = ((n.getX() - scaledX) / smallestScale)/5;
+            weightedNodeY = ((n.getY() - scaledY) / smallestScale)/5;
+
+
+
+
+//            weightedNodeX = n.getX() * (viewportOfImageWidth/fileWidth);
+//            weightedNodeY = n.getY() * (viewportOfImageHeight/fileHeight);
+
+            //correct location relative to map without zoom and pan
+//            double newWeightedX = weightedNodeX + scaledX;
+//            double newWeightedY = weightedNodeY + scaledY;
+
+
 
 //            if(viewportOfImageWidth >= 4999 || viewportOfImageWidth >= 3399 ){
 //                weightedNodeX *= widthRatio;
@@ -223,6 +249,10 @@ public class ZoomPan {
             Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
             circle.setFill(Color.OLIVE);
             topElements.getChildren().add(circle);
+
+            Circle aCircle = new Circle(778, 1702, 8);
+            aCircle.setFill(Color.BLUE);
+            topElements.getChildren().add(aCircle);
             //}
         }
     }
