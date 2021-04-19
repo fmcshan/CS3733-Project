@@ -134,7 +134,7 @@
                         <Insets left="25.0" right="275.0" />
                     </VBox.margin>
                 </Label>
-                <JFXComboBox fx:id="selectNode" focusColor="WHITE" onAction="#fillFields" prefWidth="300.0" promptText="Select Node" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                <JFXComboBox fx:id="selectNode" focusColor="WHITE" onAction="#fillFieldsNode" prefWidth="300.0" promptText="Select Node" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -150,7 +150,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="NodeID">
+            <JFXTextField fx:id="NodeID" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -164,7 +164,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <JFXTextField fx:id="X">
+                        <JFXTextField fx:id="X" onAction="#changeNodeEvent">
                            <VBox.margin>
                               <Insets right="5.0" />
                            </VBox.margin>
@@ -178,7 +178,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <JFXTextField fx:id="Y">
+                        <JFXTextField fx:id="Y" onAction="#changeNodeEvent">
                            <VBox.margin>
                               <Insets left="5.0" />
                            </VBox.margin>
@@ -198,7 +198,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="Floor">
+            <JFXTextField fx:id="Floor" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -211,7 +211,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="NodeType">
+            <JFXTextField fx:id="Building" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -224,7 +224,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField onAction="#ShortName">
+            <JFXTextField fx:id="NodeType" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -237,7 +237,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField onAction="#LongName">
+            <JFXTextField fx:id="ShortName" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -252,17 +252,17 @@
             </Label>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField>
+                  <JFXTextField fx:id="LongName" onAction="#changeNodeEvent">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton text="Add Node" />
+                  <JFXButton onAction="#addNode" text="Add Node" />
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField fx:id="nodeFile">
+                  <JFXTextField fx:id="nodeFile" text="L1Nodes.csv">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -271,7 +271,7 @@
                   <JFXButton text="Save" />
                </children>
             </HBox>
-                <JFXComboBox fx:id="selectEdge" focusColor="WHITE" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                <JFXComboBox fx:id="selectEdge" focusColor="WHITE" onAction="#fillFieldsEdge" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -287,7 +287,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField>
+            <JFXTextField fx:id="EdgeID" onAction="#changeEdgeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -300,7 +300,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField>
+            <JFXTextField fx:id="StartNode" onAction="#changeEdgeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
@@ -315,7 +315,7 @@
             </Label>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField>
+                  <JFXTextField fx:id="EndNode" onAction="#changeEdgeEvent">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
