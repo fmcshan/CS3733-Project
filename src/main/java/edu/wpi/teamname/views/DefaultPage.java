@@ -4,6 +4,8 @@ import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,7 +26,7 @@ import java.util.HashMap;
  * Controller for DefaultPage.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage implements AuthListener {
+public class DefaultPage implements AuthListener, CloseListener {
 
     @FXML
     private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -54,6 +56,7 @@ public class DefaultPage implements AuthListener {
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
+        Bridge.getInstance().addCloseListener(this);
 
         tonysPath.getElements().clear();
 
@@ -178,5 +181,10 @@ public class DefaultPage implements AuthListener {
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
+    }
+
+    @Override
+    public void closeButtonPressed() {
+        popPop.getChildren().clear();
     }
 }

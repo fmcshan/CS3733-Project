@@ -160,7 +160,6 @@ public class UserRegistration {
             // load controller here
             Success success = new Success(this);
             success.loadSuccess();
-            System.out.println("made it to loadSuccess");
         }
     }
 
