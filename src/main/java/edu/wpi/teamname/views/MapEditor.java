@@ -7,11 +7,15 @@ import edu.wpi.teamname.App;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -55,6 +59,7 @@ public class MapEditor implements Initializable {
     HashMap<String, Node> loadedMap = new HashMap();
     ArrayList<Node> nodesReferenceList;
     Set<Node> nodeSet = new HashSet<>();
+    ArrayList<Node> selectedNodes= new ArrayList<>();
 
     @FXML
     @Override
@@ -73,6 +78,7 @@ public class MapEditor implements Initializable {
         }
         rezisingInfo();
         OnWindowSizeChanged();
+        createNewNode();
 
         hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
         hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
@@ -98,7 +104,10 @@ public class MapEditor implements Initializable {
 
         displayEdges();
         displayNodes();
-    }
+        if(!selectedNodes.isEmpty()){
+            drawSelectedNode();
+
+        }    }
 
     public void OnWindowSizeChanged() {
 
@@ -185,7 +194,6 @@ public class MapEditor implements Initializable {
 
             for (Node e : n.getEdges()) {
                 if (nodeSet.contains(e) && nodeSet.contains(n)) {
-                    System.out.println("HERERERER");
                     Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(loadedMap.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(loadedMap.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
                     topElements.getChildren().add(edge);
                 }
@@ -237,11 +245,20 @@ public class MapEditor implements Initializable {
         });
         if (newNode != null) {
 
-            System.out.println("got into if");
+            //System.out.println("got into if");
 
             nodeSet.add(newNode);
 
         }
+
+        circle.setOnMouseClicked(
+                t -> {
+                    if (t.getButton() == MouseButton.PRIMARY) {
+                        selectedNodes.add(node);
+                        drawSelectedNode();
+                    }});
+
+
         circle.setStyle("-fx-cursor: hand");
         return circle;
     }
@@ -280,5 +297,37 @@ public class MapEditor implements Initializable {
 
 
     }
+    public void createNewNode(){
+        EventHandler<? super MouseEvent> eventHandler =
+                (EventHandler<MouseEvent>)
+                        e -> {
+                            //System.out.println("At last");
+
+                            if (e.getButton() == MouseButton.SECONDARY) {
+                                System.out.println("At last");
+
+                                Node newlyCreatedNode = new Node(provideNewID(),(int) (e.getX()/fileFxWidthRatio), (int)(e.getY()/fileFxHeightRatio));
+                                nodeSet.add(newlyCreatedNode);
+                                updateMap();
+                            }
+
+                        };
+        topElements.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+
+    }
+    public String provideNewID(){
+        Random random = new Random();
+        int number = random.nextInt();
+        return String.valueOf(number);
+    }
+    void drawSelectedNode() {
+            for (Node n : selectedNodes) {
+                Circle circle = new Circle(n.getX() * fileFxWidthRatio,n.getY() * fileFxHeightRatio,12);
+
+                             circle.setFill(Color.LIGHTGRAY);
+                topElements.getChildren().add(circle);
+            }
+        }
+
 }
 

@@ -23,7 +23,7 @@
                   <Image url="@brighamandwomens.png" />
                </image>
             </ImageView>
-            <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane fx:id="topElements" onMouseClicked="#createNewNode" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </StackPane>
       <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 25;" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="25.0">
