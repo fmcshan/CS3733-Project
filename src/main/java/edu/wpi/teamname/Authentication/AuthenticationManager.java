@@ -47,8 +47,12 @@ public class AuthenticationManager {
             );
 
             for (AuthListener ull : listeners) {
-                ull.userLogin();
+                try {
+                    ull.userLogin();
+                } catch (Exception e) {e.printStackTrace();}
             }
+
+            SocketManager.getInstance().startAuthDataSocket();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +64,7 @@ public class AuthenticationManager {
         for (AuthListener ull : listeners) {
             ull.userLogout();
         }
-        SocketManager.getInstance().startAuthDataSocket();
+        SocketManager.getInstance().stopAuthDataSocket();
     }
 
     public String userId() {

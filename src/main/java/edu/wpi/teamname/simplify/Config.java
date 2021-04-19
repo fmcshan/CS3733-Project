@@ -25,7 +25,7 @@ public class Config {
 
     public String getServerUrl() {
         switch (this.environment.toLowerCase()) {
-            case "debug":
+            case "dev":
                 return "http://localhost:8000";
             case "staging":
                 return "https://soft-eng-3733-rest-api-9l83t.ondigitalocean.app";
@@ -36,7 +36,7 @@ public class Config {
 
     public String getSocketUrl() {
         switch (this.environment.toLowerCase()) {
-            case "debug":
+            case "dev":
                 return "ws://localhost:8000";
             case "staging":
                 return "wss://soft-eng-3733-rest-api-9l83t.ondigitalocean.app";

@@ -28,7 +28,7 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake data) {
-        System.out.println("Non authenticated socket opened.");
+        System.out.println("Authenticated socket opened.");
     }
 
     @Override
@@ -38,23 +38,14 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
-//        if (payloadId.equals("init")) {
-//            ArrayList<Node> nodes = Parser.parseNodes(payload);
-//            ArrayList<Edge> edges = Parser.parseEdges(payload.getJSONArray("edges"));
-//
-//            LocalStorage.getInstance().setNodes(nodes);
-//            LocalStorage.getInstance().setEdges(edges);
-//            return;
-//        }
-
-//        if (payloadId.equals("add_node")) {
-//            System.out.println("Node added");
-//            return;
-//        }
+        if (payloadId.equals("init")) {
+            ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
+            LocalStorage.getInstance().setRegistrations(registrationsPayload);
+            return;
+        }
 
     }
 

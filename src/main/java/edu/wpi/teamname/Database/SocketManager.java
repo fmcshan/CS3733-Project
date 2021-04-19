@@ -11,11 +11,10 @@ import java.util.ArrayList;
 
 public class SocketManager {
     private static final SocketManager instance = new SocketManager();
-    private ArrayList<Node> nodes = new ArrayList<Node>();
     private String SOCKET_URL = Config.getInstance().getSocketUrl();
 
-    WebSocketClient nonAuthClient;
-    WebSocketClient authClient;
+    WebSocketClient nonAuthClient = null;
+    WebSocketClient authClient = null;
 
     private SocketManager() {
 
@@ -28,10 +27,8 @@ public class SocketManager {
     public void startDataSocket() {
         if (this.nonAuthClient == null) {
             try {
-                System.out.println(SOCKET_URL);
-                WebSocketClient client = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/"));
-                this.nonAuthClient = client;
-                client.connect();
+                this.nonAuthClient = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/"));
+                this.nonAuthClient.connect();
             } catch (Exception e) {e.printStackTrace();}
         }
     }
@@ -44,14 +41,14 @@ public class SocketManager {
     }
 
     public void startAuthDataSocket() {
-        if (this.nonAuthClient == null) {
+        if (this.authClient == null) {
             try {
                 WebSocketClient client = new AuthSocket(new URI(SOCKET_URL + "/ws/auth-pipeline/"));
-                if (AuthenticationManager.getInstance().userId() != null) {
+                if (AuthenticationManager.getInstance().isAuthenticated()) {
                     client.addHeader("fb-auth", AuthenticationManager.getInstance().userId());
                 }
                 this.authClient = client;
-                client.connect();
+                this.authClient.connect();
             } catch (Exception e) {e.printStackTrace();}
         }
     }
