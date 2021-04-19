@@ -179,6 +179,7 @@ public class ZoomPan {
             double windowHeight = hospitalMap.getFitHeight() / fileHeight;
             double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
             double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+            double compareWidthAndHeight = Math.min(hospitalMap.getFitWidth() * (fileHeight/fileWidth), hospitalMap.getFitHeight());
             System.out.println("windowSmallestScale: " + windowSmallestScale);
             System.out.println("viewportSmallestScale: " + viewportSmallestScale);
 
@@ -191,6 +192,8 @@ public class ZoomPan {
             System.out.println("hospitalMap.getFitWidth(): " + hospitalMap.getFitWidth());
             System.out.println("hospitalMap.getFitHeight(): " + hospitalMap.getFitHeight());
             //double scale = Math.pow(1.01, mouseScrollVal);
+
+            double fileRatio = fileHeight / fileWidth;
 
             double nodeX = n.getX();
             double nodeY = n.getY();
@@ -216,16 +219,23 @@ public class ZoomPan {
             System.out.println("weightedNodeX: " + weightedNodeX);
             System.out.println("weightedNodeY: " + weightedNodeY);
 
+            double lowerXBound = 0;
+            double upperXBound = compareWidthAndHeight * (fileWidth/fileHeight);
 
-            //if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
+            double lowerYBound = 0;
+            double upperYBound = compareWidthAndHeight;
+
+            System.out.println("lowerXBound: " + lowerXBound);
+            System.out.println("upperXBound: " + upperXBound);
+
+            System.out.println("lowerYBound: " + lowerYBound);
+            System.out.println("upperYBound: " + upperYBound);
+
+            if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
             Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
             circle.setFill(Color.OLIVE);
             topElements.getChildren().add(circle);
-
-            Circle aCircle = new Circle(778, 1702, 8);
-            aCircle.setFill(Color.BLUE);
-            topElements.getChildren().add(aCircle);
-            //}
+            }
         }
     }
 
