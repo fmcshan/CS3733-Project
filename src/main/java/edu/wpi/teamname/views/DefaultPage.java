@@ -392,7 +392,6 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void zoomAndPan(ImageView hospitalMap, AnchorPane inputTopElements, double width, double height) {
 
-
         // hMap = hospitalMap;
         //get the height associated with the height
         hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
