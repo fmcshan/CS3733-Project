@@ -265,6 +265,7 @@
       </VBox>
       <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="350.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="50.0" />
       <VBox fx:id="checkInPop" layoutX="410.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" />
+      <VBox fx:id="successPop" layoutX="420.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" />
       <Path fx:id="tonysPath" fill="#ff634700" layoutX="10.0" layoutY="10.0" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
          <elements>
             <MoveTo x="800.0" y="800.0" />
