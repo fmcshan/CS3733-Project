@@ -36,6 +36,8 @@ public class UserRegistration extends MasterRequest {
     @FXML
     public JFXCheckBox labWorkCheckbox;
     @FXML
+    public JFXCheckBox checkupCheckbox;
+    @FXML
     public JFXCheckBox physicalTherapyCheckbox;
     @FXML
     public JFXCheckBox otherCheckbox;
@@ -46,6 +48,7 @@ public class UserRegistration extends MasterRequest {
 
     public void submitRegistration(ActionEvent actionEvent) {
         try {
+
             String regexPattern = "\\d{3}-\\d{3}-\\d{4}"; //phone number pattern
             if (nameInput.getText().contains(" ") && phoneInput.getText().matches(regexPattern)) {
                 LocalDate localDate = dateOfBirth.getValue();
@@ -67,6 +70,9 @@ public class UserRegistration extends MasterRequest {
                 if (labWorkCheckbox.isSelected()) {
                     reasonsForVisit.add("Lab Work");
                 }
+                if (checkupCheckbox.isSelected()) {
+                    reasonsForVisit.add("Checkup");
+                }
                 if (physicalTherapyCheckbox.isSelected()) {
                     reasonsForVisit.add("Physical Therapy");
                 }
@@ -77,6 +83,7 @@ public class UserRegistration extends MasterRequest {
                 Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/RegistrationConfirmation.fxml"));
                 App.getPrimaryStage().getScene().setRoot(root);
             } else {
+
                 /*
                 Stage stage = new Stage();
                 stage.setTitle("Submission Error");
@@ -96,4 +103,5 @@ public class UserRegistration extends MasterRequest {
             ex.printStackTrace();
         }
     }
+
 }

@@ -137,7 +137,10 @@ public class DefaultPage implements AuthListener {
         loadWindowPopPop("Login", "loginBar");
     }
 
-    public void openCheckIn(ActionEvent actionEvent) { loadWindowPopPop("UserRegistration", "registrationButton"); }
+    public void openCheckIn(ActionEvent actionEvent) {
+        popPop.setPrefWidth(657.0);
+        loadWindowPopPop("UserRegistration", "registrationButton");
+    }
 
     public void exitApplication(ActionEvent actionEvent) {
         Shutdown.getInstance().exit();
@@ -164,13 +167,9 @@ public class DefaultPage implements AuthListener {
         });
     }
 
-            @Override
+    @Override
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
-    }
-
-    public void registerUser(ActionEvent actionEvent) {
-        //loadScene("UserRegistration");
     }
 }
