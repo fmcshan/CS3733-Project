@@ -22,7 +22,7 @@ public class App extends Application {
   public void start(Stage primaryStage) {
     App.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("views/DefaultPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("views/DefaultPage1.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
