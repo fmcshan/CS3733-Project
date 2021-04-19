@@ -131,7 +131,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
-        popPop.setPrefWidth(350);
+        popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
 
@@ -144,6 +144,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     public void openLogin(ActionEvent actionEvent) {
+        popPop.setPrefWidth(350.0);
         loadWindowPopPop("Login", "loginBar");
     }
 
