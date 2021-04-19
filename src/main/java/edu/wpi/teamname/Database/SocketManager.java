@@ -14,9 +14,6 @@ public class SocketManager {
     WebSocketClient nonAuthClient;
     WebSocketClient authClient;
 
-    private boolean dataSocketOpen = false;
-    private boolean authDataSocketOpen = false;
-
     private SocketManager() {
 
     }
@@ -26,12 +23,11 @@ public class SocketManager {
     }
 
     public void startDataSocket() {
-        if (!dataSocketOpen) {
+        if (this.nonAuthClient == null) {
             try {
                 WebSocketClient client = new Socket(new URI("wss://soft-eng-3733-rest-api-9l83t.ondigitalocean.app/ws/pipeline/"));
                 this.nonAuthClient = client;
                 client.connect();
-                dataSocketOpen = true;
             } catch (Exception e) {e.printStackTrace();}
         }
     }
@@ -40,12 +36,11 @@ public class SocketManager {
         if (this.nonAuthClient != null) {
             this.nonAuthClient.close();
             this.nonAuthClient = null;
-            dataSocketOpen = false;
         }
     }
 
     public void startAuthDataSocket() {
-        if (!authDataSocketOpen) {
+        if (this.nonAuthClient == null) {
             try {
                 WebSocketClient client = new AuthSocket(new URI("wss://soft-eng-3733-rest-api-9l83t.ondigitalocean.app/ws/auth-pipeline/"));
                 if (AuthenticationManager.getInstance().userId() != null) {
@@ -53,16 +48,14 @@ public class SocketManager {
                 }
                 this.authClient = client;
                 client.connect();
-                authDataSocketOpen = true;
             } catch (Exception e) {e.printStackTrace();}
         }
     }
 
     public void stopAuthDataSocket() {
         if (this.authClient != null) {
-            this.nonAuthClient.close();
+            this.authClient.close();
             this.authClient = null;
-            authDataSocketOpen = false;
         }
     }
 }
