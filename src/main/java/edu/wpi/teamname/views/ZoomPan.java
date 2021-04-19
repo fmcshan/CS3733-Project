@@ -6,12 +6,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.*;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.apache.derby.iapi.services.io.FormatableHashtable;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -99,7 +101,7 @@ public class ZoomPan {
 
             hospitalMap.setViewport(newViewPort);
             inputTopElements.getChildren().clear();
-            displayNodes(inputTopElements, getDifference, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
+            displayNodes(mouseEvent, inputTopElements, getDifference, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
         });
 
 
@@ -164,7 +166,15 @@ public class ZoomPan {
             double mapHeight = 680.0;
             double fileWidth = 5000.0;
             double fileHeight = 3400.0;
-            double scale = Math.pow(1.01, -mouseScrollVal);
+            double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
+            double widthScale = topElements.getWidth() / fileWidth;
+            double heightScale = topElements.getHeight() / fileHeight;
+            double smallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+            System.out.println("topElements.getWidth(): " + topElements.getWidth());
+            System.out.println("topElements.heightScale(): " + topElements.getHeight());
+            System.out.println("smallestScale: " + smallestScale);
+            //System.out.println("xScene: " + getScreenX);
+            double scale = Math.pow(1.01, mouseScrollVal);
 
             double nodeX = n.getX();
             double nodeY = n.getY();
@@ -172,24 +182,28 @@ public class ZoomPan {
             System.out.println("nodeX: " + nodeX);
             System.out.println("nodeY: " + nodeY);
 
-            System.out.println("scale: " + scale);
+            //System.out.println("scale: " + scale);
 
             double widthRatio = mapWidth / fileWidth;
             double heightRatio = mapHeight / fileHeight;
 
+            double weightedScale = scale * widthRatio;
+
             double weightedNodeX;
             double weightedNodeY;
-            weightedNodeX = n.getX() * scale;
-            weightedNodeY = n.getY() * scale;
 
-            if(viewportOfImageWidth >= 4999 || viewportOfImageWidth >= 3399 ){
-                weightedNodeX *= widthRatio;
-                weightedNodeY *= heightRatio;
+            weightedNodeX = n.getX() * smallestScale;
+            weightedNodeY = n.getY() * smallestScale;
 
-                System.out.println("scaledWidthRatio: " + (scale * widthRatio));
-                System.out.println("scaledHeightRatio: " + (scale * heightRatio));
+//            if(viewportOfImageWidth >= 4999 || viewportOfImageWidth >= 3399 ){
+//                weightedNodeX *= widthRatio;
+//                weightedNodeY *= heightRatio;
+//
+//                System.out.println("scaledWidthRatio: " + (scale * widthRatio));
+//                System.out.println("scaledHeightRatio: " + (scale * heightRatio));
+//
+//            }
 
-            }
             System.out.println("weightedNodeX: " + weightedNodeX);
             System.out.println("weightedNodeY: " + weightedNodeY);
 
@@ -205,11 +219,11 @@ public class ZoomPan {
 
 
 
-            if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
-                Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
-                circle.setFill(Color.OLIVE);
-                topElements.getChildren().add(circle);
-            }
+            //if ((lowerXBound <= weightedNodeX && weightedNodeX <= upperXBound) && (lowerYBound <= weightedNodeY && weightedNodeY <= upperYBound)) {
+            Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
+            circle.setFill(Color.OLIVE);
+            topElements.getChildren().add(circle);
+            //}
         }
     }
 
