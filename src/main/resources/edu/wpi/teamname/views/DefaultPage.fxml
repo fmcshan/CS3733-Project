@@ -18,136 +18,152 @@
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;">
+            <StackPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                <children>
-                  <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="hospitalMap" fitHeight="1000.0" fitWidth="1800.0" pickOnBounds="true" preserveRatio="true" scaleX="0.95" scaleY="0.95" scaleZ="0.0">
                      <image>
-                        <Image url="@../images/bwh-logo.png" />
+                        <Image url="@../images/brighamandwomens.png" />
                      </image>
-                     <VBox.margin>
-                        <Insets bottom="20.0" left="30.0" top="30.0" />
-                     </VBox.margin>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
                   </ImageView>
-                  <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
-                     <children>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="8.0" left="40.0" top="8.0" />
-                           </padding>
-                           <graphic>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="36" />
-                                 </children>
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </VBox>
-                           </graphic>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="8.0" left="40.0" top="8.0" />
-                           </padding>
-                           <graphic>
-                              <VBox>
-                                 <children>
-                                    <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
-                                 </children>
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </VBox>
-                           </graphic>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <VBox fx:id="adminPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0" spacing="15.0">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </VBox>
-                        <VBox fx:id="requestPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </VBox>
-                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="370.0">
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/bwh-logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="30.0" top="30.0" />
+               </VBox.margin>
+            </ImageView>
+            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
+               <children>
+                  <JFXButton alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px; -jfx-disable-visual-focus: true;" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox alignment="CENTER">
                            <children>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#exitApplication" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="exit" textFill="#9e9e9e">
-                                 <effect>
-                                    <DropShadow color="#a4a4a4" />
-                                 </effect>
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                                 <graphic>
-                                    <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="52" />
-                                 </graphic>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </JFXButton>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" onAction="#openLogin" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="admin" textFill="#9e9e9e">
-                                 <effect>
-                                    <DropShadow color="#a4a4a4" />
-                                 </effect>
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                 <HBox.margin>
-                                    <Insets left="250.0" />
-                                 </HBox.margin>
-                                 <graphic>
-                                    <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="52" />
-                                 </graphic>
-                              </JFXButton>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="36" />
                            </children>
-                           <VBox.margin>
-                              <Insets top="510.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
+                                 <VBox.margin>
+                                    <Insets left="3.0" />
+                                 </VBox.margin>
+                              </MaterialDesignIconView>
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox>
+                           <children>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <VBox fx:id="adminPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+                  <VBox fx:id="requestPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
                   </VBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
-               <children>
-                  <StackPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1800.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="1.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                     <children>
-                        <ImageView fx:id="hospitalMap" fitHeight="1000.0" fitWidth="1800.0" pickOnBounds="true" preserveRatio="true" scaleX="0.95" scaleY="0.95" scaleZ="0.0">
-                           <image>
-                              <Image url="@../images/brighamandwomens.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-               </children>
-            </VBox>
+         </children></VBox>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#exitApplication" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="exit" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="52" />
+               </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" onAction="#openLogin" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="admin" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="250.0" />
+               </HBox.margin>
+               <graphic>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="52" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" AnchorPane.leftAnchor="1684.0" AnchorPane.topAnchor="50.0">

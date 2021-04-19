@@ -94,7 +94,7 @@ public class MapEditor {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+        listOfNodes = DatabaseThread.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
             nodesMap.put(n.getNodeID(), n);

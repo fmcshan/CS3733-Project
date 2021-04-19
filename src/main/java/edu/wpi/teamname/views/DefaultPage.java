@@ -1,12 +1,14 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,17 +18,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller for DefaultPage.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage implements AuthListener {
+public class DefaultPage implements AuthListener, CloseListener {
 
     @FXML
     private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -37,15 +37,26 @@ public class DefaultPage implements AuthListener {
     @FXML
     private Path tonysPath; // this is Tony's path
     @FXML
-    private AnchorPane anchor; // the foundation of the image (needs to be replaced by a stack pane or vbox that has the proportions of the map)
+    private AnchorPane anchor; //
     @FXML
-    private ImageView hospitalMap; // the map itself
+    private ImageView hospitalMap;
+    @FXML
+    private UserRegistration userRegistration;
 
-    String openWindow = ""; // used to check which window is currently open
-    ArrayList<Node> currentPath = new ArrayList<>(); // the current list of nodes
+//    public DefaultPage(UserRegistration userRegistration) {
+//        this.userRegistration = userRegistration;
+//    }
+
+    String openWindow = "";
+    ArrayList<Node> currentPath = new ArrayList<>();
+
+    public VBox getPopPop() {
+        return popPop;
+    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
+        Bridge.getInstance().addCloseListener(this);
 
         tonysPath.getElements().clear();
 
@@ -120,7 +131,7 @@ public class DefaultPage implements AuthListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
-
+        popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
 
@@ -128,11 +139,18 @@ public class DefaultPage implements AuthListener {
     }
 
     public void openRequests(ActionEvent actionEvent) {
+        popPop.setPrefWidth(350.0);
         loadWindowPopPop("Requests", "reqBar");
     }
 
     public void openLogin(ActionEvent actionEvent) {
+        popPop.setPrefWidth(350.0);
         loadWindowPopPop("Login", "loginBar");
+    }
+
+    public void openCheckIn(ActionEvent actionEvent) {
+        popPop.setPrefWidth(657.0);
+        loadWindowPopPop("UserRegistration", "registrationButton");
     }
 
     public void exitApplication(ActionEvent actionEvent) {
@@ -164,5 +182,10 @@ public class DefaultPage implements AuthListener {
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
+    }
+
+    @Override
+    public void closeButtonPressed() {
+        popPop.getChildren().clear();
     }
 }

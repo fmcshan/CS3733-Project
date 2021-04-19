@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
@@ -82,7 +83,7 @@ public class Navigation {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // get nodes from database
+        listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
