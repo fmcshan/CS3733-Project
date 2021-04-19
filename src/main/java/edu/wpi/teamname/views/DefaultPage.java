@@ -12,8 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -41,18 +43,10 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private ImageView hospitalMap;
     @FXML
-    private UserRegistration userRegistration;
-
-//    public DefaultPage(UserRegistration userRegistration) {
-//        this.userRegistration = userRegistration;
-//    }
+    private StackPane stackPane;
 
     String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
-
-    public VBox getPopPop() {
-        return popPop;
-    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
@@ -60,16 +54,24 @@ public class DefaultPage implements AuthListener, CloseListener {
 
         tonysPath.getElements().clear();
 
-        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
         });
 
-        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
+        });
+
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+        });
+
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
     }
 
@@ -131,6 +133,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
+        tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
