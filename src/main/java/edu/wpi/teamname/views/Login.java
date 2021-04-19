@@ -49,7 +49,8 @@ public class Login {
 
         AuthenticationManager.getInstance().loginWithEmailAndPassword(emailField.getText(), passwordField.getText());
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            failedLogin.setText("Incorrect Password");
+            failedLogin.setText("Invalid Credentials");
+            return;
         }
         Bridge.getInstance().close();
     }
