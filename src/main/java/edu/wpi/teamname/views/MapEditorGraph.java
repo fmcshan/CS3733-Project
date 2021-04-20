@@ -8,7 +8,6 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -17,14 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineBuilder;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
 import java.util.*;
 
 
@@ -80,18 +75,23 @@ public class MapEditorGraph {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
-    ArrayList<Node> listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+    boolean fetchFromDatabase = true;
+   Set<Node> nodeSet;
     List<List<String>> theEdges;
     List<List<String>> theNodes;
     HashMap<String, Node> nodeMap = new HashMap<>();
     HashMap<String, Edge> edgeMap = new HashMap<>();
+    Line selectedEdge;
 
     public void initialize() {
-
+        if(fetchFromDatabase){
+       ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
+       nodeSet = new HashSet<>(nodes);
+        fetchFromDatabase = false;}
         displayNodes();
         displayEdges();
 
-        listOfNodes.forEach(n -> {
+        nodeSet.forEach(n -> {
             if (((n.getFloor().equals("1") || n.getFloor().equals("G")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") ))) {
                 selectNode.getItems().add(n.getNodeID());
             }
@@ -126,6 +126,10 @@ public class MapEditorGraph {
         theNodes.forEach(n -> {
             selectNode.getItems().add(n.get(0));
         });
+
+        //LoadCSVOfNodesToDatabase(allNodesData);
+        fetchFromDatabase= true;
+        displayNodes();
     }
 
     @FXML
@@ -156,7 +160,7 @@ public class MapEditorGraph {
     }
 
     public void enterEdges() {
-        for (Node n : listOfNodes) {
+        for (Node n : nodeSet) {
             for (Node e : n.getEdges()) {
                 if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
                     Edge edge = new Edge(n.getNodeID() + "_" + e.getNodeID(), n.getNodeID(), e.getNodeID());
@@ -193,7 +197,7 @@ public class MapEditorGraph {
 
     @FXML
     public void fillFieldsNode() {
-        nodeMap.values().forEach(n -> {
+        nodeSet.forEach(n -> {
             if (n.getNodeID().equals(selectNode.getValue())) {
                 NodeID.setText(n.getNodeID());
                 X.setText(String.valueOf(n.getX()));
@@ -203,6 +207,10 @@ public class MapEditorGraph {
                 NodeType.setText(n.getNodeType());
                 LongName.setText(n.getLongName());
                 ShortName.setText(n.getShortName());
+                topElements.getChildren().clear();
+                displayNodes();
+                displayEdges();
+                displayNewNodes(n);
             }
         });
     }
@@ -214,8 +222,23 @@ public class MapEditorGraph {
                 EdgeID.setText(n.getEdgeID());
                 startNode.setValue(n.getStartNode());
                 endNode.setValue(n.getEndNode());
-                System.out.println(n.getStartNode());
-                System.out.println(n.getEndNode());
+                //FINFO00101
+                //FHALL02901
+
+                //EHALL02801
+//                //EHALL02501
+                if (nodeMap.containsKey(n.getStartNode()))
+                {
+                    System.out.println("contains "+ n.getStartNode());
+                }
+                if (nodeMap.containsKey(n.getEndNode()))
+                {
+                    System.out.println("contains "+ n.getEndNode());
+                }
+                topElements.getChildren().clear();
+                displayNodes();
+                displayEdges();
+                displaySelectedEdge(n.getStartNode(),n.getEndNode());
             }
         });
     }
@@ -262,6 +285,8 @@ public class MapEditorGraph {
         ShortName.setText("");
         LongName.setText("");
         submitNode.setVisible(true);
+       // Node newNode = new Node( );
+        //displaySelectedNodes(Node n)
     }
 
     public void addEdge() {
@@ -271,6 +296,7 @@ public class MapEditorGraph {
         startNode.setValue("");
         endNode.setValue("");
         submitEdge.setVisible(true);
+       // AddEdgeToDatabase("")
     }
 
     public void submitNode() {
@@ -282,7 +308,13 @@ public class MapEditorGraph {
             validID.setVisible(false);
             submitNode.setVisible(false);
             Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
-            nodeMap.put(newNode.getNodeID(), newNode);
+//            nodeMap.put(newNode.getNodeID(), newNode);
+            System.out.println(newNode.getNodeID());
+//            nodeSet.add(newNode);
+            //AddNodetoDatabase(just takes in a node)
+            fetchFromDatabase =true;
+           // displayNodes();
+            //displayNewNodes(newNode);
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -310,6 +342,12 @@ public class MapEditorGraph {
             endNode.setValue("");
             selectEdge.setDisable(false);
         }
+
+        // AddEdgeToDatabase(EdgeID.getText());
+        fetchFromDatabase = true;
+        topElements.getChildren().clear();
+        displayEdges();
+        displayEdges();
     }
 
     @FXML
@@ -318,8 +356,19 @@ public class MapEditorGraph {
             validID.setText("Please add node first");
             validID.setVisible(true);
         } else {
-            selectNode.getItems().remove(NodeID.getText());
+
+            //nodeMap.remove(NodeID.getText());
+            System.out.println(NodeID.getText());
+            nodeSet.remove(nodeMap.get(NodeID.getText()));
+
+//            for(Node n: nodeSet){
+//                if(n.getNodeID().equals(NodeID.getText())){
+//                    System.out.println("did not get removed");
+//                }
+//            }
+
             nodeMap.remove(NodeID.getText());
+            selectNode.getItems().remove(NodeID.getText());
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -329,6 +378,10 @@ public class MapEditorGraph {
             ShortName.setText("");
             LongName.setText("");
         }
+        topElements.getChildren().clear();
+        displayNodes();
+        displayEdges();
+        System.out.println("reached here");
     }
 
     @FXML
@@ -351,8 +404,8 @@ public class MapEditorGraph {
         rezisingInfo();
         // map.clear();
 
-        for (Node n : listOfNodes) {
-            if (((n.getFloor().equals("1") || n.getFloor().equals("G")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") ))) {
+        for (Node n : nodeSet) {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
                 nodeMap.put(n.getNodeID(), n);
                 Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
                 //System.out.println(fileFxWidthRatio);
@@ -366,7 +419,7 @@ public class MapEditorGraph {
     }
 
     public void displayEdges() {
-        for (Node n : listOfNodes) {
+        for (Node n : nodeSet) {
             for (Node e : n.getEdges()) {
                 if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
                     Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(nodeMap.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(nodeMap.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
@@ -392,4 +445,37 @@ public class MapEditorGraph {
     public void exitApplication() {
         Shutdown.getInstance().exit();
     }
+
+    public void displayNewNodes(Node n) {
+
+        //System.out.println("got here");
+        rezisingInfo();
+        // map.clear();
+
+
+                nodeMap.put(n.getNodeID(), n);
+                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+                //System.out.println(fileFxWidthRatio);
+                // System.out.println(fileFxHeightRatio);
+                // circle = (Circle) clickNode(circle, n);
+                circle.setFill(Color.RED);
+                topElements.getChildren().add(circle);
+                //   System.out.println("ADDED");
+
+        }
+
+    public void displaySelectedEdge(String startNodeID, String endNodeID) {
+
+
+       // topElements.getChildren().clear();
+
+        System.out.println("got here");
+                     Line line =  LineBuilder.create().startX(nodeMap.get(startNodeID).getX() * fileFxWidthRatio).startY(nodeMap.get(startNodeID).getY() * fileFxHeightRatio).endX(nodeMap.get(endNodeID).getX()* fileFxWidthRatio).endY(nodeMap.get(endNodeID).getY() * fileFxHeightRatio).stroke(Color.RED).strokeWidth(3).build();
+                    topElements.getChildren().add(line);
+        selectedEdge = line ;
+
+        //topElements.getChildren()
+        }
+
+
 }
