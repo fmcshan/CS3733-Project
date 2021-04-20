@@ -30,11 +30,16 @@ public class AuthSocket extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake data) {
         System.out.println("Authenticated socket opened.");
+        SocketManager.getInstance().resetReconnectTimeout("auth");
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("closed with exit code " + code + " error: " + reason);
+        if (code != 1000) {
+            SocketManager.getInstance().reconnectAuthSocket();
+        } else {
+            System.out.println("Auth socket closed");
+        }
     }
 
     @Override
@@ -69,11 +74,10 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
     }
 
     @Override
     public void onError(Exception e) {
-        System.err.println("error:" + e);
+        System.out.println("Auth socket error");
     }
 }
