@@ -111,7 +111,8 @@ public class Parser {
                 requestedItems,
                 giftDeliveryStorage.getString("requestedBy"),
                 giftDeliveryStorage.getString("phone"),
-                giftDeliveryStorage.getString("assignedTo")
+                giftDeliveryStorage.getString("assignedTo"),
+                giftDeliveryStorage.getBoolean("completed")
         );
     };
 

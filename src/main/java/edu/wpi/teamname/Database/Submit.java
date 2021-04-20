@@ -52,6 +52,7 @@ public class Submit {
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
+        data.put("completed", _form.isCompleted());
 
         String url = SERVER_URL + "/api/submit-gift-delivery";
 
