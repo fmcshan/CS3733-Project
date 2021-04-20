@@ -26,11 +26,7 @@ import java.util.ArrayList;
 public class DefaultPage extends LoadFXML implements AuthListener, CloseListener {
 
     @FXML
-    private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
-    @FXML
-    private VBox adminPop; // vbox to populate Map Editor button
-    @FXML
-    private VBox requestPop; // vbox to populate Submitted Requests button
+    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
@@ -127,6 +123,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     public void userLogin() {
         loadWindow("MapEditorButton", "mapButton", adminPop);
         loadWindow("SubmittedRequests", "reqButton", requestPop);
+        loadWindow("SubmittedRegistrations", "regButton", registrationPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);

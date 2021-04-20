@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Database.Submit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -170,7 +171,8 @@ public class UserRegistration {
             LoadFXML.setCurrentWindow("");
 
             //submit
-            edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            Submit.getInstance().UserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

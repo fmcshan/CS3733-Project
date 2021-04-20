@@ -126,6 +126,10 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </VBox>
+                  <VBox fx:id="registrationPop" layoutX="35.0" layoutY="298.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
                </children>
             </VBox>
          </children></VBox>

@@ -5,7 +5,9 @@ import edu.wpi.teamname.Algo.Node;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Parser {
@@ -66,4 +68,30 @@ public class Parser {
 
         return nodes;
     };
+
+    public static UserRegistration parseUserRegistration(JSONObject _registration) {
+        _registration = _registration.getJSONObject("fields");
+        ArrayList<String> reasonList = new ArrayList<String>();
+        try {
+            String reasons = _registration.getString("reasons");
+            reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
+            reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
+        } catch (Exception e) {e.printStackTrace();}
+        return new UserRegistration(
+                _registration.getString("name"),
+                _registration.getString("date"),
+                reasonList,
+                _registration.getString("phone"),
+                _registration.getBoolean("ack"),
+                _registration.getDouble("ackTime")
+        );
+    };
+
+    public static ArrayList<UserRegistration> parseUserRegistrations(JSONArray _registrations) {
+        ArrayList<UserRegistration> registrations = new ArrayList<UserRegistration>();
+        _registrations.forEach(r -> {
+            registrations.add(parseUserRegistration((JSONObject) r));
+        });
+        return registrations;
+    }
 }

@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -12,13 +13,13 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class Socket extends WebSocketClient {
+public class AuthSocket extends WebSocketClient {
 
-    public Socket(URI serverUri, Draft draft) {
+    public AuthSocket(URI serverUri, Draft draft) {
         super(serverUri, draft);
     }
 
-    public Socket(URI serverURI) {
+    public AuthSocket(URI serverURI) {
         super(serverURI);
     }
 
@@ -28,7 +29,7 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake data) {
-        System.out.println("Non authenticated socket opened.");
+        System.out.println("Authenticated socket opened.");
     }
 
     @Override
@@ -38,47 +39,22 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
-            ArrayList<Node> nodes = Parser.parseNodes(payload);
-            ArrayList<Edge> edges = Parser.parseEdges(payload.getJSONArray("edges"));
-
-            LocalStorage.getInstance().setNodes(nodes);
-            LocalStorage.getInstance().setEdges(edges);
+            ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
+            LocalStorage.getInstance().setRegistrations(registrationsPayload);
             return;
         }
 
-        if (payloadId.equals("add_node")) {
-            System.out.println("Node added");
+        if (payloadId.equals("submit_check_in")) {
+            UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
+            Initiator.getInstance().triggerRegistration(newRegistration);
             return;
         }
 
-        if (payloadId.equals("edit_node")) {
-            System.out.println("Node edited");
-            return;
-        }
-
-        if (payloadId.equals("remove_node")) {
-            System.out.println("Node removed");
-            return;
-        }
-
-        if (payloadId.equals("add_edge")) {
-            System.out.println("Edge added");
-            return;
-        }
-
-        if (payloadId.equals("edit_edge")) {
-            System.out.println("Edge edited");
-            return;
-        }
-
-        if (payloadId.equals("remove_edge")) {
-            System.out.println("Edge removed");
-//            return;
-        }
     }
 
     @Override
