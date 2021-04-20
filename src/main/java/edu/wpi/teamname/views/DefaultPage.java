@@ -13,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -99,6 +101,26 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     public void exitApplication() {
         Shutdown.getInstance().exit();
+    }
+
+    public void displayNodes() {
+
+        //System.out.println("got here");
+        rezisingInfo();
+        // map.clear();
+
+        for (Node n : nodeSet) {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+                nodeMap.put(n.getNodeID(), n);
+                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+                //System.out.println(fileFxWidthRatio);
+                // System.out.println(fileFxHeightRatio);
+                // circle = (Circle) clickNode(circle, n);
+                circle.setFill(Color.OLIVE);
+                topElements.getChildren().add(circle);
+                //   System.out.println("ADDED");
+            }
+        }
     }
 
     public void drawPath(ArrayList<Node> _listOfNodes) {

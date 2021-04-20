@@ -23,6 +23,7 @@ public class ChangeManager extends Thread {
                 if (changes.contains(_change.getChangeId())) { return; }
                 LocalStorage.getInstance().setNodes(_change.getNodes());
                 LocalStorage.getInstance().setEdges(_change.getEdges());
+                LocalStorage.getInstance().linkEdges();
                 changes.add(_change.getChangeId());
                 break;
 

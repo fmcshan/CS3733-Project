@@ -9,6 +9,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONArray;
@@ -129,6 +130,7 @@ public class PathFindingDatabaseManager {
 
         Change change = new Change("load_nodes", data.getString("CHANGE_ID"));
         change.setNodes(_nodes);
+        change.setEdges(LocalStorage.getInstance().getEdges());
         ChangeManager.getInstance().processChange(change);
 
         AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-nodes", data, "POST");
@@ -160,39 +162,47 @@ public class PathFindingDatabaseManager {
         insertNodeListIntoDatabase(nodeList);
     }
 
+    public void insertEdgeListIntoDatabase(ArrayList<Edge> _edges) {
+        JSONObject data = new JSONObject();
+        JSONArray edges = new JSONArray();
+        _edges.forEach(e -> {
+            JSONObject edge = new JSONObject();
+            edge.put("id", e.getEdgeID());
+            edge.put("x", e.getStartNode());
+            edge.put("y", e.getEndNode());
+            edges.put(edge);
+        });
+
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("edges", edges.toString());
+
+        Change change = new Change("load_edges", data.getString("CHANGE_ID"));
+        change.setNodes(LocalStorage.getInstance().getNodes());
+        change.setEdges(_edges);
+        ChangeManager.getInstance().processChange(change);
+
+        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-nodes", data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
     /**
      * Read the provided CSV and insert edges into the database
      */
-    public void insertEdgesIntoDatabase() {
+    public void insertEdgeCsvIntoDatabase() {
         List<List<String>> allEdgesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);
 
-        WriteBatch batch = db.batch();
-        batches(allEdgesData, 400).forEach(batchedEdgeData -> {
-            for (List<String> singleNodeData : batchedEdgeData) {
-                try {
-                    DocumentReference edgeRef = db.collection("edges").document(singleNodeData.get(0));
-                    Map<String, Object> edge = new HashMap<>();
-                    edge.put("start", singleNodeData.get(1));
-                    edge.put("end", singleNodeData.get(2));
-
-                    batch.set(edgeRef, edge);
-
-                } catch (Exception e) {
-                    System.out.println("error inserting edge into the batch");
-                    e.printStackTrace();
-                }
-            }
-
-            ApiFuture<List<WriteResult>> future = batch.commit();
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        ArrayList<Edge> edgeList = new ArrayList<Edge>();
+        allEdgesData.forEach(n -> {
+            edgeList.add(new Edge(
+                    n.get(0),
+                    n.get(1),
+                    n.get(2)
+            ));
         });
+        insertEdgeListIntoDatabase(edgeList);
     }
 
     /**

@@ -172,7 +172,7 @@ public class UserRegistration {
 
             //submit
             edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
-            Submit.getInstance().UserRegistration(formData);
+            Submit.getInstance().submitUserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

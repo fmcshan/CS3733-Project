@@ -7,6 +7,7 @@ import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -109,6 +110,18 @@ public class LocalStorage {
         } else {
             return (ArrayList<UserRegistration>) this.registrations.clone();
         }
+    }
+
+    public void linkEdges() {
+        HashMap<String, Node> nodeHashMap = new HashMap<String, Node>();
+        this.nodes.forEach(n -> {
+            nodeHashMap.put(n.getNodeID(), n);
+        });
+        this.edges.forEach(e -> {
+            if (nodeHashMap.containsKey(e.getStartNode()) && nodeHashMap.containsKey(e.getEndNode())) {
+                nodeHashMap.get(e.getStartNode()).addEdge(nodeHashMap.get(e.getEndNode()));
+            }
+        });
     }
 
     public void setRegistrations(ArrayList<UserRegistration> _registrations) {
