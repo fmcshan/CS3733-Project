@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.Database.CSVOperator;
+import edu.wpi.teamname.Database.LocalStorage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -102,27 +103,15 @@ public class RegistrationAdminView {
         });
     }
     public void loadData() {
-        ArrayList<edu.wpi.teamname.Database.UserRegistration> registrations = new ArrayList<edu.wpi.teamname.Database.UserRegistration>();
-        //edu.wpi.teamname.Database.UserRegistration
-        ArrayList<String> test = new ArrayList<>();
-        test.add("hi");
-        edu.wpi.teamname.Database.UserRegistration user = new edu.wpi.teamname.Database.UserRegistration("hi", "hi", test, "hi");
-        registrations.add(user);
-//        List<List<String>> allEdgesData = //CSVOperator.readFile(System.getProperty("user.dir") + "/" + loadCSVFileName.getText()); // Load new CSV
-//        Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
-//        allEdgesData.clear();
-//        allEdgesData.addAll(edgesDataAsSet);
-//
-//        table.getItems().clear(); // Clear table
+        ArrayList<edu.wpi.teamname.Database.UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
 
-
+        if (registrations == null) {
+            return;
+        }
 
         registrations.forEach(e -> {
             table.getItems().add(e);
         }); // Populate table
-
-
-
     }
     public void closeForm(ActionEvent actionEvent) {
         Success success = new Success(new UserRegistration());

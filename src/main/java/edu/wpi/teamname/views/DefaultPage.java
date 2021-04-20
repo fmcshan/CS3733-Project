@@ -163,9 +163,9 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void openCheckIn(ActionEvent actionEvent) {
         popPop.setPrefWidth(657.0);
-        //loadWindowPopPop("UserRegistration", "registrationButton");
+        loadWindowPopPop("UserRegistration", "registrationButton");
         //RegistrationAdminView admin = new RegistrationAdminView();
-        loadWindowPopPop("RegistrationAdminView", "registrationButton");
+        //loadWindowPopPop("RegistrationAdminView", "registrationButton");
     }
 
     public void exitApplication(ActionEvent actionEvent) {
