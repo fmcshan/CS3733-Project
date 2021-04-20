@@ -84,13 +84,12 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     }
 
     public void openLogin() {
-        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase();
-//        popPop.setPrefWidth(350.0);
-//        if (!AuthenticationManager.getInstance().isAuthenticated()) {
-//            loadWindow("Login", "loginBar", popPop);
-//        } else {
-//            AuthenticationManager.getInstance().signOut();
-//        }
+        popPop.setPrefWidth(350.0);
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            loadWindow("Login", "loginBar", popPop);
+        } else {
+            AuthenticationManager.getInstance().signOut();
+        }
     }
 
     public void openCheckIn() {

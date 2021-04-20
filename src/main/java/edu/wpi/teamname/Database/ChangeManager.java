@@ -17,16 +17,13 @@ public class ChangeManager extends Thread {
     }
 
     public void processChange(Change _change) {
-        if (changes.contains(_change.getChangeId())) {
-            System.out.println("Change already applied...");
-            return;
-        }
-
         switch (_change.getChangeType()) {
             case "load_nodes":
             case "load_edges":
+                if (changes.contains(_change.getChangeId())) { return; }
                 LocalStorage.getInstance().setNodes(_change.getNodes());
                 LocalStorage.getInstance().setEdges(_change.getEdges());
+                changes.add(_change.getChangeId());
                 break;
 
             case "submit_check_in":
@@ -38,8 +35,5 @@ public class ChangeManager extends Thread {
                 LocalStorage.getInstance().addGiftDeliveryStorage(_change.getGiftDelivery());
                 Initiator.getInstance().triggerGiftDelivery(_change.getGiftDelivery());
         }
-
-        System.out.println("Applied for the first time...");
-        changes.add(_change.getChangeId());
     }
 }

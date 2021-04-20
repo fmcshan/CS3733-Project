@@ -44,7 +44,6 @@ public class Socket extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         JSONObject payload = new JSONObject(message);
-        System.out.println(payload);
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
