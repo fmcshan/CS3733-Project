@@ -6,13 +6,9 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
-import edu.wpi.teamname.bridge.Bridge;
-import edu.wpi.teamname.views.DefaultPage;
-import edu.wpi.teamname.views.Requests;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -254,7 +249,7 @@ public class GiftDelivery {
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
             GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "");
-            Submit.getInstance().GiftDeliveryStorage(request);
+            Submit.getInstance().submitGiftDelivery(request);
             //Close the window after submitting the request
             //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
             //Bridge.getInstance().close(); //close the window
