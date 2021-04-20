@@ -125,7 +125,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     public void userLogin() {
         loadWindow("MapEditorButton", "mapButton", adminPop);
         loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
-        loadWindow("SubmittedRegistrations", "regButton", registrationPop);
+        loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -163,6 +163,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     @Override
     public void toggleRequest() {
         popPop.setPrefWidth(1000);
-        loadWindow("SubmittedRequests", "requestBar", popPop);
+        loadWindow("RequestAdminView", "requestBar", popPop);
     }
 }

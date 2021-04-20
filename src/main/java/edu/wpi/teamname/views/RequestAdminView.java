@@ -5,6 +5,7 @@ import edu.wpi.teamname.Database.LocalStorage;
 //import edu.wpi.teamname.Database.socketListeners.Initiator;
 //import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -14,7 +15,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
-public class SubmittedRequests {
+public class RequestAdminView {
     @FXML
     public TableView table;
     @FXML
@@ -32,7 +33,7 @@ public class SubmittedRequests {
 
     private GiftDeliveryStorage currentlySelected = null;
 
-    public SubmittedRequests() {
+    public RequestAdminView() {
 
     }
 
@@ -106,4 +107,7 @@ public class SubmittedRequests {
         success.loadSuccess();
     }
 
+    public void exitView(ActionEvent actionEvent) {
+        Bridge.getInstance().close(); // close the window
+    }
 }
