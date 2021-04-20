@@ -60,9 +60,9 @@ public class MapEditorGraph {
     @FXML
     private JFXTextField EdgeID;
     @FXML
-    private JFXTextField StartNode;
+    private JFXComboBox<String> startNode;
     @FXML
-    private JFXTextField EndNode;
+    private JFXComboBox<String> endNode;
     @FXML
     private JFXButton addEdge;
     @FXML
@@ -144,6 +144,10 @@ public class MapEditorGraph {
         allEdgesData.forEach(n -> {
             Edge newEdge = new Edge(n.get(0), n.get(1), n.get(2));
             edgeMap.put(newEdge.getEdgeID(), newEdge);
+            startNode.getItems().clear();
+            endNode.getItems().clear();
+            startNode.getItems().add(n.get(1));
+            endNode.getItems().add(n.get(2));
         });
         theEdges = allEdgesData;
         allEdgesData.forEach(n -> {
@@ -159,6 +163,10 @@ public class MapEditorGraph {
                     if (!edgeMap.containsKey(edge.getEdgeID())) {
                         edgeMap.put(edge.getEdgeID(), edge);
                         selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
+                        startNode.getItems().add(n.getNodeID());
+                        endNode.getItems().add(e.getNodeID());
+//                        System.out.println(startNode.getItems().size());
+//                        System.out.println(endNode.getItems().size());
                     }
                 }
             }
@@ -204,8 +212,10 @@ public class MapEditorGraph {
         edgeMap.values().forEach(n -> {
             if (n.getEdgeID().equals(selectEdge.getValue())) {
                 EdgeID.setText(n.getEdgeID());
-                StartNode.setText(n.getStartNode());
-                EndNode.setText(n.getEndNode());
+                startNode.setValue(n.getStartNode());
+                endNode.setValue(n.getEndNode());
+                System.out.println(n.getStartNode());
+                System.out.println(n.getEndNode());
             }
         });
     }
@@ -232,8 +242,10 @@ public class MapEditorGraph {
         if (!(submitEdge.isVisible())) {
             edgeMap.values().forEach(e -> {
                 if (e.getEdgeID().equals(selectEdge.getValue())) {
-                    e.setStartNode(String.valueOf(StartNode.getText()));
-                    e.setEndNode(String.valueOf(EndNode.getText()));
+                    e.setStartNode(String.valueOf(startNode.getValue()));
+                    e.setEndNode(String.valueOf(endNode.getValue()));
+//                    System.out.println(startNode);
+//                    System.out.println(endNode);
                 }
             });
         }
@@ -256,8 +268,8 @@ public class MapEditorGraph {
         NodeID.setText("Enter NodeID");
         selectEdge.setDisable(true);
         EdgeID.setText("Enter Edge ID");
-        StartNode.setText("");
-        EndNode.setText("");
+        startNode.setValue("");
+        endNode.setValue("");
         submitEdge.setVisible(true);
     }
 
@@ -291,11 +303,11 @@ public class MapEditorGraph {
             selectEdge.getItems().add(EdgeID.getText());
             validID1.setVisible(false);
             submitEdge.setVisible(false);
-            Edge newEdge = new Edge(EdgeID.getText(), StartNode.getText(), EndNode.getText());
+            Edge newEdge = new Edge(EdgeID.getText(), startNode.getValue(), endNode.getValue());
             edgeMap.put(newEdge.getEdgeID(), newEdge);
             EdgeID.setText("");
-            StartNode.setText("");
-            EndNode.setText("");
+            startNode.setValue("");
+            endNode.setValue("");
             selectEdge.setDisable(false);
         }
     }
@@ -328,8 +340,8 @@ public class MapEditorGraph {
             selectEdge.getItems().remove(EdgeID.getText());
             edgeMap.remove(EdgeID.getText());
             EdgeID.setText("");
-            StartNode.setText("");
-            EndNode.setText("");
+            startNode.setValue("");
+            endNode.setValue("");
         }
     }
 

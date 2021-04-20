@@ -365,11 +365,14 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="StartNode" onAction="#changeEdgeEvent">
+            <JFXComboBox fx:id="startNode" focusColor="WHITE" onHidden="#changeEdgeEvent" prefWidth="150.0" promptText="Select Start Node" style="-fx-font-size: 12; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
                <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
+                  <Insets left="25.0" />
                </VBox.margin>
-            </JFXTextField>
+            </JFXComboBox>
             <Label prefHeight="25.0" prefWidth="236.0" text="End Node" textFill="#868686">
                <font>
                   <Font size="16.0" />
@@ -380,18 +383,24 @@
             </Label>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField fx:id="EndNode" onAction="#changeEdgeEvent">
+                  <JFXComboBox fx:id="endNode" focusColor="WHITE" onAction="#changeEdgeEvent" onHidden="#changeEdgeEvent" prefWidth="150.0" promptText="Select End Node" style="-fx-font-size: 12; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXComboBox>
+                  <JFXButton onAction="#addEdge" text="Add Edge">
                      <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXButton onAction="#addEdge" text="Add Edge" />
+                        <Insets />
+                     </HBox.margin></JFXButton>
                   <JFXButton onAction="#deleteEdge" text="Delete Edge" />
                </children>
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField fx:id="edgeFile">
+                  <JFXTextField fx:id="edgeFile" onAction="#changeEdgeEvent">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
