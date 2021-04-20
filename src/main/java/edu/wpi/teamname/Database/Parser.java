@@ -97,21 +97,21 @@ public class Parser {
 
 
     public static GiftDeliveryStorage parseGiftDeliveryStorage(JSONObject _giftDeliveryStorage) {
-        _giftDeliveryStorage = _giftDeliveryStorage.getJSONObject("fields");
+        JSONObject giftDeliveryStorage = _giftDeliveryStorage.getJSONObject("fields");
         ArrayList<String> requestedItems = new ArrayList<String>();
         try {
-            String requested = _giftDeliveryStorage.getString("requestedItems");
+            String requested = giftDeliveryStorage.getString("requestedItems");
             requested = requested.replace("\\", "").substring(1, requested.length()-1);
             requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
         } catch (Exception e) {e.printStackTrace();}
         return new GiftDeliveryStorage(
-                _giftDeliveryStorage.getInt("id"),
-                _giftDeliveryStorage.getString("requestType"),
-                _giftDeliveryStorage.getString("location"),
+                _giftDeliveryStorage.getInt("pk"),
+                giftDeliveryStorage.getString("requestType"),
+                giftDeliveryStorage.getString("location"),
                 requestedItems,
-                _giftDeliveryStorage.getString("requestedBy"),
-                _giftDeliveryStorage.getString("phone"),
-                _giftDeliveryStorage.getString("assignedTo")
+                giftDeliveryStorage.getString("requestedBy"),
+                giftDeliveryStorage.getString("phone"),
+                giftDeliveryStorage.getString("assignedTo")
         );
     };
 

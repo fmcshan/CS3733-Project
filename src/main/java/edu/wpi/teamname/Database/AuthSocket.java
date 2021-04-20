@@ -39,19 +39,27 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
+
+            ArrayList<GiftDeliveryStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
+            LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
             return;
         }
 
         if (payloadId.equals("submit_check_in")) {
             UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
             Initiator.getInstance().triggerRegistration(newRegistration);
+            return;
+        }
+
+        if (payloadId.equals("submit_gift_delivery")) {
+            GiftDeliveryStorage newGiftDelivery = Parser.parseGiftDeliveryStorage(payload.getJSONObject("data"));
+            Initiator.getInstance().triggerGiftDelivery(newGiftDelivery);
             return;
         }
 

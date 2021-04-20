@@ -9,7 +9,7 @@ import edu.wpi.teamname.simplify.Config;
 public class Main {
 
     public static void main(String[] args) {
-        Config.getInstance().setEnv("dev"); // dev staging production
+        Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         AsynchronousQueue.getInstance().start();
         App.launch(App.class, args);
