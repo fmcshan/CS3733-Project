@@ -281,6 +281,17 @@ public class MapEditorGraph {
     }
 
     public void addNode() {
+        // TODO revert all changes to nodeMap when "submit edit node" button wasn't pressed
+        for (Node n : nodeSet) {
+            nodeMap.get(n.getNodeID()).setX(n.getX());
+            nodeMap.get(n.getNodeID()).setY(n.getY());
+            nodeMap.get(n.getNodeID()).setFloor(n.getFloor());
+            nodeMap.get(n.getNodeID()).setBuilding(n.getBuilding());
+            nodeMap.get(n.getNodeID()).setNodeType(n.getNodeType());
+            nodeMap.get(n.getNodeID()).setLongName(n.getLongName());
+            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());
+        }
+
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
         X.setText("");
