@@ -120,6 +120,7 @@ public class RegistrationAdminView implements RegistrationListener {
     }
 
     public void exitView(ActionEvent actionEvent) {
+        LoadFXML.setCurrentWindow("");
         Bridge.getInstance().close();
     }
 }

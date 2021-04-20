@@ -16,6 +16,6 @@ public class Main {
        // PathFindingDatabaseManager.getInstance().insertNodesIntoDatabase();
         AsynchronousQueue.getInstance().start();
 //        DatabaseThread.getInstance().start();
-       App.launch(App.class, args);
+        App.launch(App.class, args);
     }
 }
