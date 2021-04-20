@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+<AnchorPane fx:id="anchor" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
       <StackPane fx:id="stackPane" alignment="TOP_LEFT" style="-fx-background-color: #d6d8d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -26,23 +26,23 @@
                   <Image url="@../images/brighamandwomens.png" />
                </image>
                <viewport>
-                  <Rectangle2D minX="1000.0" minY="700.0" />
+                  <Rectangle2D minX="700.0" minY="500.0" />
                </viewport>
             </ImageView>
+            <AnchorPane fx:id="pathAnchor" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
+                     <elements>
+                        <MoveTo x="800.0" y="800.0" />
+                        <LineTo x="600.0" y="600.0" />
+                        <LineTo x="500.0" y="500.0" />
+                     </elements>
+                  </Path>
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="topElements" />
          </children>
       </StackPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
-               <elements>
-                  <MoveTo x="800.0" y="800.0" />
-                  <LineTo x="600.0" y="600.0" />
-                  <LineTo x="500.0" y="500.0" />
-               </elements>
-            </Path>
-         </children>
-      </AnchorPane>
       <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">
@@ -256,6 +256,5 @@
             </JFXButton>
          </children>
       </VBox>
-      <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="350.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="35.0" />
    </children>
 </AnchorPane>

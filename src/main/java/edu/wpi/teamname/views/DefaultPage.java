@@ -58,10 +58,12 @@ public class DefaultPage implements AuthListener, CloseListener {
     private StackPane stackPane;
     @FXML
     private JFXButton adminButton;
+    @FXML
+    private AnchorPane pathAnchor;
 
     double mapWidth; //= 1000.0;
     double mapHeight; // = 680.0;
-    double fileWidth; //= 5000.0;
+    double fileWidth;//= 5000.0;
     double fileHeight; // = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
@@ -84,41 +86,60 @@ public class DefaultPage implements AuthListener, CloseListener {
 
         tonysPath.getElements().clear();
 
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
-        });
-
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() > 0) {
-                drawPath(currentPath);
-            }
-        });
-
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+            topElements.getChildren().clear();
+            displayNodes();
+//            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
         });
 
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
+            }
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
+            topElements.getChildren().clear();
+            displayNodes();
+//            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
         });
 
-        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+        //System.out.println("mapWidth: " + mapWidth);
 
-        OnWindowSizeChanged();
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
+        //System.out.println("mapHeight: " + mapHeight);
 
-        resizingInfo();
+        //OnWindowSizeChanged();
+
+        //resizingInfo();
         if (start) {
-            System.out.println("GOT HERE");
             displayNodes();
+//            System.out.println("Before Zoom and Pan On Start");
+//            zoomAndPan(hospitalMap, topElements, mapWidth, mapHeight);
             start = false;
         } else {
             topElements.getChildren().clear();
-            resizingInfo();
+            //resizingInfo();
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
+            }
             displayNodes();
+//            System.out.println("Before Zoom and Pan After Start");
+//            zoomAndPan(hospitalMap, topElements, mapWidth, mapHeight);
         }
+
 
         zoomAndPan(hospitalMap, topElements, mapWidth, mapHeight);
     }
@@ -216,21 +237,23 @@ public class DefaultPage implements AuthListener, CloseListener {
         if (_listOfNodes.size() < 1) {
             return;
         }
+        //resizingInfo();
+        //displayNodes ();
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        double fileWidth = hospitalMap.getImage().getWidth();
-        double fileHeight = hospitalMap.getImage().getHeight();
-        double fileFxWidthRatio = mapWidth / fileWidth;
-        double fileFxHeightRatio = mapHeight / fileHeight;
+
         Node firstNode = _listOfNodes.get(0);
-        MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
+
+        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+//        Collection<LineTo> collection = new ArrayList<>();
         tonysPath.getElements().add(start);
-        System.out.println(fileFxWidthRatio);
+        // System.out.println(fileFxWidthRatio);
         _listOfNodes.forEach(n -> {
-            tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
+            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
         });
+//        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
+//        path.setFill(Color.TOMATO);
+//        path.setStrokeWidth(4);
     }
 
     @Override
@@ -259,6 +282,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     public void resizingInfo() {
+        //mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
         mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
         // System.out.println("mapWidth: "+ mapWidth);
         mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
@@ -302,17 +326,10 @@ public class DefaultPage implements AuthListener, CloseListener {
         //rezisingInfo();
         for (Node n : nodes) {
             map.put(n.getNodeID(), n);
-            //   System.out.println(n.getNodeType());
-//                double yCoord = n.getY()  * fileFxHeightRatio;
-//                double xCoord = n.getX()  * fileFxWidthRatio;
-//                System.out.println("viewportHeight: " + viewportHeight);
-//                System.out.println("viewportWidth: " + viewportWidth);
-//                System.out.println("yCoord: " + yCoord);
-//                System.out.println("xCoord: " + xCoord);
+            nodesMap.put(n.getNodeID(), n);
 
             double weightedNodeX;
             double weightedNodeY;
-            //  System.out.println("got here");
             weightedNodeX = xCoordOnTopElement(n.getX());
             weightedNodeY = yCoordOnTopElement(n.getY());
             Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
@@ -324,15 +341,13 @@ public class DefaultPage implements AuthListener, CloseListener {
             topElements.getChildren().add(circle);
             //   System.out.println("ADDED");
         }
-
-
-        if (startNode != null) {
-            Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
+        if (startNode != null && startNode.getNodeID().length() >= 2) {
+            Circle startCircle = new Circle(xCoordOnTopElement(startNode.getX()), yCoordOnTopElement(startNode.getY()), 8);
             startCircle.setFill(Color.MAGENTA);
             topElements.getChildren().add(startCircle);
         }
-        if (endNode != null) {
-            Circle endCircle = new Circle(endNode.getX() * fileFxWidthRatio, endNode.getY() * fileFxHeightRatio, 8);
+        if (endNode != null && endNode.getNodeID().length() >= 2) {
+            Circle endCircle = new Circle(xCoordOnTopElement(endNode.getX()), yCoordOnTopElement(endNode.getY()), 8);
             endCircle.setFill(Color.MAROON);
             topElements.getChildren().add(endCircle);
         }
@@ -384,8 +399,8 @@ public class DefaultPage implements AuthListener, CloseListener {
         double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        System.out.println("y divided by :" + viewportSmallestScale);
-        System.out.println("multiplied by: " + windowSmallestScale);
+//        System.out.println("y divided by :" + viewportSmallestScale);
+//        System.out.println("multiplied by: " + windowSmallestScale);
         return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
     }
 
@@ -395,6 +410,8 @@ public class DefaultPage implements AuthListener, CloseListener {
         // hMap = hospitalMap;
         //get the height associated with the height
         hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
+        //System.out.println("width" + width);
+        //System.out.println("height" + height);
         reset(hospitalMap, width, height);
         double fileWidth = hospitalMap.getImage().getWidth();
         double fileHeight = hospitalMap.getImage().getHeight();
@@ -413,15 +430,16 @@ public class DefaultPage implements AuthListener, CloseListener {
             //System.out.println("valueOfShift" + valueOfShift);
             shiftedImage(hospitalMap, valueOfShift, inputTopElements);
             mouseClickDown.set(viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
+
         });
 
         inputTopElements.setOnScroll(mouseEvent -> {
             double getDifference = -mouseEvent.getDeltaY();
-            System.out.println("getDifference: " + getDifference);
+            //System.out.println("getDifference: " + getDifference);
             Rectangle2D viewportOfImage = hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);
-            System.out.println("scaleDifference: " + scaleDifference);
+            //System.out.println("scaleDifference: " + scaleDifference);
             double minPixels = 10;
             //viewportOfImageWidth = viewportOfImage.getWidth();
             //viewportOfImageHeight = viewportOfImage.getHeight();
@@ -438,7 +456,7 @@ public class DefaultPage implements AuthListener, CloseListener {
             double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-            System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
+            //System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             //System.out.println("mouseCursorLocationOnMap" + mouseCursorLocationOnMap);
@@ -462,7 +480,7 @@ public class DefaultPage implements AuthListener, CloseListener {
             scaledY = scaledMinHeight;
 
 //
-            Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
+            Rectangle2D newViewPort = new Rectangle2D(scaledX, scaledY, scaledWidth, scaledHeight);
 
             double widthRatio = width / fileWidth;
             double heightRatio = height / fileHeight;
@@ -500,7 +518,7 @@ public class DefaultPage implements AuthListener, CloseListener {
         return Math.min(Math.max(value, min), max);
     }
 
-    public void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
+    public void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane inputTopElements) {
         Rectangle2D theViewPort = inputMap.getViewport();
 
         //Extracting the image's height and width
@@ -528,26 +546,32 @@ public class DefaultPage implements AuthListener, CloseListener {
         topElements.getChildren().clear();
         // displayNodes(topElements, inputMap, viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight());
         displayNodes();
+        drawPath(currentPath);
     }
 
     /**
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
-
-        Navigation navigation = new Navigation(this);
-
-        if (navigation.getFromCombo() == null || !nodesMap.containsKey(navigation.getFromCombo())) { // if combobox is null or the key does not exist
-            return;
-        }
-        if (navigation.getToCombo() == null || !nodesMap.containsKey(navigation.getToCombo())) { // if combobox is null or the key does not exist
-            return;
-        }
-        Node startNode = nodesMap.get(navigation.getFromCombo()); // get starting location
-        Node endNode = nodesMap.get(navigation.getToCombo()); // get ending location
-        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
-        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
-        drawPath(path); // draw the path on the map
+//
+//        Navigation navigation = new Navigation(this);
+//
+//        if (navigation.getFromCombo() == null || !nodesMap.containsKey(navigation.getFromCombo())) { // if combobox is null or the key does not exist
+//            return;
+//        }
+//        if (navigation.getToCombo() == null || !nodesMap.containsKey(navigation.getToCombo())) { // if combobox is null or the key does not exist
+//            return;
+//        }
+//        Node startNode = nodesMap.get(navigation.getFromCombo()); // get starting location
+//        Node endNode = nodesMap.get(navigation.getToCombo()); // get ending location
+//        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
+//        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
+//        drawPath(path); // draw the path on the map
+        AStar AStar = new AStar(listOfNodes, startNode, endNode);
+        System.out.println("AStar startNode: "+ startNode.getLongName() + " , nodeID: "+ startNode.getNodeID());
+        System.out.println("AStar endNode :"+ endNode.getLongName()+ " , nodeID: "+ endNode.getNodeID());
+        ArrayList<Node> path = AStar.returnPath();
+        drawPath(path);
     }
 
     public void getAndDrawPathWithCombos(String fromCombo, String toCombo) {
@@ -565,6 +589,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     public void assignStartAndEndNodes(Node node) {
         if (startNode == null) {
             startNode = node;
+            System.out.println("Start Node: " + node.getLongName());
             if (endNode != null) {
                 calcPath();
             }
@@ -572,6 +597,7 @@ public class DefaultPage implements AuthListener, CloseListener {
         }
         if (startNode != null && endNode == null) {
             endNode = node;
+            System.out.println("Close Node: " + node.getLongName());
 
             calcPath();
 

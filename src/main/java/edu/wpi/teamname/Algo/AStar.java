@@ -64,7 +64,7 @@ public class AStar {
     public void displayPath(){
         Stack<Node> finalPath = this.getPath(); //
         while (!finalPath.isEmpty())
-            System.out.println(finalPath.pop().getNodeInfo().get("longName"));
+            System.out.print(finalPath.pop().getNodeInfo().get("longName"));
     }
 
     /**
