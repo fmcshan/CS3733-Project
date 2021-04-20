@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,4 +90,40 @@ public class Requests {
         }
         return new Response(500);
     }
+
+//    public static Response postWithJSON(String _url, JSONObject formData) {
+//        try {
+//            HttpClient client = new DefaultHttpClient();
+//            HttpPost post = new HttpPost(_url);
+//
+//            post.addHeader(HttpHeaders.AUTHORIZATION, AuthenticationManager.getInstance().userId());
+//            byte[] out = formData.toString().getBytes(StandardCharsets.UTF_8);
+//            int length = out.length;
+//
+//            post.setFixedLengthStreamingMode(length);
+//            post.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//            http.connect();
+//            try(OutputStream os = http.getOutputStream()) {
+//                os.write(out);
+//            }
+//            HttpResponse response = client.execute(post);
+//            try {
+//                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//                StringBuilder data = new StringBuilder();
+//                String line = "";
+//                while ((line = rd.readLine()) != null) {
+//                    data.append(line);
+//                }
+//                return new Response(response.getStatusLine().getStatusCode(), response.getAllHeaders(), data.toString());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            return new Response(response.getStatusLine().getStatusCode(), response.getAllHeaders());
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new Response(500);
+//    }
 }

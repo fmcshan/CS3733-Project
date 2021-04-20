@@ -29,11 +29,16 @@ public class Socket extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake data) {
         System.out.println("Non authenticated socket opened.");
+        SocketManager.getInstance().resetReconnectTimeout("user");
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("closed with exit code " + code + " error: " + reason);
+        if (code != 1000) {
+            SocketManager.getInstance().reconnectSocket();
+        } else {
+            System.out.println("User socket closed");
+        }
     }
 
     @Override
@@ -83,11 +88,10 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
     }
 
     @Override
     public void onError(Exception e) {
-        System.err.println("error:" + e);
+        System.out.println("User socket error");
     }
 }
