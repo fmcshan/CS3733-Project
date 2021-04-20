@@ -18,6 +18,9 @@
             <children>
             <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36" />
             </children>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
         </VBox>
     </graphic>
 </JFXButton>
