@@ -41,37 +41,42 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private VBox requestPop; // vbox to populate Submitted Requests button
     @FXML
-    private Path tonysPath; // this is Tony's path
+    private Path tonysPath; // the path displayed on the map
     @FXML
-    private AnchorPane anchor; //
+    private ImageView hospitalMap; // the map
     @FXML
-    private ImageView hospitalMap;
+    private StackPane stackPane; // the pane the map is housed in
     @FXML
-    private StackPane stackPane;
-    @FXML
-    private JFXButton adminButton;
+    private JFXButton adminButton; // button that allows you to sign in
 
-    static String openWindow = "";
-    ArrayList<Node> currentPath = new ArrayList<>();
+    static String openWindow = ""; // string that tracks what window is open in popPop Vbox
+    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
 
+    /**
+     * setter for openWindow
+     * @param windowName // pass in the string that modifys openWindow
+     */
     public static void setOpenWindow(String windowName) {
         openWindow = windowName;
     }
 
+    /**
+     * run on startup
+     */
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
         Bridge.getInstance().addCloseListener(this);
 
-        tonysPath.getElements().clear();
+        tonysPath.getElements().clear(); // clear the path
 
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
             hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
         });
 
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
