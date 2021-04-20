@@ -94,4 +94,33 @@ public class Parser {
         });
         return registrations;
     }
+
+
+    public static GiftDeliveryStorage parseGiftDeliveryStorage(JSONObject _giftDeliveryStorage) {
+        JSONObject giftDeliveryStorage = _giftDeliveryStorage.getJSONObject("fields");
+        ArrayList<String> requestedItems = new ArrayList<String>();
+        try {
+            String requested = giftDeliveryStorage.getString("requestedItems");
+            requested = requested.replace("\\", "").substring(1, requested.length()-1);
+            requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
+        } catch (Exception e) {e.printStackTrace();}
+        return new GiftDeliveryStorage(
+                _giftDeliveryStorage.getInt("pk"),
+                giftDeliveryStorage.getString("requestType"),
+                giftDeliveryStorage.getString("location"),
+                requestedItems,
+                giftDeliveryStorage.getString("requestedBy"),
+                giftDeliveryStorage.getString("phone"),
+                giftDeliveryStorage.getString("assignedTo"),
+                giftDeliveryStorage.getBoolean("completed")
+        );
+    };
+
+    public static ArrayList<GiftDeliveryStorage> parseGiftDeliveryStorages(JSONArray _giftDeliveryStorages) {
+        ArrayList<GiftDeliveryStorage> giftDeliveryStorages = new ArrayList<GiftDeliveryStorage>();
+        _giftDeliveryStorages.forEach(r -> {
+            giftDeliveryStorages.add(parseGiftDeliveryStorage((JSONObject) r));
+        });
+        return giftDeliveryStorages;
+    }
 }

@@ -30,40 +30,66 @@ public class AuthSocket extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake data) {
         System.out.println("Authenticated socket opened.");
+        SocketManager.getInstance().resetReconnectTimeout("auth");
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("closed with exit code " + code + " error: " + reason);
+        if (code != 1000) {
+            SocketManager.getInstance().reconnectAuthSocket();
+        } else {
+            System.out.println("Auth socket closed");
+        }
     }
 
     @Override
     public void onMessage(String message) {
-        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
+
+            ArrayList<GiftDeliveryStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
+            LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
             return;
         }
 
         if (payloadId.equals("submit_check_in")) {
-            UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
-            Initiator.getInstance().triggerRegistration(newRegistration);
+            payload = payload.getJSONObject("data");
+            Change change = new Change("submit_check_in");
+            change.setUserRegistration(Parser.parseUserRegistration(payload.getJSONObject("data")));
+
+            ChangeManager.getInstance().processChange(change);
             return;
         }
 
+        if (payloadId.equals("submit_gift_delivery")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("submit_gift_delivery");
+            change.setGiftDelivery(Parser.parseGiftDeliveryStorage(payload.getJSONObject("data")));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+        if (payloadId.equals("gift_delivery_updated")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("gift_delivery_updated");
+            change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
     }
 
     @Override
     public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
     }
 
     @Override
     public void onError(Exception e) {
-        System.err.println("error:" + e);
+        System.out.println("Auth socket error");
     }
 }

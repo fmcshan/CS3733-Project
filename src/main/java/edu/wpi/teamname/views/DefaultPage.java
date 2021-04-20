@@ -7,6 +7,7 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
@@ -15,7 +16,9 @@ import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -105,6 +108,26 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         Shutdown.getInstance().exit();
     }
 
+//    public void displayNodes() {
+//
+//        //System.out.println("got here");
+//        rezisingInfo();
+//        // map.clear();
+//
+//        for (Node n : nodeSet) {
+//            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+//                nodeMap.put(n.getNodeID(), n);
+//                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+//                //System.out.println(fileFxWidthRatio);
+//                // System.out.println(fileFxHeightRatio);
+//                // circle = (Circle) clickNode(circle, n);
+//                circle.setFill(Color.OLIVE);
+//                topElements.getChildren().add(circle);
+//                //   System.out.println("ADDED");
+//            }
+//        }
+//    }
+
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
             return;
@@ -129,8 +152,8 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     @Override
     public void userLogin() {
         loadWindow("MapEditorButton", "mapButton", adminPop);
-        loadWindow("SubmittedRequests", "reqButton", requestPop);
-        loadWindow("SubmittedRegistrations", "regButton", registrationPop);
+        loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
+        loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -141,6 +164,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     public void userLogout() {
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
+        registrationPop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -166,13 +190,13 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     @Override
     public void toggleRegistration() {
         popPop.setPrefWidth(1000);
-        loadWindow("RegistrationAdminView", "regBar", popPop);
+        loadWindow("RegistrationAdminView", "registrationBar", popPop);
     }
 
     @Override
     public void toggleRequest() {
         popPop.setPrefWidth(1000);
-        loadWindow("SubmittedRequests", "reqBar", popPop);
+        loadWindow("RequestAdminView", "requestBar", popPop);
     }
 
 

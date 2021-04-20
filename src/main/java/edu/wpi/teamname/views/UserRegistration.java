@@ -172,12 +172,12 @@ public class UserRegistration {
 
             //submit
             edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
-            Submit.getInstance().UserRegistration(formData);
+            Submit.getInstance().submitUserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess();
+            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
         }
     }
 }

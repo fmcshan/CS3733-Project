@@ -6,7 +6,10 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class SubmittedRegistrations extends LoadFXML{
+/**
+ * Controller for SubmitRegistrationsButton.fxml
+ */
+public class SubmittedRegistrationsButton extends LoadFXML{
 
     @FXML
     private DefaultPage defaultPage;
