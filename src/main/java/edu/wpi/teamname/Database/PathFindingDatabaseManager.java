@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class PathFindingDatabaseManager {
     private static final PathFindingDatabaseManager instance = new PathFindingDatabaseManager();
     private Firestore db;
-    private String SERVER_URL= Config.getInstance().getServerUrl();
+    private String SERVER_URL = Config.getInstance().getServerUrl();
 
     private PathFindingDatabaseManager() {
     }
@@ -108,33 +108,56 @@ public class PathFindingDatabaseManager {
         }
     }
 
+    public void insertNodeListIntoDatabase(ArrayList<Node> _nodes) {
+        JSONObject data = new JSONObject();
+        JSONArray nodes = new JSONArray();
+        _nodes.forEach(n -> {
+            JSONObject node = new JSONObject();
+            node.put("id", n.getNodeID());
+            node.put("x", String.valueOf(n.getX()));
+            node.put("y", String.valueOf(n.getY()));
+            node.put("level", n.getFloor());
+            node.put("building", n.getBuilding());
+            node.put("type", n.getNodeType());
+            node.put("longName", n.getLongName());
+            node.put("shortName", n.getShortName());
+            nodes.put(node);
+        });
+
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("nodes", nodes.toString());
+
+        Change change = new Change("load_nodes", data.getString("CHANGE_ID"));
+        change.setNodes(_nodes);
+        ChangeManager.getInstance().processChange(change);
+
+        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-nodes", data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
     /**
      * Read the provided CSV and insert nodes into the database
      */
-    public void insertNodesIntoDatabase() {
-        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/MapLAllnodes.csv");
+    public void insertNodeCsvIntoDatabase() {
+        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
 
-         JSONObject data = new JSONObject();
-         JSONArray nodes = new JSONArray();
-         allNodesData.forEach(n -> {
-             JSONObject node = new JSONObject();
-             node.put("id", n.get(0));
-             node.put("x", n.get(1));
-             node.put("y", n.get(2));
-             node.put("level", n.get(3));
-             node.put("building", n.get(4));
-             node.put("type", n.get(5));
-             node.put("longName", n.get(6));
-             node.put("shortName", n.get(7));
-             nodes.put(node);
-         });
-         data.put("nodes", nodes.toString());
-
-         AsynchronousTask task = new AsynchronousTask(SERVER_URL+"/api/load-nodes", data,"POST");
-         AsynchronousQueue.getInstance().add(task);
+        ArrayList<Node> nodeList = new ArrayList<Node>();
+        allNodesData.forEach(n -> {
+            nodeList.add(new Node(
+                    n.get(0),
+                    Integer.parseInt(n.get(1)),
+                    Integer.parseInt(n.get(2)),
+                    n.get(3),
+                    n.get(4),
+                    n.get(5),
+                    n.get(6),
+                    n.get(7)
+            ));
+        });
+        insertNodeListIntoDatabase(nodeList);
     }
 
     /**
@@ -174,6 +197,7 @@ public class PathFindingDatabaseManager {
 
     /**
      * Performs a get request and returns the response as a json object
+     *
      * @param _url The URL to get
      * @return A json object
      * @throws IOException
@@ -197,6 +221,7 @@ public class PathFindingDatabaseManager {
 
     /**
      * Nodes are handled internally as a json object
+     *
      * @return A json array of nodes.
      */
     private JSONArray getNodesInteral() {
@@ -212,6 +237,7 @@ public class PathFindingDatabaseManager {
 
     /**
      * Edges are handled internally as a json object
+     *
      * @return A json array of edges.
      */
     private JSONArray getEdgesInternal() {
@@ -226,6 +252,7 @@ public class PathFindingDatabaseManager {
 
     /**
      * Return an arraylist of node classes
+     *
      * @return An arraylist of node classes
      */
     public ArrayList<Node> getNodes() {

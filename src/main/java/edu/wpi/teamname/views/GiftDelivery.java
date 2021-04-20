@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
@@ -20,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +130,7 @@ public class GiftDelivery {
     }
 
     public void initialize() {
-        for (Node node : PathFindingDatabaseManager.getInstance().getNodes()) {
+        for (Node node : LocalStorage.getInstance().getNodes()) {
             requestLocation.getItems().add(node.getNodeID());
         }
     }

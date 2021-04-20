@@ -3,6 +3,8 @@ package edu.wpi.teamname.Database;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
+import java.util.UUID;
+
 public class Submit {
     private static final Submit instance = new Submit();
     private Submit() {}
@@ -21,6 +23,7 @@ public class Submit {
         reasons.append("]");
 
         JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
         data.put("name", _form.getName());
         data.put("reasons", reasons.toString());
         data.put("date", _form.getDate());
@@ -42,6 +45,7 @@ public class Submit {
         items.append("]");
 
         JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
         data.put("location", _form.getLocation());
         data.put("requestType", _form.getRequestType());
         data.put("requestedItems", items.toString());

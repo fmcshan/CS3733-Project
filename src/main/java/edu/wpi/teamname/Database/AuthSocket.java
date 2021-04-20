@@ -57,19 +57,21 @@ public class AuthSocket extends WebSocketClient {
         }
 
         if (payloadId.equals("submit_check_in")) {
-            UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
-            LocalStorage.getInstance().addRegistration(newRegistration);
-            Initiator.getInstance().triggerRegistration(newRegistration);
+            Change change = new Change("submit_check_in", payload.getString("CHANGE_ID"));
+            change.setUserRegistration(Parser.parseUserRegistration(payload.getJSONObject("data")));
+
+            ChangeManager.getInstance().processChange(change);
             return;
         }
 
         if (payloadId.equals("submit_gift_delivery")) {
-            GiftDeliveryStorage newGiftDelivery = Parser.parseGiftDeliveryStorage(payload.getJSONObject("data"));
-            LocalStorage.getInstance().addGiftDeliveryStorage(newGiftDelivery);
-            Initiator.getInstance().triggerGiftDelivery(newGiftDelivery);
+            System.out.println(payload);
+            Change change = new Change("submit_gift_delivery", payload.getString("CHANGE_ID"));
+            change.setGiftDelivery(Parser.parseGiftDeliveryStorage(payload.getJSONObject("data")));
+
+            ChangeManager.getInstance().processChange(change);
             return;
         }
-
     }
 
     @Override

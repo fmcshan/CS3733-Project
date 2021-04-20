@@ -6,6 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
@@ -83,12 +84,13 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     }
 
     public void openLogin() {
-        popPop.setPrefWidth(350.0);
-        if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            loadWindow("Login", "loginBar", popPop);
-        } else {
-            AuthenticationManager.getInstance().signOut();
-        }
+        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase();
+//        popPop.setPrefWidth(350.0);
+//        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+//            loadWindow("Login", "loginBar", popPop);
+//        } else {
+//            AuthenticationManager.getInstance().signOut();
+//        }
     }
 
     public void openCheckIn() {

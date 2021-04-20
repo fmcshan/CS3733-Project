@@ -47,7 +47,7 @@ public class Socket extends WebSocketClient {
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
-            ArrayList<Node> nodes = Parser.parseNodes(payload);
+            ArrayList<Node> nodes = Parser.parseNodes(payload); // Uses nodes and edges
             ArrayList<Edge> edges = Parser.parseEdges(payload.getJSONArray("edges"));
 
             LocalStorage.getInstance().setNodes(nodes);
@@ -55,35 +55,15 @@ public class Socket extends WebSocketClient {
             return;
         }
 
-        if (payloadId.equals("add_node")) {
-            System.out.println("Node added");
-            return;
-        }
+        if (payloadId.equals("load_nodes") || payloadId.equals("load_edges")) { // Basically the same thing
+            Change change = new Change(payloadId, payload.getString(payload.getString("CHANGE_ID")));
+            change.setNodes(Parser.parseNodes(payload));
+            change.setEdges(Parser.parseEdges(payload.getJSONArray("edges")));
 
-        if (payloadId.equals("edit_node")) {
-            System.out.println("Node edited");
-            return;
-        }
-
-        if (payloadId.equals("remove_node")) {
-            System.out.println("Node removed");
-            return;
-        }
-
-        if (payloadId.equals("add_edge")) {
-            System.out.println("Edge added");
-            return;
-        }
-
-        if (payloadId.equals("edit_edge")) {
-            System.out.println("Edge edited");
-            return;
-        }
-
-        if (payloadId.equals("remove_edge")) {
-            System.out.println("Edge removed");
+            ChangeManager.getInstance().processChange(change);
 //            return;
         }
+
     }
 
     @Override

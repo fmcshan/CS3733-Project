@@ -7,13 +7,14 @@ import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
 
+import java.util.UUID;
+
 public class Main {
 
     public static void main(String[] args) {
-        Config.getInstance().setEnv("staging"); // dev staging production
+        Config.getInstance().setEnv("dev"); // dev staging production
         SocketManager.getInstance().startDataSocket();
-       // AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com","password");
-       // PathFindingDatabaseManager.getInstance().insertNodesIntoDatabase();
+        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com","password");
         AsynchronousQueue.getInstance().start();
 //        DatabaseThread.getInstance().start();
         App.launch(App.class, args);
