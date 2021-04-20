@@ -212,7 +212,7 @@ public class PathFindingDatabaseManager {
     private JSONArray getNodesInteral() {
         ArrayList<List<String>> nodes = new ArrayList<>();
         try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes?cache=true");
+            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes");
             return nodeList.getJSONArray("data");
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,7 +226,7 @@ public class PathFindingDatabaseManager {
      */
     private JSONArray getEdgesInternal() {
         try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges?cache=true");
+            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges");
             return nodeList.getJSONArray("data");
         } catch (Exception e) {
             e.printStackTrace();

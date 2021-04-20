@@ -125,7 +125,7 @@
                 <DropShadow color="#a4a4a4" />
             </effect>
             <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
+                <VBox prefHeight="200.0" prefWidth="100.0" />
                 <Label text="Node" textFill="#868686">
                     <font>
                         <Font size="16.0" />
@@ -134,7 +134,7 @@
                         <Insets left="25.0" right="275.0" />
                     </VBox.margin>
                 </Label>
-                <JFXComboBox fx:id="selectNode" focusColor="WHITE" onAction="#fillFieldsNode" prefWidth="300.0" promptText="Select Node" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                <JFXComboBox fx:id="selectNode" focusColor="WHITE" onAction="#fillFields" prefWidth="300.0" promptText="Select Node" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -142,155 +142,136 @@
                         <Insets left="25.0" top="5.0" />
                     </VBox.margin>
                 </JFXComboBox>
-            <HBox>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-               <children>
-                  <Label prefHeight="25.0" prefWidth="98.0" text="NodeID" textFill="#868686">
-                     <font>
+                <Label prefHeight="25.0" prefWidth="236.0" text="NodeID" textFill="#868686">
+                    <font>
                         <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="validID" prefHeight="25.0" prefWidth="187.0" text="Please enter a valid ID" textFill="RED">
-                     <font>
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField fx:id="NodeID">
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <VBox>
+                            <children>
+                                <Label prefHeight="25.0" prefWidth="236.0" text="X-Coordinate" textFill="#868686">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXTextField fx:id="X">
+                                    <VBox.margin>
+                                        <Insets right="5.0" />
+                                    </VBox.margin>
+                                </JFXTextField>
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label prefHeight="25.0" prefWidth="236.0" text="Y-Coordinate" textFill="#868686">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXTextField fx:id="Y">
+                                    <VBox.margin>
+                                        <Insets left="5.0" />
+                                    </VBox.margin>
+                                </JFXTextField>
+                            </children>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </HBox>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Floor" textFill="#868686">
+                    <font>
                         <Font size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <JFXTextField fx:id="NodeID" onAction="#changeNodeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox>
-                     <children>
-                        <Label prefHeight="25.0" prefWidth="236.0" text="X-Coordinate" textFill="#868686">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXTextField fx:id="X" onAction="#changeNodeEvent">
-                           <VBox.margin>
-                              <Insets right="5.0" />
-                           </VBox.margin>
-                        </JFXTextField>
-                     </children>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <Label prefHeight="25.0" prefWidth="236.0" text="Y-Coordinate" textFill="#868686">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXTextField fx:id="Y" onAction="#changeNodeEvent">
-                           <VBox.margin>
-                              <Insets left="5.0" />
-                           </VBox.margin>
-                        </JFXTextField>
-                     </children>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </HBox>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Floor" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="Floor" onAction="#changeNodeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Building" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="Building" onAction="#changeNodeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Node Type" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="NodeType" onAction="#changeNodeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Short Name" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="ShortName" onAction="#changeNodeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Long Name" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <JFXTextField fx:id="LongName" onAction="#changeNodeEvent">
-                     <HBox.margin>
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField fx:id="Floor">
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Building" textFill="#868686">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField fx:id="NodeType">
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Node Type" textFill="#868686">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField onAction="#ShortName">
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Short Name" textFill="#868686">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
                         <Insets left="25.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <HBox>
-                     <children>
-                        <JFXButton onAction="#addNode" text="New Node" />
-                        <JFXButton fx:id="submitNode" onAction="#submitNode" text="Add Node" />
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <JFXButton fx:id="DeleteNode" onAction="#deleteNode" text="Delete Node">
-               <VBox.margin>
-                  <Insets left="194.0" />
-               </VBox.margin>
-            </JFXButton>
-            <HBox prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <JFXTextField fx:id="nodeFile" text="L1Nodes.csv">
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXButton fx:id="Load" onAction="#loadFileNode" text="Load" />
-                  <JFXButton onAction="#saveNodes" text="Save" />
-               </children>
-            </HBox>
-                <JFXComboBox fx:id="selectEdge" focusColor="WHITE" onAction="#fillFieldsEdge" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                    </VBox.margin>
+                </Label>
+                <JFXTextField onAction="#LongName">
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Long Name" textFill="#868686">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                    <children>
+                        <JFXTextField>
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton text="Add Node" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                    <children>
+                        <JFXTextField fx:id="nodeFile">
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton text="Load" />
+                        <JFXButton text="Save" />
+                    </children>
+                </HBox>
+                <JFXComboBox fx:id="selectEdge" focusColor="WHITE" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                     <padding>
                         <Insets left="10.0" />
                     </padding>
@@ -298,81 +279,66 @@
                         <Insets left="25.0" top="5.0" />
                     </VBox.margin>
                 </JFXComboBox>
-            <HBox prefHeight="25.0" prefWidth="400.0">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-               <children>
-                  <Label prefHeight="25.0" prefWidth="91.0" text="Edge ID" textFill="#868686">
-                     <font>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Edge ID" textFill="#868686">
+                    <font>
                         <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="validID1" prefHeight="25.0" prefWidth="186.0" text="Please enter a valid ID" textFill="RED">
-                     <font>
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="Start Node" textFill="#868686">
+                    <font>
                         <Font size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <JFXTextField fx:id="EdgeID" onAction="#changeEdgeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Start Node" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="StartNode" onAction="#changeEdgeEvent">
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="End Node" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="100.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <JFXTextField fx:id="EndNode" onAction="#changeEdgeEvent">
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXButton fx:id="newEdge" onAction="#newEdge" text="New Edge" />
-                  <JFXButton fx:id="addEdge" onAction="#addEdge" text="Add Edge" />
-               </children>
-            </HBox>
-            <JFXButton fx:id="DeleteEdge" onAction="#deleteEdge" text="Delete Edge">
-               <padding>
-                  <Insets left="204.0" />
-               </padding>
-            </JFXButton>
-            <HBox prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <JFXTextField fx:id="edgeFile" text="L1Edges.csv">
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXButton fx:id="loadEdge" onAction="#loadFileEdge" text="Load" />
-                  <JFXButton text="Save" />
-               </children>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <JFXTextField>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </JFXTextField>
+                <Label prefHeight="25.0" prefWidth="236.0" text="End Node" textFill="#868686">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" right="100.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                    <children>
+                        <JFXTextField>
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton text="Add Edge" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                    <children>
+                        <JFXTextField fx:id="edgeFile" text="L1Edges.csv">
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton text="Load" />
+                        <JFXButton text="Save" />
+                    </children>
+                </HBox>
+                <VBox prefHeight="200.0" prefWidth="100.0" />
             </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
         </VBox>
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" AnchorPane.leftAnchor="1684.0" AnchorPane.topAnchor="50.0">
             <children>
@@ -468,7 +434,7 @@
                 </VBox>
             </children>
         </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" />
-      <VBox prefHeight="200.0" prefWidth="100.0" />
+        <VBox prefHeight="200.0" prefWidth="100.0" />
+        <VBox prefHeight="200.0" prefWidth="100.0" />
     </children>
 </AnchorPane>

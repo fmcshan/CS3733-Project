@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<JFXButton alignment="BASELINE_LEFT" onAction="#openSubmittedRequests" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Submitted Requests" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRequests">
+    <font>
+        <Font size="24.0" />
+    </font>
+    <padding>
+        <Insets bottom="8.0" left="40.0" top="8.0" />
+    </padding>
+    <graphic>
+        <VBox prefHeight="37.0" prefWidth="33.0">
+            <children>
+            <FontAwesomeIconView fill="#c3c3c3" glyphName="CHECK_SQUARE_ALT" size="36" translateY="3.0">
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
+            </FontAwesomeIconView>
+            </children>
+        </VBox>
+    </graphic>
+</JFXButton>

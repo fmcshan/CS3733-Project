@@ -2,7 +2,6 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Node;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class DatabaseThread extends Thread {
