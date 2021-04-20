@@ -86,9 +86,11 @@ public class Navigation {
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
-            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            toCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox
-            fromCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox 2 electric bugaloo
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+                toCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox
+                fromCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox 2 electric bugaloo
+            }
         });
     }
 

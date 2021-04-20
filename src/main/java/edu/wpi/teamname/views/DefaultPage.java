@@ -11,6 +11,7 @@ import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -37,6 +38,8 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     private StackPane stackPane; // the pane the map is housed in
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
+    @FXML
+    private AnchorPane topElements;
 
     ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
 
@@ -76,8 +79,8 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
-
         navigation.loadNav();
+        //displayNodes();
     }
 
     public void openRequests() {
@@ -106,7 +109,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 //    public void displayNodes() {
 //
 //        //System.out.println("got here");
-//        rezisingInfo();
+//        //rezisingInfo();
 //        // map.clear();
 //
 //        for (Node n : nodeSet) {
