@@ -3,22 +3,9 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.teamname.App;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-
-
-import javax.swing.*;
-import javax.xml.bind.SchemaOutputResolver;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -121,9 +108,8 @@ public class UserRegistration {
 
     /**
      * If the submit button is pressed, check if inputs are valid and display Success page
-     * @param actionEvent
      */
-    public void submitRegistration(ActionEvent actionEvent) {
+    public void submitRegistration() {
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
             System.out.println(phoneInput.getText());

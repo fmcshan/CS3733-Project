@@ -1,22 +1,15 @@
 package edu.wpi.teamname.views;
 
-import com.google.rpc.context.AttributeContext;
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
-import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bridge.Bridge;
 import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -77,7 +70,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         });
     }
 
-    public void toggleNav(ActionEvent actionEvent) {
+    public void toggleNav() {
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
@@ -86,12 +79,12 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         navigation.loadNav();
     }
 
-    public void openRequests(ActionEvent actionEvent) {
+    public void openRequests() {
         popPop.setPrefWidth(350.0);
         loadWindow("Requests", "reqBar", popPop);
     }
 
-    public void openLogin(ActionEvent actionEvent) {
+    public void openLogin() {
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             loadWindow("Login", "loginBar", popPop);
@@ -100,12 +93,12 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         }
     }
 
-    public void openCheckIn(ActionEvent actionEvent) {
+    public void openCheckIn() {
         popPop.setPrefWidth(657.0);
         loadWindow("UserRegistration", "registrationButton", popPop);
     }
 
-    public void exitApplication(ActionEvent actionEvent) {
+    public void exitApplication() {
         Shutdown.getInstance().exit();
     }
 

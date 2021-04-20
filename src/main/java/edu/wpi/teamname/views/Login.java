@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bridge.Bridge;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.apache.commons.validator.EmailValidator;
@@ -24,8 +23,6 @@ public class Login {
     @FXML
     private Label failedLogin;
 
-    String openWindow = "";
-
     /**
      * Check if the email is valid using EmailValidator
      * @param email
@@ -41,10 +38,9 @@ public class Login {
 
     /**
      * Once the login button is pressed, check if the email and password are valid
-     * @param event
      */
     @FXML
-    void login(ActionEvent event) {
+    void login() {
         String email = emailField.getText();
 
         if (!isValidEmail(email)) {

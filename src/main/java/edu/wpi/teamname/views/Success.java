@@ -4,7 +4,6 @@ import edu.wpi.teamname.bridge.Bridge;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
@@ -49,9 +48,8 @@ public class Success extends LoadFXML {
 
     /**
      * When close button is pressed close the success page and the form
-     * @param actionEvent
      */
-    public void closeSuccess(ActionEvent actionEvent) {
+    public void closeSuccess() {
         userRegistration.getSuccessPop().getChildren().clear(); // clear the successPop vbox
         Bridge.getInstance().close(); // close the window
     }

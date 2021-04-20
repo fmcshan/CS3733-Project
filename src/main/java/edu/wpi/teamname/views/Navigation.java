@@ -120,9 +120,8 @@ public class Navigation {
 
     /**
      * When both comboboxes are filled calculate a path using AStar
-     * @param actionEvent
      */
-    public void calcPath(ActionEvent actionEvent) {
+    public void calcPath() {
         if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
