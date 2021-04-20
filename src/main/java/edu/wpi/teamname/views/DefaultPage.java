@@ -18,14 +18,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -49,19 +47,10 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
 
-    static String currentWindow = ""; // string that tracks what window is open in popPop Vbox
     ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
 
     public VBox getPopPop() {
         return popPop;
-    }
-
-    /**
-     * setter for openWindow
-     * @param windowName // pass in the string that modifys openWindow
-     */
-    public static void setOpenWindow(String windowName) {
-        currentWindow = windowName;
     }
 
     /**

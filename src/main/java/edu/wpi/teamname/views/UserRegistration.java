@@ -61,8 +61,6 @@ public class UserRegistration {
     @FXML
     private VBox successPop; // this Vbox will be used to display the success page
 
-    String openWindow = ""; // determines the currently open window in the successPop Vbox
-
     /**
      * getter for successPop Vbox
      * @return the successPop VBox
@@ -183,7 +181,7 @@ public class UserRegistration {
                 reasonsForVisit.add(otherInput.getText());
             }
 
-            DefaultPage.setOpenWindow("");
+            LoadFXML.setCurrentWindow("");
 
             //submit
             edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
@@ -193,20 +191,5 @@ public class UserRegistration {
             Success success = new Success(this);
             success.loadSuccess();
         }
-    }
-
-    /**
-     * opens an fxml in the successPop Vbox
-     * @param windowName a string that specifies the currently open window in the successPop Vbox
-     * @param root the loaded fxml
-     */
-    public void openWindowSuccessPop(String windowName, Parent root) {
-        successPop.getChildren().clear(); // clear successPop Vbox
-        if (!windowName.equals(openWindow)) { // if the window name passed in is not equal to the global string openWindow
-            successPop.getChildren().add(root); // Put the loaded fxml in the successPop Vbox
-            openWindow = windowName; // pass in the new window name into global string openWindow
-            return;
-        }
-        openWindow = ""; // pass in the empty string to openWindow - when the window is closed
     }
 }

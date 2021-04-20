@@ -12,12 +12,10 @@ import java.io.IOException;
  * Controller for Success.fxml
  * @author Lauren Sowerbutts
  */
-public class Success {
+public class Success extends LoadFXML {
 
     @FXML
     private UserRegistration userRegistration;
-    @FXML
-    private DefaultPage defaultPage;
 
     public Success(UserRegistration userRegistration) {
         this.userRegistration = userRegistration;
@@ -43,7 +41,7 @@ public class Success {
                 }
             });
             Parent root = loader.load();
-            userRegistration.openWindowSuccessPop("successBar", root); // open/close success bar
+            openWindow("successBar", root, userRegistration.getSuccessPop()); // open/close success bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }

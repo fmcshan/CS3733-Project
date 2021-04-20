@@ -9,7 +9,15 @@ import java.io.IOException;
 
 public class LoadFXML {
 
-    private String currentWindow = "";
+    private static String currentWindow;
+
+    /**
+     * setter for currentWindow
+     * @param windowName // pass in the string that modifies currentWindow
+     */
+    public static void setCurrentWindow(String windowName) {
+        currentWindow = windowName;
+    }
 
     public void loadWindow(String fileName, String windowName, VBox vbox) {
         try {
