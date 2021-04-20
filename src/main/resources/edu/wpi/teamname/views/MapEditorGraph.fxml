@@ -142,14 +142,23 @@
                         <Insets left="25.0" top="5.0" />
                     </VBox.margin>
                 </JFXComboBox>
-            <Label prefHeight="25.0" prefWidth="236.0" text="NodeID" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
+            <HBox>
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
-            </Label>
+               <children>
+                  <Label prefHeight="25.0" prefWidth="98.0" text="NodeID" textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="validID" prefHeight="25.0" prefWidth="187.0" text="Please enter a valid ID" textFill="RED">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
             <JFXTextField fx:id="NodeID" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
@@ -257,9 +266,19 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton onAction="#addNode" text="Add Node" />
+                  <HBox>
+                     <children>
+                        <JFXButton onAction="#addNode" text="New Node" />
+                        <JFXButton fx:id="submitNode" onAction="#submitNode" text="Add Node" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
+            <JFXButton fx:id="DeleteNode" onAction="#deleteNode" text="Delete Node">
+               <VBox.margin>
+                  <Insets left="194.0" />
+               </VBox.margin>
+            </JFXButton>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
                   <JFXTextField fx:id="nodeFile" text="L1Nodes.csv">
@@ -267,8 +286,8 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton text="Load" />
-                  <JFXButton text="Save" />
+                  <JFXButton fx:id="Load" onAction="#loadFileNode" text="Load" />
+                  <JFXButton onAction="#saveNodes" text="Save" />
                </children>
             </HBox>
                 <JFXComboBox fx:id="selectEdge" focusColor="WHITE" onAction="#fillFieldsEdge" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
@@ -279,14 +298,23 @@
                         <Insets left="25.0" top="5.0" />
                     </VBox.margin>
                 </JFXComboBox>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Edge ID" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
+            <HBox prefHeight="25.0" prefWidth="400.0">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
-            </Label>
+               <children>
+                  <Label prefHeight="25.0" prefWidth="91.0" text="Edge ID" textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="validID1" prefHeight="25.0" prefWidth="186.0" text="Please enter a valid ID" textFill="RED">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
             <JFXTextField fx:id="EdgeID" onAction="#changeEdgeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
@@ -320,9 +348,15 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton text="Add Edge" />
+                  <JFXButton fx:id="newEdge" onAction="#newEdge" text="New Edge" />
+                  <JFXButton fx:id="addEdge" onAction="#addEdge" text="Add Edge" />
                </children>
             </HBox>
+            <JFXButton fx:id="DeleteEdge" onAction="#deleteEdge" text="Delete Edge">
+               <padding>
+                  <Insets left="204.0" />
+               </padding>
+            </JFXButton>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
                   <JFXTextField fx:id="edgeFile" text="L1Edges.csv">
@@ -330,7 +364,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton text="Load" />
+                  <JFXButton fx:id="loadEdge" onAction="#loadFileEdge" text="Load" />
                   <JFXButton text="Save" />
                </children>
             </HBox>

@@ -37,6 +37,12 @@ public class EdgesEditor {
     /**
      * Clears the current table, then loads the specified csv (loadCSVFileName text input) into edgeTable
      */
+
+
+
+
+
+
     public void loadCSVToTable() {
         List<List<String>> allEdgesData = CSVOperator.readFile(System.getProperty("user.dir") + "/" + loadCSVFileName.getText()); // Load new CSV
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
@@ -150,3 +156,5 @@ public class EdgesEditor {
         Platform.exit();
     }
 }
+
+
