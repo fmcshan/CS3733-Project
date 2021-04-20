@@ -111,7 +111,7 @@ public class RequestAdminView implements GiftDeliveryListener {
     }
 
     @Override
-    public void giftDeliveryUpdated(GiftDeliveryStorage _obj) {
+    public void giftDeliveryUpdated() {
 
     }
 

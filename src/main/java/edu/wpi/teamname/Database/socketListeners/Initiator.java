@@ -46,10 +46,10 @@ public class Initiator extends Thread {
         }
     }
 
-    public void triggerGiftDeliveryUpdated(GiftDeliveryStorage _obj) {
+    public void triggerGiftDeliveryUpdated() {
         for (GiftDeliveryListener l : giftDeliveryListeners) {
             try {
-                l.giftDeliveryUpdated(_obj);
+                l.giftDeliveryUpdated();
             } catch (Exception e) {
                 e.printStackTrace();
             }

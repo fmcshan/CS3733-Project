@@ -4,6 +4,7 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Change {
     private String changeType;
@@ -21,6 +22,11 @@ public class Change {
     public Change(String changeType, String changeId) {
         this.changeType = changeType;
         this.changeId = changeId;
+    }
+
+    public Change(String changeType) {
+        this.changeType = changeType;
+        this.changeId = UUID.randomUUID().toString();
     }
 
     public String getChangeType() {

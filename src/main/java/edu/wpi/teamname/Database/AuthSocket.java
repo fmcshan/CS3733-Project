@@ -58,7 +58,7 @@ public class AuthSocket extends WebSocketClient {
 
         if (payloadId.equals("submit_check_in")) {
             payload = payload.getJSONObject("data");
-            Change change = new Change("submit_check_in", payload.getString("CHANGE_ID"));
+            Change change = new Change("submit_check_in");
             change.setUserRegistration(Parser.parseUserRegistration(payload.getJSONObject("data")));
 
             ChangeManager.getInstance().processChange(change);
@@ -67,7 +67,7 @@ public class AuthSocket extends WebSocketClient {
 
         if (payloadId.equals("submit_gift_delivery")) {
             payload = payload.getJSONObject("data");
-            Change change = new Change("submit_gift_delivery", payload.getString("CHANGE_ID"));
+            Change change = new Change("submit_gift_delivery");
             change.setGiftDelivery(Parser.parseGiftDeliveryStorage(payload.getJSONObject("data")));
 
             ChangeManager.getInstance().processChange(change);
@@ -76,8 +76,8 @@ public class AuthSocket extends WebSocketClient {
 
         if (payloadId.equals("gift_delivery_updated")) {
             payload = payload.getJSONObject("data");
-            Change change = new Change("gift_delivery_updated", payload.getString("CHANGE_ID"));
-            change.setGiftDelivery(Parser.parseGiftDeliveryStorage(payload.getJSONObject("data")));
+            Change change = new Change("gift_delivery_updated");
+            change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
 
             ChangeManager.getInstance().processChange(change);
             return;
