@@ -31,339 +31,268 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class Navigation implements Initializable {
-        @FXML
-        private Path tonysPath;
-        @FXML
-        private AnchorPane anchor, topElements;
-        @FXML
-        private ComboBox<String> toCombo;
-        @FXML
-        private ComboBox<String> fromCombo;
-        @FXML
-        private ImageView hospitalMap;
-        @FXML
-        private StackPane stackPaneA;
+    @FXML
+    private Path tonysPath;
+    @FXML
+    private AnchorPane anchor, topElements;
+    @FXML
+    private ComboBox<String> toCombo;
+    @FXML
+    private ComboBox<String> fromCombo;
+    @FXML
+    private ImageView hospitalMap;
+    @FXML
+    private StackPane stackPaneA;
 
-        ArrayList<Node> listOfNodes = new ArrayList<>();
-        HashMap<String, Node> nodesMap = new HashMap<>();
-        ArrayList<Node> currentPath = new ArrayList<>();
-        double mapWidth; //= 1000.0;
-        double mapHeight; // = 680.0;
-        double fileWidth; //= 5000.0;
-        double fileHeight; // = 3400.0;
-        double fileFxWidthRatio= mapWidth / fileWidth;
-        double fileFxHeightRatio= mapHeight / fileHeight;
-        Node startNode;
-        Node endNode;
-        boolean start= true;
-    static double scaledWidth =5000;
-    static double scaledHeight= 3400.0;
+    ArrayList<Node> listOfNodes = new ArrayList<>();
+    HashMap<String, Node> nodesMap = new HashMap<>();
+    ArrayList<Node> currentPath = new ArrayList<>();
+    double mapWidth; //= 1000.0;
+    double mapHeight; // = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight; // = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
+    Node startNode;
+    Node endNode;
+    boolean start = true;
+    static double scaledWidth = 5000;
+    static double scaledHeight = 3400.0;
 
-    static double scaledX= 0;
-    static double scaledY= 0;
+    static double scaledX = 0;
+    static double scaledY = 0;
 
-        ZoomPan zoomPan = new ZoomPan();
-     public Navigation(){}
-        public ImageView getHospitalMap(){
-            return this.hospitalMap;
-        }
-//
-//        @FXML
-//        @Override
-//        public void initialize(URL location, ResourceBundle resource) {
-//
-//            tonysPath.getElements().clear();
-//            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-//            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-//            OnWindowSizeChanged();
-//            listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
-//
-//            listOfNodes.forEach(n -> {
-//                nodesMap.put(n.getNodeID(), n);
-//                toCombo.getItems().add(n.getNodeID());
-//                fromCombo.getItems().add(n.getNodeID());
-//            });
-//
-//            hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
-//            hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
-//            // rezisingInfo();
-////            if( start){
-////                displayNodes();
-////                start =false;}
-////            else{
-////                topElements.getChildren().clear();
-////                rezisingInfo();
-////                displayNodes();
-////            }
-//
-//            ZoomPan.zoomAndPan(hospitalMap, mapWidth, mapHeight);
-//        }
+    ZoomPan zoomPan = new ZoomPan();
 
-        @FXML
-        @Override
-        public void initialize(URL location, ResourceBundle resources) {
+    public Navigation() {
+    }
 
-            tonysPath.getElements().clear();
-           OnWindowSizeChanged();
-            listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+    public ImageView getHospitalMap() {
+        return this.hospitalMap;
+    }
 
-            listOfNodes.forEach(n -> {
-                nodesMap.put(n.getNodeID(), n);
-                toCombo.getItems().add(n.getNodeID());
-                fromCombo.getItems().add(n.getNodeID());
-            });
 
-            hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
-            hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
-            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+    @FXML
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
+        tonysPath.getElements().clear();
+        OnWindowSizeChanged();
+        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
+
+        listOfNodes.forEach(n -> {
+            nodesMap.put(n.getNodeID(), n);
+            toCombo.getItems().add(n.getNodeID());
+            fromCombo.getItems().add(n.getNodeID());
+        });
+
+        hospitalMap.fitWidthProperty().bind(anchor.widthProperty());
+        hospitalMap.fitHeightProperty().bind(anchor.heightProperty());
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+
+        resizingInfo();
+        if (start) {
+            System.out.println("GOT HERE");
+            displayNodes();
+            start = false;
+        } else {
+            topElements.getChildren().clear();
             resizingInfo();
-            if(start){
-                System.out.println("GOT HERE" );
-                displayNodes();
-                start =false;
-            } else{
-                topElements.getChildren().clear();
-                resizingInfo();
-                displayNodes();
+            displayNodes();
+        }
+
+        zoomAndPan(hospitalMap, topElements, mapWidth, mapHeight);
+    }
+
+    public void resizingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        // System.out.println("mapWidth: "+ mapWidth);
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        //System.out.println("mapHeight: "+mapHeight);
+        fileWidth = hospitalMap.getImage().getWidth();
+        // System.out.println("fileWidth: "+ fileWidth);
+        fileHeight = hospitalMap.getImage().getHeight();
+        // System.out.println("fileHeight: "+ fileHeight);
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    public void OnWindowSizeChanged() {
+
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
             }
-
-//
-//            topElements.setOnScroll(new EventHandler<Event>() {
-//                                        @Override
-//                                        public void handle(Event event) {
-//                                            topElements.getChildren().clear();
-//                                            //displayNodes();
-//                                        }
-//                                    }
-//            );
-
-            zoomAndPan(hospitalMap, topElements, mapWidth, mapHeight);
-//            viewportHeight = ZoomPan.getViewportOfImageHeight();
-//            viewportWidth = ZoomPan.getViewportOfImageWidth();
-//            System.out.println("viewportWidth: " + viewportWidth);
-//            System.out.println("viewportHeight: " + viewportHeight);
-
-//            topElements.setOnMouseDragged(mouseEvent -> {
-//
-//            displayNodes();
-//            });
-//            topElements.setOnScroll(mouseEvent ->  {
-//                displayNodes();
-//            });
-        }
-
-        public void resizingInfo(){
-            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-           // System.out.println("mapWidth: "+ mapWidth);
-            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-            //System.out.println("mapHeight: "+mapHeight);
-            fileWidth = hospitalMap.getImage().getWidth();
-          // System.out.println("fileWidth: "+ fileWidth);
-            fileHeight = hospitalMap.getImage().getHeight();
-           // System.out.println("fileHeight: "+ fileHeight);
-            fileFxWidthRatio = mapWidth / fileWidth;
-            fileFxHeightRatio = mapHeight / fileHeight;
-        }
-
-        public void OnWindowSizeChanged(){
-
-            anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
-                if (currentPath.size() > 0) {
-                    drawPath(currentPath);
-                }
-                topElements.getChildren().clear();
-                resizingInfo();
-               displayNodes();
-
-            });
-
-            anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
-                if (currentPath.size() > 0) {
-                    drawPath(currentPath);
-                }
-                topElements.getChildren().clear();
-                resizingInfo();
-                displayNodes();
-            });
-
-        }
-
-        public void drawPath(ArrayList<Node> _listOfNodes) {
-            if (_listOfNodes.size() < 1) {
-                return;
-            }
+            topElements.getChildren().clear();
             resizingInfo();
-            //displayNodes ();
-            currentPath = _listOfNodes;
-            tonysPath.getElements().clear();
+            displayNodes();
 
-            Node firstNode = _listOfNodes.get(0);
+        });
 
-            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-//        Collection<LineTo> collection = new ArrayList<>();
-            tonysPath.getElements().add(start);
-            // System.out.println(fileFxWidthRatio);
-            _listOfNodes.forEach(n -> {
-                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-            });
-//        Path path = new Path(start, new LineTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio));
-//        path.setFill(Color.TOMATO);
-//        path.setStrokeWidth(4);
-        }
-
-        public void returnHome(ActionEvent actionEvent) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
-                App.getPrimaryStage().getScene().setRoot(root);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
             }
-        }
+            topElements.getChildren().clear();
+            resizingInfo();
+            displayNodes();
+        });
 
-        public void exitApplication(ActionEvent actionEvent) {
-            Platform.exit();
-        }
-        public void getAndDrawPathWithCombos(){
-            if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
-                return;
-            }
-            if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
-                return;}
-            assignStartAndEndNodes(nodesMap.get(fromCombo.getValue()));
-            assignStartAndEndNodes(nodesMap.get(toCombo.getValue()));
-            //calcAndDrawPath(nodesMap.get(fromCombo.getValue()),nodesMap.get(toCombo.getValue()));
-        }
-        public void assignStartAndEndNodes(Node node){
-            if(startNode == null ){
-                startNode = node;
-                if(endNode!=null){
-                    calcAndDrawPath();
-                }
-                return;
-            }
-            if(startNode != null && endNode ==null){
-                endNode = node;
+    }
 
+    public void drawPath(ArrayList<Node> _listOfNodes) {
+        if (_listOfNodes.size() < 1) {
+            return;
+        }
+        resizingInfo();
+        //displayNodes ();
+        currentPath = _listOfNodes;
+        tonysPath.getElements().clear();
+
+        Node firstNode = _listOfNodes.get(0);
+
+        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+        tonysPath.getElements().add(start);
+        _listOfNodes.forEach(n -> {
+            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+        });
+    }
+
+    public void returnHome(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void exitApplication(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    public void getAndDrawPathWithCombos() {
+        if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) {
+            return;
+        }
+        if (toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue())) {
+            return;
+        }
+        assignStartAndEndNodes(nodesMap.get(fromCombo.getValue()));
+        assignStartAndEndNodes(nodesMap.get(toCombo.getValue()));
+    }
+
+    public void assignStartAndEndNodes(Node node) {
+        if (startNode == null) {
+            startNode = node;
+            if (endNode != null) {
                 calcAndDrawPath();
-
-                startNode=null;
-                endNode= null;
-
             }
+            return;
+        }
+        if (startNode != null && endNode == null) {
+            endNode = node;
 
+            calcAndDrawPath();
+
+            startNode = null;
+            endNode = null;
 
         }
-        public void calcAndDrawPath() {
+    }
+
+    public void calcAndDrawPath() {
 
 
-            AStar AStar = new AStar(listOfNodes, startNode, endNode);
-//            System.out.println("startNode: "+startNode.getLongName() + " nodeID: "+ startNode.getNodeID());
-//            System.out.println("endNode :"+ endNode.getLongName()+ " nodeID: "+ endNode.getNodeID());
-            ArrayList<Node> path = AStar.returnPath();
-            drawPath(path);
+        AStar AStar = new AStar(listOfNodes, startNode, endNode);
+        ArrayList<Node> path = AStar.returnPath();
+        drawPath(path);
+    }
+
+    HashMap<String, Node> map = new HashMap();
+    ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
+
+    public void displayNodes() {
+
+
+        //rezisingInfo();
+        for (Node n : nodes) {
+            map.put(n.getNodeID(), n);
+
+            double weightedNodeX;
+            double weightedNodeY;
+            //  System.out.println("got here");
+            weightedNodeX = xCoordOnTopElement(n.getX());
+            weightedNodeY = yCoordOnTopElement(n.getY());
+            Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
+
+            circle = (Circle) clickNode(circle, n);
+            circle.setFill(Color.OLIVE);
+            topElements.getChildren().add(circle);
         }
 
-        HashMap<String, Node> map = new HashMap();
-        ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
-        public  void displayNodes () {
 
-
-            //rezisingInfo();
-            for (Node n : nodes) {
-                map.put(n.getNodeID(), n);
-                //   System.out.println(n.getNodeType());
-//                double yCoord = n.getY()  * fileFxHeightRatio;
-//                double xCoord = n.getX()  * fileFxWidthRatio;
-//                System.out.println("viewportHeight: " + viewportHeight);
-//                System.out.println("viewportWidth: " + viewportWidth);
-//                System.out.println("yCoord: " + yCoord);
-//                System.out.println("xCoord: " + xCoord);
-
-                double weightedNodeX;
-                double weightedNodeY;
-              //  System.out.println("got here");
-                weightedNodeX = xCoordOnTopElement(n.getX());
-                weightedNodeY = yCoordOnTopElement(n.getY());
-                Circle circle = new Circle(weightedNodeX, weightedNodeY, 8);
-
-               // System.out.println(fileFxWidthRatio);
-              //  System.out.println(fileFxHeightRatio);
-                circle = (Circle) clickNode(circle,n);
-                circle.setFill(Color.OLIVE);
-                topElements.getChildren().add(circle);
-                //   System.out.println("ADDED");
-            }
-
-
-            if( startNode !=null){
-                Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
-                startCircle.setFill(Color.MAGENTA);
-                topElements.getChildren().add(startCircle);}
-            if(endNode !=null){
-                Circle endCircle = new Circle(endNode.getX() * fileFxWidthRatio, endNode.getY() * fileFxHeightRatio, 8);
-                endCircle.setFill(Color.MAROON);
-                topElements.getChildren().add(endCircle);
-            }
+        if (startNode != null) {
+            Circle startCircle = new Circle(startNode.getX() * fileFxWidthRatio, startNode.getY() * fileFxHeightRatio, 8);
+            startCircle.setFill(Color.MAGENTA);
+            topElements.getChildren().add(startCircle);
         }
-
-        protected javafx.scene.Node clickNode(javafx.scene.Node circle, Node node) {
-            circle.setOnMouseClicked(
-                    t -> {
-                        circle.setStyle("-fx-cursor: hand");
-                        assignStartAndEndNodes((node));
-
-                    });
-            circle.setStyle("-fx-cursor: hand");
-            return circle;
+        if (endNode != null) {
+            Circle endCircle = new Circle(endNode.getX() * fileFxWidthRatio, endNode.getY() * fileFxHeightRatio, 8);
+            endCircle.setFill(Color.MAROON);
+            topElements.getChildren().add(endCircle);
         }
-    public double xCoordOnTopElement(int x ){
+    }
+
+    protected javafx.scene.Node clickNode(javafx.scene.Node circle, Node node) {
+        circle.setOnMouseClicked(
+                t -> {
+                    circle.setStyle("-fx-cursor: hand");
+                    assignStartAndEndNodes((node));
+
+                });
+        circle.setStyle("-fx-cursor: hand");
+        return circle;
+    }
+
+    public double xCoordOnTopElement(int x) {
         double mapWidth = 1000.0;
         double mapHeight = 680.0;
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
-//        double fileWidth = ZoomPan.gethMap().getImage().getWidth();
-//        double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
-      //  System.out.println(fileWidth);
-        //double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
         double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight/ fileHeight;
-//        double windowWidth = hospitalMap.getFitWidth() / fileWidth;
-//        double windowHeight = hospitalMap.getFitHeight() / fileHeight;
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth()/fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
         double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ( (x -scaledX) / viewportSmallestScale) * windowSmallestScale;
+        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
     }
 
-    public double yCoordOnTopElement(int y ){
+    public double yCoordOnTopElement(int y) {
         double mapWidth = 1000.0;
         double mapHeight = 680.0;
         double fileWidth = 5000.0;
-      //  double fileWidth = ZoomPan.gethMap().getImage().getWidth();
-     //   double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
         double fileHeight = 3400.0;
-        double widthScale = scaledWidth/ fileWidth;
-        double heightScale = scaledHeight/ fileHeight;
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
 
-        double windowWidth =  hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ fileHeight;
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        System.out.println( "y divided by :" + viewportSmallestScale);
+        System.out.println("y divided by :" + viewportSmallestScale);
         System.out.println("multiplied by: " + windowSmallestScale);
         return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
     }
 
 
+    public void zoomAndPan(ImageView hospitalMap, AnchorPane inputTopElements, double width, double height) {
 
-    public void zoomAndPan(ImageView hospitalMap, AnchorPane inputTopElements, double width, double height){
 
-
-       // hMap = hospitalMap;
+        // hMap = hospitalMap;
         //get the height associated with the height
         hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(hospitalMap, width, height);
@@ -380,13 +309,11 @@ public class Navigation implements Initializable {
         inputTopElements.setOnMouseDragged(mouseEvent -> {
             Point2D pointToDragFrom = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
-            //System.out.println("pointToDragFrom" + pointToDragFrom);
-            //System.out.println("valueOfShift" + valueOfShift);
             shiftedImage(hospitalMap, valueOfShift, inputTopElements);
             mouseClickDown.set(viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
 
-        inputTopElements.setOnScroll(mouseEvent ->  {
+        inputTopElements.setOnScroll(mouseEvent -> {
             double getDifference = -mouseEvent.getDeltaY();
             System.out.println("getDifference: " + getDifference);
             Rectangle2D viewportOfImage = hospitalMap.getViewport();
@@ -394,10 +321,6 @@ public class Navigation implements Initializable {
             double scaleDifference = Math.pow(1.01, getDifference);
             System.out.println("scaleDifference: " + scaleDifference);
             double minPixels = 10;
-            //viewportOfImageWidth = viewportOfImage.getWidth();
-            //viewportOfImageHeight = viewportOfImage.getHeight();
-//            System.out.println("viewportOfImageWidth: " + viewportOfImageWidth);
-//            System.out.println("viewportOfImageHeight: " + viewportOfImageHeight);
 
 
             double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
@@ -412,27 +335,21 @@ public class Navigation implements Initializable {
             System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-            //System.out.println("mouseCursorLocationOnMap" + mouseCursorLocationOnMap);
-            //System.out.println("scaleDifference" + scaleDifference);
 
             scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
             scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
-            // scaledWidth = s
 
             double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
             double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
-//            System.out.println("minXValueOfMouseClick" + minXValueOfMouseClick);
-//            System.out.println("minYValueOfMouseClick" + minYValueOfMouseClick);
 
             double widthDifferenceBetweenScaledAndNormal = width - scaledWidth;
             double heightDifferenceBetweenScaledAndNormal = height - scaledHeight;
 
             double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
-            double   scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
+            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
             scaledX = scaledMinWidth;
             scaledY = scaledMinHeight;
 
-//
             Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
 
             double widthRatio = width / fileWidth;
@@ -440,14 +357,14 @@ public class Navigation implements Initializable {
 
             hospitalMap.setViewport(newViewPort);
             topElements.getChildren().clear();
-//            displayNodes(inputTopElements, hospitalMap, scaledMinWidth, scaledMinHeight, scaledWidth, scaledHeight);
-           displayNodes();
+
+            displayNodes();
             drawPath(currentPath);
         });
 
 
         inputTopElements.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getClickCount() == 2){
+            if (mouseEvent.getClickCount() == 2) {
                 reset(hospitalMap, width, height);
             }
         });
@@ -494,11 +411,10 @@ public class Navigation implements Initializable {
 
         inputMap.setViewport(new Rectangle2D(viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight()));
 
-        scaledWidth =theViewPort.getWidth();
+        scaledWidth = theViewPort.getWidth();
         scaledHeight = theViewPort.getHeight();
         topElements.getChildren().clear();
-        // displayNodes(topElements, inputMap, viewportMinWidth, viewportMinHeight, theViewPort.getWidth(), theViewPort.getHeight());
         displayNodes();
     }
-    }
+}
 
