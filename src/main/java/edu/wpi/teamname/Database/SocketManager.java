@@ -27,7 +27,7 @@ public class SocketManager {
     public void startDataSocket() {
         if (this.nonAuthClient == null) {
             try {
-                this.nonAuthClient = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/"));
+                this.nonAuthClient = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/user/"));
                 this.nonAuthClient.connect();
             } catch (Exception e) {e.printStackTrace();}
         }
@@ -43,7 +43,7 @@ public class SocketManager {
     public void startAuthDataSocket() {
         if (this.authClient == null) {
             try {
-                WebSocketClient client = new AuthSocket(new URI(SOCKET_URL + "/ws/auth-pipeline/"));
+                WebSocketClient client = new AuthSocket(new URI(SOCKET_URL + "/ws/pipeline/authenticated/"));
                 if (AuthenticationManager.getInstance().isAuthenticated()) {
                     client.addHeader("fb-auth", AuthenticationManager.getInstance().userId());
                 }
