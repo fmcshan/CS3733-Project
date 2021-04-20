@@ -59,4 +59,28 @@ public class Submit {
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
     }
+
+    public void UpdateGiftDelivery(GiftDeliveryStorage _form) {
+        StringBuilder items = new StringBuilder();
+        items.append("[");
+        _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
+        items.setLength(items.length()-2);
+        items.append("]");
+
+        JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("id", _form.getId());
+        data.put("location", _form.getLocation());
+        data.put("requestType", _form.getRequestType());
+        data.put("requestedItems", items.toString());
+        data.put("requestedBy", _form.getRequestedBy());
+        data.put("phone", _form.getContact());
+        data.put("assignedTo", _form.getAssignTo());
+        data.put("completed", _form.isCompleted());
+
+        String url = SERVER_URL + "/api/update-gift-delivery";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
 }

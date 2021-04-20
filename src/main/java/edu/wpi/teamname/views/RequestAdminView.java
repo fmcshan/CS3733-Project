@@ -110,6 +110,11 @@ public class RequestAdminView implements GiftDeliveryListener {
         table.getItems().add(0, _obj);
     }
 
+    @Override
+    public void giftDeliveryUpdated(GiftDeliveryStorage _obj) {
+
+    }
+
     /**
      * Close form once exit button is pressed
      * @param actionEvent

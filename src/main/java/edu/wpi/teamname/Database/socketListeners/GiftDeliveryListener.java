@@ -4,4 +4,5 @@ import edu.wpi.teamname.Database.GiftDeliveryStorage;
 
 public interface GiftDeliveryListener {
     void giftDeliveryAdded(GiftDeliveryStorage _obj);
+    void giftDeliveryUpdated(GiftDeliveryStorage _obj);
 }

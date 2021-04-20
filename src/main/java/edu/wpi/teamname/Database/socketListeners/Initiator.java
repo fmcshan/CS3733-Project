@@ -46,4 +46,14 @@ public class Initiator extends Thread {
         }
     }
 
+    public void triggerGiftDeliveryUpdated(GiftDeliveryStorage _obj) {
+        for (GiftDeliveryListener l : giftDeliveryListeners) {
+            try {
+                l.giftDeliveryUpdated(_obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
