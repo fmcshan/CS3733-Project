@@ -30,15 +30,15 @@ public class RegistrationAdminView {
     public TableColumn nameColumn;
     @FXML
     public TableColumn dateOfBirthColumn;
-    @FXML
-    public TableColumn submittedAtColumn;
+//    @FXML
+//    public TableColumn submittedAtColumn;
     @FXML
     public TableColumn reasonsForVisitColumn;
     @FXML
     public TableColumn phoneNumberColumn;
-    @FXML
-    public TableColumn acknowledgeColumn;
-    private UserRegistration currentlySelected = null;
+//    @FXML
+//    public TableColumn acknowledgeColumn;
+    private edu.wpi.teamname.Database.UserRegistration currentlySelected = null;
 
     public RegistrationAdminView() {
         //initialize();
@@ -67,7 +67,7 @@ public class RegistrationAdminView {
 
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         dateOfBirthColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        submittedAtColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        //submittedAtColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         reasonsForVisitColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<ArrayList<String>>() {
                                                                                    @Override
                                                                                    public String toString(ArrayList<String> object) {
@@ -75,7 +75,7 @@ public class RegistrationAdminView {
                                                                                        for (String s : object) {
                                                                                            ans += s + " ";
                                                                                        }
-                                                                                       return ans;
+                                                                                       return ans.replace("\"", "");
                                                                                    }
 
                                                                                    @Override
@@ -84,22 +84,22 @@ public class RegistrationAdminView {
                                                                                    }
                                                                                }));
         phoneNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        acknowledgeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+        //acknowledgeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
 
 
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         dateOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        submittedAtColumn.setCellValueFactory(new PropertyValueFactory<>("submittedAt"));
+        //submittedAtColumn.setCellValueFactory(new PropertyValueFactory<>("submittedAt"));
         reasonsForVisitColumn.setCellValueFactory(new PropertyValueFactory<>("reasonsForVisit"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        acknowledgeColumn.setCellValueFactory(new PropertyValueFactory<>("acknowledged"));
+        //acknowledgeColumn.setCellValueFactory(new PropertyValueFactory<>("acknowledged"));
 
         //loadCSVFileName.setText("L1Edges.csv"); // Set input text to default file
         loadData(); // Load file to table
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (UserRegistration) newSelection; // Listen for row selection events
+            currentlySelected = (edu.wpi.teamname.Database.UserRegistration) newSelection; // Listen for row selection events
         });
     }
     public void loadData() {

@@ -73,7 +73,7 @@ public class Parser {
         _registration = _registration.getJSONObject("fields");
         ArrayList<String> reasonList = new ArrayList<String>();
         try {
-            String reasons = _registration.getString("name");
+            String reasons = _registration.getString("reasons");
             reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
         } catch (Exception e) {e.printStackTrace();}

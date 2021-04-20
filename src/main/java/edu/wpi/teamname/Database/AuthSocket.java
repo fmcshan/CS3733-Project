@@ -38,6 +38,7 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
