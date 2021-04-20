@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -45,6 +46,12 @@ public class AuthSocket extends WebSocketClient {
         if (payloadId.equals("init")) {
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
+            return;
+        }
+
+        if (payloadId.equals("submit_check_in")) {
+            UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
+            Initiator.getInstance().triggerRegistration(newRegistration);
             return;
         }
 
