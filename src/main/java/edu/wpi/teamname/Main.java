@@ -12,10 +12,10 @@ public class Main {
     public static void main(String[] args) {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
-        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com","password");
-        PathFindingDatabaseManager.getInstance().insertNodesIntoDatabase();
+       // AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com","password");
+       // PathFindingDatabaseManager.getInstance().insertNodesIntoDatabase();
         AsynchronousQueue.getInstance().start();
 //        DatabaseThread.getInstance().start();
-       // App.launch(App.class, args);
+       App.launch(App.class, args);
     }
 }
