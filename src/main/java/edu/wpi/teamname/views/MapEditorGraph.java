@@ -95,6 +95,8 @@ public class MapEditorGraph {
             }
         });
 
+        enterEdges();
+
         submitEdge.setVisible(false);
         validID1.setVisible(false);
         validID.setVisible(false);
@@ -105,6 +107,7 @@ public class MapEditorGraph {
     void saveNodes() {
 
     }
+
     @FXML
     void loadFileNode() {
         JFileChooser chooser = new JFileChooser();
@@ -140,7 +143,13 @@ public class MapEditorGraph {
     }
 
     public void enterEdges() {
-
+        for (Node n : listOfNodes) {
+            for (Node e : n.getEdges()) {
+                if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
+                    selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
+                }
+            }
+        }
     }
 
     @FXML
