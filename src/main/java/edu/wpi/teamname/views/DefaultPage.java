@@ -41,6 +41,8 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private VBox requestPop; // vbox to populate Submitted Requests button
     @FXML
+    private VBox registrationPop; //vbox to populate Submitted Registration button
+    @FXML
     private Path tonysPath; // this is Tony's path
     @FXML
     private AnchorPane anchor; //
@@ -108,6 +110,15 @@ public class DefaultPage implements AuthListener, CloseListener {
         }
     }
 
+    public void loadWindowRegistrationPop(String fileName, String windowName) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
+            openWindowRegistrationPop(windowName, root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void openWindowPopPop(String windowName, Parent root) {
         popPop.getChildren().clear();
         if (!windowName.equals(openWindow)) {
@@ -132,6 +143,16 @@ public class DefaultPage implements AuthListener, CloseListener {
         requestPop.getChildren().clear();
         if (!windowName.equals(openWindow)) {
             requestPop.getChildren().add(root);
+            openWindow = windowName;
+            return;
+        }
+        openWindow = "";
+    }
+
+    public void openWindowRegistrationPop(String windowName, Parent root) {
+        registrationPop.getChildren().clear();
+        if (!windowName.equals(openWindow)) {
+            registrationPop.getChildren().add(root);
             openWindow = windowName;
             return;
         }
@@ -197,6 +218,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
+        loadWindowRegistrationPop("SubmittedRegistrations", "registrationButton");
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
