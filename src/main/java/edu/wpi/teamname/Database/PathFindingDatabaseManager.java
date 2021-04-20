@@ -10,6 +10,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.simplify.Config;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 public class PathFindingDatabaseManager {
     private static final PathFindingDatabaseManager instance = new PathFindingDatabaseManager();
     private Firestore db;
+    private String SERVER_URL= Config.getInstance().getServerUrl();
 
     private PathFindingDatabaseManager() {
     }
@@ -109,42 +111,30 @@ public class PathFindingDatabaseManager {
     /**
      * Read the provided CSV and insert nodes into the database
      */
-    private void insertNodesIntoDatabase() {
-        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
+    public void insertNodesIntoDatabase() {
+        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/MapLAllnodes.csv");
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
 
-        WriteBatch batch = db.batch();
+         JSONObject data = new JSONObject();
+         JSONArray nodes = new JSONArray();
+         allNodesData.forEach(n -> {
+             JSONObject node = new JSONObject();
+             node.put("id", n.get(0));
+             node.put("x", n.get(1));
+             node.put("y", n.get(2));
+             node.put("level", n.get(3));
+             node.put("building", n.get(4));
+             node.put("type", n.get(5));
+             node.put("longName", n.get(6));
+             node.put("shortName", n.get(7));
+             nodes.put(node);
+         });
+         data.put("nodes", nodes.toString());
 
-        batches(allNodesData, 400).forEach(batchedNodeData -> {
-            for (List<String> singleNodeData : batchedNodeData) {
-                try {
-                    DocumentReference nodeRef = db.collection("nodes").document(singleNodeData.get(0));
-                    Map<String, Object> node = new HashMap<>();
-                    node.put("x", singleNodeData.get(1));
-                    node.put("y", singleNodeData.get(2));
-                    node.put("level", singleNodeData.get(3));
-                    node.put("building", singleNodeData.get(4));
-                    node.put("type", singleNodeData.get(5));
-                    node.put("longName", singleNodeData.get(6));
-                    node.put("shortName", singleNodeData.get(7));
-
-                    batch.set(nodeRef, node);
-
-                } catch (Exception e) {
-                    System.out.println("error inserting node into the batch");
-                    e.printStackTrace();
-                }
-            }
-
-            ApiFuture<List<WriteResult>> future = batch.commit();
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
+         AsynchronousTask task = new AsynchronousTask(SERVER_URL+"/api/load-nodes", data,"POST");
+         AsynchronousQueue.getInstance().add(task);
     }
 
     /**
