@@ -29,8 +29,7 @@ public class Navigation {
     private DefaultPage defaultPage; // DefaultPage.fxml controller
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
-    HashMap<String, Node> nodesMap = new HashMap<>(); //
-    String openWindow = "";
+    HashMap<String, Node> nodesMap = new HashMap<>();
 
     /**
      *  constructor for Navigation
@@ -113,7 +112,7 @@ public class Navigation {
                 }
             });
             Parent root = loader.load();
-            defaultPage.openWindowPopPop("navBar", root); // open/close navigation bar
+            defaultPage.openWindow("navBar", root, defaultPage.getPopPop()); // open/close navigation bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -121,9 +120,8 @@ public class Navigation {
 
     /**
      * When both comboboxes are filled calculate a path using AStar
-     * @param actionEvent
      */
-    public void calcPath(ActionEvent actionEvent) {
+    public void calcPath() {
         if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }

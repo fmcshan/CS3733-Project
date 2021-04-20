@@ -4,12 +4,14 @@ import edu.wpi.teamname.bridge.Bridge;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
-
-public class Success {
+/**
+ * Controller for Success.fxml
+ * @author Lauren Sowerbutts
+ */
+public class Success extends LoadFXML {
 
     @FXML
     private UserRegistration userRegistration;
@@ -38,18 +40,16 @@ public class Success {
                 }
             });
             Parent root = loader.load();
-            userRegistration.openWindowSuccessPop("successBar", root); // open/close success bar
-
+            openWindow("successBar", root, userRegistration.getSuccessPop()); // open/close success bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
     /**
-     * When close button is pressed close the window
-     * @param actionEvent
+     * When close button is pressed close the success page and the form
      */
-    public void closeSuccess(ActionEvent actionEvent) {
+    public void closeSuccess() {
         userRegistration.getSuccessPop().getChildren().clear(); // clear the successPop vbox
         Bridge.getInstance().close(); // close the window
     }
