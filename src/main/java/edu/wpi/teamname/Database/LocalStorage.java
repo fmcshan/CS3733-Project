@@ -19,6 +19,7 @@ public class LocalStorage {
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
+    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
 
     public static synchronized LocalStorage getInstance() {
         return instance;
@@ -112,5 +113,33 @@ public class LocalStorage {
 
     public void setRegistrations(ArrayList<UserRegistration> _registrations) {
         this.registrations = _registrations;
+    }
+
+    public void setGiftDeliveryStorages(ArrayList<GiftDeliveryStorage> _giftDeliveryStorages) {
+        this.giftDeliveryStorages = _giftDeliveryStorages;
+    }
+
+    public ArrayList<GiftDeliveryStorage> getGiftDeliveryStorages() {
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            return null;
+        }
+
+        if (this.giftDeliveryStorages == null) {
+            for (int i = 0; i < 100; i++) {
+                if (this.giftDeliveryStorages != null) {
+                    break;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (this.giftDeliveryStorages == null) {
+            return null;
+        } else {
+            return (ArrayList<GiftDeliveryStorage>) this.giftDeliveryStorages.clone();
+        }
     }
 }

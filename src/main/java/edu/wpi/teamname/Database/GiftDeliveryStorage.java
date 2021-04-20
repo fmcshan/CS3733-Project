@@ -9,7 +9,18 @@ public class GiftDeliveryStorage {
     private String requestedBy;
     private String contact;
     private String assignTo;
-    private int id;
+    private int id = 0;
+
+
+    public GiftDeliveryStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo) {
+        this.requestType = requestType;
+        this.location = location;
+        this.requestedItems = requestedItems;
+        this.requestedBy = requestedBy;
+        this.contact = contact;
+        this.assignTo = assignTo;
+        this.id = id;
+    }
 
     public GiftDeliveryStorage(String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo) {
         this.requestType = requestType;
@@ -19,6 +30,7 @@ public class GiftDeliveryStorage {
         this.contact = contact;
         this.assignTo = assignTo;
     }
+
 
     public String getRequestType() {
         return requestType;
