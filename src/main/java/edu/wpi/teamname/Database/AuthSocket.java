@@ -53,12 +53,14 @@ public class AuthSocket extends WebSocketClient {
 
         if (payloadId.equals("submit_check_in")) {
             UserRegistration newRegistration = Parser.parseUserRegistration(payload.getJSONObject("data"));
+            LocalStorage.getInstance().addRegistration(newRegistration);
             Initiator.getInstance().triggerRegistration(newRegistration);
             return;
         }
 
         if (payloadId.equals("submit_gift_delivery")) {
             GiftDeliveryStorage newGiftDelivery = Parser.parseGiftDeliveryStorage(payload.getJSONObject("data"));
+            LocalStorage.getInstance().addGiftDeliveryStorage(newGiftDelivery);
             Initiator.getInstance().triggerGiftDelivery(newGiftDelivery);
             return;
         }
