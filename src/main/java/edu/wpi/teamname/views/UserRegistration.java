@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Database.Submit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Controller for Navigation.fxml
+ * Controller for UserRegistration.fxml
  * @author Frank McShan, Lauren Sowerbutts
  */
 public class UserRegistration {
@@ -65,7 +66,7 @@ public class UserRegistration {
     }
 
     /**
-     * Check if their is a valid date selected
+     * Check if there is a valid date selected
      * @return true if there is a valid value in the DatePicker
      */
     public boolean dateSelected() {
@@ -170,7 +171,8 @@ public class UserRegistration {
             LoadFXML.setCurrentWindow("");
 
             //submit
-            edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            Submit.getInstance().UserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

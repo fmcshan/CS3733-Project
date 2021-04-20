@@ -20,6 +20,10 @@ public class Login {
     @FXML
     private JFXPasswordField passwordField;
 
+    /**
+     * Once the login button is pressed, check if the email and password are valid
+     * @param event
+     */
     @FXML
     private Label failedLogin;
 
