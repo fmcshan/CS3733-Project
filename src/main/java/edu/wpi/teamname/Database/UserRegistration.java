@@ -45,4 +45,8 @@ public class UserRegistration {
     public double getAcknowledgedAt() {
         return acknowledgedAt;
     }
+
+    public double getSubmittedAt() {
+        return submittedAt;
+    }
 }
