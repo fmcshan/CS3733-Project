@@ -255,6 +255,11 @@ public class MapEditorGraph {
                     n.setNodeType(String.valueOf(NodeType.getText()));
                     n.setLongName(String.valueOf(LongName.getText()));
                     n.setShortName(String.valueOf(ShortName.getText()));
+                    topElements.getChildren().clear();
+                    displayNodes();
+                    displayEdges();
+                    displayNewNodes(n);
+
                 }
             });
         }
@@ -310,7 +315,7 @@ public class MapEditorGraph {
             Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
 //            nodeMap.put(newNode.getNodeID(), newNode);
             System.out.println(newNode.getNodeID());
-//            nodeSet.add(newNode);
+            nodeSet.add(newNode);
             //AddNodetoDatabase(just takes in a node)
             fetchFromDatabase =true;
            // displayNodes();
@@ -358,7 +363,7 @@ public class MapEditorGraph {
         } else {
 
             //nodeMap.remove(NodeID.getText());
-            System.out.println(NodeID.getText());
+           // System.out.println(NodeID.getText());
             nodeSet.remove(nodeMap.get(NodeID.getText()));
 
 //            for(Node n: nodeSet){
