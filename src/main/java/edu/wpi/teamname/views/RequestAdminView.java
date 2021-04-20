@@ -6,9 +6,12 @@ import edu.wpi.teamname.Database.LocalStorage;
 //import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.bridge.Bridge;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,12 +19,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
+import javafx.util.converter.DefaultStringConverter;
 
 import java.util.ArrayList;
-public class SubmittedRequests implements GiftDeliveryListener {
+public class RequestAdminView implements GiftDeliveryListener {
     @FXML
     public TableView table;
     @FXML
@@ -36,12 +41,20 @@ public class SubmittedRequests implements GiftDeliveryListener {
     public TableColumn contactColumn;
     @FXML
     public TableColumn assignToColumn;
+    @FXML
+    public TableColumn completeCheckBox;
 
     private GiftDeliveryStorage currentlySelected = null;
 
-    public SubmittedRequests() {
+    //private final StringProperty assignToProperty = new SimpleStringProperty();
+
+    public RequestAdminView() {
 
     }
+
+//    public StringProperty assignToProperty() {
+//        return this.assignToProperty;
+//    }
 
     public void initialize() {
 
@@ -79,14 +92,19 @@ public class SubmittedRequests implements GiftDeliveryListener {
         }));
         requestedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         contactColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        //assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        ObservableList<String> people = FXCollections.observableArrayList("Lauren", "Frank", "Justin");
+        assignToColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), people));
 
         requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("requestType"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         requestedItemsColumn.setCellValueFactory(new PropertyValueFactory<>("requestedItems"));
         requestedByColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        assignToColumn.setCellValueFactory(new PropertyValueFactory<>("assignTo"));
+
+        //assignToColumn.setCellValueFactory(new PropertyValueFactory<>("assignTo"));
+
+
 //        assignToColumn.setCellFactory(col -> {
 //            ArrayList<String> options = new ArrayList<String>();
 //            options.add("Sally");;
@@ -101,7 +119,7 @@ public class SubmittedRequests implements GiftDeliveryListener {
 //                    comboBox.valueProperty().bindBidirectional(newValue);
 //                }
 //            });
-//            //c.graphicProperty().bind(Bindings.when(c.emptyProperty()).then((String) null).otherwise((ObservableStringValue) comboBox));
+//            c.graphicProperty().bind(Bindings.when(c.emptyProperty()).then((Node) null).otherwise(comboBox));
 //            return c;
 //        });
 
@@ -128,6 +146,10 @@ public class SubmittedRequests implements GiftDeliveryListener {
     @Override
     public void giftDeliveryAdded(GiftDeliveryStorage _obj) {
         table.getItems().add(0, _obj);
+    }
+
+    public void exitView(ActionEvent actionEvent) {
+        Bridge.getInstance().close();
     }
 
 //    public void closeForm(ActionEvent actionEvent) {

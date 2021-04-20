@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
+import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -26,6 +27,7 @@ public class RegistrationAdminView implements RegistrationListener {
     public TableColumn reasonsForVisitColumn;
     @FXML
     public TableColumn phoneNumberColumn;
+
     //    @FXML
 //    public TableColumn acknowledgeColumn;
     private edu.wpi.teamname.Database.UserRegistration currentlySelected = null;
@@ -115,5 +117,9 @@ public class RegistrationAdminView implements RegistrationListener {
     @Override
     public void registrationAdded(edu.wpi.teamname.Database.UserRegistration _obj) {
         table.getItems().add(0, _obj);
+    }
+
+    public void exitView(ActionEvent actionEvent) {
+        Bridge.getInstance().close();
     }
 }
