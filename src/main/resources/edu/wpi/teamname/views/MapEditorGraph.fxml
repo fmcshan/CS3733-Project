@@ -280,7 +280,7 @@
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Short Name" textFill="#868686">
+            <Label prefHeight="25.0" prefWidth="236.0" text="Long Name" textFill="#868686">
                <font>
                   <Font size="16.0" />
                </font>
@@ -288,12 +288,12 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="ShortName" onAction="#changeNodeEvent">
+            <JFXTextField fx:id="LongName" onAction="#changeNodeEvent">
                <VBox.margin>
                   <Insets left="25.0" right="100.0" />
                </VBox.margin>
             </JFXTextField>
-            <Label prefHeight="25.0" prefWidth="236.0" text="Long Name" textFill="#868686">
+            <Label prefHeight="25.0" prefWidth="236.0" text="Short Name" textFill="#868686">
                <font>
                   <Font size="16.0" />
                </font>
@@ -303,7 +303,7 @@
             </Label>
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <JFXTextField fx:id="LongName" onAction="#changeNodeEvent">
+                  <JFXTextField fx:id="ShortName" onAction="#changeNodeEvent">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -320,7 +320,7 @@
                      </HBox.margin>
                   </JFXTextField>
                   <JFXButton onAction="#loadFileNode" text="Load" />
-                  <JFXButton text="Save" />
+                  <JFXButton onAction="#saveNodes" text="Save" />
                   <JFXButton fx:id="submitNode" onAction="#submitNode" text="Submit Node" />
                </children>
             </HBox>
@@ -397,7 +397,7 @@
                      </HBox.margin>
                   </JFXTextField>
                   <JFXButton onAction="#loadFileEdge" text="Load" />
-                  <JFXButton text="Save" />
+                  <JFXButton onAction="#saveEdges" text="Save" />
                   <JFXButton fx:id="submitEdge" onAction="#submitEdge" text="Submit Edge" />
                </children>
             </HBox>

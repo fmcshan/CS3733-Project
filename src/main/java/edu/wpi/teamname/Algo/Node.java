@@ -165,6 +165,38 @@ public class Node {
         this.AStarScore = Double.POSITIVE_INFINITY;
     }
 
+    public void setNodeID(String nodeID) {
+        this.nodeID = nodeID;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     /**
      * @return the sum of the cost so far to this node and the heuristic
      */

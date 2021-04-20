@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
@@ -83,6 +84,7 @@ public class MapEditorGraph {
     List<List<String>> theEdges;
     List<List<String>> theNodes;
     HashMap<String, Node> nodeMap = new HashMap<>();
+    HashMap<String, Edge> edgeMap = new HashMap<>();
 
     public void initialize() {
 
@@ -104,12 +106,9 @@ public class MapEditorGraph {
     }
 
     @FXML
-    void saveNodes() {
-
-    }
-
-    @FXML
     void loadFileNode() {
+        selectNode.getItems().clear();
+        nodeMap.clear();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "CSV Files", "csv");
@@ -119,6 +118,10 @@ public class MapEditorGraph {
         Set<List<String>> NodeDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(NodeDataAsSet);
+        allNodesData.forEach(n -> {
+            Node newNode = new Node(n.get(0), Integer.parseInt(n.get(1)), Integer.parseInt(n.get(2)), n.get(3), n.get(4), n.get(5), n.get(6), n.get(7));
+            nodeMap.put(newNode.getNodeID(), newNode);
+        });
         theNodes = allNodesData;
         theNodes.forEach(n -> {
             selectNode.getItems().add(n.get(0));
@@ -127,6 +130,8 @@ public class MapEditorGraph {
 
     @FXML
     void loadFileEdge() {
+        selectEdge.getItems().clear();
+        edgeMap.clear();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "CSV Files", "csv");
@@ -136,6 +141,10 @@ public class MapEditorGraph {
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);
+        allEdgesData.forEach(n -> {
+            Edge newEdge = new Edge(n.get(0), n.get(1), n.get(2));
+            edgeMap.put(newEdge.getEdgeID(), newEdge);
+        });
         theEdges = allEdgesData;
         allEdgesData.forEach(n -> {
             selectEdge.getItems().add(n.get(0));
@@ -146,24 +155,57 @@ public class MapEditorGraph {
         for (Node n : listOfNodes) {
             for (Node e : n.getEdges()) {
                 if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
-                    selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
+                    Edge edge = new Edge(n.getNodeID() + "_" + e.getNodeID(), n.getNodeID(), e.getNodeID());
+                    if (!edgeMap.containsKey(edge.getEdgeID())) {
+                        edgeMap.put(edge.getEdgeID(), edge);
+                        selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
+                    }
                 }
             }
         }
     }
 
     @FXML
-    public void fillFieldsNode() {
+    void saveNodes() {
+        ArrayList<Node> nodes = new ArrayList<Node>();
         theNodes.forEach(n -> {
-            if (n.get(0).equals(selectNode.getValue())) {
-                NodeID.setText(n.get(0));
-                X.setText(String.valueOf(n.get(1)));
-                Y.setText(String.valueOf(n.get(2)));
-                Floor.setText(n.get(3));
-                Building.setText(n.get(4));
-                NodeType.setText(n.get(5));
-                ShortName.setText(n.get(7));
-                LongName.setText(n.get(6));
+            nodes.add((Node) n);
+        });
+        CSVOperator.writeNodeCSV(nodes, nodeFile.getText()); // Write nodes to csv
+    }
+
+    @FXML
+    void saveEdges() {
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        theEdges.forEach(e -> {
+            edges.add((Edge) e);
+        });
+        CSVOperator.writeEdgeCSV(edges, edgeFile.getText()); // Write nodes to csv
+    }
+
+    @FXML
+    public void fillFieldsNode() {
+        nodeMap.values().forEach(n -> {
+            if (n.getNodeID().equals(selectNode.getValue())) {
+                NodeID.setText(n.getNodeID());
+                X.setText(String.valueOf(n.getX()));
+                Y.setText(String.valueOf(n.getY()));
+                Floor.setText(n.getFloor());
+                Building.setText(n.getBuilding());
+                NodeType.setText(n.getNodeType());
+                LongName.setText(n.getLongName());
+                ShortName.setText(n.getShortName());
+            }
+        });
+    }
+
+    @FXML
+    public void fillFieldsEdge() {
+        edgeMap.values().forEach(n -> {
+            if (n.getEdgeID().equals(selectEdge.getValue())) {
+                EdgeID.setText(n.getEdgeID());
+                StartNode.setText(n.getStartNode());
+                EndNode.setText(n.getEndNode());
             }
         });
     }
@@ -171,42 +213,27 @@ public class MapEditorGraph {
     @FXML
     void changeNodeEvent() {
         if (!(submitNode.isVisible())) {
-            theNodes.forEach(n -> {
-                if (n.get(0).equals(selectNode.getValue())) {
-                    n.set(1, String.valueOf(X.getText()));
-                    n.set(2, String.valueOf(Y.getText()));
-                    n.set(3, String.valueOf(Floor.getText()));
-                    n.set(4, String.valueOf(Building.getText()));
-                    n.set(5, String.valueOf(NodeType.getText()));
-                    n.set(7, String.valueOf(ShortName.getText()));
-                    n.set(6, String.valueOf(LongName.getText()));
+            nodeMap.values().forEach(n -> {
+                if (n.getNodeID().equals(selectNode.getValue())) {
+                    n.setX(Integer.parseInt(X.getText()));
+                    n.setY(Integer.parseInt(Y.getText()));
+                    n.setFloor(String.valueOf(Floor.getText()));
+                    n.setBuilding(String.valueOf(Building.getText()));
+                    n.setNodeType(String.valueOf(NodeType.getText()));
+                    n.setLongName(String.valueOf(LongName.getText()));
+                    n.setShortName(String.valueOf(ShortName.getText()));
                 }
-
             });
         }
-
-    }
-
-
-    @FXML
-    public void fillFieldsEdge() {
-        theEdges.forEach(n -> {
-            if (n.get(0).equals(selectEdge.getValue())) {
-                EdgeID.setText(n.get(0));
-                StartNode.setText(n.get(1));
-                EndNode.setText(n.get(2));
-
-            }
-        });
     }
 
     @FXML
     void changeEdgeEvent() {
         if (!(submitEdge.isVisible())) {
-            theEdges.forEach(e -> {
-                if (e.get(0).equals(selectEdge.getValue())) {
-                    e.set(1, String.valueOf(StartNode.getText()));
-                    e.set(2, String.valueOf(EndNode.getText()));
+            edgeMap.values().forEach(e -> {
+                if (e.getEdgeID().equals(selectEdge.getValue())) {
+                    e.setStartNode(String.valueOf(StartNode.getText()));
+                    e.setEndNode(String.valueOf(EndNode.getText()));
                 }
             });
         }
@@ -231,6 +258,15 @@ public class MapEditorGraph {
         submitNode.setVisible(true);
     }
 
+    public void addEdge() {
+        NodeID.setText("Enter NodeID");
+        selectEdge.setDisable(true);
+        EdgeID.setText("Enter Edge ID");
+        StartNode.setText("");
+        EndNode.setText("");
+        submitEdge.setVisible(true);
+    }
+
     public void submitNode() {
         if (NodeID.getText().equals("Enter Node ID")) {
             validID.setText("Please enter a valid ID");
@@ -239,16 +275,8 @@ public class MapEditorGraph {
             selectNode.getItems().add(NodeID.getText());
             validID.setVisible(false);
             submitNode.setVisible(false);
-            List<String> addedInfo = new ArrayList<String>();
-            addedInfo.add(NodeID.getText());
-            addedInfo.add(X.getText());
-            addedInfo.add(Y.getText());
-            addedInfo.add(Floor.getText());
-            addedInfo.add(Building.getText());
-            addedInfo.add(NodeType.getText());
-            addedInfo.add(LongName.getText());
-            addedInfo.add(ShortName.getText());
-            theNodes.add(addedInfo);
+            Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
+            nodeMap.put(newNode.getNodeID(), newNode);
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -259,54 +287,23 @@ public class MapEditorGraph {
             LongName.setText("");
             selectNode.setDisable(false);
         }
-
-
-    }
-
-    public void addEdge() {
-        NodeID.setText("Enter NodeID");
-        selectEdge.setDisable(true);
-        EdgeID.setText("Enter Edge ID");
-        StartNode.setText("");
-        EndNode.setText("");
-        submitEdge.setVisible(true);
     }
 
     public void submitEdge() {
         if (EdgeID.getText().equals("Enter Edge ID")) {
             validID1.setVisible(true);
             validID1.setText("Please enter a valid ID");
-
         } else {
             selectEdge.getItems().add(EdgeID.getText());
             validID1.setVisible(false);
             submitEdge.setVisible(false);
-            List<String> addedInfo = new ArrayList<String>();
-            addedInfo.add(EdgeID.getText());
-            addedInfo.add(StartNode.getText());
-            addedInfo.add(EndNode.getText());
-            theEdges.add(addedInfo);
+            Edge newEdge = new Edge(EdgeID.getText(), StartNode.getText(), EndNode.getText());
+            edgeMap.put(newEdge.getEdgeID(), newEdge);
             EdgeID.setText("");
             StartNode.setText("");
             EndNode.setText("");
             selectEdge.setDisable(false);
         }
-    }
-
-
-    @FXML
-    void deleteEdge() {
-        if (submitEdge.isVisible()) {
-            validID1.setText("Please add edge first");
-            validID1.setVisible(true);
-        } else {
-            selectEdge.getItems().remove(EdgeID.getText());
-            EdgeID.setText("");
-            StartNode.setText("");
-            EndNode.setText("");
-        }
-
-
     }
 
     @FXML
@@ -316,6 +313,7 @@ public class MapEditorGraph {
             validID.setVisible(true);
         } else {
             selectNode.getItems().remove(NodeID.getText());
+            nodeMap.remove(NodeID.getText());
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -324,9 +322,21 @@ public class MapEditorGraph {
             NodeType.setText("");
             ShortName.setText("");
             LongName.setText("");
-
         }
+    }
 
+    @FXML
+    void deleteEdge() {
+        if (submitEdge.isVisible()) {
+            validID1.setText("Please add edge first");
+            validID1.setVisible(true);
+        } else {
+            selectEdge.getItems().remove(EdgeID.getText());
+            edgeMap.remove(EdgeID.getText());
+            EdgeID.setText("");
+            StartNode.setText("");
+            EndNode.setText("");
+        }
     }
 
     public void displayNodes() {

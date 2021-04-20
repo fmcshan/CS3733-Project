@@ -16,6 +16,18 @@ public class Edge {
         this.endNode = endNode;
     }
 
+    public void setEdgeID(String edgeID) {
+        this.edgeID = edgeID;
+    }
+
+    public void setStartNode(String startNode) {
+        this.startNode = startNode;
+    }
+
+    public void setEndNode(String endNode) {
+        this.endNode = endNode;
+    }
+
     public String getEdgeID() {
         return edgeID;
     }
