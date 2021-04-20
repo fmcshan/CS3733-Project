@@ -103,25 +103,25 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         Shutdown.getInstance().exit();
     }
 
-    public void displayNodes() {
-
-        //System.out.println("got here");
-        rezisingInfo();
-        // map.clear();
-
-        for (Node n : nodeSet) {
-            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
-                nodeMap.put(n.getNodeID(), n);
-                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
-                //System.out.println(fileFxWidthRatio);
-                // System.out.println(fileFxHeightRatio);
-                // circle = (Circle) clickNode(circle, n);
-                circle.setFill(Color.OLIVE);
-                topElements.getChildren().add(circle);
-                //   System.out.println("ADDED");
-            }
-        }
-    }
+//    public void displayNodes() {
+//
+//        //System.out.println("got here");
+//        rezisingInfo();
+//        // map.clear();
+//
+//        for (Node n : nodeSet) {
+//            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+//                nodeMap.put(n.getNodeID(), n);
+//                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+//                //System.out.println(fileFxWidthRatio);
+//                // System.out.println(fileFxHeightRatio);
+//                // circle = (Circle) clickNode(circle, n);
+//                circle.setFill(Color.OLIVE);
+//                topElements.getChildren().add(circle);
+//                //   System.out.println("ADDED");
+//            }
+//        }
+//    }
 
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
