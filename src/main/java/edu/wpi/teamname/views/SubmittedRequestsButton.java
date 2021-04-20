@@ -4,6 +4,9 @@ import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+/**
+ * Controller for SubmitRequestsButton.fxml
+ */
 public class SubmittedRequestsButton {
 
     @FXML
