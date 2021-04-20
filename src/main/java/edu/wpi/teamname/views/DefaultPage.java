@@ -1,5 +1,11 @@
 package edu.wpi.teamname.views;
 
+import com.google.rpc.context.AttributeContext;
+import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
@@ -7,20 +13,20 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bridge.Bridge;
 import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Controller for DefaultPage.fxml
@@ -41,18 +47,12 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private ImageView hospitalMap;
     @FXML
-    private UserRegistration userRegistration;
-
-//    public DefaultPage(UserRegistration userRegistration) {
-//        this.userRegistration = userRegistration;
-//    }
+    private StackPane stackPane;
+    @FXML
+    private JFXButton adminButton;
 
     String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
-
-    public VBox getPopPop() {
-        return popPop;
-    }
 
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
@@ -60,16 +60,24 @@ public class DefaultPage implements AuthListener, CloseListener {
 
         tonysPath.getElements().clear();
 
-        anchor.widthProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
         });
 
-        anchor.heightProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
+        });
+
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+        });
+
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
     }
 
@@ -131,6 +139,7 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     public void toggleNav(ActionEvent actionEvent) {
+        tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
@@ -145,7 +154,11 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void openLogin(ActionEvent actionEvent) {
         popPop.setPrefWidth(350.0);
-        loadWindowPopPop("Login", "loginBar");
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            loadWindowPopPop("Login", "loginBar");
+        } else {
+            AuthenticationManager.getInstance().signOut();
+        }
     }
 
     public void openCheckIn(ActionEvent actionEvent) {
@@ -184,6 +197,20 @@ public class DefaultPage implements AuthListener, CloseListener {
     public void userLogin() {
         loadWindowAdminPop("MapEditorButton", "mapButton");
         loadWindowRequestPop("SubmittedRequests", "reqButton");
+        MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
+        signOut.setFill(Paint.valueOf("#c3c3c3"));
+        signOut.setGlyphSize(52);
+        adminButton.setGraphic(signOut);
+    }
+
+    @Override
+    public void userLogout() {
+        adminPop.getChildren().clear();
+        requestPop.getChildren().clear();
+        MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
+        signOut.setFill(Paint.valueOf("#c3c3c3"));
+        signOut.setGlyphSize(52);
+        adminButton.setGraphic(signOut);
     }
 
     @Override

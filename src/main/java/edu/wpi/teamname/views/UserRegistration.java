@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Submit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ *
+ * Lauren Sowerbutts, Frank McShan
+ */
 public class UserRegistration {
 
     @FXML
@@ -55,12 +61,14 @@ public class UserRegistration {
     @FXML
     private Label failedPhoneNumber;
     @FXML
-    private VBox successPop;
-    @FXML
-    private DefaultPage defaultPage;
+    private VBox successPop; // this Vbox will be used to display the success page
 
-    String openWindow = "";
+    String openWindow = ""; // determines the currently open window in the successPop Vbox
 
+    /**
+     * getter for successPop Vbox
+     * @return
+     */
     public VBox getSuccessPop() {
         return successPop;
     }
@@ -154,7 +162,8 @@ public class UserRegistration {
             }
 
             //submit
-            edu.wpi.teamname.Database.UserRegistration database = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            Submit.getInstance().UserRegistration(formData);
 
             successPop.setPrefWidth(657.0);
             // load controller here
@@ -163,13 +172,18 @@ public class UserRegistration {
         }
     }
 
+    /**
+     * opens an fxml in the successPop Vbox
+     * @param windowName a string that specifies the currently open window in the successPop Vbox
+     * @param root the loaded fxml
+     */
     public void openWindowSuccessPop(String windowName, Parent root) {
-        successPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            successPop.getChildren().add(root);
-            openWindow = windowName;
+        successPop.getChildren().clear(); // clear successPop Vbox
+        if (!windowName.equals(openWindow)) { // if the window name passed in is not equal to the global string openWindow
+            successPop.getChildren().add(root); // Put the loaded fxml in the successPop Vbox
+            openWindow = windowName; // pass in the new window name into global string openWindow
             return;
         }
-        openWindow = "";
+        openWindow = ""; // pass in the empty string to openWindow - when the window is closed
     }
 }

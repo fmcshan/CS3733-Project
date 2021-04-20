@@ -83,7 +83,7 @@ public class Navigation {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
+        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // get nodes from database
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
@@ -97,7 +97,7 @@ public class Navigation {
      * load Navigation bar in the Default Page when button is pressed/ make it disappear
      */
     public void loadNav() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Navigation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Navigation.fxml")); // used to load fxml in it's own controller
         try {
             loader.setControllerFactory(type -> {
                 if (type == Navigation.class) {
@@ -114,7 +114,6 @@ public class Navigation {
             });
             Parent root = loader.load();
             defaultPage.openWindowPopPop("navBar", root); // open/close navigation bar
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -22,6 +22,7 @@ public class Shutdown {
     public void exit() {
         Platform.exit();
         SocketManager.getInstance().stopDataSocket();
+        SocketManager.getInstance().stopAuthDataSocket();
         AsynchronousQueue.getInstance().stopProcessing();
     }
 

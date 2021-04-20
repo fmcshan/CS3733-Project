@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,5 +51,6 @@ public class Login {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             failedLogin.setText("Incorrect Password");
         }
+        Bridge.getInstance().close();
     }
 }
