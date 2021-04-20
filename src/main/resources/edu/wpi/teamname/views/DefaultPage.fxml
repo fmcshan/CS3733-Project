@@ -22,7 +22,7 @@
          <children>
             <ImageView fx:id="hospitalMap" fitHeight="970.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/brighamandwomens.png" />
+                  <Image url="@../images/01_thefirstfloor.png" />
                </image>
             </ImageView>
          </children>

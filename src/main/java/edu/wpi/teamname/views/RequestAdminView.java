@@ -44,6 +44,8 @@ public class RequestAdminView implements GiftDeliveryListener {
 
     private GiftDeliveryStorage currentlySelected = null;
 
+    private GiftDeliveryStorage updatedForm = null;
+
     /**
      * Run on startup
      */
