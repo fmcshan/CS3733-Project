@@ -57,7 +57,7 @@ public class AStar {
             node.setCostSoFar(Double.POSITIVE_INFINITY);
         }
     }
-
+    
     /**
      * Prints the path from the start node to the goal node
      */
