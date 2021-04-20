@@ -113,7 +113,4 @@ public class SubmittedRequests {
         success.loadSuccess();
     }
 
-    void openSubmittedRequests(ActionEvent event) {
-        Bridge.getInstance().loadRequestListener();
-    }
 }

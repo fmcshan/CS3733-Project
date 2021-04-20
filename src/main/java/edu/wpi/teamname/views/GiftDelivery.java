@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.bridge.Bridge;
@@ -247,7 +248,7 @@ public class GiftDelivery {
             if (otherCheckbox.isSelected())
                 giftSelected.add(otherInput.getText());
 
-            DefaultPage.setOpenWindow("");
+            DefaultPage.setCurrentWindow("");
 
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
