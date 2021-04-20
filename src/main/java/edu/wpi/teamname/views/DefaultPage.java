@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * Controller for DefaultPage.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage implements AuthListener, CloseListener {
+public class DefaultPage extends LoadFXML implements AuthListener, CloseListener {
 
     @FXML
     private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -49,15 +49,19 @@ public class DefaultPage implements AuthListener, CloseListener {
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
 
-    static String openWindow = ""; // string that tracks what window is open in popPop Vbox
+    static String currentWindow = ""; // string that tracks what window is open in popPop Vbox
     ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
+
+    public VBox getPopPop() {
+        return popPop;
+    }
 
     /**
      * setter for openWindow
      * @param windowName // pass in the string that modifys openWindow
      */
     public static void setOpenWindow(String windowName) {
-        openWindow = windowName;
+        currentWindow = windowName;
     }
 
     /**
@@ -84,63 +88,6 @@ public class DefaultPage implements AuthListener, CloseListener {
         });
     }
 
-    public void loadWindowPopPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowPopPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void loadWindowAdminPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowAdminPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void loadWindowRequestPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowRequestPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void openWindowPopPop(String windowName, Parent root) {
-        popPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            popPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
-    public void openWindowAdminPop(String windowName, Parent root) {
-        adminPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            adminPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
-    public void openWindowRequestPop(String windowName, Parent root) {
-        requestPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            requestPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
     public void toggleNav(ActionEvent actionEvent) {
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
@@ -152,13 +99,13 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void openRequests(ActionEvent actionEvent) {
         popPop.setPrefWidth(350.0);
-        loadWindowPopPop("Requests", "reqBar");
+        loadWindow("Requests", "reqBar", popPop);
     }
 
     public void openLogin(ActionEvent actionEvent) {
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            loadWindowPopPop("Login", "loginBar");
+            loadWindow("Login", "loginBar", popPop);
         } else {
             AuthenticationManager.getInstance().signOut();
         }
@@ -166,7 +113,7 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void openCheckIn(ActionEvent actionEvent) {
         popPop.setPrefWidth(657.0);
-        loadWindowPopPop("UserRegistration", "registrationButton");
+        loadWindow("UserRegistration", "registrationButton", popPop);
     }
 
     public void exitApplication(ActionEvent actionEvent) {
@@ -196,8 +143,8 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     @Override
     public void userLogin() {
-        loadWindowAdminPop("MapEditorButton", "mapButton");
-        loadWindowRequestPop("SubmittedRequests", "reqButton");
+        loadWindow("MapEditorButton", "mapButton", adminPop);
+        loadWindow("SubmittedRequests", "reqButton", requestPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
