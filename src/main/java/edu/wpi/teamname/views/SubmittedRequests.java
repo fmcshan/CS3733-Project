@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 //import edu.wpi.teamname.Database.socketListeners.Initiator;
 //import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
@@ -28,20 +29,10 @@ public class SubmittedRequests {
     @FXML
     public TableColumn assignToColumn;
 
-    //    @FXML
-//    public TableColumn acknowledgeColumn;
-    private edu.wpi.teamname.Database.UserRegistration currentlySelected = null;
+    private GiftDeliveryStorage currentlySelected = null;
 
     public SubmittedRequests() {
-        //initialize();
-        //ArrayList<String> test = new ArrayList<>();
-        //test.add("hi");
-        //table.setItems((ObservableList) new edu.wpi.teamname.Database.UserRegistration("hi", "hi", test, "hi"));
-        //nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //nameColumn.getColumns().add()
-        //nameColumn.getColumns().add("Test");
-        //nameColumn.setCellValueFactory(new PropertyValueFactory<String>("Jane Doe"));
-        //nameColumn.getColumns().add()
+
     }
 
     public void initialize() {
@@ -81,31 +72,31 @@ public class SubmittedRequests {
         contactColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        requestedItemsColumn.setCellValueFactory(new PropertyValueFactory<>("submittedAt"));
-        requestedByColumn.setCellValueFactory(new PropertyValueFactory<>("reasonsForVisit"));
-        contactColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        assignToColumn.setCellValueFactory(new PropertyValueFactory<>("acknowledged"));
+        requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        requestedItemsColumn.setCellValueFactory(new PropertyValueFactory<>("requestedItems"));
+        requestedByColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        assignToColumn.setCellValueFactory(new PropertyValueFactory<>("assignTo"));
 
         //loadCSVFileName.setText("L1Edges.csv"); // Set input text to default file
         loadData(); // Load file to table
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (edu.wpi.teamname.Database.UserRegistration) newSelection; // Listen for row selection events
+            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
         });
     }
 
     public void loadData() {
-        ArrayList<edu.wpi.teamname.Database.UserRegistration> registrations; //= LocalStorage.getInstance().getRegistrations();
+        ArrayList<GiftDeliveryStorage> requests = new ArrayList<>(); //= LocalStorage.getInstance().getRegistrations();
 
-//        if (registrations == null) {
-//            return;
-//        }
+        if (requests == null) {
+            return;
+        }
 
-//        registrations.forEach(e -> {
-//            table.getItems().add(0, e);
-//        }); // Populate table
+        requests.forEach(e -> {
+            table.getItems().add(0, e);
+        }); // Populate table
     }
 
     public void closeForm(ActionEvent actionEvent) {
