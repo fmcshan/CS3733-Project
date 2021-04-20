@@ -168,7 +168,7 @@ public class MapEditorGraph {
     @FXML
     void saveNodes() {
         ArrayList<Node> nodes = new ArrayList<Node>();
-        theNodes.forEach(n -> {
+        nodeMap.values().forEach(n -> {
             nodes.add((Node) n);
         });
         CSVOperator.writeNodeCSV(nodes, nodeFile.getText()); // Write nodes to csv
@@ -177,7 +177,7 @@ public class MapEditorGraph {
     @FXML
     void saveEdges() {
         ArrayList<Edge> edges = new ArrayList<Edge>();
-        theEdges.forEach(e -> {
+        edgeMap.values().forEach(e -> {
             edges.add((Edge) e);
         });
         CSVOperator.writeEdgeCSV(edges, edgeFile.getText()); // Write nodes to csv
@@ -239,12 +239,6 @@ public class MapEditorGraph {
         }
     }
 
-    public void LongName(ActionEvent actionEvent) {
-    }
-
-    public void ShortName(ActionEvent actionEvent) {
-    }
-
     public void addNode() {
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
@@ -268,8 +262,8 @@ public class MapEditorGraph {
     }
 
     public void submitNode() {
-        if (NodeID.getText().equals("Enter Node ID")) {
-            validID.setText("Please enter a valid ID");
+        if (NodeID.getText().equals("Enter Node ID") || X.getText().equals("") || Y.getText().equals("")) {
+            validID.setText("Please enter a valid Node");
             validID.setVisible(true);
         } else {
             selectNode.getItems().add(NodeID.getText());
@@ -292,7 +286,7 @@ public class MapEditorGraph {
     public void submitEdge() {
         if (EdgeID.getText().equals("Enter Edge ID")) {
             validID1.setVisible(true);
-            validID1.setText("Please enter a valid ID");
+            validID1.setText("Please enter a valid Edge");
         } else {
             selectEdge.getItems().add(EdgeID.getText());
             validID1.setVisible(false);

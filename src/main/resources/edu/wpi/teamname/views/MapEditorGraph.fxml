@@ -191,7 +191,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="validID" prefHeight="25.0" prefWidth="166.0" text="Please enter a valid ID." textFill="RED">
+                  <Label fx:id="validID" prefHeight="25.0" prefWidth="246.0" text="Please enter a valid ID." textFill="RED">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -342,7 +342,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="validID1" prefHeight="25.0" prefWidth="166.0" text="Please enter a valid ID." textFill="RED">
+                  <Label fx:id="validID1" prefHeight="25.0" prefWidth="234.0" text="Please enter a valid ID." textFill="RED">
                      <font>
                         <Font size="16.0" />
                      </font>
