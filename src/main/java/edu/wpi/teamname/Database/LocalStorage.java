@@ -115,8 +115,16 @@ public class LocalStorage {
         this.registrations = _registrations;
     }
 
+    public void addRegistration(UserRegistration _registration) {
+        this.registrations.add(_registration);
+    }
+
     public void setGiftDeliveryStorages(ArrayList<GiftDeliveryStorage> _giftDeliveryStorages) {
         this.giftDeliveryStorages = _giftDeliveryStorages;
+    }
+
+    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
+        this.giftDeliveryStorages.add(_giftDelivery);
     }
 
     public ArrayList<GiftDeliveryStorage> getGiftDeliveryStorages() {
