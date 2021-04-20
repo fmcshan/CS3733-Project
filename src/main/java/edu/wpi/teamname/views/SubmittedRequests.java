@@ -4,10 +4,16 @@ import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 //import edu.wpi.teamname.Database.socketListeners.Initiator;
 //import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
+import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
-import edu.wpi.teamname.bridge.Bridge;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,7 +21,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
-public class RequestAdminView {
+public class SubmittedRequests implements GiftDeliveryListener {
     @FXML
     public TableView table;
     @FXML
@@ -33,7 +39,7 @@ public class RequestAdminView {
 
     private GiftDeliveryStorage currentlySelected = null;
 
-    public RequestAdminView() {
+    public SubmittedRequests() {
 
     }
 
@@ -52,7 +58,7 @@ public class RequestAdminView {
 //                setText(empty ? null : item ? "Male" : "Female" );
 //            }
 //        });
-        //Initiator.getInstance().addRegistrationListener(this);
+        Initiator.getInstance().addGiftDeliveryListener(this);
 
         requestTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -75,19 +81,36 @@ public class RequestAdminView {
         contactColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
+        requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("requestType"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         requestedItemsColumn.setCellValueFactory(new PropertyValueFactory<>("requestedItems"));
         requestedByColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
         assignToColumn.setCellValueFactory(new PropertyValueFactory<>("assignTo"));
+//        assignToColumn.setCellFactory(col -> {
+//            ArrayList<String> options = new ArrayList<String>();
+//            options.add("Sally");;
+//            options.add("Joe");
+//            TableCell<String, StringProperty> c = new TableCell<>();
+//            final ComboBox<String> comboBox = new ComboBox<String>((ObservableList<String>) options);
+//            c.itemProperty().addListener((observable, oldValue, newValue) -> {
+//                if (oldValue != null) {
+//                    comboBox.valueProperty().unbindBidirectional(oldValue);
+//                }
+//                if (newValue != null) {
+//                    comboBox.valueProperty().bindBidirectional(newValue);
+//                }
+//            });
+//            //c.graphicProperty().bind(Bindings.when(c.emptyProperty()).then((String) null).otherwise((ObservableStringValue) comboBox));
+//            return c;
+//        });
 
         //loadCSVFileName.setText("L1Edges.csv"); // Set input text to default file
         loadData(); // Load file to table
 
-//        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-//            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
-//        });
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
+        });
     }
 
     public void loadData() {
@@ -102,12 +125,14 @@ public class RequestAdminView {
         }); // Populate table
     }
 
-    public void closeForm(ActionEvent actionEvent) {
-        Success success = new Success(new UserRegistration());
-        success.loadSuccess();
+    @Override
+    public void giftDeliveryAdded(GiftDeliveryStorage _obj) {
+        table.getItems().add(0, _obj);
     }
 
-    public void exitView(ActionEvent actionEvent) {
-        Bridge.getInstance().close(); // close the window
-    }
+//    public void closeForm(ActionEvent actionEvent) {
+//        Success success = new Success(new UserRegistration());
+//        success.loadSuccess();
+//    }
+
 }

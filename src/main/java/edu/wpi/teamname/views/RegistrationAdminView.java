@@ -3,7 +3,6 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
-import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -108,17 +107,13 @@ public class RegistrationAdminView implements RegistrationListener {
         }); // Populate table
     }
 
-    public void closeForm(ActionEvent actionEvent) {
-        Success success = new Success(new UserRegistration());
-        success.loadSuccess();
-    }
+//    public void closeForm(ActionEvent actionEvent) {
+//        Success success = new Success(new UserRegistration());
+//        success.loadSuccess();
+//    }
 
     @Override
     public void registrationAdded(edu.wpi.teamname.Database.UserRegistration _obj) {
         table.getItems().add(0, _obj);
-    }
-
-    public void exitView(ActionEvent actionEvent) {
-        Bridge.getInstance().close(); // close the window
     }
 }

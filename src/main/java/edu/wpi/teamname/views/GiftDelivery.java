@@ -106,7 +106,7 @@ public class GiftDelivery {
      * Success pop up page
      */
     @FXML
-    private VBox successPop;
+    private VBox giftPop;
 
     /**
      * Instance of Requests class used to create a popup window
@@ -138,8 +138,8 @@ public class GiftDelivery {
      *
      * @return Success pop up page
      */
-    public VBox getSuccessPop() {
-        return successPop;
+    public VBox getGiftPop() {
+        return giftPop;
     }
 
     /**
@@ -247,7 +247,7 @@ public class GiftDelivery {
             if (otherCheckbox.isSelected())
                 giftSelected.add(otherInput.getText());
 
-            DefaultPage.setCurrentWindow("");
+            LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
@@ -256,6 +256,11 @@ public class GiftDelivery {
             //Close the window after submitting the request
             //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
             //Bridge.getInstance().close(); //close the window
+
+            // load Success page in successPop VBox
+            giftPop.setPrefWidth(657.0);
+            Success success = new Success(this);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", giftPop);
         }
     }
 
