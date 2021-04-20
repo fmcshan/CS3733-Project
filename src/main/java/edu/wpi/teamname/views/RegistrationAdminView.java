@@ -85,11 +85,6 @@ public class RegistrationAdminView implements RegistrationListener {
         }); // Populate table
     }
 
-//    public void closeForm(ActionEvent actionEvent) {
-//        Success success = new Success(new UserRegistration());
-//        success.loadSuccess();
-//    }
-
     /**
      * When a form is submitted, add to table
      * @param _obj
