@@ -5,9 +5,17 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.simplify.Shutdown;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.LineBuilder;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -15,12 +23,8 @@ import javafx.stage.Window;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class MapEditorGraph {
@@ -59,31 +63,50 @@ public class MapEditorGraph {
     @FXML
     private JFXTextField EndNode;
     @FXML
-    private JFXButton newEdge;
-    @FXML
     private JFXButton addEdge;
+    @FXML
+    private JFXButton submitEdge;
     @FXML
     private Label validID1;
     @FXML
-    private JFXButton DeleteEdge;
+    private ImageView hospitalMap;
     @FXML
-    private JFXButton DeleteNode;
+    private AnchorPane topElements;
 
-
-
-
-    ArrayList<Node> listOfNodes = new ArrayList<>();
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
+    ArrayList<Node> listOfNodes = PathFindingDatabaseManager.getInstance().getNodes();
     List<List<String>> theEdges;
     List<List<String>> theNodes;
+    HashMap<String, Node> nodeMap = new HashMap<>();
 
-    @FXML
-    void saveNodes(ActionEvent event) {
+    public void initialize() {
 
+        displayNodes();
+        displayEdges();
+
+        listOfNodes.forEach(n -> {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") ))) {
+                selectNode.getItems().add(n.getNodeID());
+            }
+        });
+
+        submitEdge.setVisible(false);
+        validID1.setVisible(false);
+        validID.setVisible(false);
+        submitNode.setVisible(false);
     }
 
-
     @FXML
-    void loadFileNode(ActionEvent event) {
+    void saveNodes() {
+
+    }
+    @FXML
+    void loadFileNode() {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "CSV Files", "csv");
@@ -97,11 +120,10 @@ public class MapEditorGraph {
         theNodes.forEach(n -> {
             selectNode.getItems().add(n.get(0));
         });
-        //C:\Users\ryant\IdeaProjects\CS3733-Project
     }
 
     @FXML
-    void loadFileEdge(ActionEvent event) {
+    void loadFileEdge() {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "CSV Files", "csv");
@@ -115,13 +137,16 @@ public class MapEditorGraph {
         allEdgesData.forEach(n -> {
             selectEdge.getItems().add(n.get(0));
         });
-        //C:\Users\ryant\IdeaProjects\CS3733-Project
+    }
+
+    public void enterEdges() {
+
     }
 
     @FXML
-    public void fillFieldsNode(ActionEvent action){
+    public void fillFieldsNode() {
         theNodes.forEach(n -> {
-            if(n.get(0).equals(selectNode.getValue())){
+            if (n.get(0).equals(selectNode.getValue())) {
                 NodeID.setText(n.get(0));
                 X.setText(String.valueOf(n.get(1)));
                 Y.setText(String.valueOf(n.get(2)));
@@ -135,8 +160,8 @@ public class MapEditorGraph {
     }
 
     @FXML
-    void changeNodeEvent(ActionEvent event) {
-        if(!(submitNode.isVisible())) {
+    void changeNodeEvent() {
+        if (!(submitNode.isVisible())) {
             theNodes.forEach(n -> {
                 if (n.get(0).equals(selectNode.getValue())) {
                     n.set(1, String.valueOf(X.getText()));
@@ -146,7 +171,6 @@ public class MapEditorGraph {
                     n.set(5, String.valueOf(NodeType.getText()));
                     n.set(7, String.valueOf(ShortName.getText()));
                     n.set(6, String.valueOf(LongName.getText()));
-
                 }
 
             });
@@ -155,11 +179,10 @@ public class MapEditorGraph {
     }
 
 
-
     @FXML
-    public void fillFieldsEdge(ActionEvent action){
+    public void fillFieldsEdge() {
         theEdges.forEach(n -> {
-            if(n.get(0).equals(selectEdge.getValue())){
+            if (n.get(0).equals(selectEdge.getValue())) {
                 EdgeID.setText(n.get(0));
                 StartNode.setText(n.get(1));
                 EndNode.setText(n.get(2));
@@ -169,24 +192,15 @@ public class MapEditorGraph {
     }
 
     @FXML
-    void changeEdgeEvent(ActionEvent event) {
-        if(!(addEdge.isVisible())) {
-        theEdges.forEach(e -> {
-            if(e.get(0).equals(selectEdge.getValue())){
-                e.set(1, String.valueOf(StartNode.getText()));
-                e.set(2, String.valueOf(EndNode.getText()));
-            }
-    });
-    }}
-
-
-    public void initialize(){
-        addEdge.setVisible(false);
-        validID1.setVisible(false);
-        validID.setVisible(false);
-        submitNode.setVisible(false);
-
-
+    void changeEdgeEvent() {
+        if (!(submitEdge.isVisible())) {
+            theEdges.forEach(e -> {
+                if (e.get(0).equals(selectEdge.getValue())) {
+                    e.set(1, String.valueOf(StartNode.getText()));
+                    e.set(2, String.valueOf(EndNode.getText()));
+                }
+            });
+        }
     }
 
     public void LongName(ActionEvent actionEvent) {
@@ -195,7 +209,7 @@ public class MapEditorGraph {
     public void ShortName(ActionEvent actionEvent) {
     }
 
-    public void addNode(ActionEvent actionEvent) {
+    public void addNode() {
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
         X.setText("");
@@ -208,11 +222,11 @@ public class MapEditorGraph {
         submitNode.setVisible(true);
     }
 
-    public void submitNode(ActionEvent actionEvent) {
-        if (NodeID.getText().equals("Enter Node ID")){
+    public void submitNode() {
+        if (NodeID.getText().equals("Enter Node ID")) {
             validID.setText("Please enter a valid ID");
             validID.setVisible(true);
-        } else{
+        } else {
             selectNode.getItems().add(NodeID.getText());
             validID.setVisible(false);
             submitNode.setVisible(false);
@@ -235,28 +249,29 @@ public class MapEditorGraph {
             ShortName.setText("");
             LongName.setText("");
             selectNode.setDisable(false);
+        }
+
+
     }
 
-
-}
-
-    public void newEdge(ActionEvent actionEvent) {NodeID.setText("Enter NodeID");
+    public void addEdge() {
+        NodeID.setText("Enter NodeID");
         selectEdge.setDisable(true);
         EdgeID.setText("Enter Edge ID");
         StartNode.setText("");
         EndNode.setText("");
-        addEdge.setVisible(true);
+        submitEdge.setVisible(true);
     }
 
-    public void addEdge(ActionEvent actionEvent) {
-        if (EdgeID.getText().equals("Enter Edge ID")){
+    public void submitEdge() {
+        if (EdgeID.getText().equals("Enter Edge ID")) {
             validID1.setVisible(true);
             validID1.setText("Please enter a valid ID");
 
-        } else{
+        } else {
             selectEdge.getItems().add(EdgeID.getText());
             validID1.setVisible(false);
-            addEdge.setVisible(false);
+            submitEdge.setVisible(false);
             List<String> addedInfo = new ArrayList<String>();
             addedInfo.add(EdgeID.getText());
             addedInfo.add(StartNode.getText());
@@ -270,10 +285,9 @@ public class MapEditorGraph {
     }
 
 
-
     @FXML
-    void deleteEdge(ActionEvent event) {
-        if(addEdge.isVisible()){
+    void deleteEdge() {
+        if (submitEdge.isVisible()) {
             validID1.setText("Please add edge first");
             validID1.setVisible(true);
         } else {
@@ -287,12 +301,12 @@ public class MapEditorGraph {
     }
 
     @FXML
-    void deleteNode(ActionEvent event) {
-        if(submitNode.isVisible()){
+    void deleteNode() {
+        if (submitNode.isVisible()) {
             validID.setText("Please add node first");
             validID.setVisible(true);
-        } else{
-                selectNode.getItems().remove(NodeID.getText());
+        } else {
+            selectNode.getItems().remove(NodeID.getText());
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -304,5 +318,53 @@ public class MapEditorGraph {
 
         }
 
+    }
+
+    public void displayNodes() {
+
+        //System.out.println("got here");
+        rezisingInfo();
+        // map.clear();
+
+        for (Node n : listOfNodes) {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") ))) {
+                nodeMap.put(n.getNodeID(), n);
+                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+                //System.out.println(fileFxWidthRatio);
+                // System.out.println(fileFxHeightRatio);
+                // circle = (Circle) clickNode(circle, n);
+                circle.setFill(Color.OLIVE);
+                topElements.getChildren().add(circle);
+                //   System.out.println("ADDED");
+            }
+        }
+    }
+
+    public void displayEdges() {
+        for (Node n : listOfNodes) {
+            for (Node e : n.getEdges()) {
+                if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
+                    Line edge = LineBuilder.create().startX(n.getX() * fileFxWidthRatio).startY(n.getY() * fileFxHeightRatio).endX(nodeMap.get(e.getNodeID()).getX() * fileFxWidthRatio).endY(nodeMap.get(e.getNodeID()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
+                    topElements.getChildren().add(edge);
+                }
+            }
+        }
+    }
+
+    public void rezisingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        //System.out.println("mapWidth: " + mapWidth);
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        // System.out.println("mapHeight: " + mapHeight);
+        fileWidth = hospitalMap.getImage().getWidth();
+        //System.out.println("fileWidth: " + fileWidth);
+        fileHeight = hospitalMap.getImage().getHeight();
+        // System.out.println("fileHeight: " + fileHeight);
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    public void exitApplication() {
+        Shutdown.getInstance().exit();
     }
 }
