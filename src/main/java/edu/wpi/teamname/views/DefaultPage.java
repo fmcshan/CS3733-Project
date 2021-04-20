@@ -6,8 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.bridge.Bridge;
-import edu.wpi.teamname.bridge.CloseListener;
+import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  * Controller for DefaultPage.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage extends LoadFXML implements AuthListener, CloseListener {
+public class DefaultPage extends LoadFXML implements AuthListener, CloseListener, RegListener, RequestListener, MapEditorListener {
 
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -48,6 +47,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     public void initialize() {
         AuthenticationManager.getInstance().addListener(this);
         Bridge.getInstance().addCloseListener(this);
+        Bridge.getInstance().addMapEditorListener(this);
+        Bridge.getInstance().addRegListener(this);
+        Bridge.getInstance().addRequestListener(this);
 
         tonysPath.getElements().clear(); // clear the path
 
@@ -143,5 +145,23 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     @Override
     public void closeButtonPressed() {
         popPop.getChildren().clear();
+    }
+
+    @Override
+    public void toggleMapEditor() {
+        popPop.setPrefWidth(350);
+        loadWindow("MapEditorGraph", "mapEditorBar", popPop);
+    }
+
+    @Override
+    public void toggleRegistration() {
+        popPop.setPrefWidth(1000);
+        loadWindow("RegistrationAdminView", "regBar", popPop);
+    }
+
+    @Override
+    public void toggleRequest() {
+        popPop.setPrefWidth(1000);
+        loadWindow("SubmittedRequests", "reqBar", popPop);
     }
 }
