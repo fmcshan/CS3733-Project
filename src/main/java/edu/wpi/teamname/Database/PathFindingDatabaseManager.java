@@ -140,8 +140,8 @@ public class PathFindingDatabaseManager {
     /**
      * Read the provided CSV and insert nodes into the database
      */
-    public void insertNodeCsvIntoDatabase() {
-        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
+    public void insertNodeCsvIntoDatabase(String file) {
+        List<List<String>> allNodesData = CSVOperator.readFile(file);
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);

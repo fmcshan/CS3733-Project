@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
@@ -85,7 +86,7 @@ public class MapEditorGraph {
 
     public void initialize() {
         if(fetchFromDatabase){
-       ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
+       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
        nodeSet = new HashSet<>(nodes);
         fetchFromDatabase = false;}
         displayNodes();
@@ -127,8 +128,8 @@ public class MapEditorGraph {
             selectNode.getItems().add(n.get(0));
         });
 
-        //LoadCSVOfNodesToDatabase(allNodesData);
-        fetchFromDatabase= true;
+     PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());  //LoadCSVOfNodesToDatabase(allNodesData);
+      //  fetchFromDatabase= true;
         displayNodes();
     }
 
@@ -317,9 +318,9 @@ public class MapEditorGraph {
             System.out.println(newNode.getNodeID());
             nodeSet.add(newNode);
             //AddNodetoDatabase(just takes in a node)
-            fetchFromDatabase =true;
-           // displayNodes();
-            //displayNewNodes(newNode);
+            //fetchFromDatabase =true;
+            displayNodes();
+            displayNewNodes(newNode);
             NodeID.setText("");
             X.setText("");
             Y.setText("");
@@ -349,7 +350,7 @@ public class MapEditorGraph {
         }
 
         // AddEdgeToDatabase(EdgeID.getText());
-        fetchFromDatabase = true;
+       // fetchFromDatabase = true;
         topElements.getChildren().clear();
         displayEdges();
         displayEdges();
