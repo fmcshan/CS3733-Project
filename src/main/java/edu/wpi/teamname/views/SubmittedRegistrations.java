@@ -1,8 +1,16 @@
 package edu.wpi.teamname.views;
 
-import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 
-public class SubmittedRegistrations {
-    public void openSubmittedRegistrations(ActionEvent actionEvent) {
+import java.io.IOException;
+
+public class SubmittedRegistrations extends LoadFXML{
+
+    @FXML
+    private DefaultPage defaultPage;
+
+    public void openSubmittedRegistrations() {
+
     }
 }
