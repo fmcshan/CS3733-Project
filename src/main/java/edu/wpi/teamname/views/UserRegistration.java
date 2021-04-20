@@ -65,7 +65,7 @@ public class UserRegistration {
     }
 
     /**
-     * Check if their is a valid date selected
+     * Check if there is a valid date selected
      * @return true if there is a valid value in the DatePicker
      */
     public boolean dateSelected() {
