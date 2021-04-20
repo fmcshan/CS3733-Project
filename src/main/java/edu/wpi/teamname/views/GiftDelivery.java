@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
@@ -250,10 +251,12 @@ public class GiftDelivery {
 
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
+            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "");
+            //Submit.getInstance().UserRegistration(request);
 
             //Close the window after submitting the request
-            request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
-            Bridge.getInstance().close(); //close the window
+            //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
+            //Bridge.getInstance().close(); //close the window
         }
     }
 
