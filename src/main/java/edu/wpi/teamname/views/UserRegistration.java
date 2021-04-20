@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Controller for Navigation.fxml
+ * Controller for UserRegistration.fxml
  * @author Frank McShan, Lauren Sowerbutts
  */
 public class UserRegistration {
