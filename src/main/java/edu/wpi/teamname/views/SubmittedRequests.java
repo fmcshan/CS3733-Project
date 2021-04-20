@@ -4,6 +4,7 @@ import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 //import edu.wpi.teamname.Database.socketListeners.Initiator;
 //import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -50,6 +51,7 @@ public class SubmittedRequests {
 //                setText(empty ? null : item ? "Male" : "Female" );
 //            }
 //        });
+        //Initiator.getInstance().addRegistrationListener(this);
 
         requestTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -82,13 +84,13 @@ public class SubmittedRequests {
         //loadCSVFileName.setText("L1Edges.csv"); // Set input text to default file
         loadData(); // Load file to table
 
-        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
-        });
+//        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+//            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
+//        });
     }
 
     public void loadData() {
-        ArrayList<GiftDeliveryStorage> requests = new ArrayList<>(); //= LocalStorage.getInstance().getRegistrations();
+        ArrayList<GiftDeliveryStorage> requests = LocalStorage.getInstance().getGiftDeliveryStorages();
 
         if (requests == null) {
             return;

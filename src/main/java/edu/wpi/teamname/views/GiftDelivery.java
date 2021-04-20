@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * <h1>Gift Delivery Request Controller</h1>
  * Controller for the Gift Delivery Request Page
- * @author Emmanuel Ola
+ * @author Emmanuel Ola, Frank McShan
  */
 public class GiftDelivery {
 
@@ -201,8 +201,7 @@ public class GiftDelivery {
      *
      * @param event event triggering submission
      */
-    @FXML
-    void submitRequest(ActionEvent event) {
+    public void submitRequest(ActionEvent event) {
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
         }
@@ -253,8 +252,7 @@ public class GiftDelivery {
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
             GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "");
-            //Submit.getInstance().UserRegistration(request);
-
+            Submit.getInstance().GiftDeliveryStorage(request);
             //Close the window after submitting the request
             //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
             //Bridge.getInstance().close(); //close the window
