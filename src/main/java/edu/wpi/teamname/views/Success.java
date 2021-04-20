@@ -8,7 +8,10 @@ import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
-
+/**
+ * Controller for Success.fxml
+ * @author Lauren Sowerbutts
+ */
 public class Success {
 
     @FXML
@@ -47,7 +50,7 @@ public class Success {
     }
 
     /**
-     * When close button is pressed close the window
+     * When close button is pressed close the success page and the form
      * @param actionEvent
      */
     public void closeSuccess(ActionEvent actionEvent) {
