@@ -44,6 +44,7 @@ public class Socket extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         JSONObject payload = new JSONObject(message);
+        System.out.println(payload);
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
@@ -56,7 +57,8 @@ public class Socket extends WebSocketClient {
         }
 
         if (payloadId.equals("load_nodes") || payloadId.equals("load_edges")) { // Basically the same thing
-            Change change = new Change(payloadId, payload.getString(payload.getString("CHANGE_ID")));
+            payload = payload.getJSONObject("data");
+            Change change = new Change(payloadId, payload.getString("CHANGE_ID"));
             change.setNodes(Parser.parseNodes(payload));
             change.setEdges(Parser.parseEdges(payload.getJSONArray("edges")));
 
