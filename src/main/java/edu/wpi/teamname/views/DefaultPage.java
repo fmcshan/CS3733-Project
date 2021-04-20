@@ -77,7 +77,7 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     String openWindow = "";
     ArrayList<Node> currentPath = new ArrayList<>();
-    ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
+    ArrayList<Node> listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>(); //
 
     public void initialize() {
@@ -318,13 +318,12 @@ public class DefaultPage implements AuthListener, CloseListener {
     }
 
     HashMap<String, Node> map = new HashMap();
-    ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
 
     public void displayNodes() {
 
 
         //rezisingInfo();
-        for (Node n : nodes) {
+        for (Node n : listOfNodes) {
             map.put(n.getNodeID(), n);
             nodesMap.put(n.getNodeID(), n);
 
@@ -567,11 +566,12 @@ public class DefaultPage implements AuthListener, CloseListener {
 //        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
 //        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
 //        drawPath(path); // draw the path on the map
+
         AStar AStar = new AStar(listOfNodes, startNode, endNode);
-        System.out.println("AStar startNode: "+ startNode.getLongName() + " , nodeID: "+ startNode.getNodeID());
-        System.out.println("AStar endNode :"+ endNode.getLongName()+ " , nodeID: "+ endNode.getNodeID());
         ArrayList<Node> path = AStar.returnPath();
         drawPath(path);
+        System.out.println("AStar startNode: "+ startNode.getLongName() + " , nodeID: "+ startNode.getNodeID());
+        System.out.println("AStar endNode :"+ endNode.getLongName()+ " , nodeID: "+ endNode.getNodeID());
     }
 
     public void getAndDrawPathWithCombos(String fromCombo, String toCombo) {
@@ -588,15 +588,17 @@ public class DefaultPage implements AuthListener, CloseListener {
 
     public void assignStartAndEndNodes(Node node) {
         if (startNode == null) {
-            startNode = node;
+            startNode = nodesMap.get(node.getNodeID());
             System.out.println("Start Node: " + node.getLongName());
             if (endNode != null) {
                 calcPath();
+                startNode=null;
+                endNode= null;
             }
             return;
         }
         if (startNode != null && endNode == null) {
-            endNode = node;
+            endNode = nodesMap.get(node.getNodeID());
             System.out.println("Close Node: " + node.getLongName());
 
             calcPath();

@@ -36,7 +36,7 @@ public class AStar {
      * @param goal the ending node
      */
     public AStar(ArrayList nodes, Node start, Node goal) {
-        this.resetNodes(nodes); //reset all provided nodes before pathfinding
+        this.resetNodes(nodes); //reset all provided nodes after pathfinding
         this.start = start;
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
         this.goal = goal;
@@ -64,7 +64,7 @@ public class AStar {
     public void displayPath(){
         Stack<Node> finalPath = this.getPath(); //
         while (!finalPath.isEmpty())
-            System.out.print(finalPath.pop().getNodeInfo().get("longName"));
+            System.out.println(finalPath.pop().getNodeInfo().get("longName"));
     }
 
     /**
