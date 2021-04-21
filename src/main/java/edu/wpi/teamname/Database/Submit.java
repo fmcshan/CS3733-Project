@@ -80,6 +80,8 @@ public class Submit {
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
+        System.out.println(_form.isCompleted());
+        System.out.println(String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
 
