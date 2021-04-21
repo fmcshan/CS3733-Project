@@ -91,7 +91,7 @@ public class MapEditorGraph {
         if(fetchFromDatabase){
 //       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
 
-            ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
+            ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
 
        nodeSet = new HashSet<>(nodes);
         fetchFromDatabase = false;}
@@ -191,8 +191,9 @@ public class MapEditorGraph {
         nodeMap.values().forEach(n -> {
             nodes.add((Node) n);
         });
+        if(nodeFile.getText()!= null){
         CSVOperator.writeNodeCSV(nodes, nodeFile.getText()); // Write nodes to csv
-        PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(nodes);
+        PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(nodes);}
     }
 
     @FXML
