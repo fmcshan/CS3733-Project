@@ -6,7 +6,6 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
@@ -20,12 +19,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Controller for DefaultPage.fxml
+ *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
 public class DefaultPage extends LoadFXML implements AuthListener, CloseListener, RegListener, RequestListener, MapEditorListener {
@@ -58,9 +57,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     double fileFxHeightRatio = mapHeight / fileHeight;
     boolean start = true;
     static double scaledWidth = 5000;
-    static double scaledHeight= 3400.0;
-    static double scaledX= 0;
-    static double scaledY= 0;
+    static double scaledHeight = 3400.0;
+    static double scaledX = 0;
+    static double scaledY = 0;
 
     /**
      * run on startup
@@ -92,6 +91,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     }
 
+    /**
+     * toggles the navigation window
+     */
     public void toggleNav() {
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
@@ -108,11 +110,18 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         displayNodes();
     }
 
+    /**
+     * toggle the requests window
+     */
     public void openRequests() {
         popPop.setPrefWidth(350.0);
         loadWindow("Requests", "reqBar", popPop);
     }
 
+
+    /**
+     * toggle the login window
+     */
     public void openLogin() {
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
@@ -122,55 +131,62 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         }
     }
 
+    /**
+     * toggle the check in window
+     */
     public void openCheckIn() {
         popPop.setPrefWidth(657.0);
         loadWindow("UserRegistration", "registrationButton", popPop);
     }
 
+    /**
+     * exit the application
+     */
     public void exitApplication() {
         Shutdown.getInstance().exit();
     }
 
-    public double xCoordOnTopElement(int x){
-        double mapWidth = 1000.0;
-        double mapHeight = 680.0;
+    /**
+     * for the scaling the displayed nodes on the map
+     * @param x the x coordinate of the anchor pane, top element
+     * @return the scaled x coordinate
+     */
+    public double xCoordOnTopElement(int x) {
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
-//        double fileWidth = ZoomPan.gethMap().getImage().getWidth();
-//        double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
-        //  System.out.println(fileWidth);
-        //double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
         double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight/ fileHeight;
-//        double windowWidth = hospitalMap.getFitWidth() / fileWidth;
-//        double windowHeight = hospitalMap.getFitHeight() / fileHeight;
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth()/fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
         double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ( (x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
     }
 
-    public double yCoordOnTopElement(int y){
-        double mapWidth = 1000.0;
-        double mapHeight = 680.0;
+    /**
+     * for the scaling the displayed nodes on the map
+     * @param y the y coordinate of the anchor pane, top element
+     * @return the scaled y coordinate
+     */
+    public double yCoordOnTopElement(int y) {
         double fileWidth = 5000.0;
-        //  double fileWidth = ZoomPan.gethMap().getImage().getWidth();
-        //   double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
-        double fileHeight = 3400.0;
-        double widthScale = scaledWidth/ fileWidth;
-        double heightScale = scaledHeight/ fileHeight;
 
-        double windowWidth =  hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ fileHeight;
+        double fileHeight = 3400.0;
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        System.out.println( "y divided by :" + viewportSmallestScale);
-        System.out.println("multiplied by: " + windowSmallestScale);
         return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
     }
 
+    /**
+     * stores needed resizing info for scaling the displayed nodes on the map as the window changes
+     */
     public void resizingInfo() {
         mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
         //System.out.println("mapWidth: " + mapWidth);
@@ -184,28 +200,26 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         fileFxHeightRatio = mapHeight / fileHeight;
     }
 
+    /**
+     * displays the nodes of the map
+     */
     public void displayNodes() {
-        //ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
 
-        //HashSet<Node> nodeSet = new HashSet<Node>(nodes);
-        //System.out.println("got here");
         resizingInfo();
-        // map.clear();
 
         for (Node n : listOfNodes) {
-            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
-                //nodeMap.put(n.getNodeID(), n);
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")))) {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8);
-                //System.out.println(fileFxWidthRatio);
-                // System.out.println(fileFxHeightRatio);
-                // circle = (Circle) clickNode(circle, n);
                 circle.setFill(Color.OLIVE);
                 topElements.getChildren().add(circle);
-                //   System.out.println("ADDED");
             }
         }
     }
 
+    /**
+     * for updating and displaying the map
+     * @param _listOfNodes a path of nodes
+     */
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
             return;
@@ -227,6 +241,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         });
     }
 
+    /**
+     * for displaying the new buttons after user logins
+     */
     @Override
     public void userLogin() {
         loadWindow("MapEditorButton", "mapButton", adminPop);
@@ -238,6 +255,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         adminButton.setGraphic(signOut);
     }
 
+    /**
+     * getting rid of the buttons after user sign outs
+     */
     @Override
     public void userLogout() {
         adminPop.getChildren().clear();
@@ -249,23 +269,35 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         adminButton.setGraphic(signOut);
     }
 
+    /**
+     * close the admin registration/request window
+     */
     @Override
     public void closeButtonPressed() {
         popPop.getChildren().clear();
     }
 
+    /**
+     * toggle the map editor window
+     */
     @Override
     public void toggleMapEditor() {
         popPop.setPrefWidth(350);
         loadWindow("MapEditorGraph", "mapEditorBar", popPop);
     }
 
+    /**
+     * toggle the admin registration window
+     */
     @Override
     public void toggleRegistration() {
         popPop.setPrefWidth(1000);
         loadWindow("RegistrationAdminView", "registrationBar", popPop);
     }
 
+    /**
+     * toggle the admin request window
+     */
     @Override
     public void toggleRequest() {
         popPop.setPrefWidth(1000);

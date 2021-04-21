@@ -50,14 +50,6 @@ public class UserRegistration {
     private VBox successPop; // this Vbox will be used to display the success page
 
     /**
-     * getter for successPop Vbox
-     * @return the successPop VBox
-     */
-    public VBox getSuccessPop() {
-        return successPop;
-    }
-
-    /**
      * Check if name input contains a space for first and last name
      * @return true if there is a space
      */
