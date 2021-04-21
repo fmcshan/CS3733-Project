@@ -82,6 +82,12 @@ public class GiftDelivery {
     private Label failedPhoneNumber;
 
     /**
+     * Label indicating the person to fulfill the request has been filled in incorrectly
+     */
+    @FXML
+    private Label failedPerson;
+
+    /**
      * Text Field to enter phone number
      */
     @FXML
@@ -98,6 +104,12 @@ public class GiftDelivery {
      */
     @FXML
     private JFXComboBox<String> requestLocation;
+
+    /**
+     * Combo Box selecting what person the delivery is assigned to
+     */
+    @FXML
+    private JFXComboBox<String> assignTo;
 
     /**
      * Success pop up page
@@ -181,7 +193,7 @@ public class GiftDelivery {
      * @return true if a location has been selected, and false otherwise
      */
     public boolean locationValid() {
-        return !requestLocation.getValue().isEmpty();
+        return requestLocation.getValue() != null;
     }
 
     public void addRequest(ServiceRequest request) {
@@ -205,7 +217,7 @@ public class GiftDelivery {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry. Make sure to input first and last name.");
+            failedName.setText("Invalid Name Entry.");
         else
             failedName.setText("");
 
@@ -220,7 +232,7 @@ public class GiftDelivery {
             failedGiftSelection.setText("");
 
         if (!phoneNumberValid())
-            failedPhoneNumber.setText("Please enter your phone number in the \"XXX-XXX-XXXX\" format ");
+            failedPhoneNumber.setText("Invalid Phone Number");
         else
             failedPhoneNumber.setText("");
 
@@ -250,9 +262,6 @@ public class GiftDelivery {
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
             GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
-            //Close the window after submitting the request
-            //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
-            //Bridge.getInstance().close(); //close the window
 
             // load Success page in successPop VBox
             giftPop.setPrefWidth(657.0);
