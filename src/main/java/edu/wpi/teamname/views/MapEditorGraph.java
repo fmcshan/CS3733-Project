@@ -165,6 +165,12 @@ public class MapEditorGraph {
             selectEdge.getItems().add(n.get(0));
         });
         PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());
+
+        topElements.getChildren().clear();
+        ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+        nodeSet = new HashSet<>(nodes);
+        displayNodes();
+        displayEdges();
     }
 
     public void enterEdges() {
@@ -250,7 +256,7 @@ public class MapEditorGraph {
                 topElements.getChildren().clear();
                 displayNodes();
                 displayEdges();
-                displaySelectedEdge(n.getStartNode(),n.getEndNode());
+                //displaySelectedEdge(n.getStartNode(),n.getEndNode());
             }
         });
     }
@@ -482,14 +488,17 @@ public class MapEditorGraph {
         //System.out.println("got here");
         rezisingInfo();
         // map.clear();
-
+        if(!nodeMap.isEmpty()){
+        nodeMap.clear();}
 
         for (Node n : nodeSet) {
+            //System.out.println(n.getEdges());
 //            boolean display =  true;
 //            if (n.getNodeID().equals(editedNode.getNodeID())) {
 //               display = false;
 //            }
                 if ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals(""))) {
+
                     nodeMap.put(n.getNodeID(), n);
                     Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
                     //System.out.println(fileFxWidthRatio);
