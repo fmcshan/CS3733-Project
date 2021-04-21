@@ -27,7 +27,7 @@ public class App extends Application {
       primaryStage.setOnCloseRequest(e -> {
         Shutdown.getInstance().exit();
       });
-      Parent root = FXMLLoader.load(getClass().getResource("views/DefaultPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("views/MapEditorGraph.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();

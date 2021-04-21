@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
  */
 public class MapEditorButton {
 
-    @FXML
     public void openMapEditor(ActionEvent actionEvent) {
         Bridge.getInstance().loadMapEditor();
     }

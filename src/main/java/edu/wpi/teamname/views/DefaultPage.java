@@ -4,11 +4,14 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -19,6 +22,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -282,8 +287,13 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
      */
     @Override
     public void toggleMapEditor() {
-        popPop.setPrefWidth(350);
-        loadWindow("MapEditorGraph", "mapEditorBar", popPop);
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/MapEditorGraph.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
