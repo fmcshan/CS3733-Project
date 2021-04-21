@@ -18,6 +18,12 @@ public class LoadFXML {
         currentWindow = windowName;
     }
 
+    /**
+     * loads and opens an fxml inside another fxml
+     * @param fileName the fxml file you want to open
+     * @param windowName the variable the program will check to see if the window is open or closed
+     * @param vbox the vbox the fxml will be open in
+     */
     public void loadWindow(String fileName, String windowName, VBox vbox) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
@@ -27,6 +33,12 @@ public class LoadFXML {
         }
     }
 
+    /**
+     * checks if the window is currently open or closed, and then opens the window
+     * @param windowName the variable the function will check to see if the window is open or closed
+     * @param root the loaded fxml
+     * @param vbox the vbox the fxml will be open in
+     */
     public void openWindow(String windowName, Parent root, VBox vbox) {
         vbox.getChildren().clear();
         if (!windowName.equals(currentWindow)) {
