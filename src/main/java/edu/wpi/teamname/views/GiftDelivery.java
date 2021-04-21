@@ -231,7 +231,6 @@ public class GiftDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-
         if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> giftSelected = new ArrayList<>();
@@ -250,9 +249,6 @@ public class GiftDelivery {
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
             GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
-            //Close the window after submitting the request
-            //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
-            //Bridge.getInstance().close(); //close the window
 
             // load Success page in successPop VBox
             giftPop.setPrefWidth(657.0);
