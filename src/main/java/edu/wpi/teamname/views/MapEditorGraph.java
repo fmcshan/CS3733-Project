@@ -8,9 +8,11 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.simplify.Shutdown;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -248,18 +250,14 @@ public class MapEditorGraph {
         if (!(submitNode.isVisible())) {
             nodeMap.values().forEach(n -> {
                 if (n.getNodeID().equals(selectNode.getValue())) {
-                    n.setX(Integer.parseInt(X.getText()));
-                    n.setY(Integer.parseInt(Y.getText()));
-                    n.setFloor(String.valueOf(Floor.getText()));
-                    n.setBuilding(String.valueOf(Building.getText()));
-                    n.setNodeType(String.valueOf(NodeType.getText()));
-                    n.setLongName(String.valueOf(LongName.getText()));
-                    n.setShortName(String.valueOf(ShortName.getText()));
-                    topElements.getChildren().clear();
-                    displayNodes();
-                    displayEdges();
-                    displayNewNodes(n);
-
+                    NodeID.setText(n.getNodeID());
+                    X.setText(X.getText());
+                    Y.setText(Y.getText());
+                    Floor.setText(n.getFloor());
+                    Building.setText(n.getBuilding());
+                    NodeType.setText(n.getNodeType());
+                    ShortName.setText(n.getShortName());
+                    LongName.setText(n.getLongName());
                 }
             });
         }
@@ -270,10 +268,9 @@ public class MapEditorGraph {
         if (!(submitEdge.isVisible())) {
             edgeMap.values().forEach(e -> {
                 if (e.getEdgeID().equals(selectEdge.getValue())) {
-                    e.setStartNode(String.valueOf(startNode.getValue()));
-                    e.setEndNode(String.valueOf(endNode.getValue()));
-//                    System.out.println(startNode);
-//                    System.out.println(endNode);
+                    EdgeID.setText(e.getEdgeID());
+                    startNode.setValue(e.getStartNode());
+                    endNode.setValue(e.getEndNode());
                 }
             });
         }
@@ -353,6 +350,38 @@ public class MapEditorGraph {
         topElements.getChildren().clear();
         displayEdges();
         displayEdges();
+    }
+
+    public void submitEditedNode() {
+        nodeMap.values().forEach(n -> {
+            if (n.getNodeID().equals(selectNode.getValue())) {
+                n.setX(Integer.parseInt(X.getText()));
+                n.setY(Integer.parseInt(Y.getText()));
+                n.setFloor(String.valueOf(Floor.getText()));
+                n.setBuilding(String.valueOf(Building.getText()));
+                n.setNodeType(String.valueOf(NodeType.getText()));
+                n.setLongName(String.valueOf(LongName.getText()));
+                n.setShortName(String.valueOf(ShortName.getText()));
+                topElements.getChildren().clear();
+                displayNodes();
+                displayEdges();
+                displayNewNodes(n);
+            }
+        });
+    }
+
+    public void submitEditedEdge() {
+        edgeMap.values().forEach(e -> {
+            if (e.getEdgeID().equals(selectEdge.getValue())) {
+                String oldID = EdgeID.getText();
+                selectEdge.getItems().remove(EdgeID.getText());
+                e.setEdgeID(startNode.getValue() + "_" + endNode.getValue());
+                selectEdge.getItems().add(e.getEdgeID());
+//                edgeMap.get(oldID).setEdgeID(EdgeID.getText());
+                edgeMap.get(oldID).setStartNode(startNode.getValue());
+                edgeMap.get(oldID).setEndNode(endNode.getValue());
+            }
+        });
     }
 
     @FXML
@@ -481,6 +510,4 @@ public class MapEditorGraph {
 
         //topElements.getChildren()
         }
-
-
 }
