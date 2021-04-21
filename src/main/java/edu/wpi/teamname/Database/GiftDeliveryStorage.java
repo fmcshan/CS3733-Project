@@ -64,7 +64,7 @@ public class GiftDeliveryStorage {
     }
 
     public boolean isCompleted() {
-        return completed;
+       return completed;
     }
 }
 

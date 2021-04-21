@@ -48,6 +48,7 @@ public class AuthSocket extends WebSocketClient {
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
+            System.out.println(payload.getJSONArray("giftDeliveries"));
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 

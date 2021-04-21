@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Parser;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
@@ -14,7 +15,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.util.converter.BooleanStringConverter;
+
 import java.util.ArrayList;
 
 /**
@@ -68,7 +72,6 @@ public class RequestAdminView implements GiftDeliveryListener {
         }));
 
         assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
-        completeCheckBox.setCellFactory(CheckBoxTableCell.forTableColumn(completeCheckBox)); // set cell to checkbox
         requestedByColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
         contactColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
         requestTypeColumn.setCellValueFactory(new PropertyValueFactory<>("requestType"));
@@ -77,6 +80,10 @@ public class RequestAdminView implements GiftDeliveryListener {
         requestedByColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
         assignToColumn.setCellValueFactory(new PropertyValueFactory<>("assignTo"));
+
+        //completeCheckBox.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
+        completeCheckBox.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+        completeCheckBox.setCellValueFactory(new PropertyValueFactory<>("completed"));
 
         loadData(); // Load file to table
 
@@ -128,13 +135,14 @@ public class RequestAdminView implements GiftDeliveryListener {
     public void assignToChange(TableColumn.CellEditEvent cellEditEvent) {
         GiftDeliveryStorage request = (GiftDeliveryStorage) cellEditEvent.getRowValue(); // Current row
         String newAssignedTo = cellEditEvent.getNewValue().toString();
-        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), newAssignedTo, request.isCompleted());
+        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), newAssignedTo, false);
         Submit.getInstance().updateGiftDelivery(newRequest);
     }
 
     public void doneChange(TableColumn.CellEditEvent cellEditEvent) {
         GiftDeliveryStorage request = (GiftDeliveryStorage) cellEditEvent.getRowValue(); // Current row
-        boolean isCompleted = (boolean) cellEditEvent.getNewValue();
+        Boolean isCompleted = Boolean.parseBoolean(String.valueOf(cellEditEvent.getNewValue()));
+        //System.out.println(isCompleted);
         GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), request.getAssignTo(), isCompleted);
         Submit.getInstance().updateGiftDelivery(newRequest);
     }
