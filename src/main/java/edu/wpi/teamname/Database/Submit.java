@@ -48,13 +48,14 @@ public class Submit {
 
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("id", String.valueOf(_form.getId()));
         data.put("location", _form.getLocation());
         data.put("requestType", _form.getRequestType());
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
-        data.put("completed", _form.isCompleted());
+        data.put("completed", String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/submit-gift-delivery";
 
@@ -71,14 +72,14 @@ public class Submit {
 
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
-        data.put("id", _form.getId());
+        data.put("id", String.valueOf(_form.getId()));
         data.put("location", _form.getLocation());
         data.put("requestType", _form.getRequestType());
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
-        data.put("completed", _form.isCompleted());
+        data.put("completed", String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
 

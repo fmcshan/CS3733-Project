@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Main {
 
     public static void main(String[] args) {
-        Config.getInstance().setEnv("staging"); // dev staging production
+        Config.getInstance().setEnv("production"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();

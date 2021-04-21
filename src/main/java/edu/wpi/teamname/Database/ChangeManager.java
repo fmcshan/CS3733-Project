@@ -35,10 +35,12 @@ public class ChangeManager extends Thread {
             case "submit_gift_delivery":
                 LocalStorage.getInstance().addGiftDeliveryStorage(_change.getGiftDelivery());
                 Initiator.getInstance().triggerGiftDelivery(_change.getGiftDelivery());
+                break;
 
             case "gift_delivery_updated":
                 LocalStorage.getInstance().setGiftDeliveryStorages(_change.getGiftDeliveries());
                 Initiator.getInstance().triggerGiftDeliveryUpdated();
+                break;
         }
     }
 }

@@ -44,8 +44,8 @@
                                 <TableColumn fx:id="requestedItemsColumn" prefWidth="240.0" text="Requested Items" />
                                 <TableColumn fx:id="requestedByColumn" prefWidth="126.0" text="Requested By" />
                         <TableColumn fx:id="contactColumn" prefWidth="139.0" text="Contact" />
-                        <TableColumn fx:id="assignToColumn" prefWidth="125.0" text="Assign To" />
-                        <TableColumn fx:id="completeCheckBox" prefWidth="70.0" text="Done?" />
+                        <TableColumn fx:id="assignToColumn" onEditCommit="#assignToChange" prefWidth="125.0" text="Assign To" />
+                        <TableColumn fx:id="completeCheckBox" onEditCommit="#doneChange" prefWidth="70.0" text="Done?" />
                             </columns>
                         </TableView>
                     </children>
