@@ -14,7 +14,6 @@ public class Main {
         SocketManager.getInstance().startDataSocket();
        // AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
-
   //   DatabaseThread.getInstance().start();
         App.launch(App.class, args);
     }

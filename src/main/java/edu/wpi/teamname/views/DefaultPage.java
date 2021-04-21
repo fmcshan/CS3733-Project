@@ -287,7 +287,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
      */
     @Override
     public void toggleMapEditor() {
-
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/MapEditorGraph.fxml"));
             App.getPrimaryStage().getScene().setRoot(root);

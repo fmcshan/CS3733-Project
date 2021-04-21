@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -31,17 +32,9 @@
         <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/bwh-logo.png" />
-                    </image>
-                    <VBox.margin>
-                        <Insets bottom="20.0" left="30.0" top="30.0" />
-                    </VBox.margin>
-                </ImageView>
             <Label text="Map Editor">
                <VBox.margin>
-                  <Insets left="25.0" />
+                  <Insets left="25.0" top="20.0" />
                </VBox.margin>
                <font>
                   <Font name="System Bold" size="36.0" />
@@ -57,14 +50,26 @@
             </Text>
                 <VBox prefHeight="848.0" prefWidth="375.0">
                     <children>
-                  <Label text="Node:">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  <HBox>
+                     <children>
+                        <Label text="Node:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="validID" prefHeight="25.0" prefWidth="246.0" text="Please enter a valid ID." textFill="RED">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
                      <VBox.margin>
                         <Insets left="25.0" />
                      </VBox.margin>
-                  </Label>
+                  </HBox>
                   <JFXComboBox fx:id="selectNode" focusColor="WHITE" onAction="#fillFieldsNode" prefWidth="300.0" promptText="Select Node" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                      <padding>
                         <Insets left="10.0" />
@@ -73,6 +78,113 @@
                         <Insets left="25.0" top="20.0" />
                      </VBox.margin>
                   </JFXComboBox>
+                  <VBox prefWidth="150.0" spacing="10.0">
+                     <children>
+                        <JFXTextField fx:id="NodeID" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Node ID" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <HBox spacing="10.0">
+                           <children>
+                              <JFXTextField fx:id="X" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="170.0" promptText="X-Coordinate" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="Y" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="170.0" promptText="Y-Coordinate" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                           </children>
+                        </HBox>
+                        <JFXTextField fx:id="Floor" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Floor" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="Building" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Building" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="NodeType" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Node Type" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="LongName" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Long Name" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="ShortName" focusColor="#ababab" onAction="#changeNodeEvent" prefWidth="150.0" promptText="Short Name" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="120.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox>
+                     <children>
+                        <Label text="Edge">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="validID1" prefHeight="25.0" prefWidth="246.0" text="Please enter a valid ID." textFill="RED">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="25.0" top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <JFXComboBox fx:id="selectEdge" focusColor="WHITE" onAction="#fillFieldsNode" prefWidth="300.0" promptText="Select Edge" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="25.0" top="20.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
+                  <VBox prefWidth="150.0" spacing="10.0">
+                     <children>
+                        <JFXTextField fx:id="EdgeID" focusColor="#ababab" onAction="#changeEdgeEvent" prefWidth="150.0" promptText="Edge ID" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="startNode" focusColor="WHITE" prefWidth="300.0" promptText="Select Start Node" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="endNode" focusColor="WHITE" prefWidth="300.0" promptText="Select End Node" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXComboBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="120.0" />
+                     </VBox.margin>
+                  </VBox>
                     </children>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -106,7 +218,7 @@
                   <Font size="24.0" />
                </font>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="52" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ARROW_LEFT_BOLD_CIRCLE_OUTLINE" size="52" />
                </graphic>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -201,5 +313,139 @@
                 </JFXButton>
             </children>
         </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="100.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="56.0" prefWidth="120.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="103.0" text="Edge Editor">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator prefWidth="50.0" />
+            <JFXButton onAction="#addEdge" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Add Edge" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator prefWidth="50.0" />
+            <JFXButton onAction="#deleteEdge" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Delete Edge" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="61.0" prefWidth="50.0" />
+            <JFXButton onAction="#loadFileEdge" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Load CSV" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="115.0" prefWidth="50.0" />
+            <JFXButton onAction="#saveEdges" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Save CSV" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="169.0" prefWidth="50.0" />
+            <JFXButton onAction="#submitEditedEdge" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Save Edit" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="223.0" prefWidth="50.0" />
+            <JFXButton fx:id="submitEdge" onAction="#submitEdge" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Create Edge" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="20.0" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="280.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="56.0" prefWidth="120.0">
+               <children>
+                  <Label text="Node Editor">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator prefWidth="50.0" />
+            <JFXButton onAction="#addNode" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Add Node" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator prefWidth="50.0" />
+            <JFXButton onAction="#deleteNode" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Delete Node" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="61.0" prefWidth="50.0" />
+            <JFXButton onAction="#loadFileNode" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Load CSV" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="115.0" prefWidth="50.0" />
+            <JFXButton onAction="#saveNodes" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Save CSV" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="169.0" prefWidth="50.0" />
+            <JFXButton onAction="#submitEditedNode" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Save Edit" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="223.0" prefWidth="50.0" />
+            <JFXButton fx:id="submitNode" onAction="#submitNode" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Create Node" textFill="#c3c3c3">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
