@@ -188,8 +188,8 @@ public class PathFindingDatabaseManager {
     /**
      * Read the provided CSV and insert edges into the database
      */
-    public void insertEdgeCsvIntoDatabase() {
-        List<List<String>> allEdgesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
+    public void insertEdgeCsvIntoDatabase(String file) {
+        List<List<String>> allEdgesData = CSVOperator.readFile(file);
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);

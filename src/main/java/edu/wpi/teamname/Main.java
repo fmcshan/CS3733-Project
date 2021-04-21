@@ -1,12 +1,10 @@
 package edu.wpi.teamname;
 
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Database.AsynchronousQueue;
-import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import edu.wpi.teamname.Database.SocketManager;
+import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.simplify.Config;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Main {
@@ -16,7 +14,8 @@ public class Main {
         SocketManager.getInstance().startDataSocket();
         AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
-//        DatabaseThread.getInstance().start();
+
+  //   DatabaseThread.getInstance().start();
         App.launch(App.class, args);
     }
 }
