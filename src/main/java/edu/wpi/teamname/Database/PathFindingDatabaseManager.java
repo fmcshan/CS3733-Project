@@ -168,8 +168,8 @@ public class PathFindingDatabaseManager {
         _edges.forEach(e -> {
             JSONObject edge = new JSONObject();
             edge.put("id", e.getEdgeID());
-            edge.put("x", e.getStartNode());
-            edge.put("y", e.getEndNode());
+            edge.put("startNode", e.getStartNode());
+            edge.put("endNode", e.getEndNode());
             edges.put(edge);
         });
 
