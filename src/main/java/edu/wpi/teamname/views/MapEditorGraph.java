@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.CSVOperator;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.event.ActionEvent;
@@ -87,7 +88,7 @@ public class MapEditorGraph {
 
     public void initialize() {
         if(fetchFromDatabase){
-       ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
+       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
        nodeSet = new HashSet<>(nodes);
         fetchFromDatabase = false;}
         displayNodes();
@@ -277,6 +278,17 @@ public class MapEditorGraph {
     }
 
     public void addNode() {
+        // TODO revert all changes to nodeMap when "submit edit node" button wasn't pressed
+        for (Node n : nodeSet) {
+            nodeMap.get(n.getNodeID()).setX(n.getX());
+            nodeMap.get(n.getNodeID()).setY(n.getY());
+            nodeMap.get(n.getNodeID()).setFloor(n.getFloor());
+            nodeMap.get(n.getNodeID()).setBuilding(n.getBuilding());
+            nodeMap.get(n.getNodeID()).setNodeType(n.getNodeType());
+            nodeMap.get(n.getNodeID()).setLongName(n.getLongName());
+            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());
+        }
+
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
         X.setText("");
