@@ -136,7 +136,11 @@ public class MapEditorGraph {
 
      PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());  //LoadCSVOfNodesToDatabase(allNodesData);
       //  fetchFromDatabase= true;
+        topElements.getChildren().clear();
+        ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+        nodeSet = new HashSet<>(nodes);
         displayNodes();
+        displayEdges();
     }
 
     @FXML
@@ -165,7 +169,7 @@ public class MapEditorGraph {
             selectEdge.getItems().add(n.get(0));
         });
         PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());
-
+     // LocalStorage.getInstance().setEdges();
         topElements.getChildren().clear();
         ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
         nodeSet = new HashSet<>(nodes);
