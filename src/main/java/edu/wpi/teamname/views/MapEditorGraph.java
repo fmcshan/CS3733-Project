@@ -88,7 +88,7 @@ public class MapEditorGraph {
 
     public void initialize() {
         if(fetchFromDatabase){
-       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+       ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
        nodeSet = new HashSet<>(nodes);
         fetchFromDatabase = false;}
         displayNodes();
