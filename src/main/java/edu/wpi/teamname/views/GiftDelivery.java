@@ -243,7 +243,6 @@ public class GiftDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-
         if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> giftSelected = new ArrayList<>();

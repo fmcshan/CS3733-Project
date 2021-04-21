@@ -181,7 +181,7 @@ public class PathFindingDatabaseManager {
         change.setEdges(_edges);
         ChangeManager.getInstance().processChange(change);
 
-        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-nodes", data, "POST");
+        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-edges", data, "POST");
         AsynchronousQueue.getInstance().add(task);
     }
 
