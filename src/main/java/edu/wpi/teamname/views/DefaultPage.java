@@ -6,7 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.fxml.FXML;
@@ -21,6 +21,8 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controller for DefaultPage.fxml
@@ -47,6 +49,19 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         return popPop;
     }
 
+    ArrayList<Node> listOfNodes;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
+    boolean start = true;
+    static double scaledWidth = 5000;
+    static double scaledHeight= 3400.0;
+    static double scaledX= 0;
+    static double scaledY= 0;
+
     /**
      * run on startup
      */
@@ -64,6 +79,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
                 drawPath(currentPath);
             }
             hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+            resizingInfo();
         });
 
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
@@ -71,7 +87,9 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
                 drawPath(currentPath);
             }
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+            resizingInfo();
         });
+
     }
 
     public void toggleNav() {
@@ -80,7 +98,14 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         // load controller here
         Navigation navigation = new Navigation(this);
         navigation.loadNav();
-        //displayNodes();
+        listOfNodes = navigation.getListOfNodes();
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            resizingInfo();
+            topElements.getChildren().clear();
+            displayNodes();
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+        });
+        displayNodes();
     }
 
     public void openRequests() {
@@ -106,25 +131,80 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         Shutdown.getInstance().exit();
     }
 
-//    public void displayNodes() {
-//
-//        //System.out.println("got here");
-//        //rezisingInfo();
-//        // map.clear();
-//
-//        for (Node n : nodeSet) {
-//            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
-//                nodeMap.put(n.getNodeID(), n);
-//                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
-//                //System.out.println(fileFxWidthRatio);
-//                // System.out.println(fileFxHeightRatio);
-//                // circle = (Circle) clickNode(circle, n);
-//                circle.setFill(Color.OLIVE);
-//                topElements.getChildren().add(circle);
-//                //   System.out.println("ADDED");
-//            }
-//        }
-//    }
+    public double xCoordOnTopElement(int x){
+        double mapWidth = 1000.0;
+        double mapHeight = 680.0;
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+//        double fileWidth = ZoomPan.gethMap().getImage().getWidth();
+//        double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
+        //  System.out.println(fileWidth);
+        //double getScreenX = mouseEvent.getSceneX();//Math.pow(1.01, -mouseScrollVal);
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight/ fileHeight;
+//        double windowWidth = hospitalMap.getFitWidth() / fileWidth;
+//        double windowHeight = hospitalMap.getFitHeight() / fileHeight;
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth()/fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return ( (x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    public double yCoordOnTopElement(int y){
+        double mapWidth = 1000.0;
+        double mapHeight = 680.0;
+        double fileWidth = 5000.0;
+        //  double fileWidth = ZoomPan.gethMap().getImage().getWidth();
+        //   double   fileHeight = ZoomPan.gethMap().getImage().getHeight();
+        double fileHeight = 3400.0;
+        double widthScale = scaledWidth/ fileWidth;
+        double heightScale = scaledHeight/ fileHeight;
+
+        double windowWidth =  hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        System.out.println( "y divided by :" + viewportSmallestScale);
+        System.out.println("multiplied by: " + windowSmallestScale);
+        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    public void resizingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        //System.out.println("mapWidth: " + mapWidth);
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        // System.out.println("mapHeight: " + mapHeight);
+        fileWidth = hospitalMap.getImage().getWidth();
+        //System.out.println("fileWidth: " + fileWidth);
+        fileHeight = hospitalMap.getImage().getHeight();
+        // System.out.println("fileHeight: " + fileHeight);
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    public void displayNodes() {
+        //ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+
+        //HashSet<Node> nodeSet = new HashSet<Node>(nodes);
+        //System.out.println("got here");
+        resizingInfo();
+        // map.clear();
+
+        for (Node n : listOfNodes) {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+                //nodeMap.put(n.getNodeID(), n);
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8);
+                //System.out.println(fileFxWidthRatio);
+                // System.out.println(fileFxHeightRatio);
+                // circle = (Circle) clickNode(circle, n);
+                circle.setFill(Color.OLIVE);
+                topElements.getChildren().add(circle);
+                //   System.out.println("ADDED");
+            }
+        }
+    }
 
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {

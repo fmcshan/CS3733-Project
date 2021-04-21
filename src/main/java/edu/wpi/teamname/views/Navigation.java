@@ -31,6 +31,10 @@ public class Navigation {
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
 
+    public ArrayList<Node> getListOfNodes(){
+        return listOfNodes;
+    }
+
     /**
      *  constructor for Navigation
      * @param defaultPage controller of DefaultPage.fxml
