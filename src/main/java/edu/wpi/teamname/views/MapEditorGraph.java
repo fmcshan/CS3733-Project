@@ -389,7 +389,6 @@ public class MapEditorGraph {
             validID.setText("Please enter a valid Node");
             validID.setVisible(true);
         } else {
-            System.out.println("Hello3");
             selectNode.getItems().add(NodeID.getText());
             validID.setVisible(false);
             submitNode.setVisible(false);
@@ -403,8 +402,7 @@ public class MapEditorGraph {
 //            nodeSet = new HashSet<>(nodes);
            // displayNodes();
           //  displayEdges();
-            System.out.println("Hello4");
-            System.out.println("Hello2");
+
             startNode.getItems().add(newNode.getNodeID());
             endNode.getItems().add(newNode.getNodeID());
             //AddNodetoDatabase(just takes in a node)
@@ -419,7 +417,6 @@ public class MapEditorGraph {
             ShortName.setText("");
             LongName.setText("");
             selectNode.setDisable(false);
-
         }
     }
 
