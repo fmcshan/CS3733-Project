@@ -24,13 +24,14 @@ public class GiftDeliveryStorage {
         this.completed = completed;
     }
 
-    public GiftDeliveryStorage(String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo) {
+    public GiftDeliveryStorage(String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
         this.requestType = requestType;
         this.location = location;
         this.requestedItems = requestedItems;
         this.requestedBy = requestedBy;
         this.contact = contact;
         this.assignTo = assignTo;
+        this.completed = completed;
     }
 
 
