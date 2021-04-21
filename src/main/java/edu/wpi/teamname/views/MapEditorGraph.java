@@ -83,10 +83,14 @@ public class MapEditorGraph {
     HashMap<String, Node> nodeMap = new HashMap<>();
     HashMap<String, Edge> edgeMap = new HashMap<>();
     Line selectedEdge;
+    Node editedNode = new Node("1",1,1);
 
     public void initialize() {
         if(fetchFromDatabase){
-       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+//       ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+
+            ArrayList<Node> nodes= PathFindingDatabaseManager.getInstance().getNodes();
+
        nodeSet = new HashSet<>(nodes);
         fetchFromDatabase = false;}
         displayNodes();
@@ -249,6 +253,8 @@ public class MapEditorGraph {
         if (!(submitNode.isVisible())) {
             nodeMap.values().forEach(n -> {
                 if (n.getNodeID().equals(selectNode.getValue())) {
+         editedNode  = new Node (n.getNodeID(),n.getX(),n.getY(), n.getFloor(),n.getBuilding(),n.getNodeType(),n.getLongName(),n.getShortName());
+
                     n.setX(Integer.parseInt(X.getText()));
                     n.setY(Integer.parseInt(Y.getText()));
                     n.setFloor(String.valueOf(Floor.getText()));
@@ -256,6 +262,11 @@ public class MapEditorGraph {
                     n.setNodeType(String.valueOf(NodeType.getText()));
                     n.setLongName(String.valueOf(LongName.getText()));
                     n.setShortName(String.valueOf(ShortName.getText()));
+
+                     //editedNode = n;
+                    //topElements.getChildren().clear();
+
+
                     topElements.getChildren().clear();
                     displayNodes();
                     displayEdges();
@@ -264,6 +275,36 @@ public class MapEditorGraph {
                 }
             });
         }
+    }
+    public void revertNodeChanges(){
+//        if(editedNode!=null){
+//            nodeMap.replace(editedNode.getNodeID(), editedNode);
+//
+//            nodeMap.get(editedNode.getNodeID()).setX(editedNode.getX());
+//            nodeMap.get(editedNode.getNodeID()).setY(editedNode.getY());
+//            nodeMap.get(editedNode.getNodeID()).setFloor(editedNode.getFloor());
+//            nodeMap.get(editedNode.getNodeID()).setBuilding(editedNode.getBuilding());
+//            nodeMap.get(editedNode.getNodeID()).setNodeType(editedNode.getNodeType());
+//            nodeMap.get(editedNode.getNodeID()).setLongName(editedNode.getLongName());
+//            nodeMap.get(editedNode.getNodeID()).setShortName(editedNode.getShortName());
+
+
+
+
+//            nodeMap.get(n.getNodeID()).setY(n.getY());
+//            nodeMap.get(n.getNodeID()).setFloor(n.getFloor());
+//            nodeMap.get(n.getNodeID()).setBuilding(n.getBuilding());
+//            nodeMap.get(n.getNodeID()).setNodeType(n.getNodeType());
+//            nodeMap.get(n.getNodeID()).setLongName(n.getLongName());
+//            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());
+//           for(Node n: nodeSet){
+//               if(n.getNodeID().equals(editedNode.getNodeID())){
+//                   nodeSet.remove(n);
+//                   nodeSet.add(editedNode);
+//
+//               }
+//           }
+        //}
     }
 
     @FXML
@@ -282,15 +323,18 @@ public class MapEditorGraph {
 
     public void addNode() {
         // TODO revert all changes to nodeMap when "submit edit node" button wasn't pressed
-        for (Node n : nodeSet) {
-            nodeMap.get(n.getNodeID()).setX(n.getX());
-            nodeMap.get(n.getNodeID()).setY(n.getY());
-            nodeMap.get(n.getNodeID()).setFloor(n.getFloor());
-            nodeMap.get(n.getNodeID()).setBuilding(n.getBuilding());
-            nodeMap.get(n.getNodeID()).setNodeType(n.getNodeType());
-            nodeMap.get(n.getNodeID()).setLongName(n.getLongName());
-            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());
-        }
+//        for (Node n : nodeSet) {
+//            if( nodeMap.containsKey(n.getNodeID())){
+//                System.out.println("here");
+//            nodeMap.get(n.getNodeID()).setX(n.getX());
+//            nodeMap.get(n.getNodeID()).setY(n.getY());
+//            nodeMap.get(n.getNodeID()).setFloor(n.getFloor());
+//            nodeMap.get(n.getNodeID()).setBuilding(n.getBuilding());
+//            nodeMap.get(n.getNodeID()).setNodeType(n.getNodeType());
+//            nodeMap.get(n.getNodeID()).setLongName(n.getLongName());
+//            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());}
+//        }
+       revertNodeChanges();
 
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
@@ -302,6 +346,9 @@ public class MapEditorGraph {
         ShortName.setText("");
         LongName.setText("");
         submitNode.setVisible(true);
+        topElements.getChildren().clear();
+        displayNodes();
+        displayEdges();
        // Node newNode = new Node( );
         //displaySelectedNodes(Node n)
     }
@@ -325,7 +372,7 @@ public class MapEditorGraph {
             validID.setVisible(false);
             submitNode.setVisible(false);
             Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
-//            nodeMap.put(newNode.getNodeID(), newNode);
+            nodeMap.put(newNode.getNodeID(), newNode);
             System.out.println(newNode.getNodeID());
             nodeSet.add(newNode);
             //AddNodetoDatabase(just takes in a node)
@@ -377,6 +424,7 @@ public class MapEditorGraph {
             //nodeMap.remove(NodeID.getText());
            // System.out.println(NodeID.getText());
             nodeSet.remove(nodeMap.get(NodeID.getText()));
+            nodeMap.remove(nodeMap.get(NodeID.getText()));
 
 //            for(Node n: nodeSet){
 //                if(n.getNodeID().equals(NodeID.getText())){
@@ -421,16 +469,22 @@ public class MapEditorGraph {
         rezisingInfo();
         // map.clear();
 
+
         for (Node n : nodeSet) {
-            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
-                nodeMap.put(n.getNodeID(), n);
-                Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
-                //System.out.println(fileFxWidthRatio);
-                // System.out.println(fileFxHeightRatio);
-                // circle = (Circle) clickNode(circle, n);
-                circle.setFill(Color.OLIVE);
-                topElements.getChildren().add(circle);
-                //   System.out.println("ADDED");
+            boolean display =  true;
+            if (n.getNodeID().equals(editedNode.getNodeID())) {
+               display = false;
+            }
+                if (display&&((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")))) {
+                    nodeMap.put(n.getNodeID(), n);
+                    Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+                    //System.out.println(fileFxWidthRatio);
+                    // System.out.println(fileFxHeightRatio);
+                    // circle = (Circle) clickNode(circle, n);
+                    circle.setFill(Color.OLIVE);
+                    topElements.getChildren().add(circle);
+                    //   System.out.println("ADDED");
+
             }
         }
     }
