@@ -586,7 +586,7 @@ public class MapEditorGraph {
 //                displayNewNodes(n);
 //            }
        // });
-        Submit.getInstance().editNode(nodeMap.get(editedNode.getNodeID()));
+        //Submit.getInstance().editNode(nodeMap.get(editedNode.getNodeID()));
 
         editedNode = new Node("1",1,1);
 
