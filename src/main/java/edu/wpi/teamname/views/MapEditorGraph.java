@@ -98,15 +98,13 @@ public class MapEditorGraph {
             nodeSet = new HashSet<>(nodes);
             fetchFromDatabase = false;
         }
-
+        displayNodes();
+        displayEdges();
         nodeSet.forEach(n -> {
             if (((n.getFloor().equals("1") || n.getFloor().equals("G")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") ))) {
                 selectNode.getItems().add(n.getNodeID());
             }
         });
-
-        displayNodes();
-        displayEdges();
 
         enterEdges();
 
@@ -138,9 +136,13 @@ public class MapEditorGraph {
             selectNode.getItems().add(n.get(0));
         });
 
-        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());  //LoadCSVOfNodesToDatabase(allNodesData);
-        //  fetchFromDatabase= true;
+     PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());  //LoadCSVOfNodesToDatabase(allNodesData);
+      //  fetchFromDatabase= true;
+        topElements.getChildren().clear();
+        ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+        nodeSet = new HashSet<>(nodes);
         displayNodes();
+        displayEdges();
     }
 
     @FXML
@@ -169,9 +171,9 @@ public class MapEditorGraph {
             selectEdge.getItems().add(n.get(0));
         });
         PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());
-
+     // LocalStorage.getInstance().setEdges();
         topElements.getChildren().clear();
-        ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
+        ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
         nodeSet = new HashSet<>(nodes);
         displayNodes();
         displayEdges();
@@ -201,10 +203,9 @@ public class MapEditorGraph {
         nodeMap.values().forEach(n -> {
             nodes.add((Node) n);
         });
-        if (nodeFile.getText() != null) {
-            CSVOperator.writeNodeCSV(nodes, nodeFile.getText()); // Write nodes to csv
-            PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(nodes);
-        }
+        if(nodeFile.getText()!= null){
+        CSVOperator.writeNodeCSV(nodes, nodeFile.getText()); // Write nodes to csv
+        PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(nodes);}
     }
 
     @FXML
@@ -215,7 +216,7 @@ public class MapEditorGraph {
         });
         CSVOperator.writeEdgeCSV(edges, edgeFile.getText()); // Write nodes to csv
 
-        PathFindingDatabaseManager.getInstance().insertEdgeListIntoDatabase(edges);
+  PathFindingDatabaseManager.getInstance().insertEdgeListIntoDatabase(edges);
     }
 
     @FXML
@@ -250,11 +251,13 @@ public class MapEditorGraph {
 
                 //EHALL02801
 //                //EHALL02501
-                if (nodeMap.containsKey(n.getStartNode())) {
-                    System.out.println("contains " + n.getStartNode());
+                if (nodeMap.containsKey(n.getStartNode()))
+                {
+                    System.out.println("contains "+ n.getStartNode());
                 }
-                if (nodeMap.containsKey(n.getEndNode())) {
-                    System.out.println("contains " + n.getEndNode());
+                if (nodeMap.containsKey(n.getEndNode()))
+                {
+                    System.out.println("contains "+ n.getEndNode());
                 }
                 topElements.getChildren().clear();
                 displayNodes();
@@ -269,8 +272,8 @@ public class MapEditorGraph {
         if (!(submitNode.isVisible())) {
             nodeMap.values().forEach(n -> {
                 if (n.getNodeID().equals(selectNode.getValue())) {
-                    editedNode = new Node(n.getNodeID(), n.getX(), n.getY(), n.getFloor(), n.getBuilding(), n.getNodeType(), n.getLongName(), n.getShortName());
-                    editedNode.setEdges(n.getEdges());
+         editedNode  = new Node (n.getNodeID(),n.getX(),n.getY(), n.getFloor(),n.getBuilding(),n.getNodeType(),n.getLongName(),n.getShortName());
+         editedNode.setEdges(n.getEdges());
 
                     n.setX(Integer.parseInt(X.getText()));
                     n.setY(Integer.parseInt(Y.getText()));
@@ -527,7 +530,6 @@ public class MapEditorGraph {
             }
         }
     }
-
     public void displayNewEdges() {
         for (Node n : nodeSet) {
             for (Node e : n.getEdges()) {
