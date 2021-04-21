@@ -347,6 +347,15 @@ public class MapEditorGraph {
 //            nodeMap.get(n.getNodeID()).setShortName(n.getShortName());}
 //        }
         revertNodeChanges();
+//        Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
+//        nodeMap.put(newNode.getNodeID(), newNode);
+//        System.out.println(newNode.getNodeID());
+//        nodeSet.add(newNode);
+//        Submit.getInstance().addNode(newNode);
+//        //AddNodetoDatabase(just takes in a node)
+//        //fetchFromDatabase =true;
+//        displayNodes();
+//        displayNewNodes(newNode);
 
         selectNode.setDisable(true);
         NodeID.setText("Enter Node ID");
@@ -362,7 +371,7 @@ public class MapEditorGraph {
         displayNodes();
         displayEdges();
         // Node newNode = new Node( );
-        //displaySelectedNodes(Node n)
+
     }
 
     public void addEdge() {
@@ -387,10 +396,17 @@ public class MapEditorGraph {
             nodeMap.put(newNode.getNodeID(), newNode);
             System.out.println(newNode.getNodeID());
             nodeSet.add(newNode);
-            Submit.getInstance().addNode(newNode);
+           // Submit.getInstance().addNode(newNode);
+//            topElements.getChildren().clear();
+//            ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+//            nodeSet = new HashSet<>(nodes);
+           // displayNodes();
+          //  displayEdges();
+            submitEdge();
+            startNode.getItems().add(newNode.getNodeID());
+            endNode.getItems().add(newNode.getNodeID());
             //AddNodetoDatabase(just takes in a node)
             //fetchFromDatabase =true;
-            displayNodes();
             displayNewNodes(newNode);
             NodeID.setText("");
             X.setText("");
