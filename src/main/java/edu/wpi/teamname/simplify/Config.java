@@ -28,9 +28,9 @@ public class Config {
             case "dev":
                 return "http://localhost:8000";
             case "staging":
-                return "https://soft-eng-3733-staging-rest-api-xdt9y.ondigitalocean.app";
+                return "https://software-eng-3733-staging-znhzj.ondigitalocean.app\n";
             default: // Prod
-                return "https://soft-eng-3733-rest-api-9l83t.ondigitalocean.app";
+                return "https://software-eng-3733-prod-zk2pg.ondigitalocean.app\n";
         }
     }
 
@@ -39,9 +39,9 @@ public class Config {
             case "dev":
                 return "ws://localhost:8000";
             case "staging":
-                return "wss://soft-eng-3733-staging-rest-api-xdt9y.ondigitalocean.app";
+                return "wss://software-eng-3733-staging-znhzj.ondigitalocean.app\n";
             default: // Prod
-                return "wss://soft-eng-3733-rest-api-9l83t.ondigitalocean.app";
+                return "wss://software-eng-3733-prod-zk2pg.ondigitalocean.app";
         }
     }
 
