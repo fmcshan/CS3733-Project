@@ -86,7 +86,7 @@ public class Navigation {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // get nodes from database
+        listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
