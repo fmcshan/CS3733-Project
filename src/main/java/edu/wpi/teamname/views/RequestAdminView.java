@@ -8,6 +8,7 @@ import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.bridge.Bridge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -66,10 +67,6 @@ public class RequestAdminView implements GiftDeliveryListener {
             }
         }));
 
-
-
-        //ObservableList<String> people = FXCollections.observableArrayList("Lauren", "Frank", "Justin"); // create list of employees
-        //assignToColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), people)); // set cell to text field
         assignToColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
         completeCheckBox.setCellFactory(CheckBoxTableCell.forTableColumn(completeCheckBox)); // set cell to checkbox
         requestedByColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
@@ -137,8 +134,8 @@ public class RequestAdminView implements GiftDeliveryListener {
 
     public void doneChange(TableColumn.CellEditEvent cellEditEvent) {
         GiftDeliveryStorage request = (GiftDeliveryStorage) cellEditEvent.getRowValue(); // Current row
-        boolean newAssignedTo = (boolean) cellEditEvent.getNewValue();
-        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), request.getAssignTo(), newAssignedTo);
+        boolean isCompleted = (boolean) cellEditEvent.getNewValue();
+        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), request.getAssignTo(), isCompleted);
         Submit.getInstance().updateGiftDelivery(newRequest);
     }
 }
