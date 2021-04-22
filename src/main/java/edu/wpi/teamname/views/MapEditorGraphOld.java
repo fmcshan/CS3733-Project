@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class MapEditorGraphOld extends LoadFXML {
+public class MapEditorGraphOld  {
 
     @FXML
     private Label validID;
