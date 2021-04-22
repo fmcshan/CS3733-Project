@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -68,6 +68,6 @@ public class Success extends LoadFXML {
      */
     public void closeSuccess() {
         pop.getChildren().clear(); // clear the successPop vbox
-        Bridge.getInstance().close(); // close the window
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 }

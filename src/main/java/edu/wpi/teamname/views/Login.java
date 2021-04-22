@@ -3,7 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.apache.commons.validator.EmailValidator;
@@ -59,6 +59,6 @@ public class Login {
             failedLogin.setText("Invalid Credentials");
             return;
         }
-        Bridge.getInstance().close(); //close the window if the user is logged in
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 }

@@ -7,8 +7,8 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.bridge.*;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,7 +24,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 
 /**
@@ -32,8 +31,21 @@ import java.util.ArrayList;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage extends LoadFXML implements AuthListener, CloseListener, RegListener, RequestListener, MapEditorListener, CloseMapEditorListener {
+public class DefaultPage extends LoadFXML implements AuthListener {
 
+    static double scaledWidth = 5000;
+    static double scaledHeight = 3400.0;
+    static double scaledX = 0;
+    static double scaledY = 0;
+    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
+    ArrayList<Node> listOfNodes;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
+    boolean start = true;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -46,8 +58,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
     private AnchorPane topElements;
-
-    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
 
     public VBox getPopPop() {
         return popPop;
@@ -65,29 +75,16 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         return registrationPop;
     }
 
-    ArrayList<Node> listOfNodes;
-    double mapWidth; //= 1000.0;
-    double mapHeight;// = 680.0;
-    double fileWidth; //= 5000.0;
-    double fileHeight;// = 3400.0;
-    double fileFxWidthRatio = mapWidth / fileWidth;
-    double fileFxHeightRatio = mapHeight / fileHeight;
-    boolean start = true;
-    static double scaledWidth = 5000;
-    static double scaledHeight = 3400.0;
-    static double scaledX = 0;
-    static double scaledY = 0;
-
     /**
      * run on startup
      */
     public void initialize() {
+        SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
-        Bridge.getInstance().addCloseListener(this);
-        Bridge.getInstance().addMapEditorListener(this);
-        Bridge.getInstance().addRegListener(this);
-        Bridge.getInstance().addRequestListener(this);
-        Bridge.getInstance().addCloseMapListener(this);
+
+        if (AuthenticationManager.getInstance().isAuthenticated()) {
+            displayAuthPages();
+        }
 
         tonysPath.getElements().clear(); // clear the path
 
@@ -166,6 +163,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     /**
      * for the scaling the displayed nodes on the map
+     *
      * @param x the x coordinate of the anchor pane, top element
      * @return the scaled x coordinate
      */
@@ -185,6 +183,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     /**
      * for the scaling the displayed nodes on the map
+     *
      * @param y the y coordinate of the anchor pane, top element
      * @return the scaled y coordinate
      */
@@ -236,6 +235,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     /**
      * for updating and displaying the map
+     *
      * @param _listOfNodes a path of nodes
      */
     public void drawPath(ArrayList<Node> _listOfNodes) {
@@ -259,11 +259,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         });
     }
 
-    /**
-     * for displaying the new buttons after user logins
-     */
-    @Override
-    public void userLogin() {
+    private void displayAuthPages() {
         loadWindow("MapEditorButton", "mapButton", adminPop);
         loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
         loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
@@ -271,6 +267,14 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
+    }
+
+    /**
+     * for displaying the new buttons after user logins
+     */
+    @Override
+    public void userLogin() {
+        displayAuthPages();
     }
 
     public void toggleMap() {
@@ -294,7 +298,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     /**
      * close the admin registration/request window
      */
-    @Override
     public void closeButtonPressed() {
         popPop.getChildren().clear();
     }
@@ -302,7 +305,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     /**
      * toggle the map editor window
      */
-    @Override
     public void toggleMapEditor() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/MapEditorGraph.fxml"));
@@ -315,7 +317,6 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     /**
      * toggle the admin registration window
      */
-    @Override
     public void toggleRegistration() {
         System.out.println("made it to the function the program is fucking stupid");
         popPop.setPrefWidth(1000);
@@ -325,9 +326,12 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
     /**
      * toggle the admin request window
      */
-    @Override
     public void toggleRequest() {
         popPop.setPrefWidth(1000);
         loadWindow("RequestAdminView", "requestBar", popPop);
+    }
+
+    public void closeWindows() {
+        popPop.getChildren().clear();
     }
 }

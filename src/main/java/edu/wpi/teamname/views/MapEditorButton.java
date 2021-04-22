@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -10,6 +10,6 @@ import javafx.fxml.FXML;
 public class MapEditorButton {
 
     public void openMapEditor(ActionEvent actionEvent) {
-        Bridge.getInstance().loadMapEditor();
+        SceneManager.getInstance().getDefaultPage().toggleMapEditor();
     }
 }

@@ -3,7 +3,7 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -100,6 +100,6 @@ public class RegistrationAdminView implements RegistrationListener {
      */
     public void exitView(ActionEvent actionEvent) {
         LoadFXML.setCurrentWindow("");
-        Bridge.getInstance().close();
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 }

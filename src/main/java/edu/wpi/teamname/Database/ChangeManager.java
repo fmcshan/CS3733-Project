@@ -37,7 +37,7 @@ public class ChangeManager extends Thread {
                 break;
 
             case "edit_node":
-                ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
+                nodes = LocalStorage.getInstance().getNodes();
                 nodes.forEach(n -> {
                     if (n.getNodeID().equals(_change.getModifiedNode().getNodeID())) {
                         nodes.remove(n);
@@ -49,7 +49,7 @@ public class ChangeManager extends Thread {
                 break;
 
             case "remove_node":
-                ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
+                nodes = LocalStorage.getInstance().getNodes();
                 nodes.forEach(n -> {
                     if (n.getNodeID().equals(_change.getModifiedNode().getNodeID())) {
                         nodes.remove(n);
@@ -67,7 +67,7 @@ public class ChangeManager extends Thread {
                 break;
 
             case "edit_edge":
-                ArrayList<Edge> edges = LocalStorage.getInstance().getEdges();
+                edges = LocalStorage.getInstance().getEdges();
                 edges.forEach(e -> {
                     if (e.getEdgeID().equals(_change.getModifiedEdge().getEdgeID())) {
                         edges.remove(e);
@@ -79,7 +79,7 @@ public class ChangeManager extends Thread {
                 break;
 
             case "remove_edge":
-                ArrayList<Edge> edges = LocalStorage.getInstance().getEdges();
+               edges = LocalStorage.getInstance().getEdges();
                 edges.forEach(e -> {
                     if (e.getEdgeID().equals(_change.getModifiedEdge().getEdgeID())) {
                         edges.remove(e);

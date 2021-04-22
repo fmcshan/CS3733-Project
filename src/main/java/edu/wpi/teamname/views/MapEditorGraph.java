@@ -11,8 +11,8 @@ import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.bridge.Bridge;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -682,9 +682,9 @@ public class MapEditorGraph extends LoadFXML {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
             App.getPrimaryStage().getScene().setRoot(root);
-            if (AuthenticationManager.getInstance().isAuthenticated()) {
-                Bridge.getInstance().closeMapListener();
-            }
+//            if (AuthenticationManager.getInstance().isAuthenticated()) {
+//                SceneManager.getInstance().getDefaultPage().closeWindows();
+//            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
