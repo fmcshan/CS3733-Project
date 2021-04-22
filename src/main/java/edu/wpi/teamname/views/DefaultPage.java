@@ -45,7 +45,6 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
-    boolean start = true;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -57,22 +56,15 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
-    private AnchorPane topElements;
+    private AnchorPane topElements; // anchor pane where displayed nodes reside
 
+    /**
+     * getter for popPop Vbox
+     *
+     * @return
+     */
     public VBox getPopPop() {
         return popPop;
-    }
-
-    public VBox getAdminPop() {
-        return adminPop;
-    }
-
-    public VBox getRequestPop() {
-        return requestPop;
-    }
-
-    public VBox getRegistrationPop() {
-        return registrationPop;
     }
 
     /**
@@ -87,6 +79,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
         }
 
         tonysPath.getElements().clear(); // clear the path
+        LoadFXML.setCurrentWindow("");
 
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0) {
@@ -110,6 +103,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        System.out.println(LoadFXML.getCurrentWindow());
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
@@ -122,6 +116,11 @@ public class DefaultPage extends LoadFXML implements AuthListener {
             displayNodes();
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
+        if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+            System.out.println("made it here");
+            topElements.getChildren().clear();
+            return;
+        }
         displayNodes();
     }
 

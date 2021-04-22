@@ -18,6 +18,10 @@ public class LoadFXML {
         currentWindow = windowName;
     }
 
+    public static String getCurrentWindow() {
+        return currentWindow;
+    }
+
     /**
      * loads and opens an fxml inside another fxml
      * @param fileName the fxml file you want to open
