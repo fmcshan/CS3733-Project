@@ -29,20 +29,6 @@
                 <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
             </children>
         </StackPane>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <JFXTextField fx:id="nodeFile" focusColor="#ababab" layoutX="807.0" layoutY="901.0" onAction="#changeEdgeEvent" prefWidth="150.0" promptText="Node.csv" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </JFXTextField>
-            <JFXTextField fx:id="edgeFile" focusColor="#ababab" layoutX="807.0" layoutY="849.0" onAction="#changeEdgeEvent" prefWidth="150.0" promptText="Edge.csv" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </JFXTextField>
-         </children>
-      </AnchorPane>
         <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
             <Label text="Map Editor">

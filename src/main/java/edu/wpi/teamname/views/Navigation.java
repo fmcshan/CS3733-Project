@@ -136,6 +136,10 @@ public class Navigation {
         }
         Node startNode = nodesMap.get(fromCombo.getValue()); // get starting location
         Node endNode = nodesMap.get(toCombo.getValue()); // get ending location
+        System.out.println(startNode.getNodeID());
+        System.out.println(endNode.getNodeID());
+        System.out.println(listOfNodes);
+        System.out.println(listOfNodes.get(0).getEdges());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
         defaultPage.drawPath(path); // draw the path on the map

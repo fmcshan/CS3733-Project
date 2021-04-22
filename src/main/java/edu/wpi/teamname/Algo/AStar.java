@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
@@ -192,7 +193,7 @@ public class AStar {
     public static void main(String[] args) {
         //TODO make nodeID take click instance/drop-down  menu
         Stopwatch timer = new Stopwatch();
-        ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
+        ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         //Node start = nodes.get(Parser.indexOfNode(nodes, "AREST00101"));
         //Node goal = nodes.get(Parser.indexOfNode(nodes, "AREST00103"));
         Node start = nodes.get(1);
