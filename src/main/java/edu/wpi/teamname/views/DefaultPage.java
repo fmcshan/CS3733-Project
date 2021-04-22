@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
@@ -18,13 +19,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller for DefaultPage.fxml
@@ -45,6 +44,10 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
+    ArrayList<Node> localNodes = new ArrayList<Node>(); // Nodes within current parameters (IE: floor)
+    ArrayList<Edge> edges;
+    HashMap<String, Node> nodesMap = new HashMap<>();
+    HashMap<String, Edge> edgesMap = new HashMap<>();
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -113,7 +116,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             resizingInfo();
             topElements.getChildren().clear();
-            displayNodes();
+            displayNodesNav();
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) {
@@ -121,7 +124,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
             topElements.getChildren().clear();
             return;
         }
-        displayNodes();
+        displayNodesNav();
     }
 
     /**
@@ -219,7 +222,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     /**
      * displays the nodes of the map
      */
-    public void displayNodes() {
+    public void displayNodesNav() {
 
         resizingInfo();
 
@@ -230,6 +233,50 @@ public class DefaultPage extends LoadFXML implements AuthListener {
                 topElements.getChildren().add(circle);
             }
         }
+    }
+
+    public void displayNodesEditor(double _opacity) {
+        resizingInfo();
+
+        localNodes.forEach(n -> {
+            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+            circle.setStrokeWidth(4);
+            circle.setStroke(Color.TRANSPARENT);
+            circle.setFill(Color.OLIVE);
+            circle.setOpacity(_opacity);
+            topElements.getChildren().add(circle);
+
+            circle.setOnMouseEntered(e -> {
+                circle.setRadius(12);
+                circle.setOpacity(1);
+            });
+
+            circle.setOnMouseExited(e -> {
+                circle.setRadius(8);
+                circle.setOpacity(0.6);
+            });
+        });
+    }
+
+    public void displayEdges(double _opacity) {
+        resizingInfo();
+        edges.forEach(e -> {
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
+                LineBuilder<?> edgeLocation = LineBuilder.create().startX(nodesMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodesMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodesMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodesMap.get(e.getEndNode()).getY() * fileFxHeightRatio);
+                Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build();
+                topElements.getChildren().add(edge);
+
+                edge.setOnMouseEntered(t -> {
+                    edge.setStrokeWidth(6);
+                    edge.setOpacity(1);
+                });
+
+                edge.setOnMouseExited(t -> {
+                    edge.setOpacity(_opacity);
+                    edge.setStrokeWidth(3);
+                });
+            }
+        });
     }
 
     /**
@@ -306,12 +353,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/MapEditorGraph.fxml"));
-            App.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+
     }
 
     /**
