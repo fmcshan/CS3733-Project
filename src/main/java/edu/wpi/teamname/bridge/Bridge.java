@@ -49,6 +49,7 @@ public class Bridge {
         });
     }
     public void loadRegistration() {
+        System.out.println("made it into listener");
         regListeners.forEach(r -> {
             r.toggleRegistration();
         });

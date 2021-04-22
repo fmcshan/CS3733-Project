@@ -12,6 +12,7 @@ import java.io.IOException;
 public class SubmittedRegistrationsButton {
 
     public void openSubmittedRegistrations() {
+        System.out.println("registration button worked");
         Bridge.getInstance().loadRegistration();
     }
 }

@@ -317,6 +317,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
      */
     @Override
     public void toggleRegistration() {
+        System.out.println("made it to the function the program is fucking stupid");
         popPop.setPrefWidth(1000);
         loadWindow("RegistrationAdminView", "registrationBar", popPop);
     }
