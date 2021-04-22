@@ -53,6 +53,7 @@ public class LocalStorage {
 
     public void setNodes(ArrayList<Node> nodes) {
         this.nodes = nodes;
+        nodeMap = new HashMap<String, Node>();
         nodes.forEach( n -> {
             nodeMap.put(n.getNodeID(), n);
         });
