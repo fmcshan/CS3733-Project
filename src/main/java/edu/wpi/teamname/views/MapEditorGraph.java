@@ -87,18 +87,19 @@ public class MapEditorGraph {
     List<List<String>> theNodes;
     HashMap<String, Node> nodeMap = new HashMap<>();
     HashMap<String, Edge> edgeMap = new HashMap<>();
+    HashSet<Edge> edgeSet = new HashSet<Edge>();
     Line selectedEdge;
     Node editedNode = new Node("1", 1, 1);
 
     public void initialize() {
         if (fetchFromDatabase) {
 
-            ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
+            ArrayList<Node> nodes = LocalStorage.getInstance().getNodes(); //importing nodes from database
 
-            nodeSet = new HashSet<>(nodes);
+            nodeSet = new HashSet<>(nodes); //making a set of the nodes
             fetchFromDatabase = false;
         }
-        displayNodes();
+        displayNodes();  //displays the nodes from the database
         enterEdges();
         displayEdges();
         nodeSet.forEach(n -> {
@@ -106,8 +107,6 @@ public class MapEditorGraph {
                 selectNode.getItems().add(n.getNodeID());
             }
         });
-
-
         submitEdge.setVisible(false);
         validID1.setVisible(false);
         validID.setVisible(false);
@@ -131,18 +130,23 @@ public class MapEditorGraph {
             Node newNode = new Node(n.get(0), Integer.parseInt(n.get(1)), Integer.parseInt(n.get(2)), n.get(3), n.get(4), n.get(5), n.get(6), n.get(7));
             nodeMap.put(newNode.getNodeID(), newNode);
         });
-        theNodes = allNodesData;
-        theNodes.forEach(n -> {
-            selectNode.getItems().add(n.get(0));
-        });
+
 
      PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(chooser.getSelectedFile().getAbsolutePath());  //LoadCSVOfNodesToDatabase(allNodesData);
       //  fetchFromDatabase= true;
         topElements.getChildren().clear();
         ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
         nodeSet = new HashSet<>(nodes);
+        nodeSet.forEach(n -> {
+            if ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals(""))) {
+                selectNode.getItems().add(n.getNodeID());
+
+            }
+
+        });
         displayNodes();
         displayEdges();
+        enterEdges();
     }
 
     @FXML
@@ -151,6 +155,7 @@ public class MapEditorGraph {
         endNode.getItems().clear();
         selectEdge.getItems().clear();
         edgeMap.clear();
+        edgeSet.clear();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "CSV Files", "csv");
@@ -163,6 +168,7 @@ public class MapEditorGraph {
         allEdgesData.forEach(n -> {
             Edge newEdge = new Edge(n.get(0), n.get(1), n.get(2));
             edgeMap.put(newEdge.getEdgeID(), newEdge);
+            edgeSet.add(newEdge);
             //System.out.println("1: " + n.get(0) + " 2: " + n.get(1)+  " 3: " + n.get(2));
             startNode.getItems().add(n.get(1));
             endNode.getItems().add(n.get(2));
@@ -181,14 +187,15 @@ public class MapEditorGraph {
     }
 
     public void enterEdges() {
-        for (Node n : nodeSet) {
-            startNode.getItems().add(n.getNodeID());
-            endNode.getItems().add(n.getNodeID());
-            for (Node e : n.getEdges()) {
-                if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) {
-                    Edge edge = new Edge(n.getNodeID() + "_" + e.getNodeID(), n.getNodeID(), e.getNodeID());
+        for (Node n : nodeSet) { //goes through the nodes in nodeSet
+            startNode.getItems().add(n.getNodeID()); //adds the nodes to startnode combobox
+            endNode.getItems().add(n.getNodeID()); //adds the nodes to the end combobox
+            for (Node e : n.getEdges()) { //goes through each edge in each node
+                if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) { //if the edge has two nodes in the nodemap
+                    Edge edge = new Edge(n.getNodeID() + "_" + e.getNodeID(), n.getNodeID(), e.getNodeID()); //add the edge
                     if (!edgeMap.containsKey(edge.getEdgeID())) {
                         edgeMap.put(edge.getEdgeID(), edge);
+                        edgeSet.add(edge);
                         selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
 //                        System.out.println(startNode.getItems().size());
 //                        System.out.println(endNode.getItems().size());
@@ -242,9 +249,8 @@ public class MapEditorGraph {
 
     @FXML
     public void fillFieldsEdge() {
-        edgeMap.values().forEach(n -> {
+        edgeSet.forEach(n -> {
             if (n.getEdgeID().equals(selectEdge.getValue())) {
-                EdgeID.setText(n.getEdgeID());
                 startNode.setValue(n.getStartNode());
                 endNode.setValue(n.getEndNode());
                 //FINFO00101
@@ -254,11 +260,11 @@ public class MapEditorGraph {
 //                //EHALL02501
                 if (nodeMap.containsKey(n.getStartNode()))
                 {
-                    System.out.println("contains "+ n.getStartNode());
+                    //System.out.println("contains "+ n.getStartNode());
                 }
                 if (nodeMap.containsKey(n.getEndNode()))
                 {
-                    System.out.println("contains "+ n.getEndNode());
+                    //System.out.println("contains "+ n.getEndNode());
                 }
                 topElements.getChildren().clear();
                 displayNodes();
@@ -271,7 +277,7 @@ public class MapEditorGraph {
     @FXML
     void changeNodeEvent() {
         if (!(submitNode.isVisible())) {
-            nodeMap.values().forEach(n -> {
+            nodeSet.forEach(n -> {
                 if (n.getNodeID().equals(selectNode.getValue())) {
          editedNode  = new Node (n.getNodeID(),n.getX(),n.getY(), n.getFloor(),n.getBuilding(),n.getNodeType(),n.getLongName(),n.getShortName());
          editedNode.setEdges(n.getEdges());
@@ -323,7 +329,7 @@ public class MapEditorGraph {
     @FXML
     void changeEdgeEvent() {
         if (!(submitEdge.isVisible())) {
-            edgeMap.values().forEach(e -> {
+            edgeSet.forEach(e -> {
                 if (e.getEdgeID().equals(selectEdge.getValue())) {
                     e.setStartNode(String.valueOf(startNode.getValue()));
                     e.setEndNode(String.valueOf(endNode.getValue()));
@@ -378,7 +384,6 @@ public class MapEditorGraph {
     public void addEdge() {
         NodeID.setText("Enter NodeID");
         selectEdge.setDisable(true);
-        EdgeID.setText("Enter Edge ID");
         startNode.setValue("");
         endNode.setValue("");
         submitEdge.setVisible(true);
@@ -395,7 +400,7 @@ public class MapEditorGraph {
             submitNode.setVisible(false);
             Node newNode = new Node(NodeID.getText(), Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Floor.getText(), Building.getText(), NodeType.getText(), LongName.getText(), ShortName.getText());
             nodeMap.put(newNode.getNodeID(), newNode);
-            System.out.println(newNode.getNodeID());
+           // System.out.println(newNode.getNodeID());
             nodeSet.add(newNode);
             Submit.getInstance().addNode(newNode);
 //            topElements.getChildren().clear();
@@ -422,16 +427,13 @@ public class MapEditorGraph {
     }
 
     public void submitEdge() {
-        if (EdgeID.getText().equals("Enter Edge ID")) {
-            validID1.setVisible(true);
-            validID1.setText("Please enter a valid Edge");
-        } else {
-
-            selectEdge.getItems().add(EdgeID.getText());
             validID1.setVisible(false);
             submitEdge.setVisible(false);
-            Edge newEdge = new Edge(EdgeID.getText(), startNode.getValue(), endNode.getValue());
+            String theID = (startNode.getValue() + "_" + endNode.getValue());
+            selectEdge.getItems().add(theID);
+            Edge newEdge = new Edge(theID, startNode.getValue(), endNode.getValue());
             edgeMap.put(newEdge.getEdgeID(), newEdge);
+            edgeSet.add(newEdge);
             Submit.getInstance().addEdge(newEdge);
             topElements.getChildren().clear();
             ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
@@ -439,15 +441,14 @@ public class MapEditorGraph {
             topElements.getChildren().clear();
             displayNodes();
             displayEdges();
-            System.out.println(startNode.getValue());
-            System.out.println(endNode.getValue());
+           // System.out.println(startNode.getValue());
+           // System.out.println(endNode.getValue());
             displaySelectedEdge(String.valueOf(startNode.getValue()), String.valueOf(endNode.getValue()));
             //nodeMap.put(startNode)
-            EdgeID.setText("");
             startNode.setValue("");
             endNode.setValue("");
             selectEdge.setDisable(false);
-        }
+
 
         // AddEdgeToDatabase(EdgeID.getText());
         // fetchFromDatabase = true;
@@ -468,7 +469,7 @@ public class MapEditorGraph {
             // System.out.println(NodeID.getText());
             Submit.getInstance().removeNode(nodeMap.get(NodeID.getText()));
             nodeSet.remove(nodeMap.get(NodeID.getText()));
-            nodeMap.remove(nodeMap.get(NodeID.getText()));
+           // nodeMap.remove(nodeMap.get(NodeID.getText()));
 
 //            for(Node n: nodeSet){
 //                if(n.getNodeID().equals(NodeID.getText())){
@@ -490,7 +491,7 @@ public class MapEditorGraph {
         topElements.getChildren().clear();
         displayNodes();
         displayEdges();
-        System.out.println("reached here");
+       // System.out.println("reached here");
     }
 
     @FXML
@@ -499,11 +500,20 @@ public class MapEditorGraph {
             validID1.setText("Please add edge first");
             validID1.setVisible(true);
         } else {
-            selectEdge.getItems().remove(EdgeID.getText());
-            edgeMap.remove(EdgeID.getText());
-            EdgeID.setText("");
+            //System.out.println(EdgeID.getText() + " Edge ID");
+            //Submit.getInstance().removeEdge(edgeMap.get(EdgeID.getText()));
+            //ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+            //nodeSet = new HashSet<>(nodes);
+            System.out.println(edgeSet.contains(selectEdge.getValue()));
+            edgeSet.remove(edgeMap.get(selectEdge.getValue()));
+            edgeMap.remove(selectEdge.getValue());
+            System.out.println(edgeSet.contains(selectEdge.getValue()));
+            selectEdge.getItems().remove(selectEdge.getValue());
             startNode.setValue("");
             endNode.setValue("");
+            topElements.getChildren().clear();
+            displayNodes();
+            displayEdges();
         }
     }
 
@@ -549,7 +559,7 @@ public class MapEditorGraph {
 //    }
 
     public void displayEdges(){
-      edgeMap.values().forEach(e -> {
+      edgeSet.forEach(e -> {
           if(nodeMap.containsKey(e.getStartNode()) && nodeMap.containsKey(e.getEndNode())){
               Line edge = LineBuilder.create().startX(nodeMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodeMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodeMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodeMap.get(e.getEndNode()).getY() * fileFxHeightRatio).stroke(Color.BLUE).strokeWidth(3).build();
               topElements.getChildren().add(edge);
@@ -610,11 +620,13 @@ public class MapEditorGraph {
 
         // topElements.getChildren().clear();
 
-        System.out.println("got here");
-        Line line = LineBuilder.create().startX(nodeMap.get(startNodeID).getX() * fileFxWidthRatio).startY(nodeMap.get(startNodeID).getY() * fileFxHeightRatio).endX(nodeMap.get(endNodeID).getX() * fileFxWidthRatio).endY(nodeMap.get(endNodeID).getY() * fileFxHeightRatio).stroke(Color.RED).strokeWidth(3).build();
-        topElements.getChildren().add(line);
-        selectedEdge = line;
-
+       // System.out.println("got here");
+        if(edgeMap.containsKey(startNodeID) && edgeMap.containsKey(endNodeID)) {
+            Line line = LineBuilder.create().startX(nodeMap.get(startNodeID).getX() * fileFxWidthRatio).startY(nodeMap.get(startNodeID).getY() * fileFxHeightRatio).endX(nodeMap.get(endNodeID).getX() * fileFxWidthRatio).endY(nodeMap.get(endNodeID).getY() * fileFxHeightRatio).stroke(Color.RED).strokeWidth(3).build();
+            System.out.println("Not the Null");
+            topElements.getChildren().add(line);
+            selectedEdge = line;
+        }
         //topElements.getChildren()
     }
 
@@ -641,15 +653,19 @@ public class MapEditorGraph {
     }
 
     public void submitEditedEdge() {
-        edgeMap.values().forEach(e -> {
+        edgeSet.forEach(e -> {
             if (e.getEdgeID().equals(selectEdge.getValue())) {
-                String oldID = EdgeID.getText();
-                selectEdge.getItems().remove(EdgeID.getText());
-                e.setEdgeID(startNode.getValue() + "_" + endNode.getValue());
-                selectEdge.getItems().add(e.getEdgeID());
+                String oldID = selectEdge.getValue(); //saving old ID
+                selectEdge.getItems().remove(oldID); //removing from combo box
+                e.setEdgeID(startNode.getValue() + "_" + endNode.getValue()); //setting to new ID name
+                selectEdge.getItems().add(e.getEdgeID()); //adding to combo box
 //                edgeMap.get(oldID).setEdgeID(EdgeID.getText());
-                edgeMap.get(oldID).setStartNode(startNode.getValue());
-                edgeMap.get(oldID).setEndNode(endNode.getValue());
+                System.out.println("edge ID " + e.getEdgeID());
+                edgeMap.get(oldID).setStartNode(startNode.getValue());  //updating start node in edge set
+                edgeMap.get(oldID).setEndNode(endNode.getValue());   //updating end node
+                e.setEndNode(startNode.getValue());
+                e.setEndNode(endNode.getValue());
+                System.out.println("edge ID " + startNode.getValue());
                 topElements.getChildren().clear();
                 displayNodes();
                 displayEdges();

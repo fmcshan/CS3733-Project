@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Algo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Edge {
 
@@ -38,5 +39,18 @@ public class Edge {
 
     public String getEndNode() {
         return endNode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Edge edge = (Edge) o;
+        return (startNode.equals(edge.startNode) && endNode.equals(edge.endNode)) || (startNode.equals(edge.endNode) && endNode.equals(edge.startNode));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(edgeID);
     }
 }

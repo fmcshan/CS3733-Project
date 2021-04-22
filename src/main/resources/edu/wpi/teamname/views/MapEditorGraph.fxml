@@ -175,18 +175,13 @@
                   </JFXComboBox>
                   <VBox prefWidth="150.0" spacing="10.0">
                      <children>
-                        <JFXTextField fx:id="EdgeID" focusColor="#ababab" onAction="#changeEdgeEvent" prefWidth="150.0" promptText="Edge ID" style="-fx-prompt-text-fill: #bbbbbb; -fx-border-radius: 8px;" unFocusColor="#c3c3c3">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXTextField>
                         <JFXComboBox fx:id="startNode" focusColor="WHITE" prefWidth="300.0" promptText="Select Start Node" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </JFXComboBox>
                         <JFXComboBox fx:id="endNode" focusColor="WHITE" prefWidth="300.0" promptText="Select End Node" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                            <padding>
