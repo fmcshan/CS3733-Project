@@ -7,11 +7,16 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -34,6 +39,8 @@ public class MapEditorGraph {
     ArrayList<Edge> localEdges = new ArrayList<Edge>(); // Edges within current parameters (IE: floor)
     HashMap<String, Node> nodesMap = new HashMap<String, Node>();
     HashMap<String, Edge> edgesMap = new HashMap<String, Edge>();
+
+    private boolean addNodeMenuOpen = false;
 
     @FXML
     private AnchorPane anchor;
@@ -81,9 +88,23 @@ public class MapEditorGraph {
     private JFXButton submitNode;
     @FXML
     private JFXButton submitEdge1;
+    @FXML
+    private AnchorPane addNodeField;
 
     public void initialize() {
         refreshData();
+        addNodeField.setPickOnBounds(false);
+        addNodeField.setVisible(false);
+
+        stackPane.onMouseClickedProperty().set((EventHandler<MouseEvent>) this::openAddNodePopup);
+
+        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode()== KeyCode.ESCAPE)
+                {hideAddNodePopup();}
+            }
+        });
     }
 
     private void refreshData() {
@@ -130,6 +151,28 @@ public class MapEditorGraph {
         fileHeight = hospitalMap.getImage().getHeight();
         fileFxWidthRatio = mapWidth / fileWidth;
         fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    private void openAddNodePopup(MouseEvent t) {
+        addNodeField.setPickOnBounds(true);
+        addNodeField.setVisible(true);
+
+        if (t.getY() < anchor.getHeight()/2) {
+            addNodeField.setLayoutY(t.getY() + 20);
+        } else {
+            addNodeField.setLayoutY(t.getY() - addNodeField.getHeight() - 20);
+        }
+
+        if (t.getX() < anchor.getWidth()/2) {
+            addNodeField.setLayoutX(t.getX() + (2 * addNodeField.getWidth()) - 45 - (0.5 * addNodeField.getWidth()));
+        } else {
+            addNodeField.setLayoutX(t.getX() + addNodeField.getWidth() - 45 + (0.5 * addNodeField.getWidth()));
+        }
+    }
+
+    private void hideAddNodePopup() {
+        addNodeField.setPickOnBounds(false);
+        addNodeField.setVisible(false);
     }
 
     public boolean nodeWithinSpec(Node n) {
