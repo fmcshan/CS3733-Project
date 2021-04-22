@@ -6,10 +6,12 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.App;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.bridge.Bridge;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +33,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class MapEditorGraph {
+public class MapEditorGraph extends LoadFXML {
+
     @FXML
     private Label validID;
     @FXML
@@ -74,6 +77,8 @@ public class MapEditorGraph {
     private ImageView hospitalMap;
     @FXML
     private AnchorPane topElements;
+    @FXML
+    private DefaultPage defaultPage; // DefaultPage.fxml controller
 
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
@@ -661,6 +666,9 @@ public class MapEditorGraph {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/DefaultPage.fxml"));
             App.getPrimaryStage().getScene().setRoot(root);
+            if (AuthenticationManager.getInstance().isAuthenticated()) {
+                Bridge.getInstance().closeMapListener();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

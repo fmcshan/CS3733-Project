@@ -9,10 +9,7 @@ import java.io.IOException;
 /**
  * Controller for SubmitRegistrationsButton.fxml
  */
-public class SubmittedRegistrationsButton extends LoadFXML{
-
-    @FXML
-    private DefaultPage defaultPage;
+public class SubmittedRegistrationsButton {
 
     public void openSubmittedRegistrations() {
         Bridge.getInstance().loadRegistration();
