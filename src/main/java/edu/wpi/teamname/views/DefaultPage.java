@@ -293,6 +293,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
+        popPop.getChildren().clear();
     }
 
     /**
