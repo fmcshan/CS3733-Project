@@ -198,7 +198,7 @@ public class MapEditorGraph extends LoadFXML {
             for (Node e : n.getEdges()) { //goes through each edge in each node
                 if (nodeMap.containsKey(e.getNodeID()) && nodeMap.containsKey(n.getNodeID())) { //if the edge has two nodes in the nodemap
                     Edge edge = new Edge(n.getNodeID() + "_" + e.getNodeID(), n.getNodeID(), e.getNodeID()); //add the edge
-                    if (!edgeMap.containsKey(edge.getEdgeID())) {
+                    if (!edgeMap.containsKey(edge.getEdgeID()) && !edgeMap.containsKey(edge.getEndNode()+"_"+edge.getStartNode())) {
                         edgeMap.put(edge.getEdgeID(), edge);
                         edgeSet.add(edge);
                         selectEdge.getItems().add(n.getNodeID() + "_" + e.getNodeID());
@@ -505,14 +505,13 @@ public class MapEditorGraph extends LoadFXML {
             validID1.setText("Please add edge first");
             validID1.setVisible(true);
         } else {
-            //System.out.println(EdgeID.getText() + " Edge ID");
-            //Submit.getInstance().removeEdge(edgeMap.get(EdgeID.getText()));
-            //ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
-            //nodeSet = new HashSet<>(nodes);
-            System.out.println(edgeSet.contains(selectEdge.getValue()));
+            Submit.getInstance().removeEdge(edgeMap.get(selectEdge.getValue()));
+            ArrayList<Node> nodes= LocalStorage.getInstance().getNodes();
+            nodeSet = new HashSet<>(nodes);
+            //System.out.println(edgeSet.contains(edgeMap.get(selectEdge.getValue())));
             edgeSet.remove(edgeMap.get(selectEdge.getValue()));
+            //System.out.println(edgeSet.contains(edgeMap.get(selectEdge.getValue())));
             edgeMap.remove(selectEdge.getValue());
-            System.out.println(edgeSet.contains(selectEdge.getValue()));
             selectEdge.getItems().remove(selectEdge.getValue());
             startNode.setValue("");
             endNode.setValue("");
@@ -626,12 +625,12 @@ public class MapEditorGraph extends LoadFXML {
         // topElements.getChildren().clear();
 
        // System.out.println("got here");
-        if(edgeMap.containsKey(startNodeID) && edgeMap.containsKey(endNodeID)) {
+        if(edgeMap.containsKey(startNodeID+ "_"+ endNodeID)) {
             Line line = LineBuilder.create().startX(nodeMap.get(startNodeID).getX() * fileFxWidthRatio).startY(nodeMap.get(startNodeID).getY() * fileFxHeightRatio).endX(nodeMap.get(endNodeID).getX() * fileFxWidthRatio).endY(nodeMap.get(endNodeID).getY() * fileFxHeightRatio).stroke(Color.RED).strokeWidth(3).build();
             System.out.println("Not the Null");
             topElements.getChildren().add(line);
             selectedEdge = line;
-        }
+       }
         //topElements.getChildren()
     }
 
