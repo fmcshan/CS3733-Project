@@ -69,22 +69,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         refreshData();
     }
 
-//    /**
-//     * displays the nodes of the map
-//     */
-//    public void displayNodesNav() {
-//
-//        resizingInfo();
-//
-//        for (Node n : listOfNodes) {
-//            if (((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")))) {
-//                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8);
-//                circle.setFill(Color.OLIVE);
-//                topElements.getChildren().add(circle);
-//            }
-//        }
-//    }
-
     public boolean nodeWithinSpec(Node n) {
         return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
     }
@@ -133,10 +117,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         displayAuthPages();
     }
 
-    public void toggleMap() {
-        this.userLogin();
-    }
-
     /**
      * getting rid of the buttons after user sign outs
      */
@@ -149,13 +129,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
-        popPop.getChildren().clear();
-    }
-
-    /**
-     * close the admin registration/request window
-     */
-    public void closeButtonPressed() {
         popPop.getChildren().clear();
     }
 
