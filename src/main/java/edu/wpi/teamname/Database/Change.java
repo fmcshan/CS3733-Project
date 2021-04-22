@@ -13,6 +13,9 @@ public class Change {
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
 
+    private Node modifiedNode;
+    private Edge modifiedEdge;
+
     private ArrayList<UserRegistration> userRegistrations;
     private UserRegistration userRegistration;
 
@@ -83,5 +86,21 @@ public class Change {
 
     public void setGiftDelivery(GiftDeliveryStorage giftDelivery) {
         this.giftDelivery = giftDelivery;
+    }
+
+    public Node getModifiedNode() {
+        return modifiedNode;
+    }
+
+    public void setModifiedNode(Node modifiedNode) {
+        this.modifiedNode = modifiedNode;
+    }
+
+    public Edge getModifiedEdge() {
+        return modifiedEdge;
+    }
+
+    public void setModifiedEdge(Edge modifiedEdge) {
+        this.modifiedEdge = modifiedEdge;
     }
 }
