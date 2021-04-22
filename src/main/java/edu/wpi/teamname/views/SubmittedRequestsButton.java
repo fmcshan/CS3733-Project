@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 public class SubmittedRequestsButton {
 
     @FXML
-    void openSubmittedRequests(ActionEvent event) {
+    void openSubmittedRequests() {
         Bridge.getInstance().loadRequestListener();
     }
 }

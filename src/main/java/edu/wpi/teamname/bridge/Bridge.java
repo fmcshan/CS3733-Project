@@ -16,10 +16,11 @@ public class Bridge {
 
     }
 
-    private List<CloseListener> closeListeners = new ArrayList<CloseListener>();
-    private List<MapEditorListener> mapEditorListeners = new ArrayList<MapEditorListener>();
-    private List<RegListener> regListeners = new ArrayList<RegListener>();
-    private List<RequestListener> requestListeners = new ArrayList<RequestListener>();
+    private List<CloseListener> closeListeners = new ArrayList<>();
+    private List<MapEditorListener> mapEditorListeners = new ArrayList<>();
+    private List<RegListener> regListeners = new ArrayList<>();
+    private List<RequestListener> requestListeners = new ArrayList<>();
+    private List<CloseMapEditorListener> closeMapListeners = new ArrayList<>();
 
     public void addCloseListener(CloseListener toAdd) {
         closeListeners.add(toAdd);
@@ -33,6 +34,9 @@ public class Bridge {
     public void addRequestListener(RequestListener toAdd) {
         requestListeners.add(toAdd);
     }
+    public void addCloseMapListener(CloseMapEditorListener toAdd) {
+        closeMapListeners.add(toAdd);
+    }
 
     public void close() {
         closeListeners.forEach(cl -> {
@@ -45,6 +49,7 @@ public class Bridge {
         });
     }
     public void loadRegistration() {
+        System.out.println("made it into listener");
         regListeners.forEach(r -> {
             r.toggleRegistration();
         });
@@ -52,6 +57,12 @@ public class Bridge {
     public void loadRequestListener() {
         requestListeners.forEach(r -> {
             r.toggleRequest();
+        });
+    }
+
+    public void closeMapListener() {
+        closeMapListeners.forEach(c -> {
+            c.toggleMap();
         });
     }
 }

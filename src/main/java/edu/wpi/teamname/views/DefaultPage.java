@@ -32,7 +32,7 @@ import java.util.ArrayList;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage extends LoadFXML implements AuthListener, CloseListener, RegListener, RequestListener, MapEditorListener {
+public class DefaultPage extends LoadFXML implements AuthListener, CloseListener, RegListener, RequestListener, MapEditorListener, CloseMapEditorListener {
 
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -51,6 +51,18 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
 
     public VBox getPopPop() {
         return popPop;
+    }
+
+    public VBox getAdminPop() {
+        return adminPop;
+    }
+
+    public VBox getRequestPop() {
+        return requestPop;
+    }
+
+    public VBox getRegistrationPop() {
+        return registrationPop;
     }
 
     ArrayList<Node> listOfNodes;
@@ -75,6 +87,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         Bridge.getInstance().addMapEditorListener(this);
         Bridge.getInstance().addRegListener(this);
         Bridge.getInstance().addRequestListener(this);
+        Bridge.getInstance().addCloseMapListener(this);
 
         tonysPath.getElements().clear(); // clear the path
 
@@ -260,6 +273,10 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
         adminButton.setGraphic(signOut);
     }
 
+    public void toggleMap() {
+        this.userLogin();
+    }
+
     /**
      * getting rid of the buttons after user sign outs
      */
@@ -300,6 +317,7 @@ public class DefaultPage extends LoadFXML implements AuthListener, CloseListener
      */
     @Override
     public void toggleRegistration() {
+        System.out.println("made it to the function the program is fucking stupid");
         popPop.setPrefWidth(1000);
         loadWindow("RegistrationAdminView", "registrationBar", popPop);
     }
