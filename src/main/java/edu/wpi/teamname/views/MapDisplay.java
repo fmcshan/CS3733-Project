@@ -5,7 +5,9 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.event.ActionEvent;
@@ -25,7 +27,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineBuilder;
 import javafx.scene.shape.Path;
+import javafx.stage.FileChooser;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -115,7 +120,8 @@ public abstract class MapDisplay {
     private VBox deleteEdge;
     @FXML
     private JFXTextField deleteEdgeId;
-
+    @FXML
+    private VBox rightClick;
 
     /**
      * getter for popPop Vbox
@@ -217,7 +223,7 @@ public abstract class MapDisplay {
             }
         });
 
-        editNode.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add edge popup on "Esc" key
+        editNode.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit edit node popup on "Esc" key
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
@@ -226,11 +232,20 @@ public abstract class MapDisplay {
             }
         });
 
-        deleteEdge.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add edge popup on "Esc" key
+        deleteEdge.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit delete edge popup on "Esc" key
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
                     hideDeleteEdgePopup();
+                }
+            }
+        });
+
+        rightClick.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit right click popup on "Esc" key
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideRightClickMenu();
                 }
             }
         });
@@ -243,6 +258,7 @@ public abstract class MapDisplay {
                     hideAddEdgePopup();
                     hideEditNodePopup();
                     hideDeleteEdgePopup();
+                    hideRightClickMenu();
                 }
             }
         });
@@ -381,6 +397,7 @@ public abstract class MapDisplay {
                 hideAddNodePopup(); // Hide the node popup
                 hideEditNodePopup(); // Hide the edit node popup
                 hideDeleteEdgePopup(); // Hide the remove edge popup
+                hideRightClickMenu(); // Hide the right click popup
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
             } else if (dragEnd == null) { // Else if dragEnd isn't null (IE: If the user is partway through creating an edge)
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
@@ -405,6 +422,7 @@ public abstract class MapDisplay {
         hideAddEdgePopup(); // Hide edge popup on click (IE: The user click away from the add edge popup)
         hideEditNodePopup(); // Hide the edit node popup
         hideDeleteEdgePopup(); // Hide the remove edge popup
+        hideRightClickMenu(); // Hide the right click popup
 
         dragStart = null; // Reset dragStart (IE: user clicks away)
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
@@ -442,17 +460,20 @@ public abstract class MapDisplay {
 
     /**
      * Process right clicks
+     *
      * @param t Mouse Event
      */
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Circle) { // If the user clicks a circle/node
-            Node toEdit = renderedNodeMap.get((Circle) t.getTarget()); // Get the node
+            Node toEdit = renderedNodeMap.get(t.getTarget()); // Get the node
             selectedNode = toEdit; // Update selectedNode
             showEditNodePopup(toEdit, t); // Show edit node popup
         } else if (t.getTarget() instanceof Line) { // Else if the user clicks a line/edge
-            Edge toDelete = renderedEdgeMap.get((Line) t.getTarget()); // Get the edge
+            Edge toDelete = renderedEdgeMap.get(t.getTarget()); // Get the edge
             selectedEdge = toDelete; // Updated selected edge
             showRemoveEdgePopup(toDelete, t); // Show the remove edge popup
+        } else {
+            showRightClickMenu(t); // Show the right click menu
         }
     }
 
@@ -473,13 +494,15 @@ public abstract class MapDisplay {
 
     /**
      * Show the edit node popup
+     *
      * @param _toEdit The node to edit
-     * @param t Mouse Event
+     * @param t       Mouse Event
      */
     private void showEditNodePopup(Node _toEdit, MouseEvent t) {
         hideAddNodePopup(); // Hide the add edge popup
         hideAddEdgePopup(); // Hide the add edge popup
         hideDeleteEdgePopup(); // Hide the delete edge popup
+        hideRightClickMenu(); // Hide the right click popup
 
         editNodeBuilding.setText(_toEdit.getBuilding()); // Set the building field
         editNodeType.setText(_toEdit.getNodeType()); // Set the type field
@@ -507,13 +530,15 @@ public abstract class MapDisplay {
 
     /**
      * Show the remove edge popup
+     *
      * @param _toDelete Edge to delete
-     * @param t Mouse Event
+     * @param t         Mouse Event
      */
     private void showRemoveEdgePopup(Edge _toDelete, MouseEvent t) {
         hideAddNodePopup(); // Hide the add node popup
         hideAddEdgePopup(); // Hide the add ege popup
         hideEditNodePopup(); // Hide the edit node popup
+        hideRightClickMenu(); // Hide the right click popup
 
         deleteEdgeId.setText(_toDelete.getEdgeID()); // Set the edgeId field/preview
 
@@ -548,7 +573,46 @@ public abstract class MapDisplay {
     }
 
     /**
+     * Show the right click menu
+     * @param t Mouse Event
+     */
+    private void showRightClickMenu(MouseEvent t) {
+        hideAddNodePopup(); // Hide the add node popup
+        hideAddEdgePopup(); // Hide the add ege popup
+        hideEditNodePopup(); // Hide the edit node popup
+        hideDeleteEdgePopup(); // Hide the delete edge popup
+
+        rightClick.setVisible(true); // Show the right click menu
+        rightClick.setPickOnBounds(true); // Set clickable to true
+
+        // Relative to mouse
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+            rightClick.setTranslateY(t.getY()); // Show above
+        } else { // Else (if mouse is in top half of screen)
+            rightClick.setTranslateY(t.getY() - rightClick.getHeight()); // Show below
+        }
+
+        // Relative to mouse
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+            rightClick.setTranslateX(t.getX()); // Show popup to the right
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+            rightClick.setTranslateX(t.getX() - (0.5 * rightClick.getWidth())); // Show popup in the center
+        } else { // Else (if mouse is in the right 1/5th)
+            rightClick.setTranslateX(t.getX() - rightClick.getWidth()); // Show popup to the left
+        }
+    }
+
+    /**
+     * Hide the right click menu
+     */
+    private void hideRightClickMenu() {
+        rightClick.setVisible(false); // Hide the right click menu
+        rightClick.setPickOnBounds(false); // Set clickable to false
+    }
+
+    /**
      * Save the edited node
+     *
      * @param e Action Event
      */
     @FXML
@@ -571,6 +635,7 @@ public abstract class MapDisplay {
 
     /**
      * Delete the currently selected edge
+     *
      * @param e Action Event
      */
     @FXML
@@ -583,6 +648,7 @@ public abstract class MapDisplay {
 
     /**
      * Delete the currently selected node
+     *
      * @param e Action Event
      */
     @FXML
@@ -806,6 +872,78 @@ public abstract class MapDisplay {
         renderMap(); // Render/display the map (with the updated information)
         dragStart = null; // Reset dragStart
         dragEnd = null; // Reset dragEnd
+    }
+
+    /**
+     * Load the specified nodes into the database
+     * @param e Action Event
+     */
+    @FXML
+    private void loadNodesCsv(ActionEvent e) {
+        FileChooser fileChooser = new FileChooser(); // New file chooser
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
+        );
+        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (selectedFile == null) { return; }
+        // Load the csv into the database
+        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
+        hideRightClickMenu(); // Hide the right click popup
+        refreshData(); // Pull/update data from LocalStorage
+        renderMap(); // Render/refresh the map (with updated data)
+    }
+
+    /**
+     * Load the specified edges into the database
+     * @param e Action Event
+     */
+    @FXML
+    private void loadEdgesCsv(ActionEvent e) {
+        FileChooser fileChooser = new FileChooser(); // New file chooser
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
+        );
+        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (selectedFile == null) { return; }
+        // Load the csv into the database
+        PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
+        hideRightClickMenu(); // Hide the right click popup
+        refreshData(); // Pull/update data from LocalStorage
+        renderMap(); // Render/refresh the map (with updated data)
+    }
+
+    /**
+     * Save nodes to the specified CSV
+     * @param e Action Event
+     */
+    @FXML
+    private void saveNodesCsv(ActionEvent e) {
+        FileChooser fileChooser = new FileChooser(); // New file chooser
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
+        );
+        File saveLocation = fileChooser.showSaveDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (saveLocation == null) { return; }
+        // Save the CSV file from LocalStorage
+        CSVOperator.writeNodeCSV(LocalStorage.getInstance().getNodes(), saveLocation.getAbsolutePath());
+        hideRightClickMenu(); // Hide the right click popup
+    }
+
+    /**
+     * Save edges to the specified CSV
+     * @param e Action Event
+     */
+    @FXML
+    private void saveEdgesCsv(ActionEvent e) {
+        FileChooser fileChooser = new FileChooser(); // New file chooser
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
+        );
+        File saveLocation = fileChooser.showSaveDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (saveLocation == null) { return; }
+        // Save the CSV file from LocalStorage
+        CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
+        hideRightClickMenu(); // Hide the right click popup
     }
 
     @FXML

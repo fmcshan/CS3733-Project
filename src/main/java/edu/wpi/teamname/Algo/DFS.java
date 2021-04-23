@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class DFS {
     public static void main(String[] args) {
         ArrayList<Node> nodes= new ArrayList<>(); //ArrayList of Nodes
 
-        nodes = PathFindingDatabaseManager.getInstance().getNodes(); //Parses .csv files and loads the nodes ArrayList
+        nodes = LocalStorage.getInstance().getNodes(); //Parses .csv files and loads the nodes ArrayList
 
         //System.out.println(nodes.get(0).getEdgeTo());
         //System.out.println(nodes.get(28));

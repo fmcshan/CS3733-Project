@@ -285,6 +285,51 @@
                   </JFXButton>
                </children>
             </VBox>
+            <VBox fx:id="rightClick" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white; -fx-background-radius: 2px;" styleClass="drop" visible="false">
+               <children>
+                  <JFXButton onAction="#loadNodesCsv" prefWidth="180.0" text="Load Nodes">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="IMPORT" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Separator prefWidth="50.0" />
+                  <JFXButton layoutX="20.0" layoutY="95.0" onAction="#saveNodesCsv" prefWidth="180.0" text="Save Nodes">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="EXPORT" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton layoutX="15.0" layoutY="15.0" onAction="#loadEdgesCsv" prefWidth="180.0" text="Load Edges">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="IMPORT" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton layoutX="15.0" layoutY="72.0" onAction="#saveEdgesCsv" prefWidth="180.0" text="Save Edges">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="EXPORT" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
          </children>
       </StackPane>
       <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
