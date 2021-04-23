@@ -1,6 +1,5 @@
 package edu.wpi.teamname.views.manager;
 
-import edu.wpi.teamname.views.DefaultPage;
 import edu.wpi.teamname.views.Navigation;
 
 public class NavManager {
