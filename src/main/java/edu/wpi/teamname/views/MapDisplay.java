@@ -1,17 +1,20 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -27,16 +30,16 @@ import java.util.HashMap;
 
 public abstract class MapDisplay {
 
+    static double scaledWidth = 5000;
+    static double scaledHeight = 3400.0;
+    static double scaledX = 0;
+    static double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
     double fileWidth; //= 5000.0;
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
-    static double scaledWidth = 5000;
-    static double scaledHeight = 3400.0;
-    static double scaledX = 0;
-    static double scaledY = 0;
     ArrayList<Node> listOfNodes;
     ArrayList<Node> nodes;
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
@@ -44,6 +47,9 @@ public abstract class MapDisplay {
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
+    Circle renderedAddNode;
+    int addNodeX;
+    int addNodeY;
 
     @FXML
     VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -63,9 +69,20 @@ public abstract class MapDisplay {
     AnchorPane pathAnchor;
     @FXML
     AnchorPane anchor;
+    @FXML
+    private JFXTextField nodeId;
+    @FXML
+    private JFXTextField nodeBuilding;
+    @FXML
+    private JFXTextField nodeType;
+    @FXML
+    private JFXTextField nodeShortName;
+    @FXML
+    private JFXTextField nodeLongName;
 
     /**
      * getter for popPop Vbox
+     *
      * @return
      */
     public VBox getPopPop() {
@@ -118,18 +135,40 @@ public abstract class MapDisplay {
         });
     }
 
+    public void initMapEditor() {
+        popPop.setPickOnBounds(false);
+        displayNodes(.8);
+        displayEdges(.6);
+
+        topElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::openAddNodePopup);
+
+        addNodeField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideAddNodePopup();
+                }
+            }
+        });
+
+        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideAddNodePopup();
+                }
+            }
+        });
+    }
+
     /**
      * stores needed resizing info for scaling the displayed nodes on the map as the window changes
      */
     public void resizingInfo() {
         mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        //System.out.println("mapWidth: " + mapWidth);
         mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        // System.out.println("mapHeight: " + mapHeight);
         fileWidth = hospitalMap.getImage().getWidth();
-        //System.out.println("fileWidth: " + fileWidth);
         fileHeight = hospitalMap.getImage().getHeight();
-        // System.out.println("fileHeight: " + fileHeight);
         fileFxWidthRatio = mapWidth / fileWidth;
         fileFxHeightRatio = mapHeight / fileHeight;
     }
@@ -170,18 +209,20 @@ public abstract class MapDisplay {
 
     void refreshData() {
         nodes = LocalStorage.getInstance().getNodes();
+        localNodes = new ArrayList<>();
         nodes.forEach(n -> {
             if (nodeWithinSpec(n)) {
                 localNodes.add(n);
             }
         });
 
-
+        nodesMap.clear();
         localNodes.forEach(n -> {
             nodesMap.put(n.getNodeID(), n);
         });
 
         edges = LocalStorage.getInstance().getEdges();
+        localEdges = new ArrayList<>();
         edges.forEach(e -> {
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
                 if (nodeWithinSpec(nodesMap.get(e.getStartNode())) && nodeWithinSpec(nodesMap.get(e.getEndNode()))) {
@@ -190,9 +231,65 @@ public abstract class MapDisplay {
             }
         });
 
+        edgesMap.clear();
         localEdges.forEach(e -> {
             edgesMap.put(e.getEdgeID(), e);
         });
+    }
+
+    private void renderMap() {
+        clearMap();
+        displayNodes(.8);
+        displayEdges(.6);
+    }
+
+    private void openAddNodePopup(MouseEvent t) {
+        if (t.getButton() != MouseButton.PRIMARY) {
+            return;
+        }
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            return;
+        }
+        addNodeX = (int) (t.getX() / fileFxWidthRatio);
+        addNodeY = (int) (t.getY() / fileFxHeightRatio);
+
+        addNodeField.setPickOnBounds(true);
+        addNodeField.setVisible(true);
+
+        if (t.getY() < topElements.getHeight() / 2) {
+            addNodeField.setTranslateY(t.getY() + 20);
+        } else {
+            addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20);
+        }
+
+        if (topElements.getWidth() * 0.2 > t.getX()) {
+            addNodeField.setTranslateX(t.getX()); // left
+        } else if (topElements.getWidth() * 0.8 > t.getX()) {
+            addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth())); // middle
+        } else {
+            addNodeField.setTranslateX(t.getX() - addNodeField.getWidth()); // right
+        }
+
+        if (renderedAddNode != null) {
+            topElements.getChildren().remove(renderedAddNode);
+        }
+        renderedAddNode = new Circle(t.getX(), t.getY(), 8);
+        renderedAddNode.setFill(Color.TOMATO);
+        renderedAddNode.setOpacity(0.9);
+        topElements.getChildren().add(renderedAddNode);
+    }
+
+    public void hideAddNodePopup() {
+        addNodeField.setPickOnBounds(false);
+        addNodeField.setVisible(false);
+        nodeId.setText("");
+        nodeBuilding.setText("");
+        nodeType.setText("");
+        nodeShortName.setText("");
+        nodeLongName.setText("");
+        if (renderedAddNode != null) {
+            topElements.getChildren().remove(renderedAddNode);
+        }
     }
 
     public abstract void drawPath(ArrayList<Node> _listOfNodes);
@@ -201,8 +298,7 @@ public abstract class MapDisplay {
      * toggles the navigation window
      */
     public void toggleNav() {
-        topElements.getChildren().clear();
-        tonysPath.getElements().clear();
+        clearMap();
         popPop.setPickOnBounds(true);
         popPop.setPrefWidth(350.0);
         // load controller here
@@ -216,7 +312,6 @@ public abstract class MapDisplay {
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) {
-            System.out.println("made it here");
             topElements.getChildren().clear();
             return;
         }
@@ -226,6 +321,7 @@ public abstract class MapDisplay {
     public void clearMap() {
         topElements.getChildren().clear();
         tonysPath.getElements().clear();
+        hideAddNodePopup();
     }
 
     /**
@@ -233,7 +329,7 @@ public abstract class MapDisplay {
      */
     public void openRequests() {
         popPop.setPickOnBounds(true);
-        topElements.getChildren().clear();
+        clearMap();
         popPop.setPrefWidth(350.0);
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop);
     }
@@ -263,6 +359,20 @@ public abstract class MapDisplay {
         LoadFXML.getInstance().loadWindow("UserRegistration", "registrationButton", popPop);
     }
 
+    public void addNode(ActionEvent event) {
+        addNodeInternal(
+                addNodeX,
+                addNodeY,
+                "1", // TODO: Node floor from level selector
+                nodeId.getText(),
+                nodeBuilding.getText(),
+                nodeType.getText(),
+                nodeShortName.getText(),
+                nodeLongName.getText()
+        );
+        hideAddNodePopup();
+    }
+
     /**
      * exit the application
      */
@@ -289,4 +399,14 @@ public abstract class MapDisplay {
     public boolean nodeWithinSpec(Node n) {
         return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
     }
+
+
+    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
+        Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName);
+        Submit.getInstance().addNode(node);
+        System.out.println("Refreshing!");
+        refreshData();
+        renderMap();
+    }
+
 }

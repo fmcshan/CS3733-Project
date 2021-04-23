@@ -39,7 +39,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        addNodeField.setPickOnBounds(false);
+        hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
 
@@ -143,7 +143,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             LoadFXML.setCurrentWindow("");
             return;
         }
-//        initMapEditor();
+        initMapEditor();
         LoadFXML.setCurrentWindow("mapEditorBar");
     }
 
