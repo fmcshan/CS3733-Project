@@ -26,23 +26,14 @@ public class Requests {
 
     /**
      * OnAction command for clicking the "Open Request Form" button
-     * @param actionEvent
      */
-    public void openRequest(ActionEvent actionEvent) {
+    public void openRequest() {
         if (requestsBox.getValue().equals("Gift Delivery")){
             System.out.println("click worked");
             requestPop.setPrefWidth(657.0);
             GiftDelivery gdr = new GiftDelivery(this);
             gdr.loadRequest();
         }
-    }
-
-    /**
-     * Getter for requestPop VBox
-     * @return requestPop VBox
-     */
-    public VBox getRequestPop() {
-        return requestPop;
     }
 
     /**

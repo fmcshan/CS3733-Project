@@ -80,8 +80,6 @@ public class Submit {
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
-        System.out.println(_form.isCompleted());
-        System.out.println(String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
 
@@ -124,6 +122,7 @@ public class Submit {
 
         Change change = new Change(action, changeId);
         change.setModifiedNode(_form);
+        ChangeManager.getInstance().processChange(change);
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
@@ -171,6 +170,7 @@ public class Submit {
 
         Change change = new Change(action, changeId);
         change.setModifiedEdge(_form);
+        ChangeManager.getInstance().processChange(change);
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);

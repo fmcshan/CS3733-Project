@@ -1,0 +1,412 @@
+package edu.wpi.teamname.views;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Algo.Edge;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.simplify.Shutdown;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.LineBuilder;
+import javafx.scene.shape.Path;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public abstract class MapDisplay {
+
+    static double scaledWidth = 5000;
+    static double scaledHeight = 3400.0;
+    static double scaledX = 0;
+    static double scaledY = 0;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
+    ArrayList<Node> listOfNodes;
+    ArrayList<Node> nodes;
+    ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
+    ArrayList<Edge> edges;
+    ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
+    HashMap<String, Node> nodesMap = new HashMap<>();
+    HashMap<String, Edge> edgesMap = new HashMap<>();
+    Circle renderedAddNode;
+    int addNodeX;
+    int addNodeY;
+
+    @FXML
+    VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    @FXML
+    Path tonysPath; // the path displayed on the map
+    @FXML
+    JFXButton adminButton; // button that allows you to sign in
+    @FXML
+    ImageView hospitalMap;
+    @FXML
+    AnchorPane topElements;
+    @FXML
+    StackPane stackPane; // the pane the map is housed in
+    @FXML
+    VBox addNodeField;
+    @FXML
+    AnchorPane pathAnchor;
+    @FXML
+    AnchorPane anchor;
+    @FXML
+    private JFXTextField nodeId;
+    @FXML
+    private JFXTextField nodeBuilding;
+    @FXML
+    private JFXTextField nodeType;
+    @FXML
+    private JFXTextField nodeShortName;
+    @FXML
+    private JFXTextField nodeLongName;
+
+    /**
+     * getter for popPop Vbox
+     *
+     * @return
+     */
+    public VBox getPopPop() {
+        return popPop;
+    }
+
+    public abstract void initialize();
+
+    public void displayNodes(double _opacity) {
+        resizingInfo();
+
+        localNodes.forEach(n -> {
+            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8);
+            circle.setStrokeWidth(4);
+            circle.setStroke(Color.TRANSPARENT);
+            circle.setFill(Color.OLIVE);
+            circle.setOpacity(_opacity);
+            topElements.getChildren().add(circle);
+
+            circle.setOnMouseEntered(e -> {
+                circle.setRadius(12);
+                circle.setOpacity(1);
+            });
+
+            circle.setOnMouseExited(e -> {
+                circle.setRadius(8);
+                circle.setOpacity(0.6);
+            });
+        });
+    }
+
+    public void displayEdges(double _opacity) {
+        resizingInfo();
+        edges.forEach(e -> {
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
+                LineBuilder<?> edgeLocation = LineBuilder.create().startX(nodesMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodesMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodesMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodesMap.get(e.getEndNode()).getY() * fileFxHeightRatio);
+                Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build();
+                topElements.getChildren().add(edge);
+
+                edge.setOnMouseEntered(t -> {
+                    edge.setStrokeWidth(6);
+                    edge.setOpacity(1);
+                });
+
+                edge.setOnMouseExited(t -> {
+                    edge.setOpacity(_opacity);
+                    edge.setStrokeWidth(3);
+                });
+            }
+        });
+    }
+
+    public void initMapEditor() {
+        popPop.setPickOnBounds(false);
+        displayNodes(.8);
+        displayEdges(.6);
+
+        topElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::openAddNodePopup);
+
+        addNodeField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideAddNodePopup();
+                }
+            }
+        });
+
+        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideAddNodePopup();
+                }
+            }
+        });
+    }
+
+    /**
+     * stores needed resizing info for scaling the displayed nodes on the map as the window changes
+     */
+    public void resizingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        fileWidth = hospitalMap.getImage().getWidth();
+        fileHeight = hospitalMap.getImage().getHeight();
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    public double xCoordOnTopElement(int x) {
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    /**
+     * for the scaling the displayed nodes on the map
+     *
+     * @param y the y coordinate of the anchor pane, top element
+     * @return the scaled y coordinate
+     */
+    public double yCoordOnTopElement(int y) {
+        double fileWidth = 5000.0;
+
+        double fileHeight = 3400.0;
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    void refreshData() {
+        nodes = LocalStorage.getInstance().getNodes();
+        localNodes = new ArrayList<>();
+        nodes.forEach(n -> {
+            if (nodeWithinSpec(n)) {
+                localNodes.add(n);
+            }
+        });
+
+        nodesMap.clear();
+        localNodes.forEach(n -> {
+            nodesMap.put(n.getNodeID(), n);
+        });
+
+        edges = LocalStorage.getInstance().getEdges();
+        localEdges = new ArrayList<>();
+        edges.forEach(e -> {
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
+                if (nodeWithinSpec(nodesMap.get(e.getStartNode())) && nodeWithinSpec(nodesMap.get(e.getEndNode()))) {
+                    localEdges.add(e);
+                }
+            }
+        });
+
+        edgesMap.clear();
+        localEdges.forEach(e -> {
+            edgesMap.put(e.getEdgeID(), e);
+        });
+    }
+
+    private void renderMap() {
+        clearMap();
+        displayNodes(.8);
+        displayEdges(.6);
+    }
+
+    private void openAddNodePopup(MouseEvent t) {
+        if (t.getButton() != MouseButton.PRIMARY) {
+            return;
+        }
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            return;
+        }
+        addNodeX = (int) (t.getX() / fileFxWidthRatio);
+        addNodeY = (int) (t.getY() / fileFxHeightRatio);
+
+        addNodeField.setPickOnBounds(true);
+        addNodeField.setVisible(true);
+
+        if (t.getY() < topElements.getHeight() / 2) {
+            addNodeField.setTranslateY(t.getY() + 20);
+        } else {
+            addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20);
+        }
+
+        if (topElements.getWidth() * 0.2 > t.getX()) {
+            addNodeField.setTranslateX(t.getX()); // left
+        } else if (topElements.getWidth() * 0.8 > t.getX()) {
+            addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth())); // middle
+        } else {
+            addNodeField.setTranslateX(t.getX() - addNodeField.getWidth()); // right
+        }
+
+        if (renderedAddNode != null) {
+            topElements.getChildren().remove(renderedAddNode);
+        }
+        renderedAddNode = new Circle(t.getX(), t.getY(), 8);
+        renderedAddNode.setFill(Color.TOMATO);
+        renderedAddNode.setOpacity(0.9);
+        topElements.getChildren().add(renderedAddNode);
+    }
+
+    public void hideAddNodePopup() {
+        addNodeField.setPickOnBounds(false);
+        addNodeField.setVisible(false);
+        nodeId.setText("");
+        nodeBuilding.setText("");
+        nodeType.setText("");
+        nodeShortName.setText("");
+        nodeLongName.setText("");
+        if (renderedAddNode != null) {
+            topElements.getChildren().remove(renderedAddNode);
+        }
+    }
+
+    public abstract void drawPath(ArrayList<Node> _listOfNodes);
+
+    /**
+     * toggles the navigation window
+     */
+    public void toggleNav() {
+        clearMap();
+        popPop.setPickOnBounds(true);
+        popPop.setPrefWidth(350.0);
+        // load controller here
+        Navigation navigation = new Navigation(this);
+        navigation.loadNav();
+        listOfNodes = navigation.getListOfNodes();
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            resizingInfo();
+            topElements.getChildren().clear();
+            displayNodes(1);
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+        });
+        if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+            topElements.getChildren().clear();
+            return;
+        }
+        displayNodes(1);
+    }
+
+    public void clearMap() {
+        topElements.getChildren().clear();
+        tonysPath.getElements().clear();
+        hideAddNodePopup();
+    }
+
+    /**
+     * toggle the requests window
+     */
+    public void openRequests() {
+        popPop.setPickOnBounds(true);
+        clearMap();
+        popPop.setPrefWidth(350.0);
+        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop);
+    }
+
+
+    /**
+     * toggle the login window
+     */
+    public void openLogin() {
+        popPop.setPickOnBounds(true);
+        clearMap();
+        popPop.setPrefWidth(350.0);
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop);
+        } else {
+            AuthenticationManager.getInstance().signOut();
+        }
+    }
+
+    /**
+     * toggle the check in window
+     */
+    public void openCheckIn() {
+        popPop.setPickOnBounds(true);
+        clearMap();
+        popPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("UserRegistration", "registrationButton", popPop);
+    }
+
+    public void addNode(ActionEvent event) {
+        addNodeInternal(
+                addNodeX,
+                addNodeY,
+                "1", // TODO: Node floor from level selector
+                nodeId.getText(),
+                nodeBuilding.getText(),
+                nodeType.getText(),
+                nodeShortName.getText(),
+                nodeLongName.getText()
+        );
+        hideAddNodePopup();
+    }
+
+    /**
+     * exit the application
+     */
+    public void exitApplication() {
+        Shutdown.getInstance().exit();
+    }
+
+//    /**
+//     * displays the nodes of the map
+//     */
+//    public void displayNodesNav() {
+//
+//        resizingInfo();
+//
+//        for (Node n : listOfNodes) {
+//            if (((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")))) {
+//                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8);
+//                circle.setFill(Color.OLIVE);
+//                topElements.getChildren().add(circle);
+//            }
+//        }
+//    }
+
+    public boolean nodeWithinSpec(Node n) {
+        return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
+    }
+
+
+    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
+        Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName);
+        Submit.getInstance().addNode(node);
+        System.out.println("Refreshing!");
+        refreshData();
+        renderMap();
+    }
+
+}

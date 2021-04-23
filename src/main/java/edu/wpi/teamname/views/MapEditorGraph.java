@@ -37,8 +37,8 @@ public class MapEditorGraph {
     ArrayList<Node> localNodes = new ArrayList<Node>(); // Nodes within current parameters (IE: floor)
     ArrayList<Edge> edges;
     ArrayList<Edge> localEdges = new ArrayList<Edge>(); // Edges within current parameters (IE: floor)
-    HashMap<String, Node> nodesMap = new HashMap<String, Node>();
-    HashMap<String, Edge> edgesMap = new HashMap<String, Edge>();
+    HashMap<String, Node> nodesMap = new HashMap<>();
+    HashMap<String, Edge> edgesMap = new HashMap<>();
 
     private boolean addNodeMenuOpen = false;
 

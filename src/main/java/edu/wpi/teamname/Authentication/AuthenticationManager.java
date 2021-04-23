@@ -39,6 +39,7 @@ public class AuthenticationManager {
             Response res = Requests.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDmVqldcnj6B21Ah339Zj_aJgC7p5Jq1zE", data);
 
             JSONObject payload = res.json();
+            System.out.println(payload);
             user = new User(
                     payload.getString("idToken"),
                     payload.getString("displayName"),
