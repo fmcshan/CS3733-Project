@@ -2,10 +2,7 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +17,6 @@ import java.util.HashMap;
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
 public class Navigation {
-
     @FXML
     private ComboBox<String> toCombo; // destination drop down
     @FXML
@@ -139,5 +135,13 @@ public class Navigation {
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
         defaultPage.drawPath(path); // draw the path on the map
+    }
+
+    public boolean toComboisEmpty() {
+        return toCombo.getValue() == null || !nodesMap.containsKey(toCombo.getValue());
+    }
+
+    public boolean fromComboisEmpty() {
+        return fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue());
     }
 }
