@@ -6,9 +6,10 @@ import javafx.event.ActionEvent;
 
 public class COVIDMessage {
 
-    public void openPathToEmergency(ActionEvent actionEvent) {
-        NavManager.getInstance().getNavigationPage().getToCombo().setValue("FDEPT00401");
-        SceneManager.getInstance().getDefaultPage().toggleNav();
+    public static boolean covid = false;
 
+    public void openPathToEmergency() {
+        covid = true;
+        SceneManager.getInstance().getDefaultPage().toggleNav();
     }
 }

@@ -90,7 +90,10 @@ public class Navigation {
 //
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
-
+        if (COVIDMessage.covid) {
+            toCombo.setValue("FEXIT00301");
+            COVIDMessage.covid = false;
+        }
         listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
