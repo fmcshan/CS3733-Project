@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.COVIDMessage">
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
+   <children>
+      <Label text="Stop!">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="50.0" />
+         </VBox.margin>
+         <graphic>
+            <MaterialDesignIconView fill="#0067b1" glyphName="ALERT_CIRCLE" size="48" />
+         </graphic>
+      </Label>
+      <Label fx:id="successText" prefHeight="135.0" prefWidth="476.0" text="Based on your answers, you might have COVID-19. Please proceed to the emergency entrance for further evaluation." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXButton onAction="#openPathToEmergency" prefHeight="50.0" prefWidth="300.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="550.0" />
+         </VBox.margin>
+      </JFXButton>
+   </children>
+</VBox>
