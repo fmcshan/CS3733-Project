@@ -22,7 +22,7 @@ public class Navigation {
     @FXML
     private ComboBox<String> fromCombo; // start location drop down
     @FXML
-    private DefaultPage defaultPage; // DefaultPage.fxml controller
+    private MapDisplay mapDisplay; // MapDisplay.fxml controller
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -33,10 +33,10 @@ public class Navigation {
 
     /**
      *  constructor for Navigation
-     * @param defaultPage controller of DefaultPage.fxml
+     * @param mapDisplay controller of MapDisplay.fxml
      */
-    public Navigation(DefaultPage defaultPage) {
-        this.defaultPage = defaultPage;
+    public Navigation(MapDisplay mapDisplay) {
+        this.mapDisplay = mapDisplay;
     }
 
     /**
@@ -114,7 +114,7 @@ public class Navigation {
                 }
             });
             Parent root = loader.load();
-            defaultPage.openWindow("navBar", root, defaultPage.getPopPop()); // open/close navigation bar
+            LoadFXML.getInstance().openWindow("navBar", root, mapDisplay.getPopPop()); // open/close navigation bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -132,9 +132,13 @@ public class Navigation {
         }
         Node startNode = nodesMap.get(fromCombo.getValue()); // get starting location
         Node endNode = nodesMap.get(toCombo.getValue()); // get ending location
+        System.out.println(startNode.getNodeID());
+        System.out.println(endNode.getNodeID());
+        System.out.println(listOfNodes);
+        System.out.println(listOfNodes.get(0).getEdges());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
-        defaultPage.drawPath(path); // draw the path on the map
+        mapDisplay.drawPath(path); // draw the path on the map
     }
 
     public boolean toComboisEmpty() {

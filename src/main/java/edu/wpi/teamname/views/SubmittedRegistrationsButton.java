@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
@@ -13,6 +13,6 @@ public class SubmittedRegistrationsButton {
 
     public void openSubmittedRegistrations() {
         System.out.println("registration button worked");
-        Bridge.getInstance().loadRegistration();
+        SceneManager.getInstance().getDefaultPage().toggleRegistration();
     }
 }

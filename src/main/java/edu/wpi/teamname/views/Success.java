@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +14,7 @@ import java.io.IOException;
  * Controller for Success.fxml
  * @author Lauren Sowerbutts
  */
-public class Success extends LoadFXML {
+public class Success {
 
     @FXML
     public Label successText;
@@ -57,7 +57,7 @@ public class Success extends LoadFXML {
             });
             Parent root = loader.load();
             successText.setText(message);
-            openWindow("successBar", root, pop); // open/close success bar
+            LoadFXML.getInstance().openWindow("successBar", root, pop); // open/close success bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -68,6 +68,6 @@ public class Success extends LoadFXML {
      */
     public void closeSuccess() {
         pop.getChildren().clear(); // clear the successPop vbox
-        Bridge.getInstance().close(); // close the window
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 }

@@ -10,12 +10,23 @@ public class LoadFXML {
 
     private static String currentWindow;
 
+    private LoadFXML() {
+    }
+
+    public static synchronized LoadFXML getInstance() { return instance; }
+
+    private static final LoadFXML instance = new LoadFXML();
+
     /**
      * setter for currentWindow
      * @param windowName // pass in the string that modifies currentWindow
      */
     public static void setCurrentWindow(String windowName) {
         currentWindow = windowName;
+    }
+
+    public static String getCurrentWindow() {
+        return currentWindow;
     }
 
     /**
@@ -39,7 +50,7 @@ public class LoadFXML {
      * @param root the loaded fxml
      * @param vbox the vbox the fxml will be open in
      */
-    public void openWindow(String windowName, Parent root, VBox vbox) {
+    public static void openWindow(String windowName, Parent root, VBox vbox) {
         vbox.getChildren().clear();
         if (!windowName.equals(currentWindow)) {
             vbox.getChildren().add(root);

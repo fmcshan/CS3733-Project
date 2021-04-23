@@ -6,7 +6,7 @@ import edu.wpi.teamname.Database.Parser;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -129,7 +129,7 @@ public class RequestAdminView implements GiftDeliveryListener {
      */
     public void exitView(ActionEvent actionEvent) {
         LoadFXML.setCurrentWindow("");
-        Bridge.getInstance().close();
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 
     public void assignToChange(TableColumn.CellEditEvent cellEditEvent) {

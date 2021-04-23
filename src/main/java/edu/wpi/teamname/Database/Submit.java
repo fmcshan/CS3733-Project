@@ -80,8 +80,6 @@ public class Submit {
         data.put("phone", _form.getContact());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
-        System.out.println(_form.isCompleted());
-        System.out.println(String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
 
@@ -91,7 +89,8 @@ public class Submit {
 
     public void modifyNode(Node _form, String modification) {
         JSONObject data = new JSONObject();
-        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
         data.put("id", _form.getNodeID());
         data.put("building", _form.getBuilding());
         data.put("level", _form.getFloor());
@@ -102,20 +101,28 @@ public class Submit {
         data.put("y", String.valueOf(_form.getY()));
 
         String url;
+        String action;
 
         switch (modification) {
             case "add":
                 url = SERVER_URL + "/api/add-node";
+                action = "add_node";
                 break;
             case "edit":
                 url = SERVER_URL + "/api/edit-node";
+                action = "edit_node";
                 break;
             case "remove":
                 url = SERVER_URL + "/api/remove-node";
+                action = "remove_node";
                 break;
             default:
                 return;
         }
+
+        Change change = new Change(action, changeId);
+        change.setModifiedNode(_form);
+        ChangeManager.getInstance().processChange(change);
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
@@ -135,26 +142,35 @@ public class Submit {
 
     public void modifyEdge(Edge _form, String modification) {
         JSONObject data = new JSONObject();
-        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
         data.put("id", _form.getEdgeID());
         data.put("startNode", _form.getStartNode());
         data.put("endNode", _form.getEndNode());
 
         String url;
+        String action;
 
         switch (modification) {
             case "add":
                 url = SERVER_URL + "/api/add-edge";
+                action = "add_edge";
                 break;
             case "edit":
                 url = SERVER_URL + "/api/edit-edge";
+                action = "edit_edge";
                 break;
             case "remove":
                 url = SERVER_URL + "/api/remove-edge";
+                action = "remove_edge";
                 break;
             default:
                 return;
         }
+
+        Change change = new Change(action, changeId);
+        change.setModifiedEdge(_form);
+        ChangeManager.getInstance().processChange(change);
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
