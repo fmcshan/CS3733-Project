@@ -150,7 +150,7 @@ public class DefaultPage extends LoadFXML implements AuthListener {
      */
     public void openCheckIn() {
         popPop.setPrefWidth(657.0);
-        loadWindow("UserRegistration", "registrationButton", popPop);
+        loadWindow("COVIDSurvey", "covidSurvey", popPop);
     }
 
     /**

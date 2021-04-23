@@ -43,6 +43,11 @@ public class Navigation {
         this.defaultPage = defaultPage;
     }
 
+
+    public ComboBox<String> getToCombo() {
+        return toCombo;
+    }
+
     /**
      * run on startup
      */

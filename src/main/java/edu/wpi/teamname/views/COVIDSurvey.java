@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -52,16 +53,12 @@ public class COVIDSurvey {
                 selectedOptions.add("I have recovered from a documented COVID-19 infection in the last three months. ");
             }
 
-            LoadFXML.setCurrentWindow("");
-
+            //LoadFXML.setCurrentWindow("");
+            SceneManager.getInstance().getDefaultPage().loadWindow("UserRegistration", "userRegistration", SceneManager.getInstance().getDefaultPage().getPopPop());
 //            //submit
 //            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
 //            Submit.getInstance().submitUserRegistration(formData);
-//
-//            // load Success page in successPop VBox
-//            successPop.setPrefWidth(657.0);
-//            Success success = new Success(this);
-//            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+
         } else if (aCheckboxSelected()) {
             ArrayList<String> selectedOptions = new ArrayList<String>();
             if (symptom1Checkbox.isSelected()) {
@@ -86,16 +83,14 @@ public class COVIDSurvey {
                 selectedOptions.add("I have recovered from a documented COVID-19 infection in the last three months. ");
             }
 
-            LoadFXML.setCurrentWindow("");
+           // LoadFXML.setCurrentWindow("");
 
 //            //submit
 //            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
 //            Submit.getInstance().submitUserRegistration(formData);
-//
-//            // load Success page in successPop VBox
-//            successPop.setPrefWidth(657.0);
-//            Success success = new Success(this);
-//            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+
+            SceneManager.getInstance().getDefaultPage().loadWindow("COVIDMessage", "covidMessage", SceneManager.getInstance().getDefaultPage().getPopPop());
         }
+
     }
 }
