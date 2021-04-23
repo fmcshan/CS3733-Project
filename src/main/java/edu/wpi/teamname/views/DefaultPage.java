@@ -83,9 +83,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if(languageBox.getValue().equals("English")){
             Translator.getInstance().setCurrentLanguage("language_english");
             languageHelper2();
-
         }
-
+        if(languageBox.getValue().equals("Chinese - Simplified")){
+            Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
+            languageHelper2();
+        }
     }
 
     public void setLanguages(){ //call this in intialize, sets the values in language hashmap and words hashmap
@@ -97,6 +99,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         Translator.getInstance().language_spanish.put("Navigation", "Navegacion");
         Translator.getInstance().language_spanish.put("CheckIn", "Registrarse");
         Translator.getInstance().language_spanish.put("Requests", "Peticiones");
+        Translator.getInstance().languageHashmap.put("language_chineseSimplified", Translator.getInstance().language_chineseSimplified); //add spanish hashmap
+        Translator.getInstance().language_spanish.put("Navigation", "导航");
+        Translator.getInstance().language_spanish.put("CheckIn", "登记");
+        Translator.getInstance().language_spanish.put("Requests", "请求");
 
     }
 
@@ -120,6 +126,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         AuthenticationManager.getInstance().addListener(this);
         languageBox.getItems().add("English");
         languageBox.getItems().add("Spanish");
+        languageBox.getItems().add("Chinese - Simplified");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();

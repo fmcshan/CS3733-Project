@@ -12,7 +12,7 @@ public class Translator {
     HashMap<String, HashMap<String, String>> languageHashmap = new HashMap<>();
     HashMap<String, String> language_english = new HashMap<>();
     HashMap<String, String> language_spanish = new HashMap<>();
-    HashMap<String, String> language_chinesesimplified = new HashMap<>();
+    HashMap<String, String> language_chineseSimplified = new HashMap<>();
 
     public void setCurrentLanguage(String currentLanguage) {
         this.currentLanguage = currentLanguage;
