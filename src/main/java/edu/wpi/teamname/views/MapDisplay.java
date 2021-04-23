@@ -49,6 +49,7 @@ public abstract class MapDisplay {
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
+    HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
@@ -59,6 +60,9 @@ public abstract class MapDisplay {
 
     Node addEdgeStart;
     Node addEdgeEnd;
+
+    Node selectedNode;
+    Edge selectedEdge;
 
     @FXML
     VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -97,10 +101,26 @@ public abstract class MapDisplay {
     @FXML
     private Label addEdgeWarning;
 
+    @FXML
+    private VBox editNode; // Edit node menu
+    @FXML
+    private JFXTextField editNodeBuilding;
+    @FXML
+    private JFXTextField editNodeType;
+    @FXML
+    private JFXTextField editNodeShortName;
+    @FXML
+    private JFXTextField editNodeLongName;
+    @FXML
+    private VBox deleteEdge;
+    @FXML
+    private JFXTextField deleteEdgeId;
+
+
     /**
      * getter for popPop Vbox
      *
-     * @return
+     * @return popPop
      */
     public VBox getPopPop() {
         return popPop;
@@ -110,6 +130,7 @@ public abstract class MapDisplay {
 
     /**
      * Display localNodes on the map
+     *
      * @param _opacity Node opacity
      */
     public void displayNodes(double _opacity) {
@@ -141,6 +162,7 @@ public abstract class MapDisplay {
 
     /**
      * Display localEdges on the map
+     *
      * @param _opacity Edge opacity
      */
     public void displayEdges(double _opacity) {
@@ -150,6 +172,7 @@ public abstract class MapDisplay {
                 // Create edge
                 LineBuilder<?> edgeLocation = LineBuilder.create().startX(nodesMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodesMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodesMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodesMap.get(e.getEndNode()).getY() * fileFxHeightRatio);
                 Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
+                renderedEdgeMap.put(edge, e);
                 onTopOfTopElements.getChildren().add(edge); // Render edge
 
                 edge.setOnMouseEntered(t -> { // Show a hover effect
@@ -170,8 +193,8 @@ public abstract class MapDisplay {
      */
     public void initMapEditor() {
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
-        displayNodes(.8); // Render nodes at 0.8 opacity
         displayEdges(.6); // Render edges at 0.6 opacity
+        displayNodes(.8); // Render nodes at 0.8 opacity
 
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
@@ -194,12 +217,32 @@ public abstract class MapDisplay {
             }
         });
 
+        editNode.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add edge popup on "Esc" key
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideEditNodePopup();
+                }
+            }
+        });
+
+        deleteEdge.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add edge popup on "Esc" key
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hideDeleteEdgePopup();
+                }
+            }
+        });
+
         anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit popups on "Esc" key
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
                     hideAddNodePopup();
                     hideAddEdgePopup();
+                    hideEditNodePopup();
+                    hideDeleteEdgePopup();
                 }
             }
         });
@@ -207,10 +250,13 @@ public abstract class MapDisplay {
 
     /**
      * Process mouse movement (IE: display edge preview)
+     *
      * @param t Mouse event
      */
     private void processMovement(MouseEvent t) {
-        if (dragStart != null && dragEnd != null) {return;}
+        if (dragStart != null && dragEnd != null) {
+            return;
+        }
         if (dragStart != null) {
             if (renderedEdgePreview != null) {
                 topElements.getChildren().remove(renderedEdgePreview);
@@ -306,17 +352,23 @@ public abstract class MapDisplay {
      */
     private void renderMap() {
         clearMap(); // Clear map
-        displayNodes(.8); // Display nodes at 0.8 opacity
         displayEdges(.6); // Display edges at 0.6 opacity
+        displayNodes(.8); // Display nodes at 0.8 opacity
+        dragStart = null; // Reset dragStart (IE: user clicks away)
+        dragEnd = null; // Reset dragEnd (IE: user clicks away)
     }
 
     /**
      * Process click events. Handles showing/hiding the add node
      * and add edge popups, as well as add edge tracking vars.
+     *
      * @param t Mouse Event
      */
     private void processClick(MouseEvent t) {
-        if (t.getButton() != MouseButton.PRIMARY) {
+        if (t.getButton() == MouseButton.SECONDARY) {
+            processRightClick(t);
+            return;
+        } else if (t.getButton() != MouseButton.PRIMARY) {
             return;
         }
         if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
@@ -327,6 +379,8 @@ public abstract class MapDisplay {
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
                 hideAddEdgePopup(); // Hide the edge popup
                 hideAddNodePopup(); // Hide the node popup
+                hideEditNodePopup(); // Hide the edit node popup
+                hideDeleteEdgePopup(); // Hide the remove edge popup
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
             } else if (dragEnd == null) { // Else if dragEnd isn't null (IE: If the user is partway through creating an edge)
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
@@ -349,6 +403,8 @@ public abstract class MapDisplay {
         }
 
         hideAddEdgePopup(); // Hide edge popup on click (IE: The user click away from the add edge popup)
+        hideEditNodePopup(); // Hide the edit node popup
+        hideDeleteEdgePopup(); // Hide the remove edge popup
 
         dragStart = null; // Reset dragStart (IE: user clicks away)
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
@@ -385,10 +441,164 @@ public abstract class MapDisplay {
     }
 
     /**
+     * Process right clicks
+     * @param t Mouse Event
+     */
+    private void processRightClick(MouseEvent t) {
+        if (t.getTarget() instanceof Circle) { // If the user clicks a circle/node
+            Node toEdit = renderedNodeMap.get((Circle) t.getTarget()); // Get the node
+            selectedNode = toEdit; // Update selectedNode
+            showEditNodePopup(toEdit, t); // Show edit node popup
+        } else if (t.getTarget() instanceof Line) { // Else if the user clicks a line/edge
+            Edge toDelete = renderedEdgeMap.get((Line) t.getTarget()); // Get the edge
+            selectedEdge = toDelete; // Updated selected edge
+            showRemoveEdgePopup(toDelete, t); // Show the remove edge popup
+        }
+    }
+
+    /**
+     * Hide the edit node popup
+     */
+    private void hideEditNodePopup() {
+        editNode.setVisible(false); // Hide the popup
+        editNode.setPickOnBounds(false); // Set clickable to false
+
+        editNodeBuilding.setText(""); // Reset the node building field
+        editNodeType.setText(""); // Reset the node type field
+        editNodeShortName.setText(""); // Reset the node short name field
+        editNodeLongName.setText(""); // Reset the node long name field
+
+        selectedNode = null; // Reset the selected node
+    }
+
+    /**
+     * Show the edit node popup
+     * @param _toEdit The node to edit
+     * @param t Mouse Event
+     */
+    private void showEditNodePopup(Node _toEdit, MouseEvent t) {
+        hideAddNodePopup(); // Hide the add edge popup
+        hideAddEdgePopup(); // Hide the add edge popup
+        hideDeleteEdgePopup(); // Hide the delete edge popup
+
+        editNodeBuilding.setText(_toEdit.getBuilding()); // Set the building field
+        editNodeType.setText(_toEdit.getNodeType()); // Set the type field
+        editNodeShortName.setText(_toEdit.getShortName()); // Set the short name field
+        editNodeLongName.setText(_toEdit.getLongName()); // Set the long name field
+
+        editNode.setVisible(true); // Set visible to true
+        editNode.setPickOnBounds(true); // Set clickable to true
+        // Relative to mouse
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+            editNode.setTranslateY(t.getY() + 20); // Show above
+        } else { // Else (if mouse is in top half of screen)
+            editNode.setTranslateY(t.getY() - editNode.getHeight() - 20); // Show below
+        }
+
+        // Relative to mouse
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+            editNode.setTranslateX(t.getX()); // Show popup to the right
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+            editNode.setTranslateX(t.getX() - (0.5 * editNode.getWidth())); // Show popup in the center
+        } else { // Else (if mouse is in the right 1/5th)
+            editNode.setTranslateX(t.getX() - editNode.getWidth()); // Show popup to the left
+        }
+    }
+
+    /**
+     * Show the remove edge popup
+     * @param _toDelete Edge to delete
+     * @param t Mouse Event
+     */
+    private void showRemoveEdgePopup(Edge _toDelete, MouseEvent t) {
+        hideAddNodePopup(); // Hide the add node popup
+        hideAddEdgePopup(); // Hide the add ege popup
+        hideEditNodePopup(); // Hide the edit node popup
+
+        deleteEdgeId.setText(_toDelete.getEdgeID()); // Set the edgeId field/preview
+
+        deleteEdge.setVisible(true); // Show the remove edge popup
+        deleteEdge.setPickOnBounds(true); // Set clickable to true
+        // Relative to mouse
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+            deleteEdge.setTranslateY(t.getY() + 20); // Show above
+        } else { // Else (if mouse is in top half of screen)
+            deleteEdge.setTranslateY(t.getY() - deleteEdge.getHeight() - 20); // Show below
+        }
+
+        // Relative to mouse
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+            deleteEdge.setTranslateX(t.getX()); // Show popup to the right
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+            deleteEdge.setTranslateX(t.getX() - (0.5 * deleteEdge.getWidth())); // Show popup in the center
+        } else { // Else (if mouse is in the right 1/5th)
+            deleteEdge.setTranslateX(t.getX() - deleteEdge.getWidth()); // Show popup to the left
+        }
+    }
+
+    /**
+     * Hide the delete edge popup
+     */
+    private void hideDeleteEdgePopup() {
+        deleteEdge.setVisible(false); // Hide the popup
+        deleteEdge.setPickOnBounds(false); // Set clickable to false
+
+        deleteEdgeId.setText(""); // Reset the edge Id field
+        selectedEdge = null; // Reset the selected edge
+    }
+
+    /**
+     * Save the edited node
+     * @param e Action Event
+     */
+    @FXML
+    private void editNodeSave(ActionEvent e) {
+        Node newNode = new Node( // Create new node object
+                selectedNode.getNodeID(), // Same NodeID
+                selectedNode.getX(),
+                selectedNode.getY(),
+                "1", // TODO: Node floor from level selector
+                editNodeBuilding.getText(),
+                editNodeType.getText(),
+                editNodeLongName.getText(),
+                editNodeShortName.getText()
+        );
+        Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
+        hideEditNodePopup(); // Hide the edit node popup
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+    }
+
+    /**
+     * Delete the currently selected edge
+     * @param e Action Event
+     */
+    @FXML
+    private void confirmDeleteEdge(ActionEvent e) {
+        Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
+        hideDeleteEdgePopup(); // Hide the edit node popup
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap(); // Render/display the map (with the updated information)
+    }
+
+    /**
+     * Delete the currently selected node
+     * @param e Action Event
+     */
+    @FXML
+    private void deleteNode(ActionEvent e) {
+        Submit.getInstance().removeNode(selectedNode); // Remove the selected node
+        hideEditNodePopup(); // Hide the edit node popup
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap(); // Render/display the map (with the updated information)
+    }
+
+    /**
      * Show the edge confirmation popup.
+     *
      * @param startNode Edge start node
-     * @param endNode Edge end node
-     * @param _dragEnd Edge end circle
+     * @param endNode   Edge end node
+     * @param _dragEnd  Edge end circle
      */
     private void showEdgePopup(Node startNode, Node endNode, Circle _dragEnd) {
         int x = (int) _dragEnd.getCenterX(); // Get end node X position (for UI use)
@@ -446,6 +656,7 @@ public abstract class MapDisplay {
 
     /**
      * Display list of nodes and associated edges
+     *
      * @param _listOfNodes Arraylist of nodes to render
      */
     public abstract void drawPath(ArrayList<Node> _listOfNodes);
@@ -521,6 +732,7 @@ public abstract class MapDisplay {
 
     /**
      * Triggered by Add Node button
+     *
      * @param event Action Event
      */
     public void addNode(ActionEvent event) {
@@ -539,6 +751,7 @@ public abstract class MapDisplay {
 
     /**
      * Triggered by Add Edge button
+     *
      * @param event Action event
      */
     public void addEdge(ActionEvent event) {
@@ -565,6 +778,7 @@ public abstract class MapDisplay {
 
     /**
      * Checks if the specified node is within the current specifications (IE: the correct building/s)
+     *
      * @param n Node
      * @return true if the node is within current specifications
      */
@@ -575,14 +789,15 @@ public abstract class MapDisplay {
 
     /**
      * Add a node
-     * @param x Node x coordinate
-     * @param y Node y coordinate
-     * @param nodeFloor Node floor/level
-     * @param nodeId Node ID
-     * @param nodeBuilding Node building
-     * @param nodeType Node type
+     *
+     * @param x             Node x coordinate
+     * @param y             Node y coordinate
+     * @param nodeFloor     Node floor/level
+     * @param nodeId        Node ID
+     * @param nodeBuilding  Node building
+     * @param nodeType      Node type
      * @param nodeShortName Node short name
-     * @param nodeLongName Node long name
+     * @param nodeLongName  Node long name
      */
     private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
         Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName); // Create a node

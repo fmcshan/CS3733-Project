@@ -20,6 +20,7 @@ public class ChangeManager extends Thread {
 
     public void processChange(Change _change) {
         if (changes.contains(_change.getChangeId())) { return; }
+        changes.add(_change.getChangeId());
         switch (_change.getChangeType()) {
             case "load_nodes":
             case "load_edges":
@@ -38,23 +39,27 @@ public class ChangeManager extends Thread {
 
             case "edit_node":
                 nodes = LocalStorage.getInstance().getNodes();
-                nodes.forEach(n -> {
+                for (int i = 0; i < nodes.size(); i++) {
+                    Node n = nodes.get(i);
                     if (n.getNodeID().equals(_change.getModifiedNode().getNodeID())) {
                         nodes.remove(n);
                         nodes.add(_change.getModifiedNode());
+                        break;
                     }
-                });
+                }
                 LocalStorage.getInstance().setNodes(nodes);
                 LocalStorage.getInstance().linkEdges();
                 break;
 
             case "remove_node":
                 nodes = LocalStorage.getInstance().getNodes();
-                nodes.forEach(n -> {
+                for (int i = 0; i < nodes.size(); i++) {
+                    Node n = nodes.get(i);
                     if (n.getNodeID().equals(_change.getModifiedNode().getNodeID())) {
                         nodes.remove(n);
+                        break;
                     }
-                });
+                }
                 LocalStorage.getInstance().setNodes(nodes);
                 LocalStorage.getInstance().linkEdges();
                 break;
@@ -68,23 +73,27 @@ public class ChangeManager extends Thread {
 
             case "edit_edge":
                 edges = LocalStorage.getInstance().getEdges();
-                edges.forEach(e -> {
+                for (int i = 0; i < edges.size(); i++) {
+                    Edge e = edges.get(i);
                     if (e.getEdgeID().equals(_change.getModifiedEdge().getEdgeID())) {
                         edges.remove(e);
                         edges.add(_change.getModifiedEdge());
+                        break;
                     }
-                });
+                }
                 LocalStorage.getInstance().setEdges(edges);
                 LocalStorage.getInstance().linkEdges();
                 break;
 
             case "remove_edge":
                edges = LocalStorage.getInstance().getEdges();
-                edges.forEach(e -> {
+                for (int i = 0; i < edges.size(); i++) {
+                    Edge e = edges.get(i);
                     if (e.getEdgeID().equals(_change.getModifiedEdge().getEdgeID())) {
                         edges.remove(e);
+                        break;
                     }
-                });
+                }
                 LocalStorage.getInstance().setEdges(edges);
                 LocalStorage.getInstance().linkEdges();
                 break;
@@ -104,6 +113,5 @@ public class ChangeManager extends Thread {
                 Initiator.getInstance().triggerGiftDeliveryUpdated();
                 break;
         }
-        changes.add(_change.getChangeId());
     }
 }
