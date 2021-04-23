@@ -91,6 +91,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void setLanguages(){ //call this in intialize, sets the values in language hashmap and words hashmap
+        //https://www.sothawo.com/2016/09/how-to-implement-a-javafx-ui-where-the-language-can-be-changed-dynamically/
+        // TODO look into this for proper language support
         Translator.getInstance().languageHashmap.put("language_english", Translator.getInstance().language_english); //add english hashmap
         Translator.getInstance().language_english.put("Navigation", "Navigation");
         Translator.getInstance().language_english.put("CheckIn", "Check-In");
