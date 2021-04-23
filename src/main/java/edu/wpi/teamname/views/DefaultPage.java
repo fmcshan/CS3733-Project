@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
@@ -9,6 +10,7 @@ import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -57,6 +59,36 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
     private AnchorPane topElements; // anchor pane where displayed nodes reside
+    @FXML
+    private JFXComboBox<String> languageBox; //selects language you want
+    @FXML
+    private JFXButton Navigation;
+    @FXML
+    private JFXButton CheckIn;
+    @FXML
+    private JFXButton Requests;
+
+
+    public String getLanguage(){
+        return languageBox.getValue();
+    }
+
+
+    @FXML
+    void languageSwitch(ActionEvent event) { //picks a language and checks current language
+        if(languageBox.getValue().equals("Spanish")){
+            Navigation.setText("Navegacion"); //need accent over the o, but does not process
+            CheckIn.setText("Registrarse");
+            Requests.setText("Peticiones");
+        }
+        if(languageBox.getValue().equals("English")){
+            Navigation.setText("Navigation");
+            CheckIn.setText("Check-In");
+            Requests.setText("Requests");
+
+        }
+
+    }
 
     /**
      * getter for popPop Vbox
@@ -73,6 +105,8 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     public void initialize() {
         SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
+        languageBox.getItems().add("English");
+        languageBox.getItems().add("Spanish");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
