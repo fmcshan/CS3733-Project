@@ -18,6 +18,7 @@ public class LocalStorage {
     private List<DataListener> listeners = new ArrayList<DataListener>();
 
     private ArrayList<Node> nodes;
+    private HashMap<String, Node> nodeMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
     private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
@@ -52,6 +53,11 @@ public class LocalStorage {
 
     public void setNodes(ArrayList<Node> nodes) {
         this.nodes = nodes;
+        nodeMap = new HashMap<String, Node>();
+        nodes.forEach( n -> {
+            nodeMap.put(n.getNodeID(), n);
+        });
+
         for (DataListener dl : listeners) {
             try {
                 dl.nodesSet(nodes);

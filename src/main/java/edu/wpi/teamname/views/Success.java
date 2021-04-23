@@ -14,7 +14,7 @@ import java.io.IOException;
  * Controller for Success.fxml
  * @author Lauren Sowerbutts
  */
-public class Success extends LoadFXML {
+public class Success {
 
     @FXML
     public Label successText;
@@ -57,7 +57,7 @@ public class Success extends LoadFXML {
             });
             Parent root = loader.load();
             successText.setText(message);
-            openWindow("successBar", root, pop); // open/close success bar
+            LoadFXML.getInstance().openWindow("successBar", root, pop); // open/close success bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
