@@ -39,7 +39,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        hideAddNodePopup();
+        addNodeField.setPickOnBounds(false);
         SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
 
@@ -136,14 +136,14 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
-        topElements.getChildren().clear();
+        clearMap();
         popPop.getChildren().clear();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
             return;
         }
-        initMapEditor();
+//        initMapEditor();
         LoadFXML.setCurrentWindow("mapEditorBar");
     }
 
@@ -151,7 +151,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin registration window
      */
     public void toggleRegistration() {
-        topElements.getChildren().clear();
+        clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RegistrationAdminView", "registrationBar", popPop);
     }
@@ -160,7 +160,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleRequest() {
-        topElements.getChildren().clear();
+        clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdminView", "requestBar", popPop);
     }

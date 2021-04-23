@@ -61,6 +61,8 @@ public abstract class MapDisplay {
     VBox addNodeField;
     @FXML
     AnchorPane pathAnchor;
+    @FXML
+    AnchorPane anchor;
 
     /**
      * getter for popPop Vbox
@@ -112,28 +114,6 @@ public abstract class MapDisplay {
                     edge.setOpacity(_opacity);
                     edge.setStrokeWidth(3);
                 });
-            }
-        });
-    }
-
-    public void initMapEditor() {
-        displayNodes(.8);
-        displayEdges(.6);
-
-        topElements.onMouseClickedProperty().set((EventHandler<MouseEvent>) this::openAddNodePopup);
-
-        topElements.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent t) {
-                if(t.getCode()== KeyCode.ESCAPE)
-                {hideAddNodePopup();}
-            }
-        });
-        pathAnchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent t) {
-                if(t.getCode()== KeyCode.ESCAPE)
-                {hideAddNodePopup();}
             }
         });
     }
@@ -215,36 +195,6 @@ public abstract class MapDisplay {
         });
     }
 
-    private void openAddNodePopup(MouseEvent t) {
-        popPop.setPickOnBounds(false);
-        addNodeField.setPickOnBounds(true);
-        addNodeField.setVisible(true);
-
-        addNodeField.setTranslateX(t.getX());
-        addNodeField.setTranslateY(t.getY());
-
-        if (t.getY() < topElements.getHeight()/2) {
-            addNodeField.setTranslateY(t.getY() + 20);
-        } else {
-            addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20);
-        }
-
-        if (topElements.getWidth() * 0.2 < t.getX()) {
-            addNodeField.setTranslateX(t.getX());
-        } else if (topElements.getWidth() * 0.8 < t.getX()) {
-            addNodeField.setTranslateX(t.getX() - addNodeField.getWidth());
-        } else {
-            addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth()));
-        }
-
-    }
-
-    public void hideAddNodePopup() {
-        popPop.setPickOnBounds(true);
-        addNodeField.setPickOnBounds(false);
-        addNodeField.setVisible(false);
-    }
-
     public abstract void drawPath(ArrayList<Node> _listOfNodes);
 
     /**
@@ -253,6 +203,7 @@ public abstract class MapDisplay {
     public void toggleNav() {
         topElements.getChildren().clear();
         tonysPath.getElements().clear();
+        popPop.setPickOnBounds(true);
         popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
@@ -272,10 +223,16 @@ public abstract class MapDisplay {
         displayNodes(1);
     }
 
+    public void clearMap() {
+        topElements.getChildren().clear();
+        tonysPath.getElements().clear();
+    }
+
     /**
      * toggle the requests window
      */
     public void openRequests() {
+        popPop.setPickOnBounds(true);
         topElements.getChildren().clear();
         popPop.setPrefWidth(350.0);
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop);
@@ -286,7 +243,8 @@ public abstract class MapDisplay {
      * toggle the login window
      */
     public void openLogin() {
-        topElements.getChildren().clear();
+        popPop.setPickOnBounds(true);
+        clearMap();
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop);
@@ -299,7 +257,8 @@ public abstract class MapDisplay {
      * toggle the check in window
      */
     public void openCheckIn() {
-        topElements.getChildren().clear();
+        popPop.setPickOnBounds(true);
+        clearMap();
         popPop.setPrefWidth(657.0);
         LoadFXML.getInstance().loadWindow("UserRegistration", "registrationButton", popPop);
     }
