@@ -63,26 +63,40 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton Requests;
 
-    public String currentLanguage = "English";
 
-    public String getLanguage(){
-        return languageBox.getValue();
+    public String languageHelper(String getText){ //simplifies the language in helper 2, gets the value for given language
+        return Translator.getInstance().languageHashmap.get(Translator.getInstance().getCurrentLanguage()).get(getText);
     }
+
+    public void languageHelper2(){ //can call this for each language
+        Navigation.setText(languageHelper("Navigation"));
+        CheckIn.setText(languageHelper("CheckIn"));
+        Requests.setText(languageHelper("Requests"));
+    }
+
 
     public void languageSwitch() { //picks a language and checks current language
         if(languageBox.getValue().equals("Spanish")){
-            Navigation.setText("Navegacion"); //need accent over the o, but does not process
-            CheckIn.setText("Registrarse");
-            Requests.setText("Peticiones");
-            currentLanguage = "Spanish";
+            Translator.getInstance().setCurrentLanguage("language_spanish");
+            languageHelper2();
         }
         if(languageBox.getValue().equals("English")){
-            Navigation.setText("Navigation");
-            CheckIn.setText("Check-In");
-            Requests.setText("Requests");
-            currentLanguage = "English";
+            Translator.getInstance().setCurrentLanguage("language_english");
+            languageHelper2();
 
         }
+
+    }
+
+    public void setLanguages(){ //call this in intialize, sets the values in language hashmap and words hashmap
+        Translator.getInstance().languageHashmap.put("language_english", Translator.getInstance().language_english); //add english hashmap
+        Translator.getInstance().language_english.put("Navigation", "Navigation");
+        Translator.getInstance().language_english.put("CheckIn", "Check-In");
+        Translator.getInstance().language_english.put("Requests", "Requests");
+        Translator.getInstance().languageHashmap.put("language_spanish", Translator.getInstance().language_spanish); //add spanish hashmap
+        Translator.getInstance().language_spanish.put("Navigation", "Navegacion");
+        Translator.getInstance().language_spanish.put("CheckIn", "Registrarse");
+        Translator.getInstance().language_spanish.put("Requests", "Peticiones");
 
     }
 
@@ -100,6 +114,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
+        setLanguages();
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);

@@ -23,7 +23,7 @@
             <Insets left="25.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your admin credentials." wrappingWidth="315.0">
+      <Text fx:id="loginDescription" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your admin credentials." wrappingWidth="315.0">
          <font>
             <Font size="16.0" />
          </font>

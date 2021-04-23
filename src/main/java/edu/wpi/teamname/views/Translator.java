@@ -1,12 +1,36 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
+import java.util.HashMap;
 
-public interface Translator {
+public class Translator {
+
+    private Translator(){}
+    private static final Translator instance = new Translator();
+    public static synchronized Translator getInstance(){
+        return instance;
+    }
+    HashMap<String, HashMap<String, String>> languageHashmap = new HashMap<>();
+    HashMap<String, String> language_english = new HashMap<>();
+    HashMap<String, String> language_spanish = new HashMap<>();
+    HashMap<String, String> language_chinesesimplified = new HashMap<>();
+
+    public void setCurrentLanguage(String currentLanguage) {
+        this.currentLanguage = currentLanguage;
+    }
+
+    public String getCurrentLanguage() {
+        return currentLanguage;
+    }
+
+    private String currentLanguage = "language_english";
 
 
-    public void languageSwitch();
+
+    public String get(String fieldId){
+        return languageHashmap.get(currentLanguage).get(fieldId);
+    }
+
+
 
 
 
