@@ -54,7 +54,7 @@ public class COVIDSurvey {
             }
 
             //LoadFXML.setCurrentWindow("");
-            SceneManager.getInstance().getDefaultPage().loadWindow("UserRegistration", "userRegistration", SceneManager.getInstance().getDefaultPage().getPopPop());
+            LoadFXML.getInstance().loadWindow("UserRegistration", "userRegistration", SceneManager.getInstance().getDefaultPage().getPopPop());
 //            //submit
 //            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
 //            Submit.getInstance().submitUserRegistration(formData);
@@ -89,7 +89,7 @@ public class COVIDSurvey {
 //            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
 //            Submit.getInstance().submitUserRegistration(formData);
 
-            SceneManager.getInstance().getDefaultPage().loadWindow("COVIDMessage", "covidMessage", SceneManager.getInstance().getDefaultPage().getPopPop());
+            LoadFXML.getInstance().loadWindow("COVIDMessage", "covidMessage", SceneManager.getInstance().getDefaultPage().getPopPop());
         }
 
     }

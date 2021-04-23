@@ -72,7 +72,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggles the navigation window
      */
     public void toggleNav() {
-        System.out.println(LoadFXML.getCurrentWindow());
+        clearMap();
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
@@ -82,7 +82,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
             resizingInfo();
             topElements.getChildren().clear();
-            displayNodes();
+            displayNodes(1);
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
         });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) {
@@ -90,15 +90,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             topElements.getChildren().clear();
             return;
         }
-        displayNodes();
+        displayNodes(1);
     }
 
     /**
      * toggle the requests window
      */
     public void openRequests() {
+        clearMap();
         popPop.setPrefWidth(350.0);
-        loadWindow("Requests", "reqBar", popPop);
+        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop);
     }
 
 
@@ -106,9 +107,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the login window
      */
     public void openLogin() {
+        clearMap();
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            loadWindow("Login", "loginBar", popPop);
+            LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop);
         } else {
             AuthenticationManager.getInstance().signOut();
         }
@@ -118,8 +120,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the check in window
      */
     public void openCheckIn() {
+        clearMap();
         popPop.setPrefWidth(657.0);
-        loadWindow("COVIDSurvey", "covidSurvey", popPop);
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "covidSurvey", popPop);
     }
 
     /**
@@ -127,46 +130,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void exitApplication() {
         Shutdown.getInstance().exit();
-    }
-
-    /**
-     * for the scaling the displayed nodes on the map
-     *
-     * @param x the x coordinate of the anchor pane, top element
-     * @return the scaled x coordinate
-     */
-    public double xCoordOnTopElement(int x) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
-    }
-
-    /**
-     * for the scaling the displayed nodes on the map
-     *
-     * @param y the y coordinate of the anchor pane, top element
-     * @return the scaled y coordinate
-     */
-    public double yCoordOnTopElement(int y) {
-        double fileWidth = 5000.0;
-
-        double fileHeight = 3400.0;
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
     }
 
     /**
@@ -184,10 +147,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         fileFxWidthRatio = mapWidth / fileWidth;
         fileFxHeightRatio = mapHeight / fileHeight;
         refreshData();
-    }
-
-    public boolean nodeWithinSpec(Node n) {
-        return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
     }
 
     /**
