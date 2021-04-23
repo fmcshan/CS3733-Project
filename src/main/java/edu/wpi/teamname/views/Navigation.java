@@ -36,16 +36,11 @@ public class Navigation {
     }
 
     /**
-     *  constructor for Navigation
+     * constructor for Navigation
      * @param mapDisplay controller of MapDisplay.fxml
      */
     public Navigation(MapDisplay mapDisplay) {
         this.mapDisplay = mapDisplay;
-    }
-
-
-    public ComboBox<String> getToCombo() {
-        return toCombo;
     }
 
     /**

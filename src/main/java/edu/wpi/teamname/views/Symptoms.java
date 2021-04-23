@@ -11,7 +11,6 @@ import java.io.IOException;
 public class Symptoms {
     @FXML
     private COVIDSurvey covidSurvey;
-    private VBox pop;
 
     public Symptoms(COVIDSurvey covidSurvey) {
         this.covidSurvey = covidSurvey;
@@ -20,8 +19,8 @@ public class Symptoms {
     /**
      * load symptoms popup when help button is pressed/ make it disappear
      */
-    public void loadSymptoms(VBox pop) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Symptoms.fxml"));
+    public void loadSymptoms() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Symptoms.fxml")); // used to load fxml in it's own controller
         try {
             loader.setControllerFactory(type -> {
                 if (type == Symptoms.class) {
@@ -37,13 +36,13 @@ public class Symptoms {
                 }
             });
             Parent root = loader.load();
-            LoadFXML.getInstance().openWindow("symptomsBar", root, pop); // open/close symptoms bar
+            LoadFXML.getInstance().openWindow("symptomsBar", root, covidSurvey.getSymptomsPop()); // open/close navigation bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void exitView(ActionEvent actionEvent) {
-        pop.getChildren().clear(); // clear the symptomsPop vbox
+    public void exitView() {
+        covidSurvey.getSymptomsPop().getChildren().clear(); // clear the symptomsPop vbox
     }
 }

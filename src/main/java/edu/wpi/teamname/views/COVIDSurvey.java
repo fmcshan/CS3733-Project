@@ -20,11 +20,15 @@ public class COVIDSurvey {
     @FXML
     public VBox symptomsPop;
 
+    public VBox getSymptomsPop() {
+        return symptomsPop;
+    }
+
     public boolean hasCovid() {
         return symptom1Checkbox.isSelected() || symptom2Checkbox.isSelected() || symptom3Checkbox.isSelected() || symptom4Checkbox.isSelected();
     }
 
-    public void submitScreening(ActionEvent actionEvent) {
+    public void submitScreening() {
         if (!hasCovid()) {
             LoadFXML.getInstance().loadWindow("UserRegistration", "userRegistration", SceneManager.getInstance().getDefaultPage().getPopPop());
         } else {
@@ -32,11 +36,9 @@ public class COVIDSurvey {
         }
     }
 
-    public void openSymptoms(ActionEvent actionEvent) {
+    public void openSymptoms() {
         Symptoms symptoms = new Symptoms(this);
-        symptomsPop.setPrefWidth(300.0);
-        symptomsPop.setPrefHeight(450.0);
-        symptoms.loadSymptoms(symptomsPop);
+        symptoms.loadSymptoms();
     }
 
     public void openCloseContact(ActionEvent actionEvent) {
