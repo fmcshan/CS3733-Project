@@ -24,7 +24,7 @@ public class COVIDSurvey {
     @FXML
     public JFXCheckBox symptom5Checkbox;
     @FXML
-    public JFXCheckBox vaccineCheckbox;
+    public JFXCheckBox noSymptomsCheckbox;
     @FXML
     public JFXCheckBox recoverCheckbox;
 
