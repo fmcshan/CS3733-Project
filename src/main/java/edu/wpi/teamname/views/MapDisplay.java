@@ -807,4 +807,9 @@ public abstract class MapDisplay {
         dragStart = null; // Reset dragStart
         dragEnd = null; // Reset dragEnd
     }
+
+    @FXML
+    private void openHelp(ActionEvent e) {
+        System.out.println("HALP");
+    }
 }
