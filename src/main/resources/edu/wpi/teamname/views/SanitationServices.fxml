@@ -123,7 +123,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Phone Number" style="-fx-prompt-text-fill: #bbbbbb;" text="Cause" unFocusColor="#868686">
+                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Cause" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
