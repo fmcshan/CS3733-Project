@@ -34,12 +34,12 @@ public class COVIDSurvey {
 
     public void openSymptoms(ActionEvent actionEvent) {
         Symptoms symptoms = new Symptoms(this);
-        symptomsPop.setPrefWidth(100.0);
-        symptomsPop.setPrefHeight(200.0);
+        symptomsPop.setPrefWidth(300.0);
+        symptomsPop.setPrefHeight(450.0);
         symptoms.loadSymptoms(symptomsPop);
     }
 
     public void openCloseContact(ActionEvent actionEvent) {
-       // LoadFXML.getInstance().loadWindow("CloseContact", "closeContact", symptomsPop);
+       //LoadFXML.getInstance().loadWindow("CloseContact", "closeContact", symptomsPop);
     }
 }

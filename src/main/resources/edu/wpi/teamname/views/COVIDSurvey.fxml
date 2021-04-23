@@ -16,11 +16,7 @@
    <children>
       <AnchorPane prefHeight="450.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <VBox fx:id="symptomsPop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" />
-               </children>
-            </VBox>
+            <VBox fx:id="symptomsPop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" AnchorPane.bottomAnchor="225.0" AnchorPane.leftAnchor="178.5" AnchorPane.rightAnchor="178.5" AnchorPane.topAnchor="225.0" />
          </children>
       </AnchorPane>
       <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
