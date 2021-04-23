@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -25,20 +27,96 @@
                   <Image url="@../images/01_thefirstfloor.png" />
                </image>
             </ImageView>
+            <AnchorPane fx:id="pathAnchor" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
+                     <elements>
+                        <MoveTo x="800.0" y="800.0" />
+                        <LineTo x="600.0" y="600.0" />
+                        <LineTo x="500.0" y="500.0" />
+                     </elements>
+                  </Path>
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
+            <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 2px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Add Node">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="50.0" />
+                  <JFXTextField promptText="Node ID">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField layoutX="20.0" layoutY="53.0" promptText="Building">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField layoutX="10.0" layoutY="93.0" promptText="Node Type">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField layoutX="20.0" layoutY="103.0" promptText="Short Name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField layoutX="10.0" layoutY="128.0" promptText="Long Name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton prefWidth="180.0" text="Add">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="PLUS_CIRCLE" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </JFXButton>
+               </children>
+            </VBox>
          </children>
       </StackPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
-               <elements>
-                  <MoveTo x="800.0" y="800.0" />
-                  <LineTo x="600.0" y="600.0" />
-                  <LineTo x="500.0" y="500.0" />
-               </elements>
-            </Path>
-         </children>
-      </AnchorPane>
       <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">

@@ -7,8 +7,12 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -53,6 +57,10 @@ public abstract class MapDisplay {
     AnchorPane topElements;
     @FXML
     StackPane stackPane; // the pane the map is housed in
+    @FXML
+    VBox addNodeField;
+    @FXML
+    AnchorPane pathAnchor;
 
     /**
      * getter for popPop Vbox
@@ -104,6 +112,28 @@ public abstract class MapDisplay {
                     edge.setOpacity(_opacity);
                     edge.setStrokeWidth(3);
                 });
+            }
+        });
+    }
+
+    public void initMapEditor() {
+        displayNodes(.8);
+        displayEdges(.6);
+
+        topElements.onMouseClickedProperty().set((EventHandler<MouseEvent>) this::openAddNodePopup);
+
+        topElements.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode()== KeyCode.ESCAPE)
+                {hideAddNodePopup();}
+            }
+        });
+        pathAnchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode()== KeyCode.ESCAPE)
+                {hideAddNodePopup();}
             }
         });
     }
@@ -183,6 +213,36 @@ public abstract class MapDisplay {
         localEdges.forEach(e -> {
             edgesMap.put(e.getEdgeID(), e);
         });
+    }
+
+    private void openAddNodePopup(MouseEvent t) {
+        popPop.setPickOnBounds(false);
+        addNodeField.setPickOnBounds(true);
+        addNodeField.setVisible(true);
+
+        addNodeField.setTranslateX(t.getX());
+        addNodeField.setTranslateY(t.getY());
+
+        if (t.getY() < topElements.getHeight()/2) {
+            addNodeField.setTranslateY(t.getY() + 20);
+        } else {
+            addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20);
+        }
+
+        if (topElements.getWidth() * 0.2 < t.getX()) {
+            addNodeField.setTranslateX(t.getX());
+        } else if (topElements.getWidth() * 0.8 < t.getX()) {
+            addNodeField.setTranslateX(t.getX() - addNodeField.getWidth());
+        } else {
+            addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth()));
+        }
+
+    }
+
+    public void hideAddNodePopup() {
+        popPop.setPickOnBounds(true);
+        addNodeField.setPickOnBounds(false);
+        addNodeField.setVisible(false);
     }
 
     public abstract void drawPath(ArrayList<Node> _listOfNodes);
