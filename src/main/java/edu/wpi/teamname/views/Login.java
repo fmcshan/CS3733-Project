@@ -14,8 +14,18 @@ import org.apache.commons.validator.EmailValidator;
  * Controller for Login.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Login {
+public class Login implements Translator {
 
+
+
+    @FXML
+    private Label loginLabel;
+
+    @FXML
+    private Text loginDescription;
+
+    @FXML
+    private Label failedLogin;
 
     @FXML
     private JFXTextField emailField;
@@ -23,23 +33,12 @@ public class Login {
     @FXML
     private JFXPasswordField passwordField;
 
-    /**
-     * Once the login button is pressed, check if the email and password are valid
-     * @param event
-     */
-    @FXML
-    private Label failedLogin;
-    @FXML
-    private Label loginLabel;
-    @FXML
-    private Text loginDescription;
-
-
-
     @FXML
     private JFXButton loginButton;
 
+    public void languageSwitch(){
 
+    }
 
     /**
      * Check if the email is valid using EmailValidator

@@ -33,7 +33,7 @@ import java.util.ArrayList;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage extends LoadFXML implements AuthListener {
+public class DefaultPage extends LoadFXML implements AuthListener, Translator {
 
     static double scaledWidth = 5000;
     static double scaledHeight = 3400.0;
@@ -68,27 +68,29 @@ public class DefaultPage extends LoadFXML implements AuthListener {
     @FXML
     private JFXButton Requests;
 
+    public String currentLanguage = "English";
 
     public String getLanguage(){
         return languageBox.getValue();
     }
 
-
-    @FXML
-    void languageSwitch(ActionEvent event) { //picks a language and checks current language
+    public void languageSwitch() { //picks a language and checks current language
         if(languageBox.getValue().equals("Spanish")){
             Navigation.setText("Navegacion"); //need accent over the o, but does not process
             CheckIn.setText("Registrarse");
             Requests.setText("Peticiones");
+            currentLanguage = "Spanish";
         }
         if(languageBox.getValue().equals("English")){
             Navigation.setText("Navigation");
             CheckIn.setText("Check-In");
             Requests.setText("Requests");
+            currentLanguage = "English";
 
         }
 
     }
+
 
     /**
      * getter for popPop Vbox
