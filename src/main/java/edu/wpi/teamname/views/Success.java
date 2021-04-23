@@ -1,29 +1,45 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.bridge.Bridge;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
+import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 
+/**
+ * Controller for Success.fxml
+ * @author Lauren Sowerbutts
+ */
+public class Success extends LoadFXML {
 
-public class Success {
-
+    @FXML
+    public Label successText;
     @FXML
     private UserRegistration userRegistration;
     @FXML
-    private DefaultPage defaultPage;
+    private GiftDelivery giftDelivery;
+
+    private VBox pop;
 
     public Success(UserRegistration userRegistration) {
         this.userRegistration = userRegistration;
     }
 
+    public Success(GiftDelivery giftDelivery) {
+        this.giftDelivery = giftDelivery;
+    }
+
+
+
     /**
      * load success bar in the Default Page when button is pressed/ make it disappear
      */
-    public void loadSuccess() {
+    public void loadSuccess(String message, VBox pop) {
+        this.pop = pop;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Success.fxml"));
         try {
             loader.setControllerFactory(type -> {
@@ -40,18 +56,18 @@ public class Success {
                 }
             });
             Parent root = loader.load();
-            userRegistration.openWindowSuccessPop("successBar", root); // open/close success bar
+            successText.setText(message);
+            openWindow("successBar", root, pop); // open/close success bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
     /**
-     * When close button is pressed close the window
-     * @param actionEvent
+     * When close button is pressed close the success page and the form
      */
-    public void closeSuccess(ActionEvent actionEvent) {
-        userRegistration.getSuccessPop().getChildren().clear(); // clear the successPop vbox
-        Bridge.getInstance().close(); // close the window
+    public void closeSuccess() {
+        pop.getChildren().clear(); // clear the successPop vbox
+        SceneManager.getInstance().getDefaultPage().closeWindows();
     }
 }

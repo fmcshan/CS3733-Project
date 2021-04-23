@@ -1,19 +1,14 @@
 package edu.wpi.teamname.views;
 
-import com.google.rpc.context.AttributeContext;
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
-import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.bridge.Bridge;
-import edu.wpi.teamname.bridge.CloseListener;
 import edu.wpi.teamname.simplify.Shutdown;
-import javafx.event.ActionEvent;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,160 +16,227 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Controller for DefaultPage.fxml
+ *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class DefaultPage implements AuthListener, CloseListener {
+public class DefaultPage extends LoadFXML implements AuthListener {
 
+    static double scaledWidth = 5000;
+    static double scaledHeight = 3400.0;
+    static double scaledX = 0;
+    static double scaledY = 0;
+    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
+    ArrayList<Node> listOfNodes;
+    double mapWidth; //= 1000.0;
+    double mapHeight;// = 680.0;
+    double fileWidth; //= 5000.0;
+    double fileHeight;// = 3400.0;
+    double fileFxWidthRatio = mapWidth / fileWidth;
+    double fileFxHeightRatio = mapHeight / fileHeight;
     @FXML
-    private VBox popPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
-    private VBox adminPop; // vbox to populate Map Editor button
+    private Path tonysPath; // the path displayed on the map
     @FXML
-    private VBox requestPop; // vbox to populate Submitted Requests button
+    private ImageView hospitalMap; // the map
     @FXML
-    private Path tonysPath; // this is Tony's path
+    private StackPane stackPane; // the pane the map is housed in
     @FXML
-    private AnchorPane anchor; //
+    private JFXButton adminButton; // button that allows you to sign in
     @FXML
-    private ImageView hospitalMap;
-    @FXML
-    private StackPane stackPane;
-    @FXML
-    private JFXButton adminButton;
+    private AnchorPane topElements; // anchor pane where displayed nodes reside
 
-    static String openWindow = "";
-    ArrayList<Node> currentPath = new ArrayList<>();
-
-    public static void setOpenWindow(String windowName) {
-        openWindow = windowName;
+    /**
+     * getter for popPop Vbox
+     *
+     * @return
+     */
+    public VBox getPopPop() {
+        return popPop;
     }
 
+    /**
+     * run on startup
+     */
     public void initialize() {
+        SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
-        Bridge.getInstance().addCloseListener(this);
 
-        tonysPath.getElements().clear();
+        if (AuthenticationManager.getInstance().isAuthenticated()) {
+            displayAuthPages();
+        }
 
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+        tonysPath.getElements().clear(); // clear the path
+        LoadFXML.setCurrentWindow("");
+
+        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
-        });
-
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (currentPath.size() > 0) {
-                drawPath(currentPath);
-            }
-        });
-
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+            resizingInfo();
         });
 
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            if (currentPath.size() > 0) {
+                drawPath(currentPath);
+            }
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+            resizingInfo();
         });
+
     }
 
-    public void loadWindowPopPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowPopPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void loadWindowAdminPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowAdminPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void loadWindowRequestPop(String fileName, String windowName) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
-            openWindowRequestPop(windowName, root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void openWindowPopPop(String windowName, Parent root) {
-        popPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            popPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
-    public void openWindowAdminPop(String windowName, Parent root) {
-        adminPop.getChildren().clear();
-        if (!windowName.equals(openWindow)) {
-            adminPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
-    public void openWindowRequestPop(String windowName, Parent root) {
-        requestPop.getChildren().clear();
-        popPop.setPrefWidth(350.0);
-        if (!windowName.equals(openWindow)) {
-            requestPop.getChildren().add(root);
-            openWindow = windowName;
-            return;
-        }
-        openWindow = "";
-    }
-
+    /**
+     * toggles the navigation window
+     */
     public void toggleNav() {
+        System.out.println(LoadFXML.getCurrentWindow());
         tonysPath.getElements().clear();
         popPop.setPrefWidth(350.0);
         // load controller here
         Navigation navigation = new Navigation(this);
-
         navigation.loadNav();
+        listOfNodes = navigation.getListOfNodes();
+        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            resizingInfo();
+            topElements.getChildren().clear();
+            displayNodes();
+            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+        });
+        if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+            System.out.println("made it here");
+            topElements.getChildren().clear();
+            return;
+        }
+        displayNodes();
     }
 
+    /**
+     * toggle the requests window
+     */
     public void openRequests() {
         popPop.setPrefWidth(350.0);
-        loadWindowPopPop("Requests", "reqBar");
+        loadWindow("Requests", "reqBar", popPop);
     }
 
+
+    /**
+     * toggle the login window
+     */
     public void openLogin() {
         popPop.setPrefWidth(350.0);
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            loadWindowPopPop("Login", "loginBar");
+            loadWindow("Login", "loginBar", popPop);
         } else {
             AuthenticationManager.getInstance().signOut();
         }
     }
 
+    /**
+     * toggle the check in window
+     */
     public void openCheckIn() {
         popPop.setPrefWidth(657.0);
-        loadWindowPopPop("UserRegistration", "registrationButton");
+        loadWindow("UserRegistration", "registrationButton", popPop);
     }
 
-    public void exitApplication(ActionEvent actionEvent) {
+    /**
+     * exit the application
+     */
+    public void exitApplication() {
         Shutdown.getInstance().exit();
     }
 
+    /**
+     * for the scaling the displayed nodes on the map
+     *
+     * @param x the x coordinate of the anchor pane, top element
+     * @return the scaled x coordinate
+     */
+    public double xCoordOnTopElement(int x) {
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    /**
+     * for the scaling the displayed nodes on the map
+     *
+     * @param y the y coordinate of the anchor pane, top element
+     * @return the scaled y coordinate
+     */
+    public double yCoordOnTopElement(int y) {
+        double fileWidth = 5000.0;
+
+        double fileHeight = 3400.0;
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    /**
+     * stores needed resizing info for scaling the displayed nodes on the map as the window changes
+     */
+    public void resizingInfo() {
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        //System.out.println("mapWidth: " + mapWidth);
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        // System.out.println("mapHeight: " + mapHeight);
+        fileWidth = hospitalMap.getImage().getWidth();
+        //System.out.println("fileWidth: " + fileWidth);
+        fileHeight = hospitalMap.getImage().getHeight();
+        // System.out.println("fileHeight: " + fileHeight);
+        fileFxWidthRatio = mapWidth / fileWidth;
+        fileFxHeightRatio = mapHeight / fileHeight;
+    }
+
+    /**
+     * displays the nodes of the map
+     */
+    public void displayNodes() {
+
+        resizingInfo();
+
+        for (Node n : listOfNodes) {
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")))) {
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8);
+                circle.setFill(Color.OLIVE);
+                topElements.getChildren().add(circle);
+            }
+        }
+    }
+
+    /**
+     * for updating and displaying the map
+     *
+     * @param _listOfNodes a path of nodes
+     */
     public void drawPath(ArrayList<Node> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
             return;
@@ -196,28 +258,80 @@ public class DefaultPage implements AuthListener, CloseListener {
         });
     }
 
-    @Override
-    public void userLogin() {
-        loadWindowAdminPop("MapEditorButton", "mapButton");
-        loadWindowRequestPop("SubmittedRequestsButton", "reqButton");
+    private void displayAuthPages() {
+        loadWindow("MapEditorButton", "mapButton", adminPop);
+        loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
+        loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
     }
 
+    /**
+     * for displaying the new buttons after user logins
+     */
+    @Override
+    public void userLogin() {
+        displayAuthPages();
+    }
+
+    public void toggleMap() {
+        this.userLogin();
+    }
+
+    /**
+     * getting rid of the buttons after user sign outs
+     */
     @Override
     public void userLogout() {
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
+        registrationPop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
+        popPop.getChildren().clear();
     }
 
-    @Override
+    /**
+     * close the admin registration/request window
+     */
     public void closeButtonPressed() {
+        popPop.getChildren().clear();
+    }
+
+    /**
+     * toggle the map editor window
+     */
+    public void toggleMapEditor() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/MapEditorGraph.fxml"));
+            App.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * toggle the admin registration window
+     */
+    public void toggleRegistration() {
+        System.out.println("made it to the function the program is fucking stupid");
+        popPop.setPrefWidth(1000);
+        loadWindow("RegistrationAdminView", "registrationBar", popPop);
+    }
+
+    /**
+     * toggle the admin request window
+     */
+    public void toggleRequest() {
+        popPop.setPrefWidth(1000);
+        loadWindow("RequestAdminView", "requestBar", popPop);
+    }
+
+    public void closeWindows() {
         popPop.getChildren().clear();
     }
 }

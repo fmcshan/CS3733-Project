@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Authentication;
 
+import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Requests;
 import edu.wpi.teamname.simplify.Response;
 import org.json.JSONObject;
@@ -46,8 +47,12 @@ public class AuthenticationManager {
             );
 
             for (AuthListener ull : listeners) {
-                ull.userLogin();
+                try {
+                    ull.userLogin();
+                } catch (Exception e) {e.printStackTrace();}
             }
+
+            SocketManager.getInstance().startAuthDataSocket();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +64,7 @@ public class AuthenticationManager {
         for (AuthListener ull : listeners) {
             ull.userLogout();
         }
+        SocketManager.getInstance().stopAuthDataSocket();
     }
 
     public String userId() {

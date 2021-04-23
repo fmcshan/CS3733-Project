@@ -5,12 +5,10 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.GiftDeliveryStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
-import edu.wpi.teamname.bridge.Bridge;
-import edu.wpi.teamname.views.DefaultPage;
-import edu.wpi.teamname.views.Requests;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +23,7 @@ import java.util.List;
 /**
  * <h1>Gift Delivery Request Controller</h1>
  * Controller for the Gift Delivery Request Page
- * @author Emmanuel Ola
+ * @author Emmanuel Ola, Frank McShan
  */
 public class GiftDelivery {
 
@@ -84,6 +82,12 @@ public class GiftDelivery {
     private Label failedPhoneNumber;
 
     /**
+     * Label indicating the person to fulfill the request has been filled in incorrectly
+     */
+    @FXML
+    private Label failedPerson;
+
+    /**
      * Text Field to enter phone number
      */
     @FXML
@@ -102,10 +106,16 @@ public class GiftDelivery {
     private JFXComboBox<String> requestLocation;
 
     /**
+     * Combo Box selecting what person the delivery is assigned to
+     */
+    @FXML
+    private JFXComboBox<String> assignTo;
+
+    /**
      * Success pop up page
      */
     @FXML
-    private VBox successPop;
+    private VBox giftPop;
 
     /**
      * Instance of Requests class used to create a popup window
@@ -127,7 +137,7 @@ public class GiftDelivery {
     }
 
     public void initialize() {
-        for (Node node : PathFindingDatabaseManager.getInstance().getNodes()) {
+        for (Node node : LocalStorage.getInstance().getNodes()) {
             requestLocation.getItems().add(node.getNodeID());
         }
     }
@@ -137,8 +147,8 @@ public class GiftDelivery {
      *
      * @return Success pop up page
      */
-    public VBox getSuccessPop() {
-        return successPop;
+    public VBox getGiftPop() {
+        return giftPop;
     }
 
     /**
@@ -183,7 +193,7 @@ public class GiftDelivery {
      * @return true if a location has been selected, and false otherwise
      */
     public boolean locationValid() {
-        return !requestLocation.getValue().isEmpty();
+        return requestLocation.getValue() != null;
     }
 
     public void addRequest(ServiceRequest request) {
@@ -200,15 +210,14 @@ public class GiftDelivery {
      *
      * @param event event triggering submission
      */
-    @FXML
-    void submitRequest(ActionEvent event) {
+    public void submitRequest(ActionEvent event) {
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
         }
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry. Make sure to input first and last name.");
+            failedName.setText("Invalid Name Entry.");
         else
             failedName.setText("");
 
@@ -223,7 +232,7 @@ public class GiftDelivery {
             failedGiftSelection.setText("");
 
         if (!phoneNumberValid())
-            failedPhoneNumber.setText("Please enter your phone number in the \"XXX-XXX-XXXX\" format ");
+            failedPhoneNumber.setText("Invalid Phone Number");
         else
             failedPhoneNumber.setText("");
 
@@ -233,7 +242,6 @@ public class GiftDelivery {
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
         }
-
 
         if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid()) {
             //Adds all the selected gifts to an arraylist
@@ -247,16 +255,17 @@ public class GiftDelivery {
             if (otherCheckbox.isSelected())
                 giftSelected.add(otherInput.getText());
 
-            DefaultPage.setOpenWindow("");
+            LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "");
-            //Submit.getInstance().UserRegistration(request);
+            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            Submit.getInstance().submitGiftDelivery(request);
 
-            //Close the window after submitting the request
-            //request.getRequestPop().getChildren().clear(); //Clear the request pop VBox
-            //Bridge.getInstance().close(); //close the window
+            // load Success page in successPop VBox
+            giftPop.setPrefWidth(657.0);
+            Success success = new Success(this);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", giftPop);
         }
     }
 
@@ -264,7 +273,7 @@ public class GiftDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/GiftDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/GiftDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == GiftDelivery.class)

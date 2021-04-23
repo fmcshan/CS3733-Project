@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller for Requests.fxml
+ */
 public class Requests {
     @FXML
     private ComboBox<String> requestsBox;

@@ -29,8 +29,11 @@ public class Navigation {
     private DefaultPage defaultPage; // DefaultPage.fxml controller
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
-    HashMap<String, Node> nodesMap = new HashMap<>(); //
-    String openWindow = "";
+    HashMap<String, Node> nodesMap = new HashMap<>();
+
+    public ArrayList<Node> getListOfNodes(){
+        return listOfNodes;
+    }
 
     /**
      *  constructor for Navigation
@@ -83,13 +86,15 @@ public class Navigation {
 //        fromCombo.setButtonCell(cellFactory.call(null));
 //        fromCombo.setCellFactory(cellFactory);
 
-        listOfNodes = PathFindingDatabaseManager.getInstance().getNodes(); // get nodes from database
+        listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
 //        listOfNodes = LocalStorage.getInstance().getNodes();
 
         listOfNodes.forEach(n -> {
-            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            toCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox
-            fromCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox 2 electric bugaloo
+            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+                toCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox
+                fromCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox 2 electric bugaloo
+            }
         });
     }
 
@@ -113,7 +118,7 @@ public class Navigation {
                 }
             });
             Parent root = loader.load();
-            defaultPage.openWindowPopPop("navBar", root); // open/close navigation bar
+            defaultPage.openWindow("navBar", root, defaultPage.getPopPop()); // open/close navigation bar
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -121,9 +126,8 @@ public class Navigation {
 
     /**
      * When both comboboxes are filled calculate a path using AStar
-     * @param actionEvent
      */
-    public void calcPath(ActionEvent actionEvent) {
+    public void calcPath() {
         if (fromCombo.getValue() == null || !nodesMap.containsKey(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
@@ -132,6 +136,10 @@ public class Navigation {
         }
         Node startNode = nodesMap.get(fromCombo.getValue()); // get starting location
         Node endNode = nodesMap.get(toCombo.getValue()); // get ending location
+        System.out.println(startNode.getNodeID());
+        System.out.println(endNode.getNodeID());
+        System.out.println(listOfNodes);
+        System.out.println(listOfNodes.get(0).getEdges());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
         defaultPage.drawPath(path); // draw the path on the map

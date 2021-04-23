@@ -53,7 +53,7 @@
                         <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="30.0" />
+                        <Insets left="25.0" top="100.0" />
                      </VBox.margin>
                   </JFXButton>
                </children>

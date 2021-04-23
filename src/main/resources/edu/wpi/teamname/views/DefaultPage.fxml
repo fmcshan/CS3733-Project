@@ -22,9 +22,10 @@
          <children>
             <ImageView fx:id="hospitalMap" fitHeight="970.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/brighamandwomens.png" />
+                  <Image url="@../images/01_thefirstfloor.png" />
                </image>
             </ImageView>
+            <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </StackPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -76,19 +77,19 @@
                         <Font size="24.0" />
                      </font>
                      <padding>
-                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                        <Insets bottom="8.0" left="31.0" top="8.0" />
                      </padding>
                      <graphic>
                         <VBox alignment="CENTER">
                            <children>
                               <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
                                  <VBox.margin>
-                                    <Insets left="3.0" />
+                                    <Insets left="12.0" />
                                  </VBox.margin>
                               </MaterialDesignIconView>
                            </children>
                            <padding>
-                              <Insets right="10.0" />
+                              <Insets right="6.0" />
                            </padding>
                         </VBox>
                      </graphic>
@@ -121,11 +122,15 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin></VBox>
-                  <VBox fx:id="requestPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                  <VBox fx:id="registrationPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
                   </VBox>
+                  <VBox fx:id="requestPop" layoutX="35.0" layoutY="298.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
                </children>
             </VBox>
          </children></VBox>

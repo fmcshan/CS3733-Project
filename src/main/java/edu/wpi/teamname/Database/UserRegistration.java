@@ -22,6 +22,15 @@ public class UserRegistration {
         this.submittedAt = Instant.EPOCH.getEpochSecond();
     }
 
+    public UserRegistration(String name, String date, ArrayList<String> reasonsForVisit, String phoneNumber, Boolean acknowledged, double acknowledgedAt) {
+        this.name = name;
+        this.date = date;
+        this.reasonsForVisit = reasonsForVisit;
+        this.phoneNumber = phoneNumber;
+        this.acknowledged = acknowledged;
+        this.acknowledgedAt = acknowledgedAt;
+    }
+
     public String getName() {
         return name;
     }
@@ -44,5 +53,9 @@ public class UserRegistration {
 
     public double getAcknowledgedAt() {
         return acknowledgedAt;
+    }
+
+    public double getSubmittedAt() {
+        return submittedAt;
     }
 }
