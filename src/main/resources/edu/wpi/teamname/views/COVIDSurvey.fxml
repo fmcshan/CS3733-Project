@@ -151,20 +151,12 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Label fx:id="failedReason" textFill="RED">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="25.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
                   <Label text="Please check all that apply:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" />
+                        <Insets left="25.0" top="28.0" />
                      </VBox.margin>
                   </Label>
                   <JFXCheckBox fx:id="symptom1Checkbox" checkedColor="#0067b1" style="-fx-focus-traversable: false;" text="I have had a symptomatic COVID-19 test in the last 14 days." textFill="#868686">
