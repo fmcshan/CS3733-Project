@@ -8,19 +8,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GiftDelivery">
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.FacilitiesMaintenanceRequest">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Sanitation Request">
+            <Label text="Facilities Maintenance">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -28,7 +28,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to sanitize a location." textAlignment="CENTER" wrappingWidth="391.2413330078125">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to submit a maintenance request" textAlignment="CENTER" wrappingWidth="421.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -62,6 +62,22 @@
                         <Font size="18.0" />
                      </font>
                   </JFXTextField>
+                  <Label text="Subject of the maintenance" textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXTextField fx:id="nameInput1" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Subject" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" />
+                     </VBox.margin>
+                  </JFXTextField>
                   <Label fx:id="failedGiftSelection" textFill="RED">
                      <font>
                         <Font size="14.0" />
@@ -70,7 +86,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select the urgency of this sanitation request." textFill="#868686">
+                  <Label text="Level of urgency:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -78,7 +94,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXCheckBox fx:id="HighUrgency" checkedColor="#0067b1" text="High" textFill="#868686">
+                  <JFXCheckBox fx:id="teddyBearBox" checkedColor="#0067b1" text="Low" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
@@ -86,7 +102,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="meduimUrgency" checkedColor="#0067b1" text="Medium" textFill="#868686">
+                  <JFXCheckBox fx:id="chocolateBox" checkedColor="#0067b1" text="Medium" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />
                      </VBox.margin>
@@ -94,7 +110,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="lowUrgency" checkedColor="#0067b1" text="Low" textFill="#868686">
+                  <JFXCheckBox fx:id="giftBasketBox" checkedColor="#0067b1" text="High" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />
                      </VBox.margin>
@@ -102,20 +118,15 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <HBox alignment="CENTER_LEFT" prefWidth="657.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
                   <Label fx:id="failedPhoneNumber" textFill="RED">
                      <font>
                         <Font size="14.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="10.0" />
+                        <Insets left="25.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the cause of this request." textFill="#868686">
+                  <Label text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -123,7 +134,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Cause" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Phone Number" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
@@ -139,7 +150,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the location you are requesting to sanitize." textFill="#868686">
+                  <Label text="Please enter the location for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -166,11 +177,11 @@
                   </VBox>
                </children>
                <VBox.margin>
-                  <Insets top="25.0" />
+                  <Insets />
                </VBox.margin>
             </VBox>
          </children>
       </VBox>
-      <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <VBox fx:id="successPop" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>
