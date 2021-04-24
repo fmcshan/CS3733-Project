@@ -42,6 +42,7 @@ public class COVIDSurvey {
     }
 
     public void openCloseContact(ActionEvent actionEvent) {
-       //LoadFXML.getInstance().loadWindow("CloseContact", "closeContact", symptomsPop);
+        CloseContact closeContact = new CloseContact(this);
+        closeContact.loadCloseContact();
     }
 }
