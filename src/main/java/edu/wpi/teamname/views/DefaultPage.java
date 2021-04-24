@@ -11,7 +11,6 @@ import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -84,10 +83,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if(languageBox.getValue().equals("English")){
             Translator.getInstance().setCurrentLanguage("language_english");
             languageHelper2();
-
         }
 
 
+        if(languageBox.getValue().equals("Chinese - Simplified")){
+            Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
+            languageHelper2();
+        }
     }
 
     public void setLanguages(){ //call this in intialize, sets the values in language hashmap and words hashmap
