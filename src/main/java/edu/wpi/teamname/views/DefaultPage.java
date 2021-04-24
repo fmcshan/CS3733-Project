@@ -11,6 +11,7 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -163,6 +164,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdminView", "requestBar", popPop);
+    }
+
+    @FXML
+    private void openHelp() {
+//        if (LoadFXML.getCurrentWindow().equals("navBar")) {
+//
+//        }
     }
 
     public void closeWindows() {
