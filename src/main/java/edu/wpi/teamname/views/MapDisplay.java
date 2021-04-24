@@ -23,10 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineBuilder;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
 import javax.swing.*;
@@ -34,12 +31,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class MapDisplay {
+public class MapDisplay {
 
-    static double scaledWidth = 5000;
-    static double scaledHeight = 3400.0;
-    static double scaledX = 0;
-    static double scaledY = 0;
+    double scaledWidth = 5000;
+    double scaledHeight = 3400.0;
+    double scaledX = 0;
+
+    public void setScaledX(double scaledX) {
+        this.scaledX = scaledX;
+    }
+
+    public void setScaledY(double scaledY) {
+        this.scaledY = scaledY;
+    }
+    ArrayList<Node> currentPath = new ArrayList<>();
+
+    double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
     double fileWidth; //= 5000.0;
@@ -123,6 +130,13 @@ public abstract class MapDisplay {
     @FXML
     private VBox rightClick;
 
+    ZoomAndPan zooM;
+
+    public MapDisplay(){
+        zooM = new ZoomAndPan(this);
+
+    }
+
     /**
      * getter for popPop Vbox
      *
@@ -132,7 +146,9 @@ public abstract class MapDisplay {
         return popPop;
     }
 
-    public abstract void initialize();
+    //public abstract void initialize();
+
+
 
     /**
      * Display localNodes on the map
@@ -143,7 +159,7 @@ public abstract class MapDisplay {
         resizingInfo(); // Set resizing info
 
         localNodes.forEach(n -> { // For each node in localNodes
-            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8); // New node/cicle
+            Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
             circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
             This allows us to have an invisible border
@@ -176,7 +192,7 @@ public abstract class MapDisplay {
         localEdges.forEach(e -> { // For edge in localEdges
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
                 // Create edge
-                LineBuilder<?> edgeLocation = LineBuilder.create().startX(nodesMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodesMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodesMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodesMap.get(e.getEndNode()).getY() * fileFxHeightRatio);
+                LineBuilder<?> edgeLocation = LineBuilder.create().startX(xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX())).startY(yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY())).endX(xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX())).endY(yCoordOnTopElement(nodesMap.get(e.getEndNode()).getY()));
                 Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
                 renderedEdgeMap.put(edge, e);
                 onTopOfTopElements.getChildren().add(edge); // Render edge
@@ -202,7 +218,7 @@ public abstract class MapDisplay {
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
 
-        onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
+     //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
         addNodeField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add node popup on "Esc" key
@@ -262,6 +278,7 @@ public abstract class MapDisplay {
                 }
             }
         });
+        zooM.zoomAndPan();
     }
 
     /**
@@ -366,7 +383,7 @@ public abstract class MapDisplay {
     /**
      * Refresh/display map
      */
-    private void renderMap() {
+    public void renderMap() {
         clearMap(); // Clear map
         displayEdges(.6); // Display edges at 0.6 opacity
         displayNodes(.8); // Display nodes at 0.8 opacity
@@ -380,7 +397,7 @@ public abstract class MapDisplay {
      *
      * @param t Mouse Event
      */
-    private void processClick(MouseEvent t) {
+    public void processClick(MouseEvent t) {
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
             return;
@@ -725,7 +742,26 @@ public abstract class MapDisplay {
      *
      * @param _listOfNodes Arraylist of nodes to render
      */
-    public abstract void drawPath(ArrayList<Node> _listOfNodes);
+    public void drawPath(ArrayList<Node> _listOfNodes) {
+        if (_listOfNodes.size() < 1) {
+            return;
+        }
+        currentPath = _listOfNodes;
+        tonysPath.getElements().clear();
+        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
+        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
+        double fileWidth = hospitalMap.getImage().getWidth();
+        double fileHeight = hospitalMap.getImage().getHeight();
+        double fileFxWidthRatio = mapWidth / fileWidth;
+        double fileFxHeightRatio = mapHeight / fileHeight;
+        Node firstNode = _listOfNodes.get(0);
+        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()) , yCoordOnTopElement(firstNode.getY()));
+        tonysPath.getElements().add(start);
+        System.out.println(fileFxWidthRatio);
+        _listOfNodes.forEach(n -> {
+            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()) , yCoordOnTopElement(n.getY())));
+        });
+    }
 
     /**
      * toggles the navigation window
@@ -737,12 +773,13 @@ public abstract class MapDisplay {
         Navigation navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // Add resize listener
-            resizingInfo(); // Set resize listener
-            onTopOfTopElements.getChildren().clear(); // Clear children
-            displayNodes(1); // Display nodes at 1 (100%) opacity
-            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty()); // Bind map width to pane width
-        });
+//        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // Add resize listener
+//            resizingInfo(); // Set resize listener
+//            onTopOfTopElements.getChildren().clear(); // Clear children
+//            displayNodes(1); // Display nodes at 1 (100%) opacity
+//            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+//            zooM.zoomAndPan();// Bind map width to pane width
+//        });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             return;
