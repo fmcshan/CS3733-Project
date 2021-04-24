@@ -33,8 +33,8 @@ import java.util.HashMap;
  */
 public class DefaultPage extends MapDisplay implements AuthListener {
 
-    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
-    //ZoomAndPan zoooooooM;
+    // used to save the current list of nodes after AStar
+
 
     /**
      * run on startup
@@ -51,40 +51,24 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         tonysPath.getElements().clear(); // clear the path
         LoadFXML.setCurrentWindow(""); // set the open window to nothing
 
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
-            if (currentPath.size() > 0) {
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
-            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
             topElements.getChildren().clear();
             resizingInfo();
             zooM.zoomAndPan();
         });
 
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
-            if (currentPath.size() > 0) {
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
-            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
+
             topElements.getChildren().clear();
             resizingInfo();
             zooM.zoomAndPan();
         });
-
-        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
-        System.out.println("mapWidth: " + mapWidth);
-
-        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
-        System.out.println("mapHeight: " + mapHeight);
 
         refreshData();
         zooM.zoomAndPan();
@@ -94,31 +78,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
     }
 
-    /**
-     * for updating and displaying the map
-     *
-     * @param _listOfNodes a path of nodes
-     */
-    public void drawPath(ArrayList<Node> _listOfNodes) {
-        if (_listOfNodes.size() < 1) {
-            return;
-        }
-        currentPath = _listOfNodes;
-        tonysPath.getElements().clear();
-        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        double fileWidth = hospitalMap.getImage().getWidth();
-        double fileHeight = hospitalMap.getImage().getHeight();
-        double fileFxWidthRatio = mapWidth / fileWidth;
-        double fileFxHeightRatio = mapHeight / fileHeight;
-        Node firstNode = _listOfNodes.get(0);
-        MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
-        tonysPath.getElements().add(start);
-        System.out.println(fileFxWidthRatio);
-        _listOfNodes.forEach(n -> {
-            tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
-        });
-    }
+
+
 
     private void displayAuthPages() {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
@@ -168,7 +129,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         }
 
         initMapEditor();
-        zooM.zoomAndPan();
+
         LoadFXML.setCurrentWindow("mapEditorBar");
     }
 

@@ -24,7 +24,7 @@
    <children>
       <StackPane fx:id="stackPane" alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #d6d8d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="hospitalMap" fitHeight="970.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="hospitalMap" fitHeight="970.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                <image>
                   <Image url="@../images/01_thefirstfloor.png" />
                </image>
@@ -60,7 +60,8 @@
                         <FontAwesomeIconView glyphName="QUESTION" size="36" />
                      </graphic>
                   </JFXButton>
-               </children></AnchorPane>
+               </children>
+            </AnchorPane>
             <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 2px;" styleClass="drop" visible="false">
                <children>
                   <Label text="Add Node">

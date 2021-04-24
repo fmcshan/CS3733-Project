@@ -14,26 +14,26 @@ import java.util.ArrayList;
 public class ZoomAndPan {
     MapDisplay page;
     ArrayList<Node> _listOfNodes;
+    double windowWidth;
+    double windowHeight;
+    double windowSmallestScale;
 
-    public ZoomAndPan(MapDisplay page){
+    public ZoomAndPan(MapDisplay page) {
         this.page = page;
-        //scaledX = page.scaledY;
-        //scaledY = page.scaledY;
         _listOfNodes = page.listOfNodes;
     }
 
     public void zoomAndPan() {
-        //ImageView hospitalMap = page.hospitalMap;
-        //double width = page.mapWidth;
-        //double height = page.mapHeight;
-        //AnchorPane inputTopElements = page.onTopOfTopElements;
 
-        // hMap = hospitalMap;
-        //get the height associated with the height
+        windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
+        windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
+        windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+
+        page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
+        page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+        page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(page.hospitalMap, page.mapWidth, page.mapHeight);
-        double fileWidth = page.hospitalMap.getImage().getWidth();
-        double fileHeight = page.hospitalMap.getImage().getHeight();
 
         SimpleObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
@@ -48,73 +48,19 @@ public class ZoomAndPan {
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
             mouseClickDown.set(viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
-
-//        page.onTopOfTopElements.setOnScroll(mouseEvent -> {
-//            double getDifference = -mouseEvent.getDeltaY();
-//            System.out.println("getDifference: " + getDifference);
-//            Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
-//
-//            double scaleDifference = Math.pow(1.01, getDifference);
-//            System.out.println("scaleDifference: " + scaleDifference);
-//            double minPixels = 10;
-//
-//
-//            double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
-//            double lowestBoundaryHeight = minPixels / viewportOfImage.getHeight();
-//            double minimumZoomScale = Math.min(lowestBoundaryWidth, lowestBoundaryHeight);
-//
-//            double highestBoundaryWidth = page.mapWidth / viewportOfImage.getWidth();
-//            double highestBoundaryHeight = page.mapHeight / viewportOfImage.getHeight();
-//            double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
-//
-//            double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-//            System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
-//
-//            Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-//
-//            page.scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
-//            page.scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
-//
-//            double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
-//            double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
-//
-//            double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
-//            double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
-//
-//            double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
-//            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
-//            page.scaledX = scaledMinWidth;
-//            page.scaledY = scaledMinHeight;
-//            Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
-//          //  Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, page.scaledWidth, page.scaledHeight);
-////            System.out.println("scaledMinWidth: " + scaledMinWidth); //610
-////            System.out.println("scaledMinHeight: " + scaledMinHeight); //
-////            System.out.println("page.scaledWidth: " + page.scaledWidth);
-////            System.out.println("page.scaledHeight " + page.scaledHeight);
-//
-//
-////            double widthRatio = width / fileWidth;
-////            double heightRatio = height / fileHeight;
-//
-//            page.hospitalMap.setViewport(newViewPort);
-//
-//            page.clearMap();
-//            System.out.println("scroll listener");
-//            page.displayNodes(.8);
-////            page.drawPath(_listOfNodes);
-//        });
-
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
+            windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
+            windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
+            windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+
+            page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
+            page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+            page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
             double getDifference = -mouseEvent.getDeltaY();
             Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);
             double minPixels = 10;
-            //viewportOfImageWidth = viewportOfImage.getWidth();
-            //viewportOfImageHeight = viewportOfImage.getHeight();
-//            System.out.println("viewportOfImageWidth: " + viewportOfImageWidth);
-//            System.out.println("viewportOfImageHeight: " + viewportOfImageHeight);
-
 
             double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
             double lowestBoundaryHeight = minPixels / viewportOfImage.getHeight();
@@ -125,6 +71,10 @@ public class ZoomAndPan {
             double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
+            System.out.println("boundaries of viewPort: "+ boundariesOfViewPort);
+            System.out.println("scaleDiff: "+ scaleDifference);
+            System.out.println(" minimuZoomScale: "+ minimumZoomScale);
+            System.out.println("maximumZoomScale: "+  maximumZoomScale);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
 
@@ -136,27 +86,25 @@ public class ZoomAndPan {
 
             double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
             double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
+            System.out.println();
 
             double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
             double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
-            System.out.println( scaledMinWidth);
+            System.out.println(scaledMinWidth);
             System.out.println(scaledMinHeight);
-            page.setScaledX( scaledMinWidth);
-           page.setScaledY(scaledMinHeight);
-
-//
+            page.setScaledX(scaledMinWidth);
+            page.setScaledY(scaledMinHeight);
             Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
-//            System.out.println("scaledX: " + scaledX);
-//            System.out.println("scaledY: " + scaledY);
-//            System.out.println("scaledWidth: " + scaledWidth);
-//            System.out.println("scaledHeight: " + scaledHeight);
-
-//            double widthRatio = width / fileWidth;
-//            double heightRatio = height / fileHeight;
-           page.clearMap();
+            if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                page.renderMap();}
+            if (LoadFXML.getCurrentWindow().equals("navBar")){
+                page.clearMap();
+                page.drawPath(page.currentPath);
+                page.displayNodes(0.8);
+            }
             page.hospitalMap.setViewport(newViewPort);
-           // page.onTopOfTopElements.getChildren().clear();
-//
+
+
         });
 
 
@@ -164,6 +112,7 @@ public class ZoomAndPan {
             if (mouseEvent.getClickCount() == 2) {
                 reset(page.hospitalMap, page.mapWidth, page.mapHeight);
             }
+            page.processClick(mouseEvent);
         });
     }
 
@@ -210,10 +159,14 @@ public class ZoomAndPan {
 
         page.scaledWidth = theViewPort.getWidth();
         page.scaledHeight = theViewPort.getHeight();
-
-        page.clearMap();
+        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+        page.renderMap();}
+        if (LoadFXML.getCurrentWindow().equals("navBar")){
+            page.clearMap();
+            page.drawPath(page.currentPath);
+            page.displayNodes(0.8);
+        }
         System.out.println("pan listener");
-        page.displayNodes(.8);
 //        page.drawPath(_listOfNodes);
     }
 }
