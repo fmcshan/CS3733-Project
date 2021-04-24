@@ -76,34 +76,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
 
     public void languageSwitch() { //picks a language and checks current language
-        if(languageBox.getValue().equals("Spanish")){
-            Translator.getInstance().setCurrentLanguage("language_spanish");
-            languageHelper2();
-        }
         if(languageBox.getValue().equals("English")){
             Translator.getInstance().setCurrentLanguage("language_english");
             languageHelper2();
         }
-
-
+        if(languageBox.getValue().equals("Spanish")){
+            Translator.getInstance().setCurrentLanguage("language_spanish");
+            languageHelper2();
+        }
         if(languageBox.getValue().equals("Chinese - Simplified")){
             Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
             languageHelper2();
         }
     }
-
-    public void setLanguages(){ //call this in intialize, sets the values in language hashmap and words hashmap
-        Translator.getInstance().languageHashmap.put("language_english", Translator.getInstance().language_english); //add english hashmap
-        Translator.getInstance().language_english.put("Navigation", "Navigation");
-        Translator.getInstance().language_english.put("CheckIn", "Check-In");
-        Translator.getInstance().language_english.put("Requests", "Requests");
-        Translator.getInstance().languageHashmap.put("language_spanish", Translator.getInstance().language_spanish); //add spanish hashmap
-        Translator.getInstance().language_spanish.put("Navigation", "Navegacion");
-        Translator.getInstance().language_spanish.put("CheckIn", "Registrarse");
-        Translator.getInstance().language_spanish.put("Requests", "Peticiones");
-
-    }
-
 
     /**
      * getter for popPop Vbox
@@ -118,7 +103,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        setLanguages();
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         AuthenticationManager.getInstance().addListener(this);
