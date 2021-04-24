@@ -72,6 +72,10 @@ public class ZoomAndPan {
             double highestBoundaryHeight = page.mapHeight / viewportOfImage.getHeight();
             double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
 
+            if (maximumZoomScale > 15 && getDifference < 0) {
+                return;
+            }
+
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
             System.out.println("boundaries of viewPort: "+ boundariesOfViewPort);
             System.out.println("scaleDiff: "+ scaleDifference);
