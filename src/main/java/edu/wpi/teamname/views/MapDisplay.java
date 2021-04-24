@@ -77,7 +77,7 @@ public class MapDisplay {
     Edge selectedEdge;
 
     @FXML
-    VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    VBox popPop, popPop2, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML
@@ -981,10 +981,5 @@ public class MapDisplay {
         // Save the CSV file from LocalStorage
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
         hideRightClickMenu(); // Hide the right click popup
-    }
-
-    @FXML
-    private void openHelp(ActionEvent e) {
-        System.out.println("HALP");
     }
 }
