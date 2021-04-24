@@ -18,6 +18,7 @@ public class MapEditorButton implements LanguageListener {
 
     public void initialize(){
         Translator.getInstance().addLanguageListener(this);
+        setLanguages();
     }
 
     private void setLanguages(){
