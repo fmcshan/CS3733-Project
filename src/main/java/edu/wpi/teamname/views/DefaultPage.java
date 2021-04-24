@@ -34,6 +34,7 @@ import java.util.HashMap;
 public class DefaultPage extends MapDisplay implements AuthListener {
 
     ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
+    //ZoomAndPan zoooooooM;
 
     /**
      * run on startup
@@ -50,12 +51,22 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         tonysPath.getElements().clear(); // clear the path
         LoadFXML.setCurrentWindow(""); // set the open window to nothing
 
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+
         stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0) {
                 drawPath(currentPath);
             }
             hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+            mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+            topElements.getChildren().clear();
             resizingInfo();
+            zooM.zoomAndPan();
         });
 
         stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
@@ -63,10 +74,20 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 drawPath(currentPath);
             }
             hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+            mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
+            topElements.getChildren().clear();
             resizingInfo();
+            zooM.zoomAndPan();
         });
 
+        mapWidth = hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+        System.out.println("mapWidth: " + mapWidth);
+
+        mapHeight = hospitalMap.boundsInParentProperty().get().getHeight()/ windowSmallestScale;
+        System.out.println("mapHeight: " + mapHeight);
+
         refreshData();
+        zooM.zoomAndPan();
     }
 
     public boolean nodeWithinSpec(Node n) {
@@ -138,12 +159,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleMapEditor() {
         clearMap();
         popPop.getChildren().clear();
+        zooM.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
+            zooM.zoomAndPan();
             return;
         }
+
         initMapEditor();
+        zooM.zoomAndPan();
         LoadFXML.setCurrentWindow("mapEditorBar");
     }
 

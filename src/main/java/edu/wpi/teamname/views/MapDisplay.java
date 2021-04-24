@@ -34,12 +34,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class MapDisplay {
+public class MapDisplay {
 
-    static double scaledWidth = 5000;
-    static double scaledHeight = 3400.0;
-    static double scaledX = 0;
-    static double scaledY = 0;
+    double scaledWidth = 5000;
+    double scaledHeight = 3400.0;
+    double scaledX = 0;
+    double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
     double fileWidth; //= 5000.0;
@@ -123,6 +123,13 @@ public abstract class MapDisplay {
     @FXML
     private VBox rightClick;
 
+    ZoomAndPan zooM;
+
+    public MapDisplay(){
+        zooM = new ZoomAndPan(this);
+
+    }
+
     /**
      * getter for popPop Vbox
      *
@@ -132,7 +139,9 @@ public abstract class MapDisplay {
         return popPop;
     }
 
-    public abstract void initialize();
+    //public abstract void initialize();
+
+
 
     /**
      * Display localNodes on the map
@@ -143,7 +152,7 @@ public abstract class MapDisplay {
         resizingInfo(); // Set resizing info
 
         localNodes.forEach(n -> { // For each node in localNodes
-            Circle circle = new Circle(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio, 8); // New node/cicle
+            Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
             circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
             This allows us to have an invisible border
@@ -725,7 +734,7 @@ public abstract class MapDisplay {
      *
      * @param _listOfNodes Arraylist of nodes to render
      */
-    public abstract void drawPath(ArrayList<Node> _listOfNodes);
+    //public abstract void drawPath(ArrayList<Node> _listOfNodes);
 
     /**
      * toggles the navigation window
