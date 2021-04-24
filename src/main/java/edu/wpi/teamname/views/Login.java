@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ import org.apache.commons.validator.EmailValidator;
  * Controller for Login.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Login {
+public class Login implements LanguageListener {
 
 
     @FXML
@@ -71,5 +72,10 @@ public class Login {
             return;
         }
         SceneManager.getInstance().getDefaultPage().closeWindows();
+    }
+
+    @Override
+    public void updateLanguage() {
+
     }
 }

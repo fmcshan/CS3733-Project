@@ -17,7 +17,6 @@ public class MapEditorButton implements LanguageListener {
     private JFXButton MapEditor;
 
     public void initialize(){
-
         Translator.getInstance().addLanguageListener(this);
     }
 
