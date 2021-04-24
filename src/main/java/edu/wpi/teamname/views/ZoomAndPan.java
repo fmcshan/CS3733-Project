@@ -13,10 +13,6 @@ import java.util.ArrayList;
 
 public class ZoomAndPan {
     MapDisplay page;
-    double scaledWidth = 5000;
-    double scaledHeight = 3400.0;
-    double scaledX;
-    double scaledY;
     ArrayList<Node> _listOfNodes;
 
     public ZoomAndPan(MapDisplay page){
@@ -53,14 +49,71 @@ public class ZoomAndPan {
             mouseClickDown.set(viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
 
+//        page.onTopOfTopElements.setOnScroll(mouseEvent -> {
+//            double getDifference = -mouseEvent.getDeltaY();
+//            System.out.println("getDifference: " + getDifference);
+//            Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
+//
+//            double scaleDifference = Math.pow(1.01, getDifference);
+//            System.out.println("scaleDifference: " + scaleDifference);
+//            double minPixels = 10;
+//
+//
+//            double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
+//            double lowestBoundaryHeight = minPixels / viewportOfImage.getHeight();
+//            double minimumZoomScale = Math.min(lowestBoundaryWidth, lowestBoundaryHeight);
+//
+//            double highestBoundaryWidth = page.mapWidth / viewportOfImage.getWidth();
+//            double highestBoundaryHeight = page.mapHeight / viewportOfImage.getHeight();
+//            double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
+//
+//            double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
+//            System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
+//
+//            Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+//
+//            page.scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
+//            page.scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
+//
+//            double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
+//            double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
+//
+//            double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
+//            double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
+//
+//            double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
+//            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
+//            page.scaledX = scaledMinWidth;
+//            page.scaledY = scaledMinHeight;
+//            Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
+//          //  Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, page.scaledWidth, page.scaledHeight);
+////            System.out.println("scaledMinWidth: " + scaledMinWidth); //610
+////            System.out.println("scaledMinHeight: " + scaledMinHeight); //
+////            System.out.println("page.scaledWidth: " + page.scaledWidth);
+////            System.out.println("page.scaledHeight " + page.scaledHeight);
+//
+//
+////            double widthRatio = width / fileWidth;
+////            double heightRatio = height / fileHeight;
+//
+//            page.hospitalMap.setViewport(newViewPort);
+//
+//            page.clearMap();
+//            System.out.println("scroll listener");
+//            page.displayNodes(.8);
+////            page.drawPath(_listOfNodes);
+//        });
+
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
             double getDifference = -mouseEvent.getDeltaY();
-            System.out.println("getDifference: " + getDifference);
             Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);
-            System.out.println("scaleDifference: " + scaleDifference);
             double minPixels = 10;
+            //viewportOfImageWidth = viewportOfImage.getWidth();
+            //viewportOfImageHeight = viewportOfImage.getHeight();
+//            System.out.println("viewportOfImageWidth: " + viewportOfImageWidth);
+//            System.out.println("viewportOfImageHeight: " + viewportOfImageHeight);
 
 
             double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
@@ -72,7 +125,6 @@ public class ZoomAndPan {
             double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-            System.out.println("boundariesOfViewPort: " + boundariesOfViewPort);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
 
@@ -87,20 +139,24 @@ public class ZoomAndPan {
 
             double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
             double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
-            page.scaledX = scaledMinWidth;
-            page.scaledY = scaledMinHeight;
+            System.out.println( scaledMinWidth);
+            System.out.println(scaledMinHeight);
+            page.setScaledX( scaledMinWidth);
+           page.setScaledY(scaledMinHeight);
 
-            Rectangle2D newViewPort = new Rectangle2D(scaledMinWidth, scaledMinHeight, page.scaledWidth, page.scaledHeight);
+//
+            Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
+//            System.out.println("scaledX: " + scaledX);
+//            System.out.println("scaledY: " + scaledY);
+//            System.out.println("scaledWidth: " + scaledWidth);
+//            System.out.println("scaledHeight: " + scaledHeight);
 
 //            double widthRatio = width / fileWidth;
 //            double heightRatio = height / fileHeight;
-
+           page.clearMap();
             page.hospitalMap.setViewport(newViewPort);
-
-            page.clearMap();
-            System.out.println("scroll listener");
-            page.displayNodes(.8);
-//            page.drawPath(_listOfNodes);
+           // page.onTopOfTopElements.getChildren().clear();
+//
         });
 
 

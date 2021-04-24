@@ -39,6 +39,15 @@ public class MapDisplay {
     double scaledWidth = 5000;
     double scaledHeight = 3400.0;
     double scaledX = 0;
+
+    public void setScaledX(double scaledX) {
+        this.scaledX = scaledX;
+    }
+
+    public void setScaledY(double scaledY) {
+        this.scaledY = scaledY;
+    }
+
     double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
