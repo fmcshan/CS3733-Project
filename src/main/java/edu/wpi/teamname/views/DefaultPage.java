@@ -11,6 +11,7 @@ import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -85,6 +86,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             languageHelper2();
 
         }
+
 
     }
 
@@ -246,4 +248,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void closeWindows() {
         popPop.getChildren().clear();
     }
+
+
 }
