@@ -43,6 +43,7 @@ public class Symptoms {
     }
 
     public void exitView() {
+        LoadFXML.setCurrentWindow("");
         covidSurvey.getSymptomsPop().getChildren().clear(); // clear the symptomsPop vbox
     }
 }
