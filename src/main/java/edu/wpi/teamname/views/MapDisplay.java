@@ -226,7 +226,7 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideAddNodePopup();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
@@ -235,7 +235,7 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideAddEdgePopup();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
@@ -244,7 +244,7 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideEditNodePopup();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
@@ -253,7 +253,7 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideDeleteEdgePopup();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
@@ -262,7 +262,7 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideRightClickMenu();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
@@ -271,15 +271,19 @@ public class MapDisplay {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    hideAddNodePopup();
-                    hideAddEdgePopup();
-                    hideEditNodePopup();
-                    hideDeleteEdgePopup();
-                    hideRightClickMenu();
+                    hidePopups(); // Hide all popups
                 }
             }
         });
         zooM.zoomAndPan();
+    }
+
+    public void hidePopups() {
+        hideAddNodePopup();
+        hideAddEdgePopup();
+        hideEditNodePopup();
+        hideDeleteEdgePopup();
+        hideRightClickMenu();
     }
 
     /**
@@ -412,11 +416,7 @@ public class MapDisplay {
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
-                hideAddEdgePopup(); // Hide the edge popup
-                hideAddNodePopup(); // Hide the node popup
-                hideEditNodePopup(); // Hide the edit node popup
-                hideDeleteEdgePopup(); // Hide the remove edge popup
-                hideRightClickMenu(); // Hide the right click popup
+                hidePopups(); // Hide all popups
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
             } else if (dragEnd == null) { // Else if dragEnd isn't null (IE: If the user is partway through creating an edge)
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
@@ -438,10 +438,7 @@ public class MapDisplay {
             return;
         }
 
-        hideAddEdgePopup(); // Hide edge popup on click (IE: The user click away from the add edge popup)
-        hideEditNodePopup(); // Hide the edit node popup
-        hideDeleteEdgePopup(); // Hide the remove edge popup
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
 
         dragStart = null; // Reset dragStart (IE: user clicks away)
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
@@ -453,16 +450,16 @@ public class MapDisplay {
         addNodeField.setVisible(true); // Show the add node popup
 
         // Relative to mouse
-        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
             addNodeField.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             addNodeField.setTranslateX(t.getX()); // Show popup to the right
-        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             addNodeField.setTranslateX(t.getX() - addNodeField.getWidth()); // Show popup to the left
@@ -518,10 +515,7 @@ public class MapDisplay {
      * @param t       Mouse Event
      */
     private void showEditNodePopup(Node _toEdit, MouseEvent t) {
-        hideAddNodePopup(); // Hide the add edge popup
-        hideAddEdgePopup(); // Hide the add edge popup
-        hideDeleteEdgePopup(); // Hide the delete edge popup
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
 
         editNodeBuilding.setText(_toEdit.getBuilding()); // Set the building field
         editNodeType.setText(_toEdit.getNodeType()); // Set the type field
@@ -531,16 +525,16 @@ public class MapDisplay {
         editNode.setVisible(true); // Set visible to true
         editNode.setPickOnBounds(true); // Set clickable to true
         // Relative to mouse
-        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
             editNode.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             editNode.setTranslateY(t.getY() - editNode.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             editNode.setTranslateX(t.getX()); // Show popup to the right
-        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             editNode.setTranslateX(t.getX() - (0.5 * editNode.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             editNode.setTranslateX(t.getX() - editNode.getWidth()); // Show popup to the left
@@ -554,26 +548,23 @@ public class MapDisplay {
      * @param t         Mouse Event
      */
     private void showRemoveEdgePopup(Edge _toDelete, MouseEvent t) {
-        hideAddNodePopup(); // Hide the add node popup
-        hideAddEdgePopup(); // Hide the add ege popup
-        hideEditNodePopup(); // Hide the edit node popup
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
 
         deleteEdgeId.setText(_toDelete.getEdgeID()); // Set the edgeId field/preview
 
         deleteEdge.setVisible(true); // Show the remove edge popup
         deleteEdge.setPickOnBounds(true); // Set clickable to true
         // Relative to mouse
-        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
             deleteEdge.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             deleteEdge.setTranslateY(t.getY() - deleteEdge.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             deleteEdge.setTranslateX(t.getX()); // Show popup to the right
-        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             deleteEdge.setTranslateX(t.getX() - (0.5 * deleteEdge.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             deleteEdge.setTranslateX(t.getX() - deleteEdge.getWidth()); // Show popup to the left
@@ -596,25 +587,22 @@ public class MapDisplay {
      * @param t Mouse Event
      */
     private void showRightClickMenu(MouseEvent t) {
-        hideAddNodePopup(); // Hide the add node popup
-        hideAddEdgePopup(); // Hide the add ege popup
-        hideEditNodePopup(); // Hide the edit node popup
-        hideDeleteEdgePopup(); // Hide the delete edge popup
+        hidePopups(); // Hide all popups
 
         rightClick.setVisible(true); // Show the right click menu
         rightClick.setPickOnBounds(true); // Set clickable to true
 
         // Relative to mouse
-        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
             rightClick.setTranslateY(t.getY()); // Show above
         } else { // Else (if mouse is in top half of screen)
             rightClick.setTranslateY(t.getY() - rightClick.getHeight()); // Show below
         }
 
         // Relative to mouse
-        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             rightClick.setTranslateX(t.getX()); // Show popup to the right
-        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             rightClick.setTranslateX(t.getX() - (0.5 * rightClick.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             rightClick.setTranslateX(t.getX() - rightClick.getWidth()); // Show popup to the left
@@ -647,7 +635,7 @@ public class MapDisplay {
                 editNodeShortName.getText()
         );
         Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
-        hideEditNodePopup(); // Hide the edit node popup
+        hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
         renderMap(); // Render/refresh the map (with the updated data)
     }
@@ -660,7 +648,7 @@ public class MapDisplay {
     @FXML
     private void confirmDeleteEdge(ActionEvent e) {
         Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
-        hideDeleteEdgePopup(); // Hide the edit node popup
+        hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
     }
@@ -673,7 +661,7 @@ public class MapDisplay {
     @FXML
     private void deleteNode(ActionEvent e) {
         Submit.getInstance().removeNode(selectedNode); // Remove the selected node
-        hideEditNodePopup(); // Hide the edit node popup
+        hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
     }
@@ -693,15 +681,15 @@ public class MapDisplay {
         edgeIdPreview.setText(startNode.getNodeID() + "_" + endNode.getNodeID()); // Prefill edgeId (not editable)
 
         // Relative to mouse
-        if (y < onTopOfTopElements.getHeight() / 2) { // If mouse is in the bottom half of screen
+        if (y < anchor.getHeight() / 2) { // If mouse is in the bottom half of screen
             addEdgeField.setTranslateY(y + 20); // Show popup above
         } else { // Else (if mouse is in top half of screen)
             addEdgeField.setTranslateY(y - addEdgeField.getHeight() - 20); // Show popup below
         }
 
-        if (onTopOfTopElements.getWidth() * 0.2 > x) { // If mouse is in the left 1/5th of screen
+        if (anchor.getWidth() * 0.2 > x) { // If mouse is in the left 1/5th of screen
             addEdgeField.setTranslateX(x); // Show popup to the right
-        } else if (onTopOfTopElements.getWidth() * 0.8 > x) { // Else if it's in the middle
+        } else if (anchor.getWidth() * 0.8 > x) { // Else if it's in the middle
             addEdgeField.setTranslateX(x - (0.5 * addEdgeField.getWidth())); // Show popup in the center
         } else { // Else if it's in the right 1/5th of screen
             addEdgeField.setTranslateX(x - addEdgeField.getWidth()); // Show popup to the left
@@ -797,8 +785,7 @@ public class MapDisplay {
         onTopOfTopElements.getChildren().clear(); // Clear on top of top elements
         topElements.getChildren().clear(); // Clear top elements
         tonysPath.getElements().clear(); // Clear Tony's path
-        hideAddNodePopup(); // Hide add node popup
-        hideAddEdgePopup(); // Hide add edge popup
+        hidePopups(); // Hide all popups
     }
 
     /**
@@ -855,7 +842,7 @@ public class MapDisplay {
                 nodeShortName.getText(),
                 nodeLongName.getText()
         );
-        hideAddNodePopup(); // Hide add node popup
+        hidePopups(); // Hide all popups
     }
 
     /**
@@ -872,7 +859,7 @@ public class MapDisplay {
         }
         Edge edge = new Edge(edgeId, addEdgeStart.getNodeID(), addEdgeEnd.getNodeID()); // Create new edge
         Submit.getInstance().addEdge(edge); // Add the edge
-        hideAddEdgePopup(); // Hide the edge popup
+        hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
     }
@@ -931,7 +918,7 @@ public class MapDisplay {
         if (selectedFile == null) { return; }
         // Load the csv into the database
         PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
     }
@@ -950,7 +937,7 @@ public class MapDisplay {
         if (selectedFile == null) { return; }
         // Load the csv into the database
         PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
     }
@@ -969,7 +956,7 @@ public class MapDisplay {
         if (saveLocation == null) { return; }
         // Save the CSV file from LocalStorage
         CSVOperator.writeNodeCSV(LocalStorage.getInstance().getNodes(), saveLocation.getAbsolutePath());
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
     }
 
     /**
@@ -986,6 +973,6 @@ public class MapDisplay {
         if (saveLocation == null) { return; }
         // Save the CSV file from LocalStorage
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
-        hideRightClickMenu(); // Hide the right click popup
+        hidePopups(); // Hide all popups
     }
 }
