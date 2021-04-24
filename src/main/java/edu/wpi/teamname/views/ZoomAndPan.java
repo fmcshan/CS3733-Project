@@ -17,6 +17,7 @@ public class ZoomAndPan {
     double windowWidth;
     double windowHeight;
     double windowSmallestScale;
+    boolean dragged = false;
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
@@ -43,6 +44,7 @@ public class ZoomAndPan {
         });
 
         page.onTopOfTopElements.setOnMouseDragged(mouseEvent -> {
+            dragged = true;
             Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
@@ -112,7 +114,11 @@ public class ZoomAndPan {
             if (mouseEvent.getClickCount() == 2) {
                 reset(page.hospitalMap, page.mapWidth, page.mapHeight);
             }
-            page.processClick(mouseEvent);
+        });
+
+        page.onTopOfTopElements.setOnMouseReleased(e -> {
+            page.processClick(e, dragged);
+            dragged = false;
         });
     }
 
@@ -166,7 +172,7 @@ public class ZoomAndPan {
             page.drawPath(page.currentPath);
             page.displayNodes(0.8);
         }
-        System.out.println("pan listener");
+//        System.out.println("pan listener");
 //        page.drawPath(_listOfNodes);
     }
 }

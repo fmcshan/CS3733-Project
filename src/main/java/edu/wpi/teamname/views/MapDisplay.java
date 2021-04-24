@@ -215,6 +215,7 @@ public class MapDisplay {
      */
     public void initMapEditor() {
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
+        popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
 
@@ -397,7 +398,8 @@ public class MapDisplay {
      *
      * @param t Mouse Event
      */
-    public void processClick(MouseEvent t) {
+    public void processClick(MouseEvent t, boolean dragged) {
+        if (dragged) { return; }
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
             return;
@@ -769,6 +771,7 @@ public class MapDisplay {
     public void toggleNav() {
         clearMap(); // clear the map
         popPop.setPickOnBounds(true); // Set popPop clickable to true
+        popPop2.setPickOnBounds(true); // Set clickable to true
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         Navigation navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
@@ -803,6 +806,7 @@ public class MapDisplay {
      */
     public void openRequests() {
         popPop.setPickOnBounds(true); // Set clickable to true
+        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
@@ -814,6 +818,7 @@ public class MapDisplay {
      */
     public void openLogin() {
         popPop.setPickOnBounds(true); // Set clickable to true
+        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         if (!AuthenticationManager.getInstance().isAuthenticated()) { // If user isn't authenticated
@@ -828,6 +833,7 @@ public class MapDisplay {
      */
     public void openCheckIn() {
         popPop.setPickOnBounds(true); // Set clickable to true
+        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
         LoadFXML.getInstance().loadWindow("UserRegistration", "registrationButton", popPop); // Load registration window
