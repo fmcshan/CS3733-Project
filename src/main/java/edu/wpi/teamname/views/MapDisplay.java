@@ -146,9 +146,9 @@ public class MapDisplay {
         return popPop;
     }
 
-    //public abstract void initialize();
-
-
+    public VBox getPopPop2() {
+        return popPop2;
+    }
 
     /**
      * Display localNodes on the map

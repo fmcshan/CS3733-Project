@@ -154,9 +154,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
-//        if (LoadFXML.getCurrentWindow().equals("navBar")) {
-//
-//        }
+        popPop2.setPickOnBounds(true);
+        LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
 
     public void closeWindows() {
