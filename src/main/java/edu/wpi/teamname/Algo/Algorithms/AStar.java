@@ -253,13 +253,18 @@ public class AStar implements IAlgorithm {
         Stopwatch timer = new Stopwatch();
         AStar example = new AStar(nodes, start, goal);
         ArrayList<String> nodeTypes = new ArrayList<>();
-        for (ArrayList<Node> floorPath : example.getFloorPaths()) {
+        for (Node node : nodes) {
+            if (!nodeTypes.contains(node.getNodeType()))
+                nodeTypes.add(node.getNodeType());
+        }
+        System.out.println(nodeTypes);
+        /*for (ArrayList<Node> floorPath : example.getFloorPaths()) {
             System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
             for (Node node : floorPath) {
                 System.out.println(node.getLongName());
             }
-        }
-        System.out.println(example.getFloorPaths().size());
+        }*/
+        //System.out.println(example.getFloorPaths().size());
         System.out.println(timer.elapsedTime());
     }
 }
