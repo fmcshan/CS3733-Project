@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.COVIDSurvey">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.COVIDSurvey">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
+      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
@@ -39,7 +39,7 @@
                   </Label>
                   <HBox>
                      <VBox.margin>
-                        <Insets left="38.0" top="15.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <VBox prefHeight="37.0" prefWidth="33.0">
@@ -60,7 +60,7 @@
                   </HBox>
                   <HBox>
                      <VBox.margin>
-                        <Insets left="38.0" top="15.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <VBox prefHeight="37.0" prefWidth="33.0">
@@ -81,7 +81,7 @@
                   </HBox>
                   <HBox>
                      <VBox.margin>
-                        <Insets left="38.0" top="15.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <VBox prefHeight="37.0" prefWidth="33.0">
@@ -102,7 +102,7 @@
                   </HBox>
                   <HBox>
                      <VBox.margin>
-                        <Insets left="38.0" top="15.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <VBox prefHeight="37.0" prefWidth="33.0">
@@ -123,7 +123,7 @@
                   </HBox>
                   <HBox>
                      <VBox.margin>
-                        <Insets left="38.0" top="15.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <children>
                         <VBox alignment="CENTER" prefHeight="37.0" prefWidth="33.0">
@@ -152,7 +152,7 @@
                   </Label>
                   <JFXCheckBox fx:id="symptom1Checkbox" checkedColor="#0067b1" style="-fx-focus-traversable: false;" text="I have had a symptomatic COVID-19 test in the last 14 days." textFill="#868686">
                      <VBox.margin>
-                        <Insets left="40.0" top="20.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                      <font>
                         <Font size="16.0" />
@@ -163,7 +163,7 @@
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="40.0" top="30.0" />
+                        <Insets left="50.0" top="35.0" />
                      </VBox.margin>
                   </JFXCheckBox>
                   <HBox prefHeight="50.0" prefWidth="414.0">
@@ -180,7 +180,7 @@
                         </JFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets left="40.0" top="20.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
@@ -200,7 +200,7 @@
                         </JFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets left="40.0" top="10.0" />
+                        <Insets left="50.0" top="25.0" />
                      </VBox.margin>
                   </HBox>
                </children>
@@ -210,7 +210,7 @@
             </VBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" layoutY="717.0" prefHeight="183.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="717.0">
+      <VBox alignment="CENTER" layoutY="717.0" prefHeight="183.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
             <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitScreening" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
@@ -219,6 +219,6 @@
             </JFXButton>
          </children>
       </VBox>
-      <VBox fx:id="symptomsPop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" AnchorPane.bottomAnchor="225.0" AnchorPane.leftAnchor="178.5" AnchorPane.rightAnchor="178.5" AnchorPane.topAnchor="225.0" />
+      <VBox fx:id="symptomsPop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" AnchorPane.bottomAnchor="240.0" AnchorPane.leftAnchor="178.5" AnchorPane.rightAnchor="178.5" AnchorPane.topAnchor="240.0" />
    </children>
 </AnchorPane>

@@ -334,6 +334,6 @@
             </JFXButton>
          </children>
       </VBox>
-      <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="350.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="35.0" />
+      <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="930.0" prefWidth="350.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>
