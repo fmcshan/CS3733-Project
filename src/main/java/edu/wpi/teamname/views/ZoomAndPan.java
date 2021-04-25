@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,10 @@ public class ZoomAndPan {
 
         page.onTopOfTopElements.setOnMouseDragged(mouseEvent -> {
             dragged = true;
+            if (mouseEvent.getTarget() instanceof Circle) {
+                return;
+            }
+
             Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);

@@ -26,7 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,16 +35,7 @@ public class MapDisplay {
     double scaledWidth = 5000;
     double scaledHeight = 3400.0;
     double scaledX = 0;
-
-    public void setScaledX(double scaledX) {
-        this.scaledX = scaledX;
-    }
-
-    public void setScaledY(double scaledY) {
-        this.scaledY = scaledY;
-    }
     ArrayList<Node> currentPath = new ArrayList<>();
-
     double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
@@ -65,17 +55,15 @@ public class MapDisplay {
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
-
     Circle dragStart;
     Circle dragEnd;
     Line renderedEdgePreview;
-
     Node addEdgeStart;
     Node addEdgeEnd;
-
     Node selectedNode;
     Edge selectedEdge;
-
+    Circle draggedCircle;
+    Node draggedNode;
     @FXML
     VBox popPop, popPop2, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -100,6 +88,7 @@ public class MapDisplay {
     AnchorPane anchor;
     @FXML
     JFXTextField edgeIdPreview;
+    ZoomAndPan zooM;
     @FXML
     private JFXTextField nodeId;
     @FXML
@@ -112,7 +101,6 @@ public class MapDisplay {
     private JFXTextField nodeLongName;
     @FXML
     private Label addEdgeWarning;
-
     @FXML
     private VBox editNode; // Edit node menu
     @FXML
@@ -129,12 +117,17 @@ public class MapDisplay {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
-
-    ZoomAndPan zooM;
-
-    public MapDisplay(){
+    public MapDisplay() {
         zooM = new ZoomAndPan(this);
 
+    }
+
+    public void setScaledX(double scaledX) {
+        this.scaledX = scaledX;
+    }
+
+    public void setScaledY(double scaledY) {
+        this.scaledY = scaledY;
     }
 
     /**
@@ -153,12 +146,14 @@ public class MapDisplay {
     /**
      * Display localNodes on the map
      *
+     * @param _nodes   List of nodes to display
      * @param _opacity Node opacity
      */
-    public void displayNodes(double _opacity) {
+    public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
         resizingInfo(); // Set resizing info
 
-        localNodes.forEach(n -> { // For each node in localNodes
+        _nodes.forEach(n -> { // For each node in localNodes
+            if (n.equals(draggedNode)) { return; }
             Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
             circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
@@ -179,7 +174,56 @@ public class MapDisplay {
                 circle.setRadius(8); // Reset/set radius
                 circle.setOpacity(0.8); // Reset/set opacity
             });
+
+            circle.setOnMouseDragged(e -> {
+                draggedCircle = (Circle) e.getTarget();
+                draggedCircle.setCenterX(e.getX());
+                draggedCircle.setCenterY(e.getY());
+                draggedNode = renderedNodeMap.get(draggedCircle);
+                refreshDraggedEdges();
+            });
+
+            circle.setOnMouseReleased(e -> {
+                System.out.println(draggedCircle.getCenterX());
+                System.out.println(draggedCircle.getCenterY());
+                Submit.getInstance().editNode(new Node(
+                        draggedNode.getNodeID(),
+                        (int) actualX(draggedCircle.getCenterX()),
+                        (int) actualY(draggedCircle.getCenterY()),
+                        draggedNode.getFloor(),
+                        draggedNode.getBuilding(),
+                        draggedNode.getNodeType(),
+                        draggedNode.getLongName(),
+                        draggedNode.getShortName()
+                ));
+                draggedCircle = null;
+                draggedNode = null;
+                renderMap();
+            });
+
         });
+    }
+
+    /**
+     * To prevent breaking changes
+     *
+     * @param _opacity Node opacity
+     */
+    public void displayNodes(double _opacity) {
+        displayNodes(localNodes, _opacity);
+    }
+
+    public void displayHotspots(int _opacity) {
+        ArrayList<Node> toDisplay = (ArrayList<Node>) localNodes.clone();
+        for (int i = 0; i < toDisplay.size(); i++) {
+            Node n = toDisplay.get(i);
+            if (n.getNodeType().equals("HALL")) {
+                toDisplay.remove(n);
+            } else {
+                System.out.println(n.getNodeType());
+            }
+        }
+        displayNodes(toDisplay, _opacity);
     }
 
     /**
@@ -191,8 +235,21 @@ public class MapDisplay {
         resizingInfo(); // Set sizing info
         localEdges.forEach(e -> { // For edge in localEdges
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
+                double startX = xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX());
+                double startY = yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY());
+                double endX = xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX());
+                double endY = yCoordOnTopElement(nodesMap.get(e.getEndNode()).getY());
+
+                if (draggedNode != null && e.getStartNode().equals(draggedNode.getNodeID())) {
+                    startX = draggedCircle.getCenterX();
+                    startY = draggedCircle.getCenterY();
+                }
+                if (draggedNode != null && e.getEndNode().equals(draggedNode.getNodeID())) {
+                    endX = draggedCircle.getCenterX();
+                    endY = draggedCircle.getCenterY();
+                }
                 // Create edge
-                LineBuilder<?> edgeLocation = LineBuilder.create().startX(xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX())).startY(yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY())).endX(xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX())).endY(yCoordOnTopElement(nodesMap.get(e.getEndNode()).getY()));
+                LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
                 Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
                 renderedEdgeMap.put(edge, e);
                 onTopOfTopElements.getChildren().add(edge); // Render edge
@@ -219,63 +276,27 @@ public class MapDisplay {
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
 
-     //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
+        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
-        addNodeField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add node popup on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
-
-        addEdgeField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit add edge popup on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
-
-        editNode.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit edit node popup on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
-
-        deleteEdge.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit delete edge popup on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
-
-        rightClick.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit right click popup on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
-
-        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit popups on "Esc" key
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.ESCAPE) {
-                    hidePopups(); // Hide all popups
-                }
-            }
-        });
+        addEscListener(addNodeField);
+        addEscListener(addEdgeField);
+        addEscListener(editNode);
+        addEscListener(deleteEdge);
+        addEscListener(rightClick);
+        addEscListener(anchor);
         zooM.zoomAndPan();
+    }
+
+    private void addEscListener(javafx.scene.Node _toAdd) {
+        _toAdd.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() { // Exit popups on "Esc" key
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ESCAPE) {
+                    hidePopups(); // Hide all popups
+                }
+            }
+        });
     }
 
     public void hidePopups() {
@@ -333,6 +354,26 @@ public class MapDisplay {
     }
 
     /**
+     * Converts a scaled X coordinate to the actual coordinate
+     *
+     * @param _x Scaled x coordinate
+     * @return The actual (non-scaled) x coordinate
+     */
+    public double actualX(double _x) {
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return (((_x / windowSmallestScale) * viewportSmallestScale) + scaledX);
+    }
+
+    /**
      * for the scaling the displayed nodes on the map
      *
      * @param y the y coordinate of the anchor pane, top element
@@ -340,8 +381,8 @@ public class MapDisplay {
      */
     public double yCoordOnTopElement(int y) {
         double fileWidth = 5000.0;
-
         double fileHeight = 3400.0;
+
         double widthScale = scaledWidth / fileWidth;
         double heightScale = scaledHeight / fileHeight;
 
@@ -350,6 +391,41 @@ public class MapDisplay {
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
         return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+    }
+
+    /**
+     * Converts a scaled Y coordinate to the actual coordinate
+     *
+     * @param _y Scaled Y coordinate
+     * @return The actual (non-scaled) x coordinate
+     */
+    public double actualY(double _y) {
+        double fileWidth = 5000.0;
+        double fileHeight = 3400.0;
+
+        double widthScale = scaledWidth / fileWidth;
+        double heightScale = scaledHeight / fileHeight;
+
+        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
+        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
+        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
+        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
+        return (((_y / windowSmallestScale) * viewportSmallestScale) + scaledY);
+    }
+
+    private void refreshDraggedEdges() {
+        renderedEdgeMap.forEach((l, e) -> {
+            String draggedNodeId = draggedNode.getNodeID();
+            if (e.getStartNode().equals(draggedNodeId)) {
+                l.setStartX(draggedCircle.getCenterX());
+                l.setStartY(draggedCircle.getCenterY());
+            }
+
+            if (e.getEndNode().equals(draggedNodeId)) {
+                l.setEndX(draggedCircle.getCenterX());
+                l.setEndY(draggedCircle.getCenterY());
+            }
+        });
     }
 
     /**
@@ -403,7 +479,9 @@ public class MapDisplay {
      * @param t Mouse Event
      */
     public void processClick(MouseEvent t, boolean dragged) {
-        if (dragged) { return; }
+        if (dragged) {
+            return;
+        }
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
             return;
@@ -443,8 +521,8 @@ public class MapDisplay {
         dragStart = null; // Reset dragStart (IE: user clicks away)
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
 
-        addNodeX = (int) (t.getX() / fileFxWidthRatio); // Set the potential new node X coords
-        addNodeY = (int) (t.getY() / fileFxHeightRatio); // Set the potential new node Y coords
+        addNodeX = (int) actualX(t.getX()); // Set the potential new node X coords
+        addNodeY = (int) actualY(t.getY()); // Set the potential new node Y coords
 
         addNodeField.setPickOnBounds(true); // Enable clicking on the add node popup
         addNodeField.setVisible(true); // Show the add node popup
@@ -482,12 +560,12 @@ public class MapDisplay {
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Circle) { // If the user clicks a circle/node
             Node toEdit = renderedNodeMap.get(t.getTarget()); // Get the node
-            selectedNode = toEdit; // Update selectedNode
             showEditNodePopup(toEdit, t); // Show edit node popup
+            selectedNode = toEdit; // Update selectedNode
         } else if (t.getTarget() instanceof Line) { // Else if the user clicks a line/edge
             Edge toDelete = renderedEdgeMap.get(t.getTarget()); // Get the edge
-            selectedEdge = toDelete; // Updated selected edge
             showRemoveEdgePopup(toDelete, t); // Show the remove edge popup
+            selectedEdge = toDelete; // Updated selected edge
         } else {
             showRightClickMenu(t); // Show the right click menu
         }
@@ -584,6 +662,7 @@ public class MapDisplay {
 
     /**
      * Show the right click menu
+     *
      * @param t Mouse Event
      */
     private void showRightClickMenu(MouseEvent t) {
@@ -745,11 +824,10 @@ public class MapDisplay {
         double fileFxWidthRatio = mapWidth / fileWidth;
         double fileFxHeightRatio = mapHeight / fileHeight;
         Node firstNode = _listOfNodes.get(0);
-        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()) , yCoordOnTopElement(firstNode.getY()));
+        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
         tonysPath.getElements().add(start);
-        System.out.println(fileFxWidthRatio);
         _listOfNodes.forEach(n -> {
-            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()) , yCoordOnTopElement(n.getY())));
+            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
         });
     }
 
@@ -775,14 +853,14 @@ public class MapDisplay {
             onTopOfTopElements.getChildren().clear(); // Clear children
             return;
         }
-        displayNodes(1); // Display nodes at 1 (100%) opacity
+        displayHotspots(1); // Display nodes at 1 (100%) opacity
     }
 
     /**
      * Clear the map
      */
     public void clearMap() {
-        onTopOfTopElements.getChildren().clear(); // Clear on top of top elements
+        onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         tonysPath.getElements().clear(); // Clear Tony's path
         hidePopups(); // Hide all popups
@@ -906,6 +984,7 @@ public class MapDisplay {
 
     /**
      * Load the specified nodes into the database
+     *
      * @param e Action Event
      */
     @FXML
@@ -915,7 +994,9 @@ public class MapDisplay {
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
         File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) { return; }
+        if (selectedFile == null) {
+            return;
+        }
         // Load the csv into the database
         PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
         hidePopups(); // Hide all popups
@@ -925,6 +1006,7 @@ public class MapDisplay {
 
     /**
      * Load the specified edges into the database
+     *
      * @param e Action Event
      */
     @FXML
@@ -934,7 +1016,9 @@ public class MapDisplay {
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
         File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) { return; }
+        if (selectedFile == null) {
+            return;
+        }
         // Load the csv into the database
         PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
         hidePopups(); // Hide all popups
@@ -944,6 +1028,7 @@ public class MapDisplay {
 
     /**
      * Save nodes to the specified CSV
+     *
      * @param e Action Event
      */
     @FXML
@@ -953,7 +1038,9 @@ public class MapDisplay {
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
         File saveLocation = fileChooser.showSaveDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (saveLocation == null) { return; }
+        if (saveLocation == null) {
+            return;
+        }
         // Save the CSV file from LocalStorage
         CSVOperator.writeNodeCSV(LocalStorage.getInstance().getNodes(), saveLocation.getAbsolutePath());
         hidePopups(); // Hide all popups
@@ -961,6 +1048,7 @@ public class MapDisplay {
 
     /**
      * Save edges to the specified CSV
+     *
      * @param e Action Event
      */
     @FXML
@@ -970,7 +1058,9 @@ public class MapDisplay {
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
         File saveLocation = fileChooser.showSaveDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (saveLocation == null) { return; }
+        if (saveLocation == null) {
+            return;
+        }
         // Save the CSV file from LocalStorage
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
         hidePopups(); // Hide all popups
