@@ -81,15 +81,38 @@ public class AStar implements IAlgorithm {
      * @param floor the floor we want to get a path for
      * @return list of nodes representing a path specific to the floor
      */
-    public ArrayList<Node> getFloorPath(String floor) {
+    public ArrayList<Node> getFloorNodes(String floor) {
         ArrayList<Node> nodes = new ArrayList<>();
         for (Node node : this.getPath()) {
             if (node.getFloor().equals(floor))
                 nodes.add(node);
         }
-
         return nodes;
     }
+
+    /**
+     * Returns a nested list of nodes representing the different sections of paths by floors
+     * @return nested list of nodes representing the different sections of paths by floors
+     */
+    public ArrayList<ArrayList<Node>> getFloorPaths(){
+        ArrayList<Node> nodes = new ArrayList<>();
+        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
+        String currentfloor = start.getFloor();
+        for (Node node : this.getPath()) {
+            if (node.getFloor().equals(currentfloor))
+                nodes.add(node);
+            else {
+                currentfloor = node.getFloor();
+                paths.add(nodes);
+                nodes = new ArrayList<>();
+                nodes.add(node);
+            }
+        }
+        paths.add(nodes);
+        return paths;
+    }
+
+
     
     /**
      * Prints the path from the start node to the goal node
@@ -225,20 +248,18 @@ public class AStar implements IAlgorithm {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        //Node start = nodes.get(Parser.indexOfNode(nodes, "AREST00101"));
-        //Node goal = nodes.get(Parser.indexOfNode(nodes, "AREST00103"));
-        //Node start = nodes.get(86);
-        //Node goal = nodes.get(389);
-        Node start = nodes.get(Parser.indexOfNode(nodes, "lPARK014GG"));
-        Node goal = nodes.get(600);
+        Node start = nodes.get(Parser.indexOfNode(nodes, "ALABS001L2"));
+        Node goal = nodes.get(Parser.indexOfNode(nodes, "GLABS014L2"));
         Stopwatch timer = new Stopwatch();
         AStar example = new AStar(nodes, start, goal);
-        for (String relevantFloor : example.getRelevantFloors()) {
-            System.out.println("Floor " + relevantFloor + " ");
-            for (Node node : example.getFloorPath(relevantFloor)) {
+        ArrayList<String> nodeTypes = new ArrayList<>();
+        for (ArrayList<Node> floorPath : example.getFloorPaths()) {
+            System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
+            for (Node node : floorPath) {
                 System.out.println(node.getLongName());
             }
         }
+        System.out.println(example.getFloorPaths().size());
         System.out.println(timer.elapsedTime());
     }
 }

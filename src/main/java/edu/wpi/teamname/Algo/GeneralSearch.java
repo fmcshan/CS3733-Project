@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
+/*
 public class GeneralSearch {
     public char initialState;
     public char solution;
@@ -83,3 +84,4 @@ public class GeneralSearch {
 
     }
 }
+ */

@@ -67,7 +67,7 @@ public class BFS implements IAlgorithm {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        BFS bfs = new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "CHALL010L2")), nodes.get(Parser.indexOfNode(nodes, "CHALL009L2")));
+        BFS bfs = new BFS(nodes, nodes.get(10), nodes.get(76));
         ArrayList<Node> path = bfs.getPath();
         System.out.println(path.size());
     }
