@@ -4,6 +4,7 @@ import edu.wpi.teamname.ServiceRequests.ComputerServices;
 import edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest;
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
 import edu.wpi.teamname.ServiceRequests.LaundryRequest;
+import edu.wpi.teamname.ServiceRequests.MedicineDelivery;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
@@ -56,7 +57,9 @@ public class Requests {
      */
     public void openMedicineDelivery() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("MedicineDeliveryRequest", "medicineDelivery", requestPop);
+        MedicineDelivery md = new MedicineDelivery(this);
+        md.loadRequest();
+        //LoadFXML.getInstance().loadWindow("MedicineDeliveryRequest", "medicineDelivery", requestPop);
     }
 
     /**

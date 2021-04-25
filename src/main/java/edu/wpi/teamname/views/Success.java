@@ -4,6 +4,7 @@ import edu.wpi.teamname.ServiceRequests.ComputerServices;
 import edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest;
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
 import edu.wpi.teamname.ServiceRequests.LaundryRequest;
+import edu.wpi.teamname.ServiceRequests.MedicineDelivery;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +34,8 @@ public class Success {
     private ComputerServices computerServices;
     private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
 
+    private MedicineDelivery medicineDelivery;
+
     private VBox pop;
 
     public Success(UserRegistration userRegistration) {
@@ -53,6 +56,10 @@ public class Success {
 
     public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
         this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
+    }
+
+    public Success(MedicineDelivery medicineDelivery) {
+        this.medicineDelivery = medicineDelivery;
     }
 
     /**
