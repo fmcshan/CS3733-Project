@@ -17,6 +17,7 @@ public class LevelManager {
     public static synchronized LevelManager getInstance() {return instance;}
 
     private final List<String> floorImageNames = Arrays.asList("00_thelowerlevel2.png", "00_thelowerlevel1.png", "00_thegroundfloor.png", "01_thefirstfloor.png", "02_thesecondfloor.png", "03_thethirdfloor.png");
+    private final List<String> floorNameMap = Arrays.asList("L2", "L1", "G", "1", "2", "3");
     private List<Image> floorImages = new ArrayList<Image>();
     private int level;
 
@@ -45,6 +46,10 @@ public class LevelManager {
         }
     }
 
+    public void setFloor(String _level) {
+        setFloor(floorNameMap.indexOf(_level));
+    }
+
     public void addListener(LevelChangeListener _toAdd) {
         if (!listeners.contains(_toAdd)) {
             listeners.add(_toAdd);
@@ -54,4 +59,6 @@ public class LevelManager {
     public int getLevel() {
         return level;
     }
+
+    public String getFloor() { return floorNameMap.get(level); }
 }

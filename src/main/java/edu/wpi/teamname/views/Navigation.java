@@ -5,6 +5,8 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.views.manager.LevelChangeListener;
+import edu.wpi.teamname.views.manager.LevelManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,7 @@ import java.util.HashMap;
  * Controller for Navigation.fxml
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Navigation {
+public class Navigation implements LevelChangeListener {
 
     @FXML
     private ComboBox<String> toCombo; // destination drop down
@@ -47,50 +49,18 @@ public class Navigation {
      * run on startup
      */
     public void initialize() {
+        LevelManager.getInstance().addListener(this);
+        refreshNodes();
+    }
 
-//        Callback<ListView<Node>, ListCell<Node>> cellFactory = new Callback<ListView<Node>, ListCell<Node>>() {
-//
-//            @Override
-//            public ListCell<Node> call(ListView<Node> l) {
-//                return new ListCell<Node>() {
-//
-//                    @Override
-//                    protected void updateItem(Node item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (item == null || empty) {
-//                            setGraphic(null);
-//                        } else {
-//                            setText(item.getLongName());
-//                        }
-//                    }
-//                };
-//            }
-//        };
-//
-//        fromCombo.setConverter(new StringConverter<String>() {
-//            @Override
-//            public String toString(Node node) {
-//                if (node == null){
-//                    return null;
-//                } else {
-//                    return node.getLongName();
-//                }
-//            }
-//
-//            @Override
-//            public Node fromString(String string) {
-//                return null;
-//            }
-//        });
-//
-//        fromCombo.setButtonCell(cellFactory.call(null));
-//        fromCombo.setCellFactory(cellFactory);
-
+    private void refreshNodes() {
         listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
-//        listOfNodes = LocalStorage.getInstance().getNodes();
-
+        nodesMap.clear();
+        toCombo.getItems().clear();
+        fromCombo.getItems().clear();
         listOfNodes.forEach(n -> {
-            if (((n.getFloor().equals("1") || n.getFloor().equals("G") ||n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("") ))) {
+            if (n.getNodeType().equals("HALL")) { return; }
+            if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
                 nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
                 toCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox
                 fromCombo.getItems().add(n.getNodeID()); // make the nodes appear in the combobox 2 electric bugaloo
@@ -136,12 +106,13 @@ public class Navigation {
         }
         Node startNode = nodesMap.get(fromCombo.getValue()); // get starting location
         Node endNode = nodesMap.get(toCombo.getValue()); // get ending location
-        System.out.println(startNode.getNodeID());
-        System.out.println(endNode.getNodeID());
-        System.out.println(listOfNodes);
-        System.out.println(listOfNodes.get(0).getEdges());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
         mapDisplay.drawPath(path); // draw the path on the map
+    }
+
+    @Override
+    public void levelChanged(int _level) {
+        refreshNodes();
     }
 }

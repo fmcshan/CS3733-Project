@@ -58,8 +58,6 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     boolean nodeBeingDragged = false;
-    List<String> floorNames = Arrays.asList("L2", "L1", "G", "1", "2");
-
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
@@ -733,7 +731,7 @@ public class MapDisplay implements LevelChangeListener {
                 selectedNode.getNodeID(), // Same NodeID
                 selectedNode.getX(),
                 selectedNode.getY(),
-                "1", // TODO: Node floor from level selector
+                LevelManager.getInstance().getFloor(),
                 editNodeBuilding.getText(),
                 editNodeType.getText(),
                 editNodeLongName.getText(),
@@ -929,7 +927,7 @@ public class MapDisplay implements LevelChangeListener {
         addNodeInternal( // Call add node internal with relevant information
                 addNodeX,
                 addNodeY,
-                "1", // TODO: Node floor from level selector
+                LevelManager.getInstance().getFloor(),
                 nodeId.getText(),
                 nodeBuilding.getText(),
                 nodeType.getText(),
@@ -973,8 +971,7 @@ public class MapDisplay implements LevelChangeListener {
      * @return true if the node is within current specifications
      */
     public boolean nodeWithinSpec(Node n) {
-//        System.out.println(floorNames.get(LevelManager.getInstance().getLevel()));
-        return n.getFloor().equals(floorNames.get(LevelManager.getInstance().getLevel()));
+        return n.getFloor().equals(LevelManager.getInstance().getFloor());
     }
 
 
