@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,53 +9,108 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="900.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Requests">
+<AnchorPane prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Requests">
    <children>
-      <VBox layoutX="9.0" layoutY="9.0" prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" layoutX="9.0" layoutY="9.0" prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Requests">
-               <font>
-                  <Font name="System Bold" size="48.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the service request you would like to make." wrappingWidth="300.0">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-            </Text>
-            <Label text="Type" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="25.0" right="275.0" top="50.0" />
-               </VBox.margin>
-            </Label>
-            <ComboBox fx:id="requestsBox" prefWidth="300.0" promptText="Requests" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;">
-               <VBox.margin>
-                  <Insets left="25.0" top="5.0" />
-               </VBox.margin>
-            </ComboBox>
-            <VBox prefHeight="201.0" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="108.0" prefWidth="657.0">
                <children>
-                  <JFXButton onAction="#openRequest" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Open Request Form" textFill="#bbbbbb">
+                  <Label prefHeight="55.0" prefWidth="553.0" text="Service Request Systems">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                  </Label>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the service request you would like to make." wrappingWidth="404.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="660.0" prefWidth="657.0">
+               <children>
+                  <JFXButton onAction="#openGiftRequest" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Gift Delivery" textFill="#bbbbbb">
                      <font>
                         <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="100.0" />
+                        <Insets />
                      </VBox.margin>
                   </JFXButton>
+                  <Label text="Lauren Sowerbutts and Anthony LoPresti" />
+                  <JFXButton layoutX="35.0" layoutY="110.0" onAction="#openFoodDelivery" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Food Delivery" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="78.0" text="Justin Luce" />
+                  <JFXButton layoutX="10.0" layoutY="163.0" onAction="#openMedicineDelivery" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Medicine Delivery" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="676.0" text="Bryan Gass" />
+                  <JFXButton layoutX="35.0" layoutY="110.0" onAction="#openLaundryServices" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Laundry Services" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="693.0" text="Frank McShan" />
+                  <JFXButton layoutX="35.0" layoutY="110.0" onAction="#openComputerService" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Computer Service" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="378.0" text="Emmanuel Ola" />
+                  <JFXButton layoutX="10.0" layoutY="163.0" onAction="#openFacilitiesMaintenance" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Facilities Maintenance" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="378.0" text="Freud Oulon" />
+                  <JFXButton layoutX="10.0" layoutY="216.0" onAction="#openSanitationServices" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Sanitation Services" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="578.0" text="Conor McDonough" />
+                  <JFXButton layoutX="10.0" layoutY="269.0" onAction="#openPatientTransportation" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Patient Transportation" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label layoutX="289.0" layoutY="678.0" text="Xianhan Jia" />
                </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </VBox>
          </children>
       </VBox>

@@ -111,6 +111,14 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
+                  <JFXCheckBox fx:id="balloonsBox" checkedColor="#0067b1" layoutX="60.0" layoutY="311.0" text="Balloons" textFill="#868686">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
                   <JFXCheckBox fx:id="giftBasketBox" checkedColor="#0067b1" text="Gift Basket" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />

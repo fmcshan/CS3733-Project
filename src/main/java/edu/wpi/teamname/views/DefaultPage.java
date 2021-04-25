@@ -98,10 +98,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void openRequests() {
         clearMap();
-        popPop.setPrefWidth(350.0);
-        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop);
+        popPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", popPop);
     }
-
 
     /**
      * toggle the login window

@@ -1,6 +1,5 @@
 package edu.wpi.teamname.views;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
@@ -21,19 +20,79 @@ public class Requests {
      * Method that runs when this page is initialized
      */
     public void initialize(){
-        requestsBox.getItems().add("Gift Delivery");
+       // requestsBox.getItems().add("Gift Delivery"); //ADD BACK IN ITERATION 3
     }
 
     /**
      * OnAction command for clicking the "Open Request Form" button
      */
-    public void openRequest() {
-        if (requestsBox.getValue().equals("Gift Delivery")){
-            System.out.println("click worked");
-            requestPop.setPrefWidth(657.0);
-            GiftDelivery gdr = new GiftDelivery(this);
-            gdr.loadRequest();
-        }
+    public void openGiftRequest() {
+//        if (requestsBox.getValue().equals("Gift Delivery")){ //ADD BACK IN ITERATION 3
+//            System.out.println("click worked");
+//            requestPop.setPrefWidth(657.0);
+//            GiftDelivery gdr = new GiftDelivery(this);
+//            gdr.loadRequest();
+//        }
+        requestPop.setPrefWidth(657.0);
+        GiftDelivery gdr = new GiftDelivery(this);
+        gdr.loadRequest();
+        //LoadFXML.getInstance().loadWindow("GiftDeliveryRequest", "giftDelivery", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openFoodDelivery() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openMedicineDelivery() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("MedicineDeliveryRequest", "medicineDelivery", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openLaundryServices() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("LaundryRequest", "laundryServices", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openComputerService() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("ComputerService", "computerService", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openFacilitiesMaintenance() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("FacilitiesMaintenanceRequest", "facilitiesMaintenance", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openSanitationServices() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("SanitationServices", "sanitationServices", requestPop);
+    }
+
+    /**
+     * OnAction command for clicking the "Open Request Form" button
+     */
+    public void openPatientTransportation() {
+        requestPop.setPrefWidth(657.0);
+        LoadFXML.getInstance().loadWindow("PatientTransportation", "patientTransportation", requestPop);
     }
 
     /**
