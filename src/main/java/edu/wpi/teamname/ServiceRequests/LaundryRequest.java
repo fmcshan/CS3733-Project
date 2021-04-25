@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
+import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
@@ -266,11 +268,11 @@ public class LaundryRequest {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> laundryTypeSelected = new ArrayList<>();
             if (colorsBox.isSelected())
-                laundryTypeSelected.add("Colors");
+                laundryTypeSelected.add("Colors -");
             if (whitesBox.isSelected())
-                laundryTypeSelected.add("Whites");
+                laundryTypeSelected.add("Whites -");
             if (otherCheckbox.isSelected())
-                laundryTypeSelected.add(otherInput.getText());
+                laundryTypeSelected.add(otherInput.getText() + " -");
             if (coldBox.isSelected())
                 laundryTypeSelected.add("Cold");
             if (warmBox.isSelected())
@@ -281,10 +283,10 @@ public class LaundryRequest {
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
-            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
-            });
-            //GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
-            //Submit.getInstance().submitGiftDelivery(request);
+//            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
+//            });
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

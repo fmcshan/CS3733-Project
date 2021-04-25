@@ -2,11 +2,10 @@ package edu.wpi.teamname.ServiceRequests;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
@@ -213,8 +212,8 @@ public class SanitationServices {
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            //GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
-            //Submit.getInstance().submitGiftDelivery(request);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, nameInput.getText(), "", "", false);
+            Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

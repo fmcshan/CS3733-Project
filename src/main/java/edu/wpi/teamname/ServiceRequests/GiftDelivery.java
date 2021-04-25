@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
@@ -49,25 +49,43 @@ public class GiftDelivery {
     private Label failedGiftSelection;
 
     /**
-     * Combo Box selecting Teddy Bear for delivery
+     * Checkbox selecting Teddy Bear for delivery
      */
     @FXML
     private JFXCheckBox teddyBearBox;
 
     /**
-     * Combo Box selecting chocolates for delivery
+     * Checkbox selecting flowers for delivery
+     */
+    @FXML
+    private JFXCheckBox flowerCheckbox;
+
+    /**
+     * Combo Box selecting Teddy Bear for delivery
+     */
+    @FXML
+    private JFXComboBox flowerType;
+
+    /**
+     * Checkbox selecting chocolates for delivery
      */
     @FXML
     private JFXCheckBox chocolateBox;
 
     /**
-     * Combo Box selecting gift basket for delivery
+     * Checkbox selecting balloons for delivery
+     */
+    @FXML
+    private JFXCheckBox balloonsBox;
+
+    /**
+     * Checkbox selecting gift basket for delivery
      */
     @FXML
     private JFXCheckBox giftBasketBox;
 
     /**
-     * Combo Box selecting some other gift for delivery
+     * Checkbox selecting some other gift for delivery
      */
     @FXML
     private JFXCheckBox otherCheckbox;
@@ -143,6 +161,11 @@ public class GiftDelivery {
         for (Node node : LocalStorage.getInstance().getNodes()) {
             requestLocation.getItems().add(node.getNodeID());
         }
+        ArrayList<String> flowers = new ArrayList<>();
+        flowers.add("Roses");
+        flowers.add("Daisies");
+        flowers.add("Tulips");
+        flowerType.getItems().addAll(flowers);
     }
 
     /**
@@ -169,7 +192,7 @@ public class GiftDelivery {
      * @return true if any checkbox has been selected, and false otherwise
      */
     public boolean checkBoxSelected() {
-        return teddyBearBox.isSelected() || chocolateBox.isSelected() || giftBasketBox.isSelected() || otherCheckbox.isSelected();
+        return teddyBearBox.isSelected() || flowerCheckbox.isSelected() || chocolateBox.isSelected() || balloonsBox.isSelected() || giftBasketBox.isSelected() || otherCheckbox.isSelected();
     }
 
     /**
@@ -179,6 +202,10 @@ public class GiftDelivery {
      */
     public boolean otherInputValid() {
         return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().isEmpty());
+    }
+
+    public boolean flowerSelectionValid() {
+        return flowerType.getValue() != null;
     }
 
     /**
@@ -224,11 +251,10 @@ public class GiftDelivery {
         else
             failedName.setText("");
 
-
-
-
         if (!checkBoxSelected())
             failedGiftSelection.setText("Please select a gift to be delivered.");
+        else if (flowerCheckbox.isSelected() && !flowerSelectionValid())
+            failedGiftSelection.setText("Please select a flower type.");
         else if (!otherInputValid())
             failedGiftSelection.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
         else
@@ -251,8 +277,12 @@ public class GiftDelivery {
             ArrayList<String> giftSelected = new ArrayList<>();
             if (teddyBearBox.isSelected())
                 giftSelected.add("Teddy Bear");
+            if (flowerCheckbox.isSelected())
+                giftSelected.add(flowerType.getValue().toString());
             if (chocolateBox.isSelected())
-                giftSelected.add("Chocolate");
+                giftSelected.add("Chocolates");
+            if (balloonsBox.isSelected())
+                giftSelected.add("Balloons");
             if (giftBasketBox.isSelected())
                 giftSelected.add("Gift Basket");
             if (otherCheckbox.isSelected())
@@ -261,8 +291,8 @@ public class GiftDelivery {
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
-            requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox

@@ -32,6 +32,7 @@ public class Success {
     private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
 
     private MedicineDelivery medicineDelivery;
+    private FoodDelivery foodDelivery;
 
     private SanitationServices sanitationServices;
 
@@ -64,6 +65,10 @@ public class Success {
 
     public Success(SanitationServices sanitationServices) {
         this.sanitationServices = sanitationServices;
+    }
+
+    public Success(FoodDelivery foodDelivery) {
+        this.foodDelivery = foodDelivery;
     }
 
     /**

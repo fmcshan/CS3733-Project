@@ -4,8 +4,8 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
@@ -22,12 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <h1>Medicine Delivery Controller</h1>
- * Controller for the Medicine Delivery Request Page
- * @author Lauren Sowerbutts, Frank McShan
- */
-public class MedicineDelivery {
+public class FoodDelivery {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -41,29 +36,38 @@ public class MedicineDelivery {
     @FXML
     private JFXTextField nameInput;
 
-    /**
-     * Label indicating if a medication name hasn't been inputted
-     */
     @FXML
-    private Label failedMedicationName;
+    private Label failedFoodSelection;
 
     /**
-     * Text field to input medication name
+     * Checkbox for selecting a hamburger
      */
     @FXML
-    private JFXTextField medicationNameInput;
+    private JFXCheckBox hamburgerBox;
 
     /**
-     * Label indicating if a dosage amount hasn't been inputted
+     * Checkbox for selecting a hot dog
      */
     @FXML
-    private Label failedDosageAmount;
+    private JFXCheckBox hotdogBox;
 
     /**
-     * Text field to input dosage amount
+     * Checkbox for selecting an impossible burger
      */
     @FXML
-    private JFXTextField dosageAmountInput;
+    private JFXCheckBox impossibleBurgerBox;
+
+    /**
+     * Label indicating the phone number text field has been filled in incorrectly
+     */
+    @FXML
+    private Label failedPhoneNumber;
+
+    /**
+     * Text Field to enter phone number
+     */
+    @FXML
+    private JFXTextField phoneInput;
 
     /**
      * Label indicating a location hasn't been selected
@@ -87,7 +91,7 @@ public class MedicineDelivery {
      * Instance of Requests class used to create a popup window
      */
     @FXML
-    private Requests request;
+    private edu.wpi.teamname.views.Requests request;
 
     /**
      * List of Service Requests
@@ -98,7 +102,7 @@ public class MedicineDelivery {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public MedicineDelivery(Requests request) {
+    public FoodDelivery(Requests request) {
         this.request = request;
     }
 
@@ -109,7 +113,7 @@ public class MedicineDelivery {
     }
 
     /**
-     * Retrieves success pop up page
+     * Retrieves sucess pop up page
      *
      * @return Success pop up page
      */
@@ -126,22 +130,23 @@ public class MedicineDelivery {
         return nameInput.getText().contains(" ");
     }
 
+
     /**
-     * Checks if the "Medication Name" text box has been filled
+     * Checks if a checkbox has been selected
      *
-     * @return true if the box was filled correctly, and false otherwise
+     * @return true if any checkbox has been selected, and false otherwise
      */
-    public boolean medicationNameInputValid() {
-        return !medicationNameInput.getText().isEmpty();
+    public boolean checkBoxSelected() {
+        return hamburgerBox.isSelected() || hotdogBox.isSelected() || impossibleBurgerBox.isSelected();
     }
 
     /**
-     * Checks if the "Dosage Amount" text box has been filled
+     * Checks if the phone number text field has been filled in correctly
      *
-     * @return true if the box was filled correctly, and false otherwise
+     * @return true if the number matches the "XXX-XXX-XXXX" format
      */
-    public boolean dosageAmountInputValid() {
-        return !dosageAmountInput.getText().isEmpty();
+    public boolean phoneNumberValid() {
+        return phoneInput.getText().matches("\\d{3}-\\d{3}-\\d{4}");
     }
 
     /**
@@ -168,21 +173,26 @@ public class MedicineDelivery {
      * @param event event triggering submission
      */
     public void submitRequest(ActionEvent event) {
+        if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
+            phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
+        }
+
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
-        if (!medicationNameInputValid())
-            failedMedicationName.setText("Invalid Medication Name.");
-        else
-            failedMedicationName.setText("");
 
-        if (!dosageAmountInputValid())
-            failedDosageAmount.setText("Invalid Name Entry.");
+        if (!checkBoxSelected())
+            failedFoodSelection.setText("Invalid Menu Item Selection");
         else
-            failedDosageAmount.setText("");
+            failedFoodSelection.setText("");
+
+        if (!phoneNumberValid())
+            failedPhoneNumber.setText("Invalid Phone Number");
+        else
+            failedPhoneNumber.setText("");
 
         if (!locationValid())
             failedLocationEntry.setText("Please select a location");
@@ -191,18 +201,21 @@ public class MedicineDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && medicationNameInputValid() && dosageAmountInputValid() && locationValid()) {
-
-            ArrayList<String> items = new ArrayList<>();
-            items.add(medicationNameInput.getText() + " -");
-            items.add(dosageAmountInput.getText());
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid()) {
+            //Adds all the selected gifts to an arraylist
+            ArrayList<String> selected = new ArrayList<>();
+            if (hamburgerBox.isSelected())
+                selected.add("Hamburger");
+            if (hotdogBox.isSelected())
+                selected.add("Hot Dog");
+            if (impossibleBurgerBox.isSelected())
+                selected.add("Impossible Burger");
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
-//            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
-//            });
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Medicine Delivery", requestLocation.getValue(), items, nameInput.getText(), "", "", false);
+            //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Food Delivery", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -216,10 +229,10 @@ public class MedicineDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/MedicineDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/FoodDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == MedicineDelivery.class)
+                if (type == FoodDelivery.class)
                     return this;
                 else
                     try {

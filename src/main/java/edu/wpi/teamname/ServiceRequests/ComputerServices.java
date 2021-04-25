@@ -5,10 +5,9 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
@@ -147,7 +146,7 @@ public class ComputerServices {
      * @return true if there's a space between the first and last name, and false otherwise
      */
     public boolean descriptionValid() {
-        return descriptionInput.getText().isEmpty();
+        return !descriptionInput.getText().isEmpty();
     }
 
     /**
@@ -234,11 +233,13 @@ public class ComputerServices {
             if (highUrgency.isSelected())
                 selected.add("High Urgency");
 
+            selected.add("- " + descriptionInput.getText());
+
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Computer Services", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox

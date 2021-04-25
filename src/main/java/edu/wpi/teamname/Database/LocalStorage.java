@@ -3,8 +3,6 @@ package edu.wpi.teamname.Database;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.simplify.Config;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class LocalStorage {
     private HashMap<String, Node> nodeMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
-    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
+    private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
 
     public static synchronized LocalStorage getInstance() {
         return instance;
@@ -138,15 +136,15 @@ public class LocalStorage {
         this.registrations.add(_registration);
     }
 
-    public void setGiftDeliveryStorages(ArrayList<GiftDeliveryStorage> _giftDeliveryStorages) {
+    public void setGiftDeliveryStorages(ArrayList<MasterServiceRequestStorage> _giftDeliveryStorages) {
         this.giftDeliveryStorages = _giftDeliveryStorages;
     }
 
-    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
+    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
         this.giftDeliveryStorages.add(_giftDelivery);
     }
 
-    public ArrayList<GiftDeliveryStorage> getGiftDeliveryStorages() {
+    public ArrayList<MasterServiceRequestStorage> getGiftDeliveryStorages() {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             return null;
         }
@@ -166,7 +164,7 @@ public class LocalStorage {
         if (this.giftDeliveryStorages == null) {
             return null;
         } else {
-            return (ArrayList<GiftDeliveryStorage>) this.giftDeliveryStorages.clone();
+            return (ArrayList<MasterServiceRequestStorage>) this.giftDeliveryStorages.clone();
         }
     }
 }

@@ -1,8 +1,5 @@
 package edu.wpi.teamname.Database;
 
-import edu.wpi.teamname.Algo.Edge;
-import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -52,7 +49,7 @@ public class AuthSocket extends WebSocketClient {
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
-            ArrayList<GiftDeliveryStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
+            ArrayList<MasterServiceRequestStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
             LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
             return;
         }

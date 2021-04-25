@@ -45,7 +45,9 @@ public class Requests {
      */
     public void openFoodDelivery() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
+        FoodDelivery fd = new FoodDelivery(this);
+        fd.loadRequest();
+        //LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
     }
 
     /**
