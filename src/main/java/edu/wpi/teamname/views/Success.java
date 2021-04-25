@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
+import edu.wpi.teamname.ServiceRequests.LaundryRequest;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +21,10 @@ public class Success {
     public Label successText;
     @FXML
     private UserRegistration userRegistration;
-    @FXML
+
     private GiftDelivery giftDelivery;
+
+    private LaundryRequest laundryRequest;
 
     private VBox pop;
 
@@ -33,7 +36,9 @@ public class Success {
         this.giftDelivery = giftDelivery;
     }
 
-
+    public Success(LaundryRequest laundryRequest) {
+        this.laundryRequest = laundryRequest;
+    }
 
     /**
      * load success bar in the Default Page when button is pressed/ make it disappear

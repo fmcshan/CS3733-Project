@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
+import edu.wpi.teamname.ServiceRequests.LaundryRequest;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
@@ -61,7 +62,8 @@ public class Requests {
      */
     public void openLaundryServices() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("LaundryRequest", "laundryServices", requestPop);
+        LaundryRequest lr = new LaundryRequest(this);
+        lr.loadRequest();
     }
 
     /**
@@ -69,7 +71,9 @@ public class Requests {
      */
     public void openComputerService() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("ComputerService", "computerService", requestPop);
+//        ComputerServices cs = new ComputerServices(this);
+//        cs.loadRequest();
+        //LoadFXML.getInstance().loadWindow("ComputerService", "computerService", requestPop);
     }
 
     /**
