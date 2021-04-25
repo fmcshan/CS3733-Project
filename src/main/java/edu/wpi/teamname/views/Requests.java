@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -41,6 +42,7 @@ public class Requests {
      */
     public void openWindowRequestPop(String windowName, Parent root) {
         requestPop.getChildren().clear(); //Clear requestPop VBox
+        SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         if (!windowName.equals(openWindow)) { //If the window we're trying to open is not the current window
             requestPop.getChildren().add(root); //Put the fxml in the requestPop VBox
             openWindow = windowName; //Set the current window to the specified window name

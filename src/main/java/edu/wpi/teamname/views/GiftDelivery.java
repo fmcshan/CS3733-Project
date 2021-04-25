@@ -9,6 +9,7 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -288,7 +289,7 @@ public class GiftDelivery {
                     }
             });
             Parent root = loader.load();
-            request.openWindowRequestPop("requestForm", root); //open/close request form
+            LoadFXML.getInstance().openWindow("giftDeliveryBar", root, SceneManager.getInstance().getDefaultPage().getPopPop());
         } catch (IOException ex) {
             ex.printStackTrace();
         }

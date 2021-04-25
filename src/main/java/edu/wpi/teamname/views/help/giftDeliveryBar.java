@@ -1,9 +1,9 @@
-package edu.wpi.teamname.views;
+package edu.wpi.teamname.views.help;
 
+import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.manager.SceneManager;
-import javafx.fxml.FXML;
 
-public class HelpNavigation {
+public class giftDeliveryBar {
 
     public void closeWindow() {
         SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();

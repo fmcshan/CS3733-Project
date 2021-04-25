@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.reqBar">
+    <effect>
+        <DropShadow color="#a4a4a4" />
+    </effect>
+    <children>
+        <Label text="Help" textFill="#9e9e9e">
+            <font>
+                <Font name="System Bold" size="36.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="50.0" />
+            </VBox.margin>
+        </Label>
+        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the service request form you would like to fill out from the dropdown menu. Select open request form to open the form and fill it out." wrappingWidth="316.0">
+            <font>
+                <Font size="16.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </Text>
+        <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="300.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
+            <font>
+                <Font size="24.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="30.0" />
+            </VBox.margin>
+        </JFXButton>
+    </children>
+</VBox>
