@@ -170,23 +170,20 @@
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
                   </JFXComboBox>
-                  <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0">
-                     <children>
-                        <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </JFXButton>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </VBox>
                </children>
                <VBox.margin>
                   <Insets top="25.0" />
                </VBox.margin>
             </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
          </children>
       </VBox>
       <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
