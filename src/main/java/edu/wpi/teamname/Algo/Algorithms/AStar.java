@@ -1,7 +1,11 @@
-package edu.wpi.teamname.Algo;
+package edu.wpi.teamname.Algo.Algorithms;
 
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Algo.NodeComparator;
+import edu.wpi.teamname.Algo.Stopwatch;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.SocketManager;
+import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -186,20 +190,28 @@ public class AStar {
                 bfloor = "0";
             else
                 bfloor = "-1";
-        return flatDistance + (Math.abs(Integer.valueOf(afloor) - Integer.valueOf(bfloor)) * 50) ;
-        //return flatDistance;
+        if (!afloor.equals(bfloor))
+            return flatDistance + (50 * Math.abs(Integer.valueOf(afloor) - Integer.valueOf(bfloor))); //Helps to handle navigating multiple floors properly
+        if (!afloor.equals(bfloor) && (a.getNodeType().equals("STAI") || a.getNodeType().equals("ELEV")))
+            return 1; //Ensures we don't get weird paths when using elevators or stairs
+        return flatDistance;
     }
 
     public static void main(String[] args) {
         //TODO make nodeID take click instance/drop-down  menu
-        Stopwatch timer = new Stopwatch();
+        Config.getInstance().setEnv("staging"); // dev staging production
+        SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         //Node start = nodes.get(Parser.indexOfNode(nodes, "AREST00101"));
         //Node goal = nodes.get(Parser.indexOfNode(nodes, "AREST00103"));
-        Node start = nodes.get(1);
-        Node goal = nodes.get(30);
+        //Node start = nodes.get(86);
+        //Node goal = nodes.get(389);
+        Node start = nodes.get(0);
+        Node goal = nodes.get(600);
+        Stopwatch timer = new Stopwatch();
         AStar example = new AStar(nodes, start, goal);
-
+        ArrayList<Node> path = example.returnPath();
+        System.out.println(path.size());
         System.out.println(timer.elapsedTime());
     }
 }

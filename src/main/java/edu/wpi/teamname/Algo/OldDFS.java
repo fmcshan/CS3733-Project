@@ -1,22 +1,25 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.SocketManager;
+import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
 
 /**
- * <h1>DFS</h1>
+ * <h1>OldDFS</h1>
  * This program performs Depth-First Search
  * @author Conor McDonough
  */
 
 
-public class DFS {
+public class OldDFS {
     public static void main(String[] args) {
-        ArrayList<Node> nodes= new ArrayList<>(); //ArrayList of Nodes
-
-        nodes = PathFindingDatabaseManager.getInstance().getNodes(); //Parses .csv files and loads the nodes ArrayList
-
+        Config.getInstance().setEnv("staging"); // dev staging production
+        SocketManager.getInstance().startDataSocket();
+        ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         //System.out.println(nodes.get(0).getEdgeTo());
         //System.out.println(nodes.get(28));
         //System.out.println(nodes.get(30));
@@ -25,12 +28,10 @@ public class DFS {
         //To run this code simply insert the nodeID for the start and end nodes
         // as the second parameter for both instances of indexOfNode
         // The first instance would be the starting node and the second is the end node
-        ArrayList<String> answer = DoDFS(nodes.get(Parser.indexOfNode(nodes, "CCONF002L1")),
-                nodes.get(Parser.indexOfNode(nodes, "WELEV00ML1")));
+        ArrayList<String> answer = DoDFS(nodes.get(0),
+                nodes.get(600));
         System.out.println(DFSwatch.elapsedTime());
-        System.out.println("separate");
         Stopwatch loadnodes = new Stopwatch();
-        AStar bob = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes,"CCONF002L1")), nodes.get(Parser.indexOfNode(nodes,"WELEV00ML1")));
         System.out.println(loadnodes.elapsedTime());
 
     }
@@ -99,7 +100,7 @@ public class DFS {
 
             }
         }
-        if (notAllVisited == 0) { //if all nodes visited, removes last node from answer and runs DFS using parent as temp
+        if (notAllVisited == 0) { //if all nodes visited, removes last node from answer and runs OldDFS using parent as temp
             //System.out.println("temp " + temp + "edges " + temp.getEdgeTo());
             answer.remove(answer.size()-1);
             return DFS(start, end, answer, visited, flag, temp.getParent());

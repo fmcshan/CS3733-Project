@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.Algo.AStar;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import javafx.fxml.FXML;
