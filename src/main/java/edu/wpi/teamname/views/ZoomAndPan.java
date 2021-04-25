@@ -114,7 +114,7 @@ public class ZoomAndPan {
                 page.tonysPath.getElements().clear(); // Clear Tony's path
                 page.hidePopups();
                 page.drawPath(page.currentPath);
-                page.displayNodes(0.8);
+                page.displayHotspots(0.8);
 
             }
                     if (!LoadFXML.getCurrentWindow().equals("navBar")){
@@ -123,13 +123,6 @@ public class ZoomAndPan {
             page.hospitalMap.setViewport(newViewPort);
 
 
-        });
-
-
-        page.onTopOfTopElements.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getClickCount() == 2) {
-                reset(page.hospitalMap, page.mapWidth, page.mapHeight);
-            }
         });
 
         page.onTopOfTopElements.setOnMouseReleased(e -> {
@@ -189,7 +182,7 @@ public class ZoomAndPan {
             page.tonysPath.getElements().clear(); // Clear Tony's path
             page.hidePopups();
             page.drawPath(page.currentPath);
-            page.displayNodes(0.8);
+            page.displayHotspots(0.8);
         }
 //        System.out.println("pan listener");
 //        page.drawPath(_listOfNodes);

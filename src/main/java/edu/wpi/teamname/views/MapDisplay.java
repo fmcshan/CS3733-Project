@@ -125,6 +125,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
 
@@ -161,7 +162,9 @@ public class MapDisplay implements LevelChangeListener {
         resizingInfo(); // Set resizing info
 
         _nodes.forEach(n -> { // For each node in localNodes
-            if (n.equals(draggedNode)) { return; }
+            if (n.equals(draggedNode)) {
+                return;
+            }
             Tooltip tooltip = new Tooltip(n.getLongName());
             Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
             circle.setStrokeWidth(4); // Set the stroke with to 4
@@ -178,19 +181,23 @@ public class MapDisplay implements LevelChangeListener {
                 circle.setRadius(12); // Increase radius
                 circle.setOpacity(0.6); // Decrease opacity
             });
-            circle.setOnMouseMoved(
-                    new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
-                            tooltip.show(circle, event.getScreenX()-15, event.getScreenY() + 20);
-                        }
-                    });
             circle.setOnMouseExited(e -> { // Hide hover effect
                 circle.setRadius(8); // Reset/set radius
                 circle.setOpacity(0.8); // Reset/set opacity
                 tooltip.hide();
             });
+            circle.setOnMouseMoved(
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
+                            tooltip.show(circle, event.getScreenX() - 15, event.getScreenY() + 20);
+                        }
+                    });
+
+            if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                return; // Don't process drags outside of the map editor.
+            }
 
             circle.setOnMouseDragged(e -> {
                 nodeBeingDragged = true;
@@ -202,7 +209,9 @@ public class MapDisplay implements LevelChangeListener {
             });
 
             circle.setOnMouseReleased(e -> {
-                if (!nodeBeingDragged) { return; }
+                if (!nodeBeingDragged) {
+                    return;
+                }
                 nodeBeingDragged = false;
                 Submit.getInstance().editNode(new Node(
                         draggedNode.getNodeID(),
@@ -219,15 +228,7 @@ public class MapDisplay implements LevelChangeListener {
                 refreshData();
                 renderMap();
             });
-
-
-
-
-
         });
-
-
-
     }
 
     /**
@@ -239,14 +240,12 @@ public class MapDisplay implements LevelChangeListener {
         displayNodes(localNodes, _opacity);
     }
 
-    public void displayHotspots(int _opacity) {
+    public void displayHotspots(double _opacity) {
         ArrayList<Node> toDisplay = (ArrayList<Node>) localNodes.clone();
         for (int i = 0; i < toDisplay.size(); i++) {
             Node n = toDisplay.get(i);
             if (n.getNodeType().equals("HALL")) {
                 toDisplay.remove(n);
-            } else {
-                System.out.println(n.getNodeType());
             }
         }
         displayNodes(toDisplay, _opacity);
@@ -842,7 +841,7 @@ public class MapDisplay implements LevelChangeListener {
         if (_listOfNodes.size() < 1) {
             return;
         }
-       currentPath = _listOfNodes;
+        currentPath = _listOfNodes;
         tonysPath.getElements().clear();
         Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
@@ -856,24 +855,18 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         Navigation navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
-//        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // Add resize listener
-//            resizingInfo(); // Set resize listener
-//            onTopOfTopElements.getChildren().clear(); // Clear children
-//            displayNodes(1); // Display nodes at 1 (100%) opacity
-//            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
-//            zooM.zoomAndPan();// Bind map width to pane width
-//        });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
             return;
         }
-        displayHotspots(1); // Display nodes at 1 (100%) opacity
+        displayHotspots(0.8); // Display nodes at 0.8 (80%) opacity
     }
 
     /**
@@ -894,7 +887,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop.setPickOnBounds(true); // Set clickable to true
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
-      //  currentPath= new ArrayList();
+        //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
     }
@@ -907,7 +900,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop.setPickOnBounds(true); // Set clickable to true
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
-       // currentPath= new ArrayList();
+        // currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         if (!AuthenticationManager.getInstance().isAuthenticated()) { // If user isn't authenticated
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button
@@ -1091,21 +1084,47 @@ public class MapDisplay implements LevelChangeListener {
     }
 
     @FXML
-    private void setFloor0 (ActionEvent e) { LevelManager.getInstance().setFloor(0); }
+    private void setFloor0(ActionEvent e) {
+        LevelManager.getInstance().setFloor(0);
+    }
+
     @FXML
-    private void setFloor1 (ActionEvent e) { LevelManager.getInstance().setFloor(1); }
+    private void setFloor1(ActionEvent e) {
+        LevelManager.getInstance().setFloor(1);
+    }
+
     @FXML
-    private void setFloor2 (ActionEvent e) { LevelManager.getInstance().setFloor(2); }
+    private void setFloor2(ActionEvent e) {
+        LevelManager.getInstance().setFloor(2);
+    }
+
     @FXML
-    private void setFloor3 (ActionEvent e) { LevelManager.getInstance().setFloor(3); }
+    private void setFloor3(ActionEvent e) {
+        LevelManager.getInstance().setFloor(3);
+    }
+
     @FXML
-    private void setFloor4 (ActionEvent e) { LevelManager.getInstance().setFloor(4); }
+    private void setFloor4(ActionEvent e) {
+        LevelManager.getInstance().setFloor(4);
+    }
+
     @FXML
-    private void setFloor5 (ActionEvent e) { LevelManager.getInstance().setFloor(5); }
+    private void setFloor5(ActionEvent e) {
+        LevelManager.getInstance().setFloor(5);
+    }
 
     @Override
     public void levelChanged(int _level) {
         refreshData(); // Update localNodes with new floor
-        renderMap(); // Render/refresh map (with updated data)
+        switch (LoadFXML.getCurrentWindow()) {
+            case "mapEditorBar":
+                renderMap(); // Render/refresh map (with updated data)
+                break;
+            case "navBar":
+                System.out.println("AHHHHHHHHHHH");
+                clearMap();
+                displayHotspots(0.8);
+                break;
+        }
     }
 }

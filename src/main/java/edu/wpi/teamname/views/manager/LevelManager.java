@@ -16,7 +16,7 @@ public class LevelManager {
     private static final LevelManager instance = new LevelManager();
     public static synchronized LevelManager getInstance() {return instance;}
 
-    private final List<String> floorImageNames = Arrays.asList("00_thegroundfloor.png", "00_thelowerlevel1.png", "00_thelowerlevel2.png", "01_thefirstfloor.png", "02_thesecondfloor.png", "03_thethirdfloor.png");
+    private final List<String> floorImageNames = Arrays.asList("00_thelowerlevel2.png", "00_thelowerlevel1.png", "00_thegroundfloor.png", "01_thefirstfloor.png", "02_thesecondfloor.png", "03_thethirdfloor.png");
     private List<Image> floorImages = new ArrayList<Image>();
     private int level;
 
@@ -46,7 +46,9 @@ public class LevelManager {
     }
 
     public void addListener(LevelChangeListener _toAdd) {
-        listeners.add(_toAdd);
+        if (!listeners.contains(_toAdd)) {
+            listeners.add(_toAdd);
+        }
     }
 
     public int getLevel() {
