@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -154,6 +155,7 @@ public class MapDisplay {
 
         _nodes.forEach(n -> { // For each node in localNodes
             if (n.equals(draggedNode)) { return; }
+            Tooltip tooltip = new Tooltip(n.getLongName());
             Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
             circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
@@ -169,10 +171,18 @@ public class MapDisplay {
                 circle.setRadius(12); // Increase radius
                 circle.setOpacity(0.6); // Decrease opacity
             });
-
+            circle.setOnMouseMoved(
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
+                            tooltip.show(circle, event.getScreenX()-15, event.getScreenY() + 20);
+                        }
+                    });
             circle.setOnMouseExited(e -> { // Hide hover effect
                 circle.setRadius(8); // Reset/set radius
                 circle.setOpacity(0.8); // Reset/set opacity
+                tooltip.hide();
             });
 
             circle.setOnMouseDragged(e -> {
@@ -198,10 +208,18 @@ public class MapDisplay {
                 ));
                 draggedCircle = null;
                 draggedNode = null;
+                refreshData();
                 renderMap();
             });
 
+
+
+
+
         });
+
+
+
     }
 
     /**
@@ -815,14 +833,8 @@ public class MapDisplay {
         if (_listOfNodes.size() < 1) {
             return;
         }
-        currentPath = _listOfNodes;
+       currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        double fileWidth = hospitalMap.getImage().getWidth();
-        double fileHeight = hospitalMap.getImage().getHeight();
-        double fileFxWidthRatio = mapWidth / fileWidth;
-        double fileFxHeightRatio = mapHeight / fileHeight;
         Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
         tonysPath.getElements().add(start);
@@ -851,6 +863,7 @@ public class MapDisplay {
 //        });
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
+            tonysPath.getElements().clear();
             return;
         }
         displayHotspots(1); // Display nodes at 1 (100%) opacity
@@ -862,6 +875,7 @@ public class MapDisplay {
     public void clearMap() {
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
+        currentPath.clear();
         tonysPath.getElements().clear(); // Clear Tony's path
         hidePopups(); // Hide all popups
     }
@@ -873,6 +887,7 @@ public class MapDisplay {
         popPop.setPickOnBounds(true); // Set clickable to true
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
+      //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
     }
@@ -885,6 +900,7 @@ public class MapDisplay {
         popPop.setPickOnBounds(true); // Set clickable to true
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
+       // currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         if (!AuthenticationManager.getInstance().isAuthenticated()) { // If user isn't authenticated
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button

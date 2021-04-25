@@ -109,9 +109,16 @@ public class ZoomAndPan {
             if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                 page.renderMap();}
             if (LoadFXML.getCurrentWindow().equals("navBar")){
-                page.clearMap();
+                page.onTopOfTopElements.getChildren().clear();
+                page.topElements.getChildren().clear(); // Clear top elements
+                page.tonysPath.getElements().clear(); // Clear Tony's path
+                page.hidePopups();
                 page.drawPath(page.currentPath);
                 page.displayNodes(0.8);
+
+            }
+                    if (!LoadFXML.getCurrentWindow().equals("navBar")){
+                page.currentPath= new ArrayList();
             }
             page.hospitalMap.setViewport(newViewPort);
 
@@ -177,7 +184,10 @@ public class ZoomAndPan {
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
         page.renderMap();}
         if (LoadFXML.getCurrentWindow().equals("navBar")){
-            page.clearMap();
+            page.onTopOfTopElements.getChildren().clear();
+            page.topElements.getChildren().clear(); // Clear top elements
+            page.tonysPath.getElements().clear(); // Clear Tony's path
+            page.hidePopups();
             page.drawPath(page.currentPath);
             page.displayNodes(0.8);
         }
