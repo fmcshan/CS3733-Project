@@ -2,12 +2,9 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.AStar;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,6 +48,11 @@ public class Navigation implements LevelChangeListener {
     public void initialize() {
         LevelManager.getInstance().addListener(this);
         refreshNodes();
+
+        new AutoCompleteComboBoxListener<>(fromCombo);
+        new AutoCompleteComboBoxListener<>(toCombo);
+
+
     }
 
     private void refreshNodes() {

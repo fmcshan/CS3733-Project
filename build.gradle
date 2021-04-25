@@ -41,6 +41,7 @@ dependencies {
             'com.google.firebase:firebase-admin:7.1.1', // Firebase admin sdk
             'org.json:json:20160810',
             'org.java-websocket:Java-WebSocket:1.5.1',
+            'me.xdrop:fuzzywuzzy:1.3.1',
     )
     implementation 'junit:junit:4.12'
 //These are test dependencies. These are only used for running verification tasks via Gradle.
