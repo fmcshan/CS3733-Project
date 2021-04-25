@@ -1,10 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.ServiceRequests.ComputerServices;
-import edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest;
-import edu.wpi.teamname.ServiceRequests.GiftDelivery;
-import edu.wpi.teamname.ServiceRequests.LaundryRequest;
-import edu.wpi.teamname.ServiceRequests.MedicineDelivery;
+import edu.wpi.teamname.ServiceRequests.*;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
@@ -96,7 +92,9 @@ public class Requests {
      */
     public void openSanitationServices() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("SanitationServices", "sanitationServices", requestPop);
+        SanitationServices ss = new SanitationServices(this);
+        ss.loadRequest();
+        //LoadFXML.getInstance().loadWindow("SanitationServices", "sanitationServices", requestPop);
     }
 
     /**
