@@ -3,6 +3,7 @@ package edu.wpi.teamname;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.simplify.Config;
+import edu.wpi.teamname.views.manager.LevelManager;
 
 import java.util.ArrayList;
 import java.util.UUID;

@@ -10,11 +10,13 @@ import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -23,9 +25,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Controller for DefaultPage.fxml
@@ -43,6 +47,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void initialize() {
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
+        LevelManager.getInstance().setFloor(0);
         AuthenticationManager.getInstance().addListener(this);
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
@@ -80,13 +85,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         refreshData();
         zooM.zoomAndPan();
     }
-
-    public boolean nodeWithinSpec(Node n) {
-        return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
-    }
-
-
-
 
     private void displayAuthPages() {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
@@ -167,4 +165,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void closeWindows() {
         popPop.getChildren().clear();
     }
+
+    public void setHospitalMap(Image _image) {
+        hospitalMap.setImage(_image);
+    }
+
 }

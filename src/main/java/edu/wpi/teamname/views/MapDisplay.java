@@ -10,6 +10,8 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.LevelChangeListener;
+import edu.wpi.teamname.views.manager.LevelManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,9 +31,11 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-public class MapDisplay {
+public class MapDisplay implements LevelChangeListener {
 
     double scaledWidth = 5000;
     double scaledHeight = 3400.0;
@@ -53,6 +57,9 @@ public class MapDisplay {
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
+    boolean nodeBeingDragged = false;
+    List<String> floorNames = Arrays.asList("L2", "L1", "G", "1", "2");
+
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
@@ -186,6 +193,7 @@ public class MapDisplay {
             });
 
             circle.setOnMouseDragged(e -> {
+                nodeBeingDragged = true;
                 draggedCircle = (Circle) e.getTarget();
                 draggedCircle.setCenterX(e.getX());
                 draggedCircle.setCenterY(e.getY());
@@ -194,8 +202,8 @@ public class MapDisplay {
             });
 
             circle.setOnMouseReleased(e -> {
-                System.out.println(draggedCircle.getCenterX());
-                System.out.println(draggedCircle.getCenterY());
+                if (!nodeBeingDragged) { return; }
+                nodeBeingDragged = false;
                 Submit.getInstance().editNode(new Node(
                         draggedNode.getNodeID(),
                         (int) actualX(draggedCircle.getCenterX()),
@@ -289,6 +297,7 @@ public class MapDisplay {
      * Initialize the map editor/display
      */
     public void initMapEditor() {
+        LevelManager.getInstance().addListener(this);
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
         displayEdges(.6); // Render edges at 0.6 opacity
@@ -497,6 +506,9 @@ public class MapDisplay {
      * @param t Mouse Event
      */
     public void processClick(MouseEvent t, boolean dragged) {
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            return; // Don't process clicks outside of the map editor.
+        }
         if (dragged) {
             return;
         }
@@ -505,9 +517,6 @@ public class MapDisplay {
             return;
         } else if (t.getButton() != MouseButton.PRIMARY) {
             return;
-        }
-        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            return; // Don't process clicks outside of the map editor.
         }
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
@@ -973,7 +982,8 @@ public class MapDisplay {
      * @return true if the node is within current specifications
      */
     public boolean nodeWithinSpec(Node n) {
-        return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
+//        System.out.println(floorNames.get(LevelManager.getInstance().getLevel()));
+        return n.getFloor().equals(floorNames.get(LevelManager.getInstance().getLevel()));
     }
 
 
@@ -1080,5 +1090,24 @@ public class MapDisplay {
         // Save the CSV file from LocalStorage
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
         hidePopups(); // Hide all popups
+    }
+
+    @FXML
+    private void setFloor0 (ActionEvent e) { LevelManager.getInstance().setFloor(0); }
+    @FXML
+    private void setFloor1 (ActionEvent e) { LevelManager.getInstance().setFloor(1); }
+    @FXML
+    private void setFloor2 (ActionEvent e) { LevelManager.getInstance().setFloor(2); }
+    @FXML
+    private void setFloor3 (ActionEvent e) { LevelManager.getInstance().setFloor(3); }
+    @FXML
+    private void setFloor4 (ActionEvent e) { LevelManager.getInstance().setFloor(4); }
+    @FXML
+    private void setFloor5 (ActionEvent e) { LevelManager.getInstance().setFloor(5); }
+
+    @Override
+    public void levelChanged(int _level) {
+        refreshData(); // Update localNodes with new floor
+        renderMap(); // Render/refresh map (with updated data)
     }
 }
