@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.FacilitiesMaintenanceRequest">
+<AnchorPane prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
@@ -67,7 +67,7 @@
                         <Font size="14.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="25.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label prefHeight="20.0" prefWidth="393.0" text="Please enter a brief description of the desired request:" textFill="#868686">
@@ -75,10 +75,10 @@
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="10.0" />
+                        <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXTextArea focusColor="#868686" maxWidth="-Infinity" prefColumnCount="12" prefHeight="126.0" prefWidth="457.0" promptText="Description" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                  <JFXTextArea fx:id="descriptionInput" focusColor="#868686" maxWidth="-Infinity" prefColumnCount="12" prefHeight="126.0" prefWidth="457.0" promptText="Description" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -86,7 +86,7 @@
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
                   </JFXTextArea>
-                  <Label fx:id="failedGiftSelection" textFill="RED">
+                  <Label fx:id="failedUrgency" textFill="RED">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -102,7 +102,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXCheckBox fx:id="teddyBearBox" checkedColor="#0067b1" text="Low" textFill="#868686">
+                  <JFXCheckBox fx:id="lowUrgency" checkedColor="#0067b1" text="Low" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
@@ -110,7 +110,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="chocolateBox" checkedColor="#0067b1" text="Medium" textFill="#868686">
+                  <JFXCheckBox fx:id="mediumUrgency" checkedColor="#0067b1" text="Medium" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />
                      </VBox.margin>
@@ -118,7 +118,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="giftBasketBox" checkedColor="#0067b1" text="High" textFill="#868686">
+                  <JFXCheckBox fx:id="highUrgency" checkedColor="#0067b1" text="High" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />
                      </VBox.margin>

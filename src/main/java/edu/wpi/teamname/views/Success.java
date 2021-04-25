@@ -1,5 +1,7 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.ServiceRequests.ComputerServices;
+import edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest;
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
 import edu.wpi.teamname.ServiceRequests.LaundryRequest;
 import edu.wpi.teamname.views.manager.SceneManager;
@@ -8,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.junit.runner.Computer;
 
 import java.io.IOException;
 
@@ -26,6 +29,10 @@ public class Success {
 
     private LaundryRequest laundryRequest;
 
+    @FXML
+    private ComputerServices computerServices;
+    private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
+
     private VBox pop;
 
     public Success(UserRegistration userRegistration) {
@@ -38,6 +45,14 @@ public class Success {
 
     public Success(LaundryRequest laundryRequest) {
         this.laundryRequest = laundryRequest;
+    }
+
+    public Success(ComputerServices computerServices) {
+        this.computerServices = computerServices;
+    }
+
+    public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
+        this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
     }
 
     /**

@@ -1,5 +1,7 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.ServiceRequests.ComputerServices;
+import edu.wpi.teamname.ServiceRequests.FacilitiesMaintenanceRequest;
 import edu.wpi.teamname.ServiceRequests.GiftDelivery;
 import edu.wpi.teamname.ServiceRequests.LaundryRequest;
 import javafx.fxml.FXML;
@@ -71,8 +73,8 @@ public class Requests {
      */
     public void openComputerService() {
         requestPop.setPrefWidth(657.0);
-//        ComputerServices cs = new ComputerServices(this);
-//        cs.loadRequest();
+        ComputerServices cs = new ComputerServices(this);
+        cs.loadRequest();
         //LoadFXML.getInstance().loadWindow("ComputerService", "computerService", requestPop);
     }
 
@@ -81,7 +83,9 @@ public class Requests {
      */
     public void openFacilitiesMaintenance() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("FacilitiesMaintenanceRequest", "facilitiesMaintenance", requestPop);
+        FacilitiesMaintenanceRequest fmq = new FacilitiesMaintenanceRequest(this);
+        fmq.loadRequest();
+        //LoadFXML.getInstance().loadWindow("FacilitiesMaintenanceRequest", "facilitiesMaintenance", requestPop);
     }
 
     /**
