@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.NodeComparator;
+import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Algo.Stopwatch;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
@@ -17,7 +18,7 @@ import java.util.Stack;
  * AStar Pathfinding Algorithm that navigates a map of provided nodes
  * @author Emmanuel Ola
  */
-public class AStar {
+public class AStar implements IAlgorithm {
     /**
      * ArrayList of provided nodes
      */
@@ -47,7 +48,6 @@ public class AStar {
         this.goal = goal;
         openNodes = new PriorityQueue<>(new NodeComparator()); //Instantiates the priority queue with our overwrited comparator
         this.process();
-        this.displayPath();
     }
 
     /**
@@ -62,12 +62,40 @@ public class AStar {
             node.setCostSoFar(Double.POSITIVE_INFINITY);
         }
     }
+
+    /**
+     * Returns all the floors we reach on our path
+     * @return List of floors we reach on our path
+     */
+    public ArrayList<String> getRelevantFloors() {
+        ArrayList<String> result = new ArrayList<>();
+        for (Node node : this.getPath()) {
+            if (!result.contains(node.getFloor()))
+                result.add(node.getFloor());
+        }
+        return result;
+    }
+
+    /**
+     * Returns a list of nodes representing the path specific to the floor provided
+     * @param floor the floor we want to get a path for
+     * @return list of nodes representing a path specific to the floor
+     */
+    public ArrayList<Node> getFloorPath(String floor) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node node : this.getPath()) {
+            if (node.getFloor().equals(floor))
+                nodes.add(node);
+        }
+
+        return nodes;
+    }
     
     /**
      * Prints the path from the start node to the goal node
      */
     public void displayPath(){
-        Stack<Node> finalPath = this.getPath(); //
+        Stack<Node> finalPath = this.returnPath(); //
         while (!finalPath.isEmpty())
             System.out.println(finalPath.pop().getNodeInfo().get("longName"));
     }
@@ -76,17 +104,14 @@ public class AStar {
      * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
      * @return Stack containing the solution path for algorithm
      */
-    private Stack<Node> getPath() {
+    private Stack<Node> returnPath() {
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
-
-
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())){
             finalPath.push(current);
             current = current.getParent();
         }
         finalPath.push(start); //Pushes the starting node on to the stack
-
         return finalPath;
     }
 
@@ -96,8 +121,6 @@ public class AStar {
      */
     private Stack<Hashtable<String, Integer>> getXYPath() {
         Stack<Hashtable<String, Integer>> finalXYPath = new Stack<Hashtable<String, Integer>>(); //Stack containing the final path of our algorithm
-
-
         Node current = goal;
         while (current.getParent() != null){
             finalXYPath.push(current.getCoords());
@@ -108,14 +131,14 @@ public class AStar {
         return finalXYPath;
     }
 
-
     /**
      * <b>*For JUnit Testing*</b> This method returns a list of nodes from start to finish that represents
      * the path of the AStar algorithm
      * @return a List of nodes representing the path of the algorithm
      */
-    public ArrayList<Node> returnPath(){
-        Stack<Node> finalPath = this.getPath();
+    @Override
+    public ArrayList<Node> getPath(){
+        Stack<Node> finalPath = this.returnPath();
         ArrayList<Node> returnPath = new ArrayList<Node>();
         while (!finalPath.isEmpty())
             returnPath.add(finalPath.pop());
@@ -206,12 +229,16 @@ public class AStar {
         //Node goal = nodes.get(Parser.indexOfNode(nodes, "AREST00103"));
         //Node start = nodes.get(86);
         //Node goal = nodes.get(389);
-        Node start = nodes.get(0);
+        Node start = nodes.get(Parser.indexOfNode(nodes, "lPARK014GG"));
         Node goal = nodes.get(600);
         Stopwatch timer = new Stopwatch();
         AStar example = new AStar(nodes, start, goal);
-        ArrayList<Node> path = example.returnPath();
-        System.out.println(path.size());
+        for (String relevantFloor : example.getRelevantFloors()) {
+            System.out.println("Floor " + relevantFloor + " ");
+            for (Node node : example.getFloorPath(relevantFloor)) {
+                System.out.println(node.getLongName());
+            }
+        }
         System.out.println(timer.elapsedTime());
     }
 }

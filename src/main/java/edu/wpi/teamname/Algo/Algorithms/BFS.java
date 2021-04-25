@@ -10,7 +10,11 @@ import edu.wpi.teamname.simplify.Config;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-public class BFS {
+/**
+ * <h1>Breadth-First Search Algorithm</h1>
+ * Uses breadth-first search for pathfinding
+ */
+public class BFS implements IAlgorithm {
     private Node start;
     private Node goal;
     private ArrayList<Node> path;
@@ -25,6 +29,7 @@ public class BFS {
         this.process();
     }
 
+    @Override
     public ArrayList<Node> getPath(){
         return path;
     }

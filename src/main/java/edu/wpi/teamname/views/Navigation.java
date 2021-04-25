@@ -137,7 +137,7 @@ public class Navigation {
         System.out.println(listOfNodes);
         System.out.println(listOfNodes.get(0).getEdges());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
-        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
+        ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         mapDisplay.drawPath(path); // draw the path on the map
     }
 

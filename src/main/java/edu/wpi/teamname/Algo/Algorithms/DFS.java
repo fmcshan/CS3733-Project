@@ -13,12 +13,18 @@ import java.util.ArrayList;
  * Uses depth-first search for pathfinding operations
  * @author Emmanuel Ola
  */
-public class DFS {
+public class DFS implements IAlgorithm {
     private Node start;
     private Node goal;
     private ArrayList<Node> path;
 
 
+    /**
+     * Constructor for DFS that takes in a list of nodes, and the start and goal node
+     * @param nodes List of nodes which contains the start and goal nodes
+     * @param start the start node
+     * @param goal the goal node
+     */
     public DFS(ArrayList<Node> nodes, Node start, Node goal) {
         this.resetNodes(nodes);
         this.start = start;
@@ -27,12 +33,21 @@ public class DFS {
         this.process(start);
     }
 
+    /**
+     * Resets the visited flag of all the nodes in the provided list of nodes
+     * @param nodes List of nodes containing the start and goal node
+     */
     private void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             node.visitedFlag = false;
         }
     }
 
+    /**
+     * Returns a list of nodes
+     * @return
+     */
+    @Override
     public ArrayList<Node> getPath(){
         ArrayList<Node> newPath = new ArrayList<Node>(path.subList(0, path.indexOf(goal)));
         newPath.add(goal);
