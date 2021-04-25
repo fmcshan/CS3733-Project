@@ -5,7 +5,7 @@ import edu.wpi.teamname.views.manager.SceneManager;
 
 public class defaultBar {
     public void closeWindow() {
-        SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
+        SceneManager.getInstance().getDefaultPage().getPopPop().getChildren().clear();
         LoadFXML.setCurrentHelp("");
     }
 }

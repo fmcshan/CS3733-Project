@@ -21,12 +21,12 @@
                 <Insets right="190.0" top="10.0" />
             </VBox.margin>
         </Label>
-        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill out this form to send a gift to a patient. Please include your name, what gift you would like to send, your phone number, and the hospital room the gift will be sent to." wrappingWidth="316.0">
+        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a username in the form of an email address and a password that is at least 6 characters in length." wrappingWidth="316.0">
             <font>
                 <Font size="16.0" />
             </font>
             <VBox.margin>
-                <Insets top="20.0" />
+                <Insets top="10.0" />
             </VBox.margin>
         </Text>
         <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="300.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">

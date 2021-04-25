@@ -125,6 +125,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleMapEditor() {
         clearMap();
         popPop.getChildren().clear();
+        popPop2.getChildren().clear();
         zooM.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
@@ -144,7 +145,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "registrationBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
     }
 
     /**
@@ -153,12 +154,20 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminView", "requestBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
     }
 
     @FXML
     private void openHelp() {
-        popPop2.setPickOnBounds(true);
+        popPop.setPrefWidth(340);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
+            return;
+        }
+        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
+            return;
+        }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
 

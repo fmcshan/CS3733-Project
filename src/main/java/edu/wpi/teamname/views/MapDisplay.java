@@ -857,8 +857,6 @@ public class MapDisplay implements LevelChangeListener {
      */
     public void toggleNav() {
         clearMap(); // clear the map
-        popPop.setPickOnBounds(true); // Set popPop clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         Navigation navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
@@ -926,7 +924,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("UserRegistration", "registrationButton", popPop); // Load registration window
+        LoadFXML.getInstance().loadWindow("UserRegistration", "checkBar", popPop); // Load registration window
     }
 
     /**
