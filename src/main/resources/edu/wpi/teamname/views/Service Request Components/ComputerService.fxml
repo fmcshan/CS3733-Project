@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GiftDelivery">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GiftDelivery">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
@@ -28,7 +29,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request service for a computer" textAlignment="CENTER" wrappingWidth="444.2413330078125">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request computer services." textAlignment="CENTER" wrappingWidth="444.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -70,7 +71,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label layoutX="35.0" layoutY="28.0" text="Please enter a description of the service required" textFill="#868686">
+                  <Label layoutX="35.0" layoutY="28.0" prefHeight="20.0" prefWidth="393.0" text="Please enter a brief description of the issue:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -78,14 +79,14 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXTextField fx:id="serviceDescriptionInput" focusColor="#868686" layoutX="60.0" layoutY="58.0" maxWidth="-Infinity" prefWidth="300.0" promptText="Service Description" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                  <JFXTextArea focusColor="#868686" maxWidth="-Infinity" prefColumnCount="12" prefHeight="126.0" prefWidth="457.0" promptText="Description" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="50.0" top="10.0" />
                      </VBox.margin>
-                  </JFXTextField>
+                  </JFXTextArea>
                   <Label fx:id="failedUrgency" textFill="RED">
                      <font>
                         <Font size="14.0" />
@@ -94,7 +95,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select the urgency" textFill="#868686">
+                  <Label prefHeight="20.0" prefWidth="261.0" text="Please select a request priority level:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -136,10 +137,10 @@
                         <Font size="14.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="10.0" />
+                        <Insets left="25.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
+                  <Label text="Please enter your phone number to receive a confirmation of the request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -163,7 +164,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the location for the delivery:" textFill="#868686">
+                  <Label prefHeight="20.0" prefWidth="438.0" text="Please enter the location of the computer that requires service:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
