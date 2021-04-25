@@ -47,7 +47,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void initialize() {
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
-        LevelManager.getInstance().setFloor(0);
+        LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
