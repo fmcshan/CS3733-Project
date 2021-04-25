@@ -30,7 +30,6 @@ public class Requests {
      */
     public void openRequest() {
         if (requestsBox.getValue().equals("Gift Delivery")){
-            System.out.println("click worked");
             requestPop.setPrefWidth(657.0);
             GiftDelivery gdr = new GiftDelivery(this);
             gdr.loadRequest();

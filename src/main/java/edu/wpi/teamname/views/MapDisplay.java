@@ -1118,7 +1118,6 @@ public class MapDisplay implements LevelChangeListener {
                 renderMap(); // Render/refresh map (with updated data)
                 break;
             case "navBar":
-                System.out.println("AHHHHHHHHHHH");
                 clearMap();
                 displayHotspots(0.8);
                 break;

@@ -48,7 +48,6 @@ public class AuthSocket extends WebSocketClient {
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
-            System.out.println(payload.getJSONArray("giftDeliveries"));
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
@@ -79,7 +78,6 @@ public class AuthSocket extends WebSocketClient {
             payload = payload.getJSONObject("data");
             Change change = new Change("gift_delivery_updated");
             change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
-            System.out.println(payload.getJSONArray("giftDeliveries"));
             ChangeManager.getInstance().processChange(change);
             return;
         }
