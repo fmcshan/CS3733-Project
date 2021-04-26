@@ -41,7 +41,7 @@
                   <Font size="16.0" />
                </font>
             </Text>
-            <JFXCheckBox fx:id="handicapMode" />
+            <JFXCheckBox fx:id="handicapMode" onAction="#updateToFrom" />
          </children>
       </HBox>
       <Label text="From" textFill="#868686">

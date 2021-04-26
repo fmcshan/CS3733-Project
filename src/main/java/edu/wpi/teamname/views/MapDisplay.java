@@ -1110,8 +1110,8 @@ public class MapDisplay implements LevelChangeListener {
         LevelManager.getInstance().setFloor(5);
     }
 
-    @Override
-    public void levelChanged(int _level) {
+    @FXML
+    public void updateToFrom() {
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
@@ -1122,5 +1122,10 @@ public class MapDisplay implements LevelChangeListener {
                 displayHotspots(0.8);
                 break;
         }
+    }
+
+    @Override
+    public void levelChanged(int _level) {
+
     }
 }

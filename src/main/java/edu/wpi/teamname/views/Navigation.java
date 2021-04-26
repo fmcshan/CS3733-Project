@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
@@ -13,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,8 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private ComboBox<String> toCombo; // destination drop down
     @FXML
+    private JFXCheckBox handicapMode;
+    @FXML
     private ComboBox<String> fromCombo; // start location drop down
     @FXML
     private Label textDirections;
@@ -38,6 +42,8 @@ public class Navigation implements LevelChangeListener {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
+    ArrayList<Node> listOfHandiNodes = new ArrayList<Node>();
+    ArrayList<String> listOfHandiNodeNames = new ArrayList<String>();
 
     public ArrayList<Node> getListOfNodes() {
         return listOfNodes;
@@ -75,6 +81,10 @@ public class Navigation implements LevelChangeListener {
         listOfNodes.forEach(n -> {
             if (n.getNodeType().equals("HALL")) {
                 return;
+            }
+            if (!n.getNodeType().equals("STAI")){
+                listOfHandiNodes.add(n);
+                listOfHandiNodeNames.add(n.getLongName());
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
             listOfNodeNames.add(n.getLongName());
@@ -129,7 +139,10 @@ public class Navigation implements LevelChangeListener {
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
         System.out.println(startNode.getLongName());
         System.out.println(endNode.getLongName());
-        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
+        AStar AStar = new AStar(listOfNodes, startNode, endNode);
+        if (handicapMode.isSelected()){
+            AStar = new AStar(listOfHandiNodes, startNode, endNode);
+        }
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(AStar.getFloorNodes(currentFloor)); // draw the path on the map
@@ -166,5 +179,28 @@ public class Navigation implements LevelChangeListener {
     public void levelChanged(int _level) {
         calcPath();
         //refreshNodes();
+    }
+
+
+    @FXML
+    void updateToFrom(ActionEvent event) {
+        if (handicapMode.isSelected()) {
+            toCombo.getItems().clear();
+            fromCombo.getItems().clear();
+            for (String n : listOfHandiNodeNames
+            ) {
+                toCombo.getItems().add(n);
+                fromCombo.getItems().add(n);
+            }
+        } else {
+            toCombo.getItems().clear();
+            fromCombo.getItems().clear();
+            for (String n : listOfNodeNames
+            ) {
+                toCombo.getItems().add(n);
+                fromCombo.getItems().add(n);
+            }
+        }
+
     }
 }
