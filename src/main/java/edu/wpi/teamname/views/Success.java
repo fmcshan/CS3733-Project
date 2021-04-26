@@ -1,13 +1,14 @@
 package edu.wpi.teamname.views;
 
+import edu.wpi.teamname.ServiceRequests.*;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.junit.runner.Computer;
 
-import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 
 /**
@@ -20,8 +21,21 @@ public class Success {
     public Label successText;
     @FXML
     private UserRegistration userRegistration;
-    @FXML
+
     private GiftDelivery giftDelivery;
+
+    private LaundryRequest laundryRequest;
+
+    @FXML
+    private ComputerServices computerServices;
+
+    private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
+
+    private MedicineDelivery medicineDelivery;
+    private FoodDelivery foodDelivery;
+
+    private SanitationServices sanitationServices;
+
 
     private VBox pop;
 
@@ -33,7 +47,29 @@ public class Success {
         this.giftDelivery = giftDelivery;
     }
 
+    public Success(LaundryRequest laundryRequest) {
+        this.laundryRequest = laundryRequest;
+    }
 
+    public Success(ComputerServices computerServices) {
+        this.computerServices = computerServices;
+    }
+
+    public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
+        this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
+    }
+
+    public Success(MedicineDelivery medicineDelivery) {
+        this.medicineDelivery = medicineDelivery;
+    }
+
+    public Success(SanitationServices sanitationServices) {
+        this.sanitationServices = sanitationServices;
+    }
+
+    public Success(FoodDelivery foodDelivery) {
+        this.foodDelivery = foodDelivery;
+    }
 
     /**
      * load success bar in the Default Page when button is pressed/ make it disappear

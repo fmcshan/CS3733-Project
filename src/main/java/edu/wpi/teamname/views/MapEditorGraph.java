@@ -232,10 +232,6 @@ public class MapEditorGraph {
     }
 
     public void displaySelectedEdge(Edge e) {
-        System.out.println(e.getStartNode());
-        System.out.println(e.getEndNode());
-        System.out.println(nodesMap.get(e.getStartNode()));
-        System.out.println(nodesMap.get(e.getEndNode()));
         LineBuilder<?> edgeLocation = LineBuilder.create().startX(nodesMap.get(e.getStartNode()).getX() * fileFxWidthRatio).startY(nodesMap.get(e.getStartNode()).getY() * fileFxHeightRatio).endX(nodesMap.get(e.getEndNode()).getX() * fileFxWidthRatio).endY(nodesMap.get(e.getEndNode()).getY() * fileFxHeightRatio);
         Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(1).build();
         topElements.getChildren().add(edge);

@@ -2,7 +2,7 @@ package edu.wpi.teamname.Database;
 
 import java.util.ArrayList;
 
-public class GiftDeliveryStorage {
+public class MasterServiceRequestStorage {
     private String requestType;
     private String location;
     private ArrayList<String> requestedItems;
@@ -13,7 +13,7 @@ public class GiftDeliveryStorage {
     private int id = 0;
 
 
-    public GiftDeliveryStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
+    public MasterServiceRequestStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
         this.requestType = requestType;
         this.location = location;
         this.requestedItems = requestedItems;
@@ -24,7 +24,7 @@ public class GiftDeliveryStorage {
         this.completed = completed;
     }
 
-    public GiftDeliveryStorage(String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
+    public MasterServiceRequestStorage(String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
         this.requestType = requestType;
         this.location = location;
         this.requestedItems = requestedItems;

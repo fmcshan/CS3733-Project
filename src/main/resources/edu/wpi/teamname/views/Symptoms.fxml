@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 8px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Symptoms">
+   <children>
+      <Label text="Potential Symptoms">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="25.0" />
+         </VBox.margin>
+      </Label>
+      <VBox prefHeight="338.0" prefWidth="306.0" style="-fx-background-color: white;">
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+         <children>
+            <Label text="Symptoms may include:">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="60.0" layoutY="10.0" prefWidth="147.0" text="fever (100.0+)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="15.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="60.0" layoutY="55.0" prefWidth="147.0" text="chills">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="60.0" layoutY="55.0" prefWidth="147.0" text="cough">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="75.0" prefWidth="147.0" text="shortness of breath">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="60.0" layoutY="55.0" prefWidth="147.0" text="sore throat">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="75.0" prefWidth="147.0" text="fatigue">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="95.0" prefWidth="147.0" text="headache">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="115.0" prefWidth="147.0" text="muscle/body aches">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="135.0" prefHeight="20.0" prefWidth="217.0" text="runny nose/congestion">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="155.0" prefHeight="20.0" prefWidth="220.0" text="new loss of taste or smell">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+            <Label layoutX="10.0" layoutY="195.0" prefHeight="20.0" prefWidth="220.0" text="nausea, vomiting, or diarrhea">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+               </graphic>
+            </Label>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="57.0" prefWidth="306.0">
+         <children>
+            <JFXButton contentDisplay="CENTER" onAction="#exitView" prefHeight="25.0" prefWidth="66.0" ripplerFill="#0067b1" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #c3c3c3; -fx-border-radius: 4px; -fx-focus-traversable: false;" text="OK" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+   <effect>
+      <DropShadow color="#757575" height="43.24" radius="17.0425" width="26.93" />
+   </effect>
+</VBox>

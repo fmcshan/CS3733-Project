@@ -3,13 +3,17 @@ package edu.wpi.teamname.Database;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.lang.reflect.Method;
+
 
 public class LocalStorage {
     private static final LocalStorage instance = new LocalStorage();
@@ -21,7 +25,8 @@ public class LocalStorage {
     private HashMap<String, Node> nodeMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
-    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
+    private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
+    private ArrayList<User> users;
 
     public static synchronized LocalStorage getInstance() {
         return instance;
@@ -138,15 +143,19 @@ public class LocalStorage {
         this.registrations.add(_registration);
     }
 
-    public void setGiftDeliveryStorages(ArrayList<GiftDeliveryStorage> _giftDeliveryStorages) {
+    public void setGiftDeliveryStorages(ArrayList<MasterServiceRequestStorage> _giftDeliveryStorages) {
         this.giftDeliveryStorages = _giftDeliveryStorages;
     }
 
-    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
+    public void setUsers(ArrayList<User> _users) {
+        this.users = _users;
+    }
+
+    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
         this.giftDeliveryStorages.add(_giftDelivery);
     }
 
-    public ArrayList<GiftDeliveryStorage> getGiftDeliveryStorages() {
+    public ArrayList<MasterServiceRequestStorage> getGiftDeliveryStorages() {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             return null;
         }
@@ -166,7 +175,31 @@ public class LocalStorage {
         if (this.giftDeliveryStorages == null) {
             return null;
         } else {
-            return (ArrayList<GiftDeliveryStorage>) this.giftDeliveryStorages.clone();
+            return (ArrayList<MasterServiceRequestStorage>) this.giftDeliveryStorages.clone();
+        }
+    }
+
+    public ArrayList<User> getUsers() {
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            return null;
+        }
+
+        if (this.users == null) {
+            for (int i = 0; i < 100; i++) {
+                if (this.users != null) {
+                    break;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (this.users == null) {
+            return null;
+        } else {
+            return (ArrayList<User>) this.users.clone();
         }
     }
 }

@@ -1,14 +1,18 @@
-package edu.wpi.teamname.views;
+package edu.wpi.teamname.ServiceRequests;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
+import edu.wpi.teamname.views.LoadFXML;
+import edu.wpi.teamname.views.Requests;
+import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,12 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <h1>Gift Delivery Request Controller</h1>
- * Controller for the Gift Delivery Request Page
- * @author Emmanuel Ola, Frank McShan
- */
-public class GiftDelivery {
+public class FacilitiesMaintenanceRequest {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -40,52 +39,40 @@ public class GiftDelivery {
     private JFXTextField nameInput;
 
     /**
-     * Label indicating if a gift hasn't been selected
+     * Label indicating that a description wasn't entered
      */
     @FXML
-    private Label failedGiftSelection;
+    private Label failedServiceDescription;
+
+    @FXML
+    private JFXTextArea descriptionInput;
+
+    @FXML
+    private Label failedUrgency;
 
     /**
-     * Combo Box selecting Teddy Bear for delivery
+     * Checkbox for selecting a low urgency request
      */
     @FXML
-    private JFXCheckBox teddyBearBox;
+    private JFXCheckBox lowUrgency;
 
     /**
-     * Combo Box selecting chocolates for delivery
+     * Checkbox for selecting a medium urgency request
      */
     @FXML
-    private JFXCheckBox chocolateBox;
+    private JFXCheckBox mediumUrgency;
 
     /**
-     * Combo Box selecting gift basket for delivery
+     * Checkbox for selecting a high urgency request
      */
     @FXML
-    private JFXCheckBox giftBasketBox;
-
-    /**
-     * Combo Box selecting some other gift for delivery
-     */
-    @FXML
-    private JFXCheckBox otherCheckbox;
-
-    /**
-     * Text Field to specify what gift should be delivered
-     */
-    @FXML
-    private JFXTextField otherInput;
+    private JFXCheckBox highUrgency;
 
     /**
      * Label indicating the phone number text field has been filled in incorrectly
      */
     @FXML
     private Label failedPhoneNumber;
-
-    /**
-     * Label indicating the person to fulfill the request has been filled in incorrectly
-     */
-    @FXML
-    private Label failedPerson;
 
     /**
      * Text Field to enter phone number
@@ -106,16 +93,10 @@ public class GiftDelivery {
     private JFXComboBox<String> requestLocation;
 
     /**
-     * Combo Box selecting what person the delivery is assigned to
-     */
-    @FXML
-    private JFXComboBox<String> assignTo;
-
-    /**
      * Success pop up page
      */
     @FXML
-    private VBox giftPop;
+    private VBox successPop;
 
     /**
      * Instance of Requests class used to create a popup window
@@ -132,7 +113,7 @@ public class GiftDelivery {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public GiftDelivery(Requests request) {
+    public FacilitiesMaintenanceRequest(Requests request) {
         this.request = request;
     }
 
@@ -147,8 +128,8 @@ public class GiftDelivery {
      *
      * @return Success pop up page
      */
-    public VBox getGiftPop() {
-        return giftPop;
+    public VBox getSuccessPop() {
+        return successPop;
     }
 
     /**
@@ -161,21 +142,21 @@ public class GiftDelivery {
     }
 
     /**
+     * Checks if the description has been filled in
+     *
+     * @return true if there's a space between the first and last name, and false otherwise
+     */
+    public boolean descriptionValid() {
+        return !descriptionInput.getText().isEmpty();
+    }
+
+    /**
      * Checks if a checkbox has been selected
      *
      * @return true if any checkbox has been selected, and false otherwise
      */
     public boolean checkBoxSelected() {
-        return teddyBearBox.isSelected() || chocolateBox.isSelected() || giftBasketBox.isSelected() || otherCheckbox.isSelected();
-    }
-
-    /**
-     * Checks if the "Other" text box for gift delivery options has been filled correctly
-     *
-     * @return true if the box was filled correctly, and false otherwise
-     */
-    public boolean otherInputValid() {
-        return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().isEmpty());
+        return lowUrgency.isSelected() || mediumUrgency.isSelected() || highUrgency.isSelected();
     }
 
     /**
@@ -221,15 +202,15 @@ public class GiftDelivery {
         else
             failedName.setText("");
 
-
-
+        if (!descriptionValid())
+            failedServiceDescription.setText("Enter a Brief Description of the Desired Request");
+        else
+            failedServiceDescription.setText("");
 
         if (!checkBoxSelected())
-            failedGiftSelection.setText("Please select a gift to be delivered.");
-        else if (!otherInputValid())
-            failedGiftSelection.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedUrgency.setText("Please select a gift to be delivered.");
         else
-            failedGiftSelection.setText("");
+            failedUrgency.setText("");
 
         if (!phoneNumberValid())
             failedPhoneNumber.setText("Invalid Phone Number");
@@ -243,29 +224,29 @@ public class GiftDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid()) {
             //Adds all the selected gifts to an arraylist
-            ArrayList<String> giftSelected = new ArrayList<>();
-            if (teddyBearBox.isSelected())
-                giftSelected.add("Teddy Bear");
-            if (chocolateBox.isSelected())
-                giftSelected.add("Chocolate");
-            if (giftBasketBox.isSelected())
-                giftSelected.add("Gift Basket");
-            if (otherCheckbox.isSelected())
-                giftSelected.add(otherInput.getText());
+            ArrayList<String> selected = new ArrayList<>();
+            if (lowUrgency.isSelected())
+                selected.add("Low Urgency");
+            if (mediumUrgency.isSelected())
+                selected.add("Medium Urgency");
+            if (highUrgency.isSelected())
+                selected.add("High Urgency");
+
+            selected.add("- " + descriptionInput.getText());
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
-            requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            GiftDeliveryStorage request = new GiftDeliveryStorage("Gift Delivery", requestLocation.getValue(), giftSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Facilities Request", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
-            giftPop.setPrefWidth(657.0);
+            successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", giftPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
@@ -273,10 +254,10 @@ public class GiftDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/GiftDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/FacilitiesMaintenanceRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == GiftDelivery.class)
+                if (type == FacilitiesMaintenanceRequest.class)
                     return this;
                 else
                     try {
@@ -288,7 +269,7 @@ public class GiftDelivery {
                     }
             });
             Parent root = loader.load();
-            request.openWindowRequestPop("requestForm", root); //open/close request form
+            LoadFXML.getInstance().openWindow("facilitiesMaintenanceForm", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
         } catch (IOException ex) {
             ex.printStackTrace();
         }

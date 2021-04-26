@@ -10,10 +10,13 @@ import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -22,9 +25,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * Controller for DefaultPage.fxml
@@ -33,7 +38,8 @@ import java.util.HashMap;
  */
 public class DefaultPage extends MapDisplay implements AuthListener {
 
-    ArrayList<Node> currentPath = new ArrayList<>(); // used to save the current list of nodes after AStar
+    // used to save the current list of nodes after AStar
+
 
     /**
      * run on startup
@@ -41,6 +47,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void initialize() {
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
+        LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
@@ -50,53 +57,33 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         tonysPath.getElements().clear(); // clear the path
         LoadFXML.setCurrentWindow(""); // set the open window to nothing
 
-        stackPane.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
-            if (currentPath.size() > 0) {
+        anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            hospitalMap.fitWidthProperty().bind(stackPane.widthProperty());
+            if(!LoadFXML.getCurrentWindow().equals("navBar")){
+                currentPath= new ArrayList();
+            }
+            topElements.getChildren().clear();
             resizingInfo();
+            zooM.zoomAndPan();
         });
 
-        stackPane.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
-            if (currentPath.size() > 0) {
+        anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            hospitalMap.fitHeightProperty().bind(stackPane.heightProperty());
+            if(!LoadFXML.getCurrentWindow().equals("navBar")){
+                currentPath= new ArrayList();
+            }
+
+            topElements.getChildren().clear();
             resizingInfo();
+            zooM.zoomAndPan();
         });
 
         refreshData();
-    }
-
-    public boolean nodeWithinSpec(Node n) {
-        return ((n.getFloor().equals("1") || n.getFloor().equals("G") || n.getFloor().equals("")) && (n.getBuilding().equals("Tower") || n.getBuilding().equals("45 Francis") || n.getBuilding().equals("15 Francis") || n.getBuilding().equals("Parking") || n.getBuilding().equals("")));
-    }
-
-    /**
-     * for updating and displaying the map
-     *
-     * @param _listOfNodes a path of nodes
-     */
-    public void drawPath(ArrayList<Node> _listOfNodes) {
-        if (_listOfNodes.size() < 1) {
-            return;
-        }
-        currentPath = _listOfNodes;
-        tonysPath.getElements().clear();
-        double mapWidth = hospitalMap.boundsInParentProperty().get().getWidth();
-        double mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
-        double fileWidth = hospitalMap.getImage().getWidth();
-        double fileHeight = hospitalMap.getImage().getHeight();
-        double fileFxWidthRatio = mapWidth / fileWidth;
-        double fileFxHeightRatio = mapHeight / fileHeight;
-        Node firstNode = _listOfNodes.get(0);
-        MoveTo start = new MoveTo(firstNode.getX() * fileFxWidthRatio, firstNode.getY() * fileFxHeightRatio);
-        tonysPath.getElements().add(start);
-        System.out.println(fileFxWidthRatio);
-        _listOfNodes.forEach(n -> {
-            tonysPath.getElements().add(new LineTo(n.getX() * fileFxWidthRatio, n.getY() * fileFxHeightRatio));
-        });
+        zooM.zoomAndPan();
     }
 
     private void displayAuthPages() {
@@ -138,12 +125,17 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleMapEditor() {
         clearMap();
         popPop.getChildren().clear();
+        popPop2.getChildren().clear();
+        zooM.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
+            zooM.zoomAndPan();
             return;
         }
+
         initMapEditor();
+
         LoadFXML.setCurrentWindow("mapEditorBar");
     }
 
@@ -153,7 +145,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "registrationBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminViewNew", "registrationBar", popPop);
     }
 
     /**
@@ -162,10 +154,29 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminView", "requestBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
+    }
+
+    @FXML
+    private void openHelp() {
+        popPop.setPrefWidth(340);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
+            return;
+        }
+        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
+            return;
+        }
+        LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
 
     public void closeWindows() {
         popPop.getChildren().clear();
     }
+
+    public void setHospitalMap(Image _image) {
+        hospitalMap.setImage(_image);
+    }
+
 }

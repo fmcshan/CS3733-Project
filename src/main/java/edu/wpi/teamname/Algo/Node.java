@@ -135,13 +135,13 @@ public class Node {
      * Overloaded constructor that loads all of the info from the original constructor
      * as well as other extraneous info related to a node
      * @param nodeID    nodeID for this node
-     * @param longName the full name of the node
-     * @param shortName the short name of the node
+     * @param x         x value of the node's location
+     * @param y         y value of the node's location
      * @param floor the floor the node is located on
      * @param building the building the node is located in
      * @param nodeType the node's type
-     * @param x         x value of the node's location
-     * @param y         y value of the node's location
+     * @param longName the full name of the node
+     * @param shortName the short name of the node
      */
     public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String longName, String shortName) {
         //coordinates

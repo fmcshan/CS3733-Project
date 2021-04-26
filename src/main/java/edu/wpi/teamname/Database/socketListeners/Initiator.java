@@ -1,6 +1,6 @@
 package edu.wpi.teamname.Database.socketListeners;
 
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.UserRegistration;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class Initiator extends Thread {
         }
     }
 
-    public void triggerGiftDelivery(GiftDeliveryStorage _obj) {
+    public void triggerGiftDelivery(MasterServiceRequestStorage _obj) {
         for (GiftDeliveryListener l : giftDeliveryListeners) {
             try {
                 l.giftDeliveryAdded(_obj);

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Parser;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
  * @author emmanuelola
  */
 public class AlgoTests {
-    ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
+    ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
     Node s1 = nodes.get(Parser.indexOfNode(nodes, "lPARK022GG"));
     Node g1 = nodes.get(Parser.indexOfNode(nodes, "lEXIT001GG"));
     Node s2 = nodes.get(Parser.indexOfNode(nodes, "lPARK022GG"));

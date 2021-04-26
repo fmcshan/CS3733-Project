@@ -27,7 +27,7 @@ public class DatabaseThread extends Thread {
 
     public void run() {
         try {
-            nodes = PathFindingDatabaseManager.getInstance().getNodes();
+            nodes = LocalStorage.getInstance().getNodes();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

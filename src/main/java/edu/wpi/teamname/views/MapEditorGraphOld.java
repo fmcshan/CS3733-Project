@@ -636,7 +636,6 @@ public class MapEditorGraphOld  {
        // System.out.println("got here");
         if(edgeMap.containsKey(startNodeID+ "_"+ endNodeID)) {
             Line line = LineBuilder.create().startX(nodeMap.get(startNodeID).getX() * fileFxWidthRatio).startY(nodeMap.get(startNodeID).getY() * fileFxHeightRatio).endX(nodeMap.get(endNodeID).getX() * fileFxWidthRatio).endY(nodeMap.get(endNodeID).getY() * fileFxHeightRatio).stroke(Color.RED).strokeWidth(3).build();
-            System.out.println("Not the Null");
             topElements.getChildren().add(line);
             selectedEdge = line;
        }
@@ -673,12 +672,10 @@ public class MapEditorGraphOld  {
                 e.setEdgeID(startNode.getValue() + "_" + endNode.getValue()); //setting to new ID name
                 selectEdge.getItems().add(e.getEdgeID()); //adding to combo box
 //                edgeMap.get(oldID).setEdgeID(EdgeID.getText());
-                System.out.println("edge ID " + e.getEdgeID());
                 edgeMap.get(oldID).setStartNode(startNode.getValue());  //updating start node in edge set
                 edgeMap.get(oldID).setEndNode(endNode.getValue());   //updating end node
                 e.setEndNode(startNode.getValue());
                 e.setEndNode(endNode.getValue());
-                System.out.println("edge ID " + startNode.getValue());
                 topElements.getChildren().clear();
                 displayNodes();
                 displayEdges();
