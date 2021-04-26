@@ -39,7 +39,7 @@ public class LocalStorage {
                     break;
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -73,7 +73,7 @@ public class LocalStorage {
                     break;
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -106,7 +106,7 @@ public class LocalStorage {
                     break;
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -162,7 +162,7 @@ public class LocalStorage {
                     break;
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -186,7 +186,7 @@ public class LocalStorage {
                     break;
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
