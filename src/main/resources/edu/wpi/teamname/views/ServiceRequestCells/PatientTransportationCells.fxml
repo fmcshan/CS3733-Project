@@ -31,7 +31,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="assistanceCell" prefWidth="204.0" text="Medical Assistance?">
+      <Label fx:id="reasonCell" prefWidth="204.0" text="Reason">
          <font>
             <Font size="14.0" />
          </font>

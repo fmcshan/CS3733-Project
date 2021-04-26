@@ -35,7 +35,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <JFXTabPane prefHeight="818.0" prefWidth="1308.0">
+            <JFXTabPane prefHeight="779.0" prefWidth="1264.0">
                <tabs>
                   <Tab style="-fx-background-color: #0067b1;" text="All">
                     <content>
@@ -72,7 +72,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Gift Delivery">
+                  <Tab style="-fx-background-color: #0067b1;" text="Gift Delivery">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -80,13 +80,37 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="584.0" text="Selected Gift(s)">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -107,7 +131,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Food Delivery">
+                  <Tab style="-fx-background-color: #0067b1;" text="Food Delivery">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -115,13 +139,37 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="584.0" text="Selected Food">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -142,7 +190,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Computer Service">
+                  <Tab style="-fx-background-color: #0067b1;" text="Computer Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -150,13 +198,45 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="292.0" text="Description">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="262.0" layoutY="12.0" prefHeight="35.0" prefWidth="292.0" text="Priority Level">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -177,7 +257,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Facilities Maintenance">
+                  <Tab style="-fx-background-color: #0067b1;" text="Facilities Maintenance">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -185,13 +265,45 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="392.0" text="Description">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="262.0" layoutY="12.0" prefHeight="35.0" prefWidth="192.0" text="Level of Urgency">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -212,7 +324,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Laundry Service">
+                  <Tab style="-fx-background-color: #0067b1;" text="Laundry Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -220,13 +332,45 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="292.0" text="Load Type">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="292.0" text="Wash Temperature">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="855.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -247,7 +391,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Medicine Delivery">
+                  <Tab style="-fx-background-color: #0067b1;" text="Medicine Delivery">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -255,13 +399,37 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="584.0" text="Medication Name">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Dosage Amount">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -282,7 +450,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Patient Transportation">
+                  <Tab style="-fx-background-color: #0067b1;" text="Patient Transportation">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -290,13 +458,37 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="408.0" text="Current Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="408.0" text="Destination">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Reason">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>
@@ -317,7 +509,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Sanitation Service">
+                  <Tab style="-fx-background-color: #0067b1;" text="Sanitation Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -325,13 +517,37 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="167.0" text="Incoming Requests">
+                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Urgency">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="584.0" text="Reason">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
                                              <padding>
                                                 <Insets left="20.0" />
                                              </padding>

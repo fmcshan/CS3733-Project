@@ -91,7 +91,7 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Computer Services": //TODO revisit priority
+                    case "Computer Services": //TODO revisit priority done
                         computerCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
@@ -101,12 +101,10 @@ public class RequestAdminNew {
                                         label.setText(g.getRequestedBy());
                                         break;
                                     case "descriptionCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getDescription());
                                         break;
                                     case "priorityCell":
-//                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-//                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     case "phoneCell":
                                         label.setText(g.getContact());
@@ -120,7 +118,7 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Facilities Request": //TODO revisit Urgency
+                    case "Facilities Request": //TODO revisit Urgency done
                         facilitiesCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
@@ -130,12 +128,10 @@ public class RequestAdminNew {
                                         label.setText(g.getRequestedBy());
                                         break;
                                     case "descriptionCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getDescription());
                                         break;
                                     case "urgencyCell":
-//                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-//                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     case "phoneCell":
                                         label.setText(g.getContact());
@@ -149,7 +145,7 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Laundry Service": //TODO revisit Wash
+                    case "Laundry Service": //TODO revisit Wash done
                         laundryCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
@@ -159,12 +155,10 @@ public class RequestAdminNew {
                                         label.setText(g.getRequestedBy());
                                         break;
                                     case "loadCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     case "washCell":
-//                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-//                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getDescription());
                                         break;
                                     case "phoneCell":
                                         label.setText(g.getContact());
@@ -178,7 +172,7 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Medicine Delivery": //TODO revisit Dosage
+                    case "Medicine Delivery": //TODO revisit Dosage done
                         medicineCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
@@ -188,12 +182,10 @@ public class RequestAdminNew {
                                         label.setText(g.getRequestedBy());
                                         break;
                                     case "medicationCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     case "dosageCell":
-//                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-//                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getDescription());
                                         break;
                                     case "locationCell":
                                         label.setText(g.getLocation());
@@ -204,7 +196,7 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Patient Transportation": //TODO revisit Dest and Assistance
+                    case "Patient Transportation": //TODO revisit Dest and Assistance done
                         transportCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
@@ -217,10 +209,10 @@ public class RequestAdminNew {
                                         label.setText(g.getLocation());
                                         break;
                                     case "destCell":
-//                                        label.setText(g.getLocation());
+                                        label.setText(g.getDescription());
                                         break;
-                                    case "assistanceCell":
-//                                        label.setText(g.getLocation());
+                                    case "reasonCell":
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     default:
                                         label.setText("PANIK");
@@ -238,12 +230,10 @@ public class RequestAdminNew {
                                         label.setText(g.getRequestedBy());
                                         break;
                                     case "urgencyCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        label.setText(g.getRequestedItems().get(0));
                                         break;
                                     case "reasonCell":
-//                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-//                                        label.setText(youAreStringNow.replace("\"", ""));
+                                       label.setText(g.getDescription());
                                         break;
                                     case "locationCell":
                                         label.setText(g.getLocation());
