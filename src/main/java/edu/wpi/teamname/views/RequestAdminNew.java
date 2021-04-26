@@ -6,9 +6,12 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -82,9 +85,34 @@ public class RequestAdminNew {
                                                 combo.getItems().add(u.getEmail());
                                             });
                                         } else if (v instanceof JFXButton) {
-//                                            ContextMenu contextMenu = new ContextMenu();
-//                                            MenuItem inProgress =
-//                                            JFXButton button = (JFXButton) v;
+                                            System.out.println("in button");
+                                            ContextMenu contextMenu = new ContextMenu();
+                                            MenuItem inProgress = new MenuItem("In Progress");
+                                            MenuItem completed = new MenuItem("Completed");
+                                            MenuItem unassigned = new MenuItem("Unassigned");
+                                            contextMenu.getItems().add(inProgress);
+                                            contextMenu.getItems().add(completed);
+                                            contextMenu.getItems().add(unassigned);
+                                            JFXButton button = (JFXButton) v;
+                                            button.setOnAction(b -> {
+                                                contextMenu.show(button, Side.BOTTOM, 0, 0);
+                                            });
+                                            contextMenu.setOnAction(e -> {
+                                                switch (((MenuItem) e.getTarget()).getText()) {
+                                                    case "In Progress":
+
+                                                        break;
+                                                    case "Completed":
+
+                                                        break;
+                                                    case "Delete":
+
+                                                        break;
+                                                    default:
+                                                        System.out.println("hi");
+                                                        ;
+                                                }
+                                            });
                                         }
                                     });
                                 }
