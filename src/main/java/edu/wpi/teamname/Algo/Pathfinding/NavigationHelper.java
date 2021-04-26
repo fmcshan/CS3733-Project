@@ -15,15 +15,21 @@ import java.util.ArrayList;
  * Class designed to help reduce the complexity of navigation, in terms of floor switching, as well as text directions
  */
 public class NavigationHelper {
+    final double SCALE = 3.2;
     private AStar pathfinder;
 
     public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
         pathfinder = new AStar(nodes, start, goal);
     }
 
+    public NavigationHelper(AStar AStar){
+        pathfinder = AStar;
+    }
+
     public ArrayList<String> getTextDirections(){
         ArrayList<String> result = new ArrayList<>();
         ArrayList<Node> path = pathfinder.getPath();
+        double total = 0;
         for (int i = 0; i < path.size(); i++) {
             Node node = path.get(i);
             if (i == path.size() - 1)
@@ -42,7 +48,19 @@ public class NavigationHelper {
                         result.add("Head for " + next.getLongName());
                     else
                     {
-                        result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
+                        if (getDirection(getAngle(prev, node), getAngle(node, next)).equals("Go straight towards ") && i <= path.size() - 3 && (getDirection(getAngle(node, next), getAngle(next, path.get(i + 2))).equals("Go straight towards "))){
+                            total+= pathfinder.distance(node, next)/SCALE;
+                        }
+                        else if(i >= path.size() - 3 && total > 0) {
+                            result.add("Go straight for " + (int) total + " feet");
+                            total = 0;
+                        }
+                        else if (!getDirection(getAngle(node, next), getAngle(next, path.get(i + 2))).equals("Go straight towards ")){
+                            result.add("Go straight for " + (int) total + " feet");
+                            total = 0;
+                        }
+                        else
+                            result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
                     }
                 }
             }

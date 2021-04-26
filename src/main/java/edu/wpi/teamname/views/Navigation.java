@@ -2,13 +2,17 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +29,10 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private ComboBox<String> fromCombo; // start location drop down
     @FXML
+    private Label textDirections;
+    @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
+
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -49,11 +56,6 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
-        if (COVIDMessage.covid) {
-            toCombo.setValue("Emergency Department Entrance");
-            COVIDMessage.covid = false;
-        }
-
         LevelManager.getInstance().addListener(this);
         refreshNodes();
 
@@ -74,11 +76,12 @@ public class Navigation implements LevelChangeListener {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
-            if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
-                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-                listOfNodeNames.add(n.getLongName());
-                nodeNameNodes.add(n);
-            }
+            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+            listOfNodeNames.add(n.getLongName());
+            nodeNameNodes.add(n);
+            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
+
+            }*/
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
@@ -130,11 +133,40 @@ public class Navigation implements LevelChangeListener {
         System.out.println("HHHHHHHHAAAAAAAHAHAHHA");
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
-        mapDisplay.drawPath(path); // draw the path on the map
+        String currentFloor = LevelManager.getInstance().getFloor();
+        mapDisplay.drawPath(AStar.getFloorNodes(currentFloor)); // draw the path on the map
+        ArrayList<String> allFloors = new ArrayList<>();
+        allFloors.add("L2");
+        allFloors.add("L1");
+        allFloors.add("G");
+        allFloors.add("1");
+        allFloors.add("2");
+        allFloors.add("3");
+        ArrayList<String> relevantFloors = AStar.getRelevantFloors();
+        ArrayList<String> unusedFloors = new ArrayList<>();
+        for (String floor : allFloors) {
+            if (!relevantFloors.contains(floor))
+                unusedFloors.add(floor);
+        }
+        NavigationHelper nav = new NavigationHelper(AStar);
+        String result = "";
+        for (String textDirection : nav.getTextDirections()) {
+            //System.out.println(textDirection);
+            result = result + textDirection + "\n";
+        }
+        //System.out.println("done");
+        //System.out.println("done" + result);
+        setTextDirections(result);
+        //SceneManager.getInstance().getDefaultPage().toggleButtons(unusedFloors);
+    }
+
+    void setTextDirections(String directions){
+        textDirections.setText(directions);
     }
 
     @Override
     public void levelChanged(int _level) {
-        refreshNodes();
+        calcPath();
+        //refreshNodes();
     }
 }
