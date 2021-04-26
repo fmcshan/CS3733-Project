@@ -18,7 +18,7 @@ public class EmployeeTable {
     public void initialize() {
         LocalStorage.getInstance().getUsers().forEach(r -> {
             try {
-                Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/CheckInTableCells.fxml"));
+                Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/EmployeeTableCells.fxml"));
                 cellHolder.getChildren().add(node);
                 HBox hbox = (HBox) node;
                 hbox.getChildren().forEach(h -> {
