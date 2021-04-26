@@ -97,7 +97,6 @@ public class ZoomAndPan {
 
             double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
             double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
-            System.out.println();
 
             double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
             double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
