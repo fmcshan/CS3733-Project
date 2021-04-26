@@ -114,6 +114,8 @@ public class Requests {
      */
     public void openPatientTransportation() {
         requestPop.setPrefWidth(657.0);
-        LoadFXML.getInstance().loadWindow("PatientTransportation", "patientTransportation", requestPop);
+        PatientTransportation pt = new PatientTransportation(this);
+        pt.loadRequest();
+        //LoadFXML.getInstance().loadWindow("PatientTransportation", "patientTransportation", requestPop);
     }
 }

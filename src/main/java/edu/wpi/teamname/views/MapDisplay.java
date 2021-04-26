@@ -886,7 +886,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
-        popPop.setPrefWidth(350.0); // Set preferable width to 350
+        popPop.setPrefWidth(657.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests2", "reqBar", popPop); // Load requests window
     }
 
@@ -915,7 +915,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("UserRegistration", "checkBar", popPop); // Load registration window
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "covidBar", popPop); // Load registration window
     }
 
     /**
