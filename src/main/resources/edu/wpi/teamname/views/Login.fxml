@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="900.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Login">
+<VBox prefHeight="930.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.Login">
    <effect>
       <DropShadow color="#a4a4a4" />
    </effect>

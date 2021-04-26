@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import javafx.fxml.FXML;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
@@ -9,7 +9,8 @@ import java.io.IOException;
 
 public class LoadFXML {
 
-    private static String currentWindow;
+    private static String currentWindow = "";
+    private static String currentHelp = "";
 
     private LoadFXML() {
     }
@@ -28,6 +29,10 @@ public class LoadFXML {
 
     public static String getCurrentWindow() {
         return currentWindow;
+    }
+
+    public static void setCurrentHelp(String currentHelp) {
+        LoadFXML.currentHelp = currentHelp;
     }
 
     /**
@@ -53,11 +58,33 @@ public class LoadFXML {
      */
     public static void openWindow(String windowName, Parent root, VBox vbox) {
         vbox.getChildren().clear();
+        SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         if (!windowName.equals(currentWindow)) {
             vbox.getChildren().add(root);
+            SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
             currentWindow = windowName;
             return;
         }
         currentWindow = "";
     }
+
+    public void loadHelp(String fileName, String windowName, VBox vbox) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/Haaaalp/" + fileName + ".fxml"));
+            openHelp(windowName, root, vbox);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void openHelp(String windowName, Parent root, VBox vbox) {
+        vbox.getChildren().clear();
+        if (!windowName.equals(currentHelp)) {
+            vbox.getChildren().add(root);
+            currentHelp = windowName;
+            return;
+        }
+        currentHelp = "";
+    }
+
 }

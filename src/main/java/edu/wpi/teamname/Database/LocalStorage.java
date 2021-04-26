@@ -3,11 +3,17 @@ package edu.wpi.teamname.Database;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.simplify.Config;
+import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.lang.reflect.Method;
+
 
 public class LocalStorage {
     private static final LocalStorage instance = new LocalStorage();
@@ -20,6 +26,8 @@ public class LocalStorage {
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
     private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
+    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
+    private ArrayList<User> users;
 
     public static synchronized LocalStorage getInstance() {
         return instance;
@@ -141,6 +149,11 @@ public class LocalStorage {
     }
 
     public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
+    public void setUsers(ArrayList<User> _users) {
+        this.users = _users;
+    }
+
+    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
         this.giftDeliveryStorages.add(_giftDelivery);
     }
 
@@ -165,6 +178,30 @@ public class LocalStorage {
             return null;
         } else {
             return (ArrayList<MasterServiceRequestStorage>) this.giftDeliveryStorages.clone();
+        }
+    }
+
+    public ArrayList<User> getUsers() {
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+            return null;
+        }
+
+        if (this.users == null) {
+            for (int i = 0; i < 100; i++) {
+                if (this.users != null) {
+                    break;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep((long) 50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (this.users == null) {
+            return null;
+        } else {
+            return (ArrayList<User>) this.users.clone();
         }
     }
 }

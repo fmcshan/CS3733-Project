@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class DFS {
     public static void main(String[] args) {
         ArrayList<Node> nodes= new ArrayList<>(); //ArrayList of Nodes
 
-        nodes = PathFindingDatabaseManager.getInstance().getNodes(); //Parses .csv files and loads the nodes ArrayList
+        nodes = LocalStorage.getInstance().getNodes(); //Parses .csv files and loads the nodes ArrayList
 
         //System.out.println(nodes.get(0).getEdgeTo());
         //System.out.println(nodes.get(28));
@@ -27,11 +28,8 @@ public class DFS {
         // The first instance would be the starting node and the second is the end node
         ArrayList<String> answer = DoDFS(nodes.get(Parser.indexOfNode(nodes, "CCONF002L1")),
                 nodes.get(Parser.indexOfNode(nodes, "WELEV00ML1")));
-        System.out.println(DFSwatch.elapsedTime());
-        System.out.println("separate");
         Stopwatch loadnodes = new Stopwatch();
         AStar bob = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes,"CCONF002L1")), nodes.get(Parser.indexOfNode(nodes,"WELEV00ML1")));
-        System.out.println(loadnodes.elapsedTime());
 
     }
 
@@ -39,7 +37,6 @@ public class DFS {
         ArrayList<String> l= new ArrayList<>(); //ArrayList of Nodes
         ArrayList<Node> o= new ArrayList<>(); //ArrayList of Nodes
         ArrayList<String> a= DFS(Start, End, l, o, 1, Start);
-        System.out.println("answer" + a);
         return a;
     }
     public static ArrayList<String> DFS(Node start, Node end, ArrayList<String> answer, ArrayList<Node> visited, int flag, Node temp) {

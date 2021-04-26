@@ -36,24 +36,6 @@ public class PathFindingDatabaseManager {
         return instance;
     }
 
-    /**
-     * Splits a list into a list of lists with a maximum size of length
-     *
-     * @param source Source list
-     * @param length Maximum list length/batch size
-     * @return List of lists with a maximum size of length
-     */
-    private static <T> Stream<List<T>> batches(List<T> source, int length) {
-        if (length <= 0)
-            throw new IllegalArgumentException("length = " + length);
-        int size = source.size();
-        if (size <= 0)
-            return Stream.empty();
-        int fullChunks = (size - 1) / length;
-        return IntStream.range(0, fullChunks + 1).mapToObj(
-                n -> source.subList(n * length, n == fullChunks ? size : (n + 1) * length));
-    }
-
     private static ArrayList<Node> parseNodes(JSONArray nodesData, JSONArray edgeData) {
         ArrayList<Node> nodesList = new ArrayList<>();
         HashMap<String, Node> nodeMap = new HashMap<String, Node>();
@@ -84,29 +66,6 @@ public class PathFindingDatabaseManager {
         }
 
         return nodesList;
-    }
-
-    public void startDb() {
-        initDb();
-    }
-
-    /**
-     * Initializes the firestore database
-     */
-    private void initDb() {
-        try {
-            InputStream serviceAccount = new FileInputStream(System.getProperty("user.dir") + "/3733-firebase-service-account.json");
-            GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(credentials)
-                    .build();
-            FirebaseApp.initializeApp(options);
-
-            db = FirestoreClient.getFirestore();
-
-        } catch (Exception e) {
-            System.out.println("error initializing firebase.");
-        }
     }
 
     public void insertNodeListIntoDatabase(ArrayList<Node> _nodes) {
@@ -203,71 +162,5 @@ public class PathFindingDatabaseManager {
             ));
         });
         insertEdgeListIntoDatabase(edgeList);
-    }
-
-    /**
-     * Performs a get request and returns the response as a json object
-     *
-     * @param _url The URL to get
-     * @return A json object
-     * @throws IOException
-     */
-    public JSONObject getRequestJson(String _url) throws IOException {
-        URL url = new URL(_url);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        return new JSONObject(response.toString());
-    }
-
-    /**
-     * Nodes are handled internally as a json object
-     *
-     * @return A json array of nodes.
-     */
-    private JSONArray getNodesInteral() {
-        ArrayList<List<String>> nodes = new ArrayList<>();
-        try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes");
-            return nodeList.getJSONArray("data");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new JSONArray();
-    }
-
-    /**
-     * Edges are handled internally as a json object
-     *
-     * @return A json array of edges.
-     */
-    private JSONArray getEdgesInternal() {
-        try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges");
-            return nodeList.getJSONArray("data");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new JSONArray();
-    }
-
-    /**
-     * Return an arraylist of node classes
-     *
-     * @return An arraylist of node classes
-     */
-    public ArrayList<Node> getNodes() {
-        JSONArray nodes = getNodesInteral();
-        JSONArray edges = getEdgesInternal();
-        return parseNodes(nodes, edges);
     }
 }

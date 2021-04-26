@@ -105,7 +105,6 @@ public class UserRegistration {
     public void submitRegistration() {
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
-            System.out.println(phoneInput.getText());
         }
         if (!nameInputValid()) {
             failedName.setText("Invalid Name Entry");

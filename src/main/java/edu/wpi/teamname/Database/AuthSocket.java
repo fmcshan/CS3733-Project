@@ -1,5 +1,9 @@
 package edu.wpi.teamname.Database;
 
+import edu.wpi.teamname.Algo.Edge;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -45,12 +49,15 @@ public class AuthSocket extends WebSocketClient {
         String payloadId = payload.getString("event");
 
         if (payloadId.equals("init")) {
-            System.out.println(payload.getJSONArray("giftDeliveries"));
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
             ArrayList<MasterServiceRequestStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
             LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
+
+            ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
+            LocalStorage.getInstance().setUsers(users);
+
             return;
         }
 
@@ -76,7 +83,6 @@ public class AuthSocket extends WebSocketClient {
             payload = payload.getJSONObject("data");
             Change change = new Change("gift_delivery_updated");
             change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
-            System.out.println(payload.getJSONArray("giftDeliveries"));
             ChangeManager.getInstance().processChange(change);
             return;
         }

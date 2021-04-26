@@ -199,7 +199,5 @@ public class AStar {
         Node start = nodes.get(1);
         Node goal = nodes.get(30);
         AStar example = new AStar(nodes, start, goal);
-
-        System.out.println(timer.elapsedTime());
     }
 }
