@@ -40,7 +40,7 @@ public class Submit {
         AsynchronousQueue.getInstance().add(task);
     }
 
-    public void submitGiftDelivery(GiftDeliveryStorage _form) {
+    public void submitGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
         _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
@@ -64,7 +64,7 @@ public class Submit {
         AsynchronousQueue.getInstance().add(task);
     }
 
-    public void updateGiftDelivery(GiftDeliveryStorage _form) {
+    public void updateGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
         _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));

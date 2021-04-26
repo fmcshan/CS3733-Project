@@ -1,6 +1,6 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.Algo.AStar;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
@@ -49,6 +49,11 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
+        if (COVIDMessage.covid) {
+            toCombo.setValue("Emergency Department Entrance");
+            COVIDMessage.covid = false;
+        }
+
         LevelManager.getInstance().addListener(this);
         refreshNodes();
 
@@ -124,7 +129,7 @@ public class Navigation implements LevelChangeListener {
         System.out.println(endNode.getLongName());
         System.out.println("HHHHHHHHAAAAAAAHAHAHHA");
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
-        ArrayList<Node> path = AStar.returnPath(); // list the nodes found using AStar to create a path
+        ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         mapDisplay.drawPath(path); // draw the path on the map
     }
 

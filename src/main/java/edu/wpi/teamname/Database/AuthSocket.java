@@ -52,7 +52,7 @@ public class AuthSocket extends WebSocketClient {
             ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
-            ArrayList<GiftDeliveryStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
+            ArrayList<MasterServiceRequestStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
             LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
 
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));

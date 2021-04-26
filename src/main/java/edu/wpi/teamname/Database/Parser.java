@@ -6,7 +6,6 @@ import edu.wpi.teamname.Authentication.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -97,7 +96,7 @@ public class Parser {
     }
 
 
-    public static GiftDeliveryStorage parseGiftDeliveryStorage(JSONObject _giftDeliveryStorage) {
+    public static MasterServiceRequestStorage parseGiftDeliveryStorage(JSONObject _giftDeliveryStorage) {
         JSONObject giftDeliveryStorage = _giftDeliveryStorage.getJSONObject("fields");
         ArrayList<String> requestedItems = new ArrayList<String>();
         try {
@@ -105,7 +104,7 @@ public class Parser {
             requested = requested.replace("\\", "").substring(1, requested.length()-1);
             requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
         } catch (Exception e) {e.printStackTrace();}
-        return new GiftDeliveryStorage(
+        return new MasterServiceRequestStorage(
                 _giftDeliveryStorage.getInt("pk"),
                 giftDeliveryStorage.getString("requestType"),
                 giftDeliveryStorage.getString("location"),
@@ -117,8 +116,8 @@ public class Parser {
         );
     };
 
-    public static ArrayList<GiftDeliveryStorage> parseGiftDeliveryStorages(JSONArray _giftDeliveryStorages) {
-        ArrayList<GiftDeliveryStorage> giftDeliveryStorages = new ArrayList<GiftDeliveryStorage>();
+    public static ArrayList<MasterServiceRequestStorage> parseGiftDeliveryStorages(JSONArray _giftDeliveryStorages) {
+        ArrayList<MasterServiceRequestStorage> giftDeliveryStorages = new ArrayList<MasterServiceRequestStorage>();
         _giftDeliveryStorages.forEach(r -> {
             giftDeliveryStorages.add(parseGiftDeliveryStorage((JSONObject) r));
         });

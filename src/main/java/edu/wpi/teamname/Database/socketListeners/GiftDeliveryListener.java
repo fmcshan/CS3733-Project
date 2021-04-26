@@ -1,8 +1,8 @@
 package edu.wpi.teamname.Database.socketListeners;
 
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 
 public interface GiftDeliveryListener {
-    void giftDeliveryAdded(GiftDeliveryStorage _obj);
+    void giftDeliveryAdded(MasterServiceRequestStorage _obj);
     void giftDeliveryUpdated();
 }

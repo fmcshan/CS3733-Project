@@ -25,7 +25,7 @@ public class LocalStorage {
     private HashMap<String, Node> nodeMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
-    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
+    private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
     private ArrayList<User> users;
 
     public static synchronized LocalStorage getInstance() {
@@ -143,7 +143,7 @@ public class LocalStorage {
         this.registrations.add(_registration);
     }
 
-    public void setGiftDeliveryStorages(ArrayList<GiftDeliveryStorage> _giftDeliveryStorages) {
+    public void setGiftDeliveryStorages(ArrayList<MasterServiceRequestStorage> _giftDeliveryStorages) {
         this.giftDeliveryStorages = _giftDeliveryStorages;
     }
 
@@ -151,11 +151,11 @@ public class LocalStorage {
         this.users = _users;
     }
 
-    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
+    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
         this.giftDeliveryStorages.add(_giftDelivery);
     }
 
-    public ArrayList<GiftDeliveryStorage> getGiftDeliveryStorages() {
+    public ArrayList<MasterServiceRequestStorage> getGiftDeliveryStorages() {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             return null;
         }
@@ -175,7 +175,7 @@ public class LocalStorage {
         if (this.giftDeliveryStorages == null) {
             return null;
         } else {
-            return (ArrayList<GiftDeliveryStorage>) this.giftDeliveryStorages.clone();
+            return (ArrayList<MasterServiceRequestStorage>) this.giftDeliveryStorages.clone();
         }
     }
 
