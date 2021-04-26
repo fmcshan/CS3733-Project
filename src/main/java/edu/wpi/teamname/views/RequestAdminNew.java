@@ -38,7 +38,7 @@ public class RequestAdminNew {
                 String requestType = g.getRequestType().replace(" ", "");
                 System.out.println(requestType);
                 Node node = loadWindow(requestType);
-                cellHolder.getChildren().add(node);
+                cellHolder.getChildren().add(node); //TODO Clements Haaaalp
                 HBox hbox = (HBox) node;
                 switch (g.getRequestType()) {
                     case "Gift Delivery":
@@ -67,7 +67,7 @@ public class RequestAdminNew {
                         });
                         break;
                     case "Food Delivery":
-//                        foodCellHolder.getChildren().add(node);
+                        foodCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -91,8 +91,8 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Computer Service": //TODO revisit priority
-//                        computerCellHolder.getChildren().add(node);
+                    case "Computer Services": //TODO revisit priority
+                        computerCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -120,8 +120,8 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Facilities Maintenance": //TODO revisit Urgency
-//                        facilitiesCellHolder.getChildren().add(node);
+                    case "Facilities Request": //TODO revisit Urgency
+                        facilitiesCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -150,7 +150,7 @@ public class RequestAdminNew {
                         });
                         break;
                     case "Laundry Service": //TODO revisit Wash
-//                        laundryCellHolder.getChildren().add(node);
+                        laundryCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -178,8 +178,8 @@ public class RequestAdminNew {
                             }
                         });
                         break;
-                    case "Medicine Delivery": //TODO revist Dosage
-//                        medicineCellHolder.getChildren().add(node);
+                    case "Medicine Delivery": //TODO revisit Dosage
+                        medicineCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -205,7 +205,7 @@ public class RequestAdminNew {
                         });
                         break;
                     case "Patient Transportation": //TODO revisit Dest and Assistance
-//                        transportCellHolder.getChildren().add(node);
+                        transportCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
@@ -229,7 +229,7 @@ public class RequestAdminNew {
                         });
                         break;
                     case "Sanitation Service": // TODO revisit Reason
-//                        sanitationCellHolder.getChildren().add(node);
+                        sanitationCellHolder.getChildren().add(node);
                         hbox.getChildren().forEach(h -> {
                             if (h instanceof Label) {
                                 Label label = (Label) h;
