@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequestCells.MedicineDeliveryCells">
+   <children>
+      <Label fx:id="nameCell" prefWidth="254.0" text="Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="reasonCell" prefWidth="584.0" style="-fx-border-width: 1 0 1 0;" text="Medication Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="phoneCell" prefWidth="232.0" text="Dosage Amount">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="dateCell" prefWidth="204.0" text="Location">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+   </children>
+</HBox>

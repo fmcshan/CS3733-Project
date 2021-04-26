@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class ServiceRequestAdminNew {
+public class RequestAdminNew {
     @FXML
     private VBox cellHolder;
 
