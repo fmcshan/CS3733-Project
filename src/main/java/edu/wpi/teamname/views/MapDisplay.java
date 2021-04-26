@@ -74,7 +74,7 @@ public class MapDisplay implements LevelChangeListener {
     List<Circle> circles = new ArrayList<>();
     List<LineBuilder> lines = new ArrayList<>();
     @FXML
-    VBox popPop, popPop2, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML

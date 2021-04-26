@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.CheckInTableCells">
+   <children>
+      <Label fx:id="nameCell" prefWidth="300.0" text="Employee Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="emailCell" prefWidth="300.0" text="Employee Email Address">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="300.0" />
+      <Label fx:id="phoneCell" prefWidth="300.0" text="Employee Phone Number">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <JFXButton prefHeight="14.0" prefWidth="32.0" text="...">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font>
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
+      </JFXButton>
+   </children>
+</HBox>

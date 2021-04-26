@@ -93,6 +93,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
         LoadFXML.getInstance().loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
         LoadFXML.getInstance().loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
+        LoadFXML.getInstance().loadWindow("EmployeeTableButton", "employeeButton", employeePop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -162,6 +163,15 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
+    }
+
+    /**
+     * toggle the admin request window
+     */
+    public void toggleEmployee() {
+        clearMap();
+        popPop.setPrefWidth(1000);
+        LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
     }
 
     @FXML
