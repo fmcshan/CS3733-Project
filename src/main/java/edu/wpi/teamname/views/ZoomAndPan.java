@@ -26,14 +26,7 @@ public class ZoomAndPan {
     }
 
     public void zoomAndPan() {
-
-        windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
-        windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
-        windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-
-        page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
-        page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
-        page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
+        updateVars();
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(page.hospitalMap, page.mapWidth, page.mapHeight);
 
@@ -56,67 +49,44 @@ public class ZoomAndPan {
             mouseClickDown.set(viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
         });
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
-            windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
-            windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
-            windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-
-            page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
-            page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
-            page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
+            updateVars();
             double getDifference = -mouseEvent.getDeltaY();
             Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
 
             double scaleDifference = Math.pow(1.01, getDifference);
             double minPixels = 10;
 
-            double lowestBoundaryWidth = minPixels / viewportOfImage.getWidth();
-            double lowestBoundaryHeight = minPixels / viewportOfImage.getHeight();
-            double minimumZoomScale = Math.min(lowestBoundaryWidth, lowestBoundaryHeight);
+            double viewportWidth = viewportOfImage.getWidth();
+            double viewportHeight = viewportOfImage.getHeight();
 
-            double highestBoundaryWidth = page.mapWidth / viewportOfImage.getWidth();
-            double highestBoundaryHeight = page.mapHeight / viewportOfImage.getHeight();
-            double maximumZoomScale = Math.min(highestBoundaryWidth, highestBoundaryHeight);
+            double minimumZoomScale = Math.min(minPixels / viewportWidth, minPixels / viewportHeight);
+
+            double maximumZoomScale = Math.min(page.mapWidth / viewportWidth, page.mapHeight / viewportHeight);
 
             if (maximumZoomScale > 15 && getDifference < 0) {
                 return;
             }
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-            System.out.println("boundaries of viewPort: "+ boundariesOfViewPort);
-            System.out.println("scaleDiff: "+ scaleDifference);
-            System.out.println(" minimuZoomScale: "+ minimumZoomScale);
-            System.out.println("maximumZoomScale: "+  maximumZoomScale);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
 
-            page.scaledWidth = viewportOfImage.getWidth() * boundariesOfViewPort;
-            page.scaledHeight = viewportOfImage.getHeight() * boundariesOfViewPort;
+            page.scaledWidth = viewportWidth * boundariesOfViewPort;
+            page.scaledHeight = viewportHeight * boundariesOfViewPort;
 
-            double minXValueOfMouseClick = mouseCursorLocationOnMap.getX() - ((mouseCursorLocationOnMap.getX() - viewportOfImage.getMinX()) * boundariesOfViewPort);
-            double minYValueOfMouseClick = mouseCursorLocationOnMap.getY() - ((mouseCursorLocationOnMap.getY() - viewportOfImage.getMinY()) * boundariesOfViewPort);
+            double mouseCursorX = mouseCursorLocationOnMap.getX();
+            double mouseCursorY = mouseCursorLocationOnMap.getY();
 
-            double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
-            double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
+            double minXValueOfMouseClick = mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * boundariesOfViewPort);
+            double minYValueOfMouseClick = mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * boundariesOfViewPort);
 
-            double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
-            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
-            System.out.println(scaledMinWidth);
-            System.out.println(scaledMinHeight);
+            double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, page.mapWidth - page.scaledWidth);
+            double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, page.mapHeight - page.scaledHeight);
             page.setScaledX(scaledMinWidth);
             page.setScaledY(scaledMinHeight);
             Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
-            if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-                page.renderMap();}
-            if (LoadFXML.getCurrentWindow().equals("navBar")){
-                page.onTopOfTopElements.getChildren().clear();
-                page.topElements.getChildren().clear(); // Clear top elements
-                page.tonysPath.getElements().clear(); // Clear Tony's path
-                page.hidePopups();
-                page.drawPath(page.currentPath);
-                page.displayHotspots(0.8);
-
-            }
-                    if (!LoadFXML.getCurrentWindow().equals("navBar")){
+            render();
+            if (!LoadFXML.getCurrentWindow().equals("navBar")){
                 page.currentPath= new ArrayList();
             }
             page.hospitalMap.setViewport(newViewPort);
@@ -128,6 +98,30 @@ public class ZoomAndPan {
             page.processClick(e, dragged);
             dragged = false;
         });
+    }
+
+    private void render() {
+        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            page.renderMap();}
+        if (LoadFXML.getCurrentWindow().equals("navBar")){
+            page.onTopOfTopElements.getChildren().clear();
+            page.topElements.getChildren().clear(); // Clear top elements
+            page.tonysPath.getElements().clear(); // Clear Tony's path
+            page.hidePopups();
+            page.drawPath(page.currentPath);
+            page.displayHotspots(0.8);
+
+        }
+    }
+
+    private void updateVars() {
+        windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
+        windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
+        windowSmallestScale = ensureRange(windowHeight, 0, windowWidth);
+
+        page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
+        page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+        page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
     }
 
     private static void reset(ImageView map, double width, double height) {
@@ -173,17 +167,6 @@ public class ZoomAndPan {
 
         page.scaledWidth = theViewPort.getWidth();
         page.scaledHeight = theViewPort.getHeight();
-        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-        page.renderMap();}
-        if (LoadFXML.getCurrentWindow().equals("navBar")){
-            page.onTopOfTopElements.getChildren().clear();
-            page.topElements.getChildren().clear(); // Clear top elements
-            page.tonysPath.getElements().clear(); // Clear Tony's path
-            page.hidePopups();
-            page.drawPath(page.currentPath);
-            page.displayHotspots(0.8);
-        }
-//        System.out.println("pan listener");
-//        page.drawPath(_listOfNodes);
+        render();
     }
 }
