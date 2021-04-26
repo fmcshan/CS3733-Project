@@ -228,7 +228,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "registrationBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminViewNew", "registrationBar", popPop);
     }
 
     /**
