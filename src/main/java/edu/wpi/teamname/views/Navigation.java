@@ -153,7 +153,7 @@ public class Navigation implements LevelChangeListener {
             result = result + textDirection + "\n";
         }
         //System.out.println("done");
-        //System.out.println("done" + result);
+        System.out.println("done" + result);
         setTextDirections(result);
         //SceneManager.getInstance().getDefaultPage().toggleButtons(unusedFloors);
     }
