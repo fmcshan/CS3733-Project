@@ -75,7 +75,6 @@ public class ZoomAndPan {
 
             page.scaledWidth = viewportWidth * boundariesOfViewPort;
             page.scaledHeight = viewportHeight * boundariesOfViewPort;
-            System.out.println("bou "+boundariesOfViewPort);
 
             double mouseCursorX = mouseCursorLocationOnMap.getX();
             double mouseCursorY = mouseCursorLocationOnMap.getY();
