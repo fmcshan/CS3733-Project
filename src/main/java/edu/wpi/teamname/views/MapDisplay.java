@@ -29,11 +29,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
+import java.awt.font.LineBreakMeasurer;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MapDisplay implements LevelChangeListener {
 
@@ -70,6 +71,8 @@ public class MapDisplay implements LevelChangeListener {
     Edge selectedEdge;
     Circle draggedCircle;
     Node draggedNode;
+    List<Circle> circles = new ArrayList<>();
+    List<LineBuilder> lines = new ArrayList<>();
     @FXML
     VBox popPop, popPop2, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -158,20 +161,27 @@ public class MapDisplay implements LevelChangeListener {
      */
     public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
         resizingInfo(); // Set resizing info
+        if (circles.isEmpty()) {
+            for (int i = LocalStorage.getInstance().getNodes().size(); i >= 0; i--) {
+                circles.add(new Circle(-1, -1, 8, Color.OLIVE));
+            }
+        }
 
+        AtomicInteger nodeCounter = new AtomicInteger();
         _nodes.forEach(n -> { // For each node in localNodes
             if (n.equals(draggedNode)) {
                 return;
             }
             if (onScreen(n)) {
                 Tooltip tooltip = new Tooltip(n.getLongName());
-                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                Circle circle = circles.get(nodeCounter.getAndIncrement());
+                circle.setCenterX(xCoordOnTopElement(n.getX()));
+                circle.setCenterY(yCoordOnTopElement(n.getY())); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
             This allows us to have an invisible border
             around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.OLIVE); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
@@ -258,6 +268,12 @@ public class MapDisplay implements LevelChangeListener {
      */
     public void displayEdges(double _opacity) {
         resizingInfo(); // Set sizing info
+        if (lines.isEmpty()) {
+            for (int i = LocalStorage.getInstance().getEdges().size(); i >= 0; i--) {
+                lines.add(LineBuilder.create().startX(-1).startY(-1).endX(-2).endY(-2));
+            }
+        }
+        AtomicInteger edgeCounter = new AtomicInteger();
         localEdges.forEach(e -> { // For edge in localEdges
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
                 if (onScreen(nodesMap.get(e.getStartNode())) || onScreen(nodesMap.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
@@ -275,7 +291,8 @@ public class MapDisplay implements LevelChangeListener {
                         endY = draggedCircle.getCenterY();
                     }
                     // Create edge
-                    LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
+                    LineBuilder<?> edgeLocation = lines.get(edgeCounter.getAndIncrement());
+                    edgeLocation.startX(startX).startY(startY).endX(endX).endY(endY);
                     Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
                     renderedEdgeMap.put(edge, e);
                     onTopOfTopElements.getChildren().add(edge); // Render edge
@@ -528,7 +545,9 @@ public class MapDisplay implements LevelChangeListener {
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
 
                 // Build line between dragStart and dragEnd (potential new edge)
-                LineBuilder<?> edgeLocation = LineBuilder.create().startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(dragEnd.getCenterX()).endY(dragEnd.getCenterY());
+                LineBuilder<?> edgeLocation = LineBuilder.create().startX(-1).startY(-1).endX(-2).endY(-2);
+                lines.add(edgeLocation);
+                edgeLocation.startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(dragEnd.getCenterX()).endY(dragEnd.getCenterY());
                 topElements.getChildren().remove(renderedEdgePreview); // Remove previously displayed edge preview
                 this.renderedEdgePreview = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(1).build(); // Set potential edge styling
                 topElements.getChildren().add(renderedEdgePreview); // Display potential edge
@@ -574,8 +593,9 @@ public class MapDisplay implements LevelChangeListener {
         if (renderedAddNode != null) { // If an old node is rendered
             onTopOfTopElements.getChildren().remove(renderedAddNode); // Hide old node
         }
-        renderedAddNode = new Circle(t.getX(), t.getY(), 8); // Build potential new node
-        renderedAddNode.setFill(Color.TOMATO); // Set color
+        Circle newCircle = new Circle(t.getX(), t.getY(), 8, Color.TOMATO);
+        circles.add(newCircle);
+        renderedAddNode = newCircle; // Build potential new node
         renderedAddNode.setOpacity(0.9); // Set opacity
         onTopOfTopElements.getChildren().add(renderedAddNode); // Display potential new node
     }
