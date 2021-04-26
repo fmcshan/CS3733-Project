@@ -32,29 +32,20 @@ public class NavigationHelper {
                 if (i > 0) {
                     Node prev = path.get(i - 1);
                     Node next = path.get(i + 1);
-                    if (node.getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV"))
-                        result.add("Take the Elevator to Floor " + path.get(i+1).getFloor());
-                    else if (node.getNodeType().equals("EXIT"))
-                        result.add("Head for " + node.getLongName());
-                    else if (node.getNodeType().equals("HALL") && next.getNodeType().equals("HALL")){
-                        int k = i;
-                        while (path.get(k).getNodeType().equals("HALL") && path.get(k).getEdges().size()<=2){
-                            k++;
-                        }
-                        if (prev.getNodeType().equals("HALL") && next.getNodeType().equals("HALL") && node.getEdges().size() <= 2){}
-                        else result.add(getDirection(getAngle(prev, node), getAngle(node, path.get(k-1))) + " to get from " + node.getLongName() + " to " + path.get(k-1).getLongName());
-                        /*if (!prev.getNodeType().equals("HALL"))
-                            result.add(getDirection(getAngle(prev, node), getAngle(node, path.get(k-1))) + " to get from " + node.getLongName() + " to " + path.get(k-1).getLongName());*/
+                    if (node.getNodeType().equals("ELEV") && next.getNodeType().equals("ELEV")){
+                        result.add("Take the Elevator to Floor " + next.getFloor());
                     }
+                    else if (node.getNodeType().equals("STAI") && next.getNodeType().equals("STAI")){
+                        result.add("Take the Stairs to Floor " + next.getFloor());
+                    }
+                    else if (next.getNodeType().equals("EXIT"))
+                        result.add("Head for " + next.getLongName());
                     else
                     {
-                        //result.add(prev.getLongName() + " to " + node.getLongName() + ": " + Double.toString(getAngle(prev, node)));
-                        //result.add(node.getLongName() + " to " + next.getLongName() + ": " + Double.toString(getAngle(node, next)));
-                        result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + " to get from " + node.getLongName() + " to " + next.getLongName());
+                        result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
                     }
                 }
             }
-
         }
         return result;
     }
@@ -63,16 +54,15 @@ public class NavigationHelper {
         double angle = this.NormalizeAngle(b - a);
 
         if (angle >= 315 || angle <= 45)
-            return "Straight";
+            return "Go straight towards ";
         else if (angle >= 135 && angle <= 215)
-            return "Turn " + (int) angle + " degrees" ;
+            return "Turn " + (int) angle + " degrees towards " ;
         else if (angle <= 135 && angle >= 45 )
-            return "Turn Left";
+            return "Turn left towards ";
         else if (angle <= 315 && angle >= 215)
-            return "Turn right";
+            return "Turn right towards ";
         else
             return "bob";
-
     }
 
     private double NormalizeAngle(double angle) {
