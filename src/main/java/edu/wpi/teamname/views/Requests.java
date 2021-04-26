@@ -50,7 +50,9 @@ public class Requests {
         FoodDelivery fd = new FoodDelivery(this);
         fd.loadRequest();
         //LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
-    public void openRequest() {
+    }
+
+        public void openRequest() {
         if (requestsBox.getValue().equals("Gift Delivery")){
             requestPop.setPrefWidth(657.0);
             GiftDelivery gdr = new GiftDelivery(this);
@@ -113,19 +115,5 @@ public class Requests {
     public void openPatientTransportation() {
         requestPop.setPrefWidth(657.0);
         LoadFXML.getInstance().loadWindow("PatientTransportation", "patientTransportation", requestPop);
-    }
-
-    /**
-     * Opens an FXML in the requestPop VBox
-     */
-    public void openWindowRequestPop(String windowName, Parent root) {
-        requestPop.getChildren().clear(); //Clear requestPop VBox
-        SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
-        if (!windowName.equals(openWindow)) { //If the window we're trying to open is not the current window
-            requestPop.getChildren().add(root); //Put the fxml in the requestPop VBox
-            openWindow = windowName; //Set the current window to the specified window name
-            return;
-        }
-        openWindow = ""; //set the current window to nothing- the window is closed
     }
 }

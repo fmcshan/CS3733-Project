@@ -621,6 +621,5 @@
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
          </effect>
       </VBox>
-      <VBox fx:id="popPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="930.0" prefWidth="350.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>

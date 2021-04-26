@@ -887,7 +887,7 @@ public class MapDisplay implements LevelChangeListener {
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", popPop); // Load requests window
     }
 
 

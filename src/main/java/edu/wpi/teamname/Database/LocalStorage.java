@@ -26,7 +26,6 @@ public class LocalStorage {
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
     private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
-    private ArrayList<GiftDeliveryStorage> giftDeliveryStorages;
     private ArrayList<User> users;
 
     public static synchronized LocalStorage getInstance() {
@@ -148,12 +147,11 @@ public class LocalStorage {
         this.giftDeliveryStorages = _giftDeliveryStorages;
     }
 
-    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
     public void setUsers(ArrayList<User> _users) {
         this.users = _users;
     }
 
-    public void addGiftDeliveryStorage(GiftDeliveryStorage _giftDelivery) {
+    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
         this.giftDeliveryStorages.add(_giftDelivery);
     }
 

@@ -11,6 +11,7 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -244,7 +245,7 @@ public class FoodDelivery {
                     }
             });
             Parent root = loader.load();
-            request.openWindowRequestPop("requestForm", root); //open/close request form
+            LoadFXML.getInstance().openWindow("foodDeliveryBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
         } catch (IOException ex) {
             ex.printStackTrace();
         }
