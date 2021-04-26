@@ -11,7 +11,6 @@ import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
@@ -40,7 +39,14 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
 
-        if (event.getCode() == KeyCode.UP) {
+        if (event.getCode() == KeyCode.ESCAPE) {
+            if (comboBox.isShowing()) {
+                comboBox.hide();
+            }
+            comboBox.getEditor().deselect();
+            comboBox.getEditor().setText("");
+            return;
+        } else if (event.getCode() == KeyCode.UP) {
             caretPos = -1;
             moveCaret(comboBox.getEditor().getText().length());
             return;
@@ -70,13 +76,6 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         searchResults.forEach(s -> {
             list.add(s.getString());
         });
-//        for (int i=0; i<data.size(); i++) {
-//            if(data.get(i).toString().toLowerCase().startsWith(
-//                    AutoCompleteComboBoxListener.this.comboBox
-//                            .getEditor().getText().toLowerCase())) {
-//                list.add(data.get(i));
-//            }
-//        }
         String t = comboBox.getEditor().getText();
 
         comboBox.setItems(list);
