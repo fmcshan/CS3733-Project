@@ -34,7 +34,7 @@ public class ZoomAndPan {
         SimpleObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
         page.onTopOfTopElements.setOnMousePressed(mouseEvent -> {
-            Point2D pointOfMouseClick = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D pointOfMouseClick = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
             mouseClickDown.set(pointOfMouseClick);
         });
 
@@ -44,10 +44,10 @@ public class ZoomAndPan {
                 return;
             }
 
-            Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
-            mouseClickDown.set(viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY())));
+            mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
         });
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
             updateVars();
@@ -71,7 +71,7 @@ public class ZoomAndPan {
                 boundariesOfViewPort = 1.25;
             }
 
-            Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+            Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
 
             page.scaledWidth = viewportWidth * boundariesOfViewPort;
             page.scaledHeight = viewportHeight * boundariesOfViewPort;
@@ -126,11 +126,11 @@ public class ZoomAndPan {
         map.setViewport(newViewPort);
     }
 
-    public static Point2D viewportToImageView(ImageView inputMap, Point2D mapCoordinates) {
+    public static Point2D viewportToImageView(ImageView inputMap, double Xcoord, double Ycoord) {
         Bounds bounds = inputMap.getBoundsInLocal();
 
         Rectangle2D viewport = inputMap.getViewport();
-        return new Point2D(viewport.getMinX() + (mapCoordinates.getX() / bounds.getWidth()) * viewport.getWidth(), viewport.getMinY() + (mapCoordinates.getY() / bounds.getHeight()) * viewport.getHeight());
+        return new Point2D(viewport.getMinX() + (Xcoord / bounds.getWidth()) * viewport.getWidth(), viewport.getMinY() + (Ycoord / bounds.getHeight()) * viewport.getHeight());
     }
 
     private static double ensureRange(double value, double min, double max) {
