@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -122,5 +123,25 @@ public class Parser {
             giftDeliveryStorages.add(parseGiftDeliveryStorage((JSONObject) r));
         });
         return giftDeliveryStorages;
+    }
+
+    public static User parseUser(JSONObject _user) {
+        return new User(
+                null,
+                _user.getString("email"),
+                _user.getString("name"),
+                _user.getString("id"),
+                _user.getString("phone"),
+                _user.getBoolean("admin"),
+                _user.getBoolean("employee")
+        );
+    }
+
+    public static ArrayList<User> parseUsers(JSONArray _users) {
+        ArrayList<User> users = new ArrayList<User>();
+        _users.forEach(u -> {
+            users.add(parseUser((JSONObject) u));
+        });
+        return users;
     }
 }

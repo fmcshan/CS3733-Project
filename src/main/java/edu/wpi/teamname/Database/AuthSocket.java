@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -53,6 +54,10 @@ public class AuthSocket extends WebSocketClient {
 
             ArrayList<GiftDeliveryStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
             LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
+
+            ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
+            LocalStorage.getInstance().setUsers(users);
+
             return;
         }
 
