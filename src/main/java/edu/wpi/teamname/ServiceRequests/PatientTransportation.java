@@ -55,12 +55,6 @@ public class PatientTransportation {
     private Label failedCurrentLocation;
 
     /**
-     * Checkbox selecting yes for immediate medical assistance
-     */
-    @FXML
-    private JFXCheckBox yesCheckbox;
-
-    /**
      * Combo Box selecting current location
      */
     @FXML
@@ -134,16 +128,6 @@ public class PatientTransportation {
         return nameInput.getText().contains(" ");
     }
 
-
-    /**
-     * Checks if the "Other" text box for gift delivery options has been filled correctly
-     *
-     * @return true if the box was filled correctly, and false otherwise
-     */
-    public boolean otherInputValid() {
-        return !yesCheckbox.isSelected() || (yesCheckbox.isSelected() && !reasonInput.getText().isEmpty());
-    }
-
     /**
      * Checks if a current location has been selected correctly
      *
@@ -183,8 +167,8 @@ public class PatientTransportation {
         else
             failedName.setText("");
 
-        if (!yesCheckbox.isSelected() && reasonInput.getText() != null)
-            failedReason.setText("Please ensure you have selected the \"Yes\" box and have correctly filled in the text field.");
+        if (reasonInput.getText() == null)
+            failedReason.setText("Please ensure you have filled in the text field.");
         else
             failedReason.setText("");
 
@@ -201,14 +185,13 @@ public class PatientTransportation {
         if (nameInputValid() && currentLocationValid() && destinationLocationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> reason = new ArrayList<>();
-            if (yesCheckbox.isSelected())
-                reason.add(reasonInput.getText());
+            reason.add(reasonInput.getText());
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Patient Transportation", currentLocation.getValue().toString() + " to " + destination.getValue().toString(), reason, nameInput.getText(), "", "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Patient Transportation", currentLocation.getValue().toString(), reason, destination.getValue().toString(), nameInput.getText(), "", "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox

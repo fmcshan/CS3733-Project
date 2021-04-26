@@ -268,24 +268,25 @@ public class LaundryService {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> laundryTypeSelected = new ArrayList<>();
             if (colorsBox.isSelected())
-                laundryTypeSelected.add("Colors -");
+                laundryTypeSelected.add("Colors");
             if (whitesBox.isSelected())
-                laundryTypeSelected.add("Whites -");
+                laundryTypeSelected.add("Whites");
             if (otherCheckbox.isSelected())
-                laundryTypeSelected.add(otherInput.getText() + " -");
+                laundryTypeSelected.add(otherInput.getText());
+            String washTemp = "";
             if (coldBox.isSelected())
-                laundryTypeSelected.add("Cold");
+                washTemp += "Cold";
             if (warmBox.isSelected())
-                laundryTypeSelected.add("Warm");
+                washTemp += "Warm";
             if (hotBox.isSelected())
-                laundryTypeSelected.add("Hot");
+                washTemp += "Hot";
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
 //            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
 //            });
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, washTemp, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox

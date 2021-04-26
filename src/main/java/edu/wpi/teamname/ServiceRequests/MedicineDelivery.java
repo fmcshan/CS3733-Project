@@ -194,15 +194,14 @@ public class MedicineDelivery {
         if (nameInputValid() && medicationNameInputValid() && dosageAmountInputValid() && locationValid()) {
 
             ArrayList<String> items = new ArrayList<>();
-            items.add(medicationNameInput.getText() + " -");
-            items.add(dosageAmountInput.getText());
+            items.add(medicationNameInput.getText());
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
 //            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
 //            });
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Medicine Delivery", requestLocation.getValue(), items, nameInput.getText(), "", "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Medicine Delivery", requestLocation.getValue(), items, dosageAmountInput.getText(), nameInput.getText(), "", "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
