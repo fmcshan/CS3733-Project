@@ -919,8 +919,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(657.0); // Set preferable width to 350
@@ -932,8 +930,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         // currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -948,8 +944,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the check in window
      */
     public void openCheckIn() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
         LoadFXML.getInstance().loadWindow("COVIDSurvey", "covidBar", popPop); // Load registration window
