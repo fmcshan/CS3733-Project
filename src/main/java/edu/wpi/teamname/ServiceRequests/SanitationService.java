@@ -227,7 +227,7 @@ public class SanitationService {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/SanitationServices.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/SanitationServices.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == SanitationService.class)

@@ -254,7 +254,7 @@ public class ComputerService {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/ComputerService.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/ComputerService.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == ComputerService.class)

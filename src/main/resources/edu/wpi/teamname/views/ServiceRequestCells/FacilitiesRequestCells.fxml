@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequestCells.LaundryServiceCells">
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequestCells.FacilitiesMaintenanceCells">
    <children>
       <Label fx:id="nameCell" prefWidth="254.0" text="Name">
          <font>
@@ -15,7 +15,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="reasonCell" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Load Type">
+      <Label fx:id="descriptionCell" prefWidth="392.0" style="-fx-border-width: 1 0 1 0;" text="Description">
          <font>
             <Font size="14.0" />
          </font>
@@ -23,7 +23,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="reasonCell1" layoutX="264.0" layoutY="19.0" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Wash Temperature">
+      <Label fx:id="urgencyCell" layoutX="264.0" layoutY="19.0" prefWidth="192.0" style="-fx-border-width: 1 0 1 0;" text="Level of Urgency">
          <font>
             <Font size="14.0" />
          </font>
@@ -39,7 +39,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="dateCell" prefWidth="204.0" text="Location">
+      <Label fx:id="locationCell" prefWidth="204.0" text="Location">
          <font>
             <Font size="14.0" />
          </font>

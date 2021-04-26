@@ -299,7 +299,7 @@ public class LaundryService {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/LaundryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/LaundryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == LaundryService.class)

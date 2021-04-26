@@ -15,7 +15,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="reasonCell" prefWidth="408.0" style="-fx-border-width: 1 0 1 0;" text="Current Location">
+      <Label fx:id="currentCell" prefWidth="408.0" style="-fx-border-width: 1 0 1 0;" text="Current Location">
          <font>
             <Font size="14.0" />
          </font>
@@ -23,7 +23,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="phoneCell" prefWidth="408.0" text="Destination">
+      <Label fx:id="destCell" prefWidth="408.0" text="Destination">
          <font>
             <Font size="14.0" />
          </font>
@@ -31,7 +31,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="dateCell" prefWidth="204.0" text="Medical Assistance?">
+      <Label fx:id="assistanceCell" prefWidth="204.0" text="Medical Assistance?">
          <font>
             <Font size="14.0" />
          </font>
