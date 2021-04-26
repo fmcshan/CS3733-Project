@@ -213,7 +213,7 @@ public class SanitationService {
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, nameInput.getText(), reasonInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, reasonInput.getText(), nameInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
