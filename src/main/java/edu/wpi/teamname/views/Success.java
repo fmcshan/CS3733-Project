@@ -32,9 +32,12 @@ public class Success {
     private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
 
     private MedicineDelivery medicineDelivery;
+
     private FoodDelivery foodDelivery;
 
     private SanitationServices sanitationServices;
+
+    private PatientTransportation patientTransportation;
 
 
     private VBox pop;
@@ -53,6 +56,10 @@ public class Success {
 
     public Success(ComputerServices computerServices) {
         this.computerServices = computerServices;
+    }
+
+    public Success(PatientTransportation patientTransportation) {
+        this.patientTransportation = patientTransportation;
     }
 
     public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {

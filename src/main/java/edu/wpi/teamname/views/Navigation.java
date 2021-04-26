@@ -49,6 +49,11 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
+        if (COVIDMessage.covid) {
+            toCombo.setValue("Emergency Department Entrance");
+            COVIDMessage.covid = false;
+        }
+
         LevelManager.getInstance().addListener(this);
         refreshNodes();
 
