@@ -1,10 +1,13 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -61,9 +64,29 @@ public class RequestAdminNew {
                                         case "locationCell":
                                             label.setText(g.getLocation());
                                             break;
+                                        case "assignToCell":
+                                            break;
+                                        case "statusCell":
+                                            break;
+                                        case "actionCell":
+                                            break;
                                         default:
                                             label.setText("PANIK");
                                     }
+                                } else if (h instanceof VBox) {
+                                    VBox vBox = (VBox) h;
+                                    vBox.getChildren().forEach(v -> {
+                                        if (v instanceof JFXComboBox) {
+                                            JFXComboBox combo = (JFXComboBox) v;
+                                            LocalStorage.getInstance().getUsers().forEach(u -> {
+                                                combo.getItems().add(u.getEmail());
+                                            });
+                                        } else if (v instanceof JFXButton) {
+//                                            ContextMenu contextMenu = new ContextMenu();
+//                                            MenuItem inProgress =
+//                                            JFXButton button = (JFXButton) v;
+                                        }
+                                    });
                                 }
                             });
                             break;

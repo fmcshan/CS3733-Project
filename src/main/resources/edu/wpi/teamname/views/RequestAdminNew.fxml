@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.RequestAdminNew">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="1310.0" style="-fx-background-color: white; -fx-background-radius: 15px; -fx-border-color: #eeeeee;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="1310.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
@@ -78,9 +78,9 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
+                                    <HBox alignment="CENTER" prefHeight="38.0" prefWidth="1268.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
                                        <children>
-                                          <Label prefHeight="35.0" prefWidth="254.0" text="Name">
+                                          <Label prefHeight="35.0" prefWidth="181.14" text="Name">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -91,7 +91,7 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="584.0" text="Selected Gift(s)">
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="262.28" text="Selected Gift(s)">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -99,7 +99,7 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="232.0" text="Phone Number">
+                                          <Label layoutX="644.0" layoutY="12.0" prefHeight="35.0" prefWidth="181.14" text="Phone Number">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -107,7 +107,31 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="204.0" text="Location">
+                                          <Label layoutX="561.0" layoutY="12.0" prefHeight="35.0" prefWidth="181.14" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="821.0" layoutY="12.0" prefHeight="35.0" prefWidth="181.14" text="Assign To">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="910.0" layoutY="12.0" prefHeight="35.0" prefWidth="181.14" text="Status">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label layoutX="821.0" layoutY="12.0" prefHeight="35.0" prefWidth="100.0" text="Actions">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
