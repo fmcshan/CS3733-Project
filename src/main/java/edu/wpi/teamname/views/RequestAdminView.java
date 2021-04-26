@@ -92,7 +92,7 @@ public class RequestAdminView implements GiftDeliveryListener {
      * Load data into table
      */
     public void loadData() {
-        ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getGiftDeliveryStorages();
+        ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
 
         if (requests == null) {
             return;

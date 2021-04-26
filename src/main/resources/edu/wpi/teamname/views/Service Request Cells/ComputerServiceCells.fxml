@@ -15,7 +15,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="reasonCell" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Description">
+      <Label fx:id="descriptionCell" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Description">
          <font>
             <Font size="14.0" />
          </font>
@@ -23,7 +23,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="reasonCell1" layoutX="264.0" layoutY="19.0" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Priority Level">
+      <Label fx:id="priorityCell" layoutX="264.0" layoutY="19.0" prefWidth="292.0" style="-fx-border-width: 1 0 1 0;" text="Priority Level">
          <font>
             <Font size="14.0" />
          </font>
@@ -39,7 +39,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="dateCell" prefWidth="204.0" text="Location">
+      <Label fx:id="locationCell" prefWidth="204.0" text="Location">
          <font>
             <Font size="14.0" />
          </font>

@@ -7,7 +7,6 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
@@ -29,7 +28,7 @@ import java.util.List;
  * Controller for the Laundry Service Request Page
  * @author Lauren Sowerbutts, Frank McShan
  */
-public class LaundryRequest {
+public class LaundryService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -142,7 +141,7 @@ public class LaundryRequest {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public LaundryRequest(Requests request) {
+    public LaundryService(Requests request) {
         this.request = request;
     }
 
@@ -303,7 +302,7 @@ public class LaundryRequest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/LaundryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == LaundryRequest.class)
+                if (type == LaundryService.class)
                     return this;
                 else
                     try {

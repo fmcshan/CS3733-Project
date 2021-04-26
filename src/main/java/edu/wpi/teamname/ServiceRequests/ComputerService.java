@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComputerServices {
+public class ComputerService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -113,7 +113,7 @@ public class ComputerServices {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public ComputerServices(Requests request) {
+    public ComputerService(Requests request) {
         this.request = request;
     }
 
@@ -257,7 +257,7 @@ public class ComputerServices {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/ComputerService.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == ComputerServices.class)
+                if (type == ComputerService.class)
                     return this;
                 else
                     try {

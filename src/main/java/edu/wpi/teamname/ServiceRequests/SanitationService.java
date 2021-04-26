@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanitationServices {
+public class SanitationService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -106,7 +106,7 @@ public class SanitationServices {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public SanitationServices(Requests request) {
+    public SanitationService(Requests request) {
         this.request = request;
     }
 
@@ -230,7 +230,7 @@ public class SanitationServices {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/SanitationServices.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == SanitationServices.class)
+                if (type == SanitationService.class)
                     return this;
                 else
                     try {
