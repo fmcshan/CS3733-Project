@@ -34,221 +34,223 @@ public class RequestAdminNew {
 
     public void initialize() {
         LocalStorage.getInstance().getMasterStorages().forEach(g -> {
-            try {
-                String requestType = g.getRequestType().replace(" ", "");
-                System.out.println(requestType);
-                Node node = loadWindow(requestType);
-                cellHolder.getChildren().add(node); //TODO Clements Haaaalp
-                HBox hbox = (HBox) node;
-                switch (g.getRequestType()) {
-                    case "Gift Delivery":
-                        giftCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "giftCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
-                                        break;
-                                    case "phoneCell":
-                                        label.setText(g.getContact());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+            for (int i = 0; i < 2; i++) {
+                try {
+                    String requestType = g.getRequestType().replace(" ", "");
+                    System.out.println(requestType);
+                    Node node = loadWindow(requestType);
+                    if (i == 0) { cellHolder.getChildren().add(node); }
+                    HBox hbox = (HBox) node;
+                    switch (g.getRequestType()) {
+                        case "Gift Delivery":
+                            if (i == 1) { giftCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "giftCell":
+                                            String youAreStringNow = String.join(", ", g.getRequestedItems());
+                                            label.setText(youAreStringNow.replace("\"", ""));
+                                            break;
+                                        case "phoneCell":
+                                            label.setText(g.getContact());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Food Delivery":
-                        foodCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "foodCell":
-                                        String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                        label.setText(youAreStringNow.replace("\"", ""));
-                                        break;
-                                    case "phoneCell":
-                                        label.setText(g.getContact());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Food Delivery":
+                            if (i == 1) { foodCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "foodCell":
+                                            String youAreStringNow = String.join(", ", g.getRequestedItems());
+                                            label.setText(youAreStringNow.replace("\"", ""));
+                                            break;
+                                        case "phoneCell":
+                                            label.setText(g.getContact());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Computer Services": //TODO revisit priority done
-                        computerCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "descriptionCell":
-                                        label.setText(g.getDescription());
-                                        break;
-                                    case "priorityCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    case "phoneCell":
-                                        label.setText(g.getContact());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Computer Services":
+                            if (i == 1) { computerCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "descriptionCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "priorityCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        case "phoneCell":
+                                            label.setText(g.getContact());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Facilities Request": //TODO revisit Urgency done
-                        facilitiesCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "descriptionCell":
-                                        label.setText(g.getDescription());
-                                        break;
-                                    case "urgencyCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    case "phoneCell":
-                                        label.setText(g.getContact());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Facilities Request":
+                            if (i == 1) { facilitiesCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "descriptionCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "urgencyCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        case "phoneCell":
+                                            label.setText(g.getContact());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Laundry Service": //TODO revisit Wash done
-                        laundryCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "loadCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    case "washCell":
-                                        label.setText(g.getDescription());
-                                        break;
-                                    case "phoneCell":
-                                        label.setText(g.getContact());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Laundry Service":
+                            if (i == 1) { laundryCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "loadCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        case "washCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "phoneCell":
+                                            label.setText(g.getContact());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Medicine Delivery": //TODO revisit Dosage done
-                        medicineCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "medicationCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    case "dosageCell":
-                                        label.setText(g.getDescription());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Medicine Delivery":
+                            if (i == 1) { medicineCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "medicationCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        case "dosageCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Patient Transportation": //TODO revisit Dest and Assistance done
-                        transportCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "currentCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    case "destCell":
-                                        label.setText(g.getDescription());
-                                        break;
-                                    case "reasonCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Patient Transportation":
+                            if (i == 1) { transportCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "currentCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        case "destCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "reasonCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case "Sanitation Service": // TODO revisit Reason
-                        sanitationCellHolder.getChildren().add(node);
-                        hbox.getChildren().forEach(h -> {
-                            if (h instanceof Label) {
-                                Label label = (Label) h;
-                                switch(label.getId()) {
-                                    case "nameCell":
-                                        label.setText(g.getRequestedBy());
-                                        break;
-                                    case "urgencyCell":
-                                        label.setText(g.getRequestedItems().get(0));
-                                        break;
-                                    case "reasonCell":
-                                       label.setText(g.getDescription());
-                                        break;
-                                    case "locationCell":
-                                        label.setText(g.getLocation());
-                                        break;
-                                    default:
-                                        label.setText("PANIK");
+                            });
+                            break;
+                        case "Sanitation Service":
+                            if (i == 1) { sanitationCellHolder.getChildren().add(node); }
+                            hbox.getChildren().forEach(h -> {
+                                if (h instanceof Label) {
+                                    Label label = (Label) h;
+                                    switch (label.getId()) {
+                                        case "nameCell":
+                                            label.setText(g.getRequestedBy());
+                                            break;
+                                        case "urgencyCell":
+                                            label.setText(g.getRequestedItems().get(0));
+                                            break;
+                                        case "reasonCell":
+                                            label.setText(g.getDescription());
+                                            break;
+                                        case "locationCell":
+                                            label.setText(g.getLocation());
+                                            break;
+                                        default:
+                                            label.setText("PANIK");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    default:
-                        System.out.println("PANIK");
+                            });
+                            break;
+                        default:
+                            System.out.println("PANIK");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
         });
     }
