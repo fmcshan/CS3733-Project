@@ -56,6 +56,11 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
+        if (COVIDMessage.covid) {
+            toCombo.setValue("Emergency Department Entrance");
+            COVIDMessage.covid = false;
+        }
+
         LevelManager.getInstance().addListener(this);
         refreshNodes();
 
@@ -119,16 +124,14 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
-        if (fromCombo.getValue() == null) { // if combobox is null or the key does not exist
+        if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
-        if (toCombo.getValue() == null) { // if combobox is null or the key does not exist
+        if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
-        System.out.println(startNode.getLongName());
-        System.out.println(endNode.getLongName());
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
