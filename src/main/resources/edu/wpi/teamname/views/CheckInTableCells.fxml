@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="780.0" style="-fx-background-color: #eeeeee;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.CheckInTableCells">
+   <children>
+      <JFXTextField fx:id="nameCell" focusColor="#ababab" prefWidth="195.0" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3" />
+      <Separator orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: #ababab;" />
+      <JFXTextField fx:id="dobCell" focusColor="#ababab" prefWidth="195.0" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3" />
+      <Separator orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: #ababab;" />
+      <JFXTextField fx:id="RFVCell" focusColor="#ababab" prefWidth="195.0" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3" />
+      <Separator orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: #ababab;" />
+      <JFXTextField fx:id="phoneNumCell" focusColor="#ababab" prefWidth="195.0" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3" />
+   </children>
+</HBox>
