@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -40,6 +41,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     // used to save the current list of nodes after AStar
 
+    @FXML
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
 
     /**
      * run on startup
@@ -123,6 +126,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = 5000;
+        scaledHeight = 3400.0;
         clearMap();
         popPop.getChildren().clear();
         popPop2.getChildren().clear();
@@ -169,6 +176,33 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
+    }
+    
+    void toggleButtons(ArrayList<String> floors){
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(true);
+        else
+            L2Bttn.setDisable(false);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(true);
+        else
+            L1Bttn.setDisable(false);
+        if (floors.contains("G"))
+            GBttn.setDisable(true);
+        else
+            GBttn.setDisable(false);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(true);
+        else
+            floor1Bttn.setDisable(false);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(true);
+        else
+            floor2Bttn.setDisable(false);
+        if (floors.contains("3"))
+            floor3Bttn.setDisable(true);
+        else
+            floor3Bttn.setDisable(false);
     }
 
     public void closeWindows() {
