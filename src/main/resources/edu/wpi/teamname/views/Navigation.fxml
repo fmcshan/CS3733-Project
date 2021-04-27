@@ -13,7 +13,7 @@
       <DropShadow color="#a4a4a4" />
    </effect>
    <children>
-      <Label text="Navigation">
+      <Label fx:id="title" text="Navigation">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
@@ -21,7 +21,7 @@
             <Insets left="25.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to recieve a path." wrappingWidth="315.0">
+      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to recieve a path." wrappingWidth="315.0">
          <font>
             <Font size="16.0" />
          </font>
@@ -29,7 +29,7 @@
             <Insets left="25.0" />
          </VBox.margin>
       </Text>
-      <Label text="From" textFill="#868686">
+      <Label fx:id="fromLabel" text="From" textFill="#868686">
          <font>
             <Font size="16.0" />
          </font>
@@ -45,7 +45,7 @@
             <Insets left="25.0" top="5.0" />
          </VBox.margin>
       </JFXComboBox>
-      <Label text="To" textFill="#868686">
+      <Label fx:id="toLabel" text="To" textFill="#868686">
          <font>
             <Font size="16.0" />
          </font>
@@ -63,10 +63,13 @@
       </JFXComboBox>
       <VBox alignment="TOP_CENTER">
          <children>
-            <Label text="Directions">
+            <Label fx:id="directions" text="Directions">
                <font>
                   <Font size="24.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </Label>
             <Label fx:id="textDirections" layoutX="170.0" layoutY="10.0" textFill="#9e9e9e" />
          </children>

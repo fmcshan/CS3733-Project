@@ -11,7 +11,7 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 8px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.CloseContact">
    <children>
-      <Label text="Potential Symptoms">
+      <Label fx:id="title" text="Close Contacts">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -24,7 +24,7 @@
             <Insets top="15.0" />
          </VBox.margin>
          <children>
-            <Label text="&quot;Close contact&quot; means:">
+            <Label fx:id="desc" text="&quot;Close contact&quot; means:">
                <VBox.margin>
                   <Insets left="25.0" />
                </VBox.margin>
@@ -35,7 +35,7 @@
             <HBox alignment="BASELINE_LEFT">
                <children>
                   <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
-                  <Label prefHeight="69.0" prefWidth="210.0" text="Living in the same household as a person who has tested positive for COVID-19." wrapText="true">
+                  <Label fx:id="b1" prefHeight="69.0" prefWidth="210.0" text="Living in the same household as a person who has tested positive for COVID-19." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -51,7 +51,7 @@
             <HBox alignment="BASELINE_LEFT">
                <children>
                   <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
-                  <Label prefHeight="47.0" prefWidth="210.0" text="Caring for a person who has tested positive for COVID-19." wrapText="true">
+                  <Label fx:id="b2" prefHeight="47.0" prefWidth="210.0" text="Caring for a person who has tested positive for COVID-19." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -67,7 +67,7 @@
             <HBox alignment="BASELINE_LEFT">
                <children>
                   <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
-                  <Label prefHeight="88.0" prefWidth="210.0" text="Being within 6 feet of a person who has tested positive for COVID-19 for 15 minutes or more." wrapText="true">
+                  <Label fx:id="b3" prefHeight="88.0" prefWidth="210.0" text="Being within 6 feet of a person who has tested positive for COVID-19 for 15 minutes or more." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -83,7 +83,7 @@
             <HBox alignment="BASELINE_LEFT">
                <children>
                   <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
-                  <Label prefHeight="130.0" prefWidth="210.0" text="Coming in direct contact with secretions (e.g. sharing utensils, being coughed on) from a person who has tested positive for COVID-19, while that person was symptomatic." wrapText="true">
+                  <Label fx:id="b4" prefHeight="130.0" prefWidth="210.0" text="Coming in direct contact with secretions (e.g. sharing utensils, being coughed on) from a person who has tested positive for COVID-19, while that person was symptomatic." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
