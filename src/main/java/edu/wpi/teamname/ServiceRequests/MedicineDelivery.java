@@ -218,22 +218,22 @@ public class MedicineDelivery implements LanguageListener {
     public void submitRequest(ActionEvent event) {
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!medicationNameInputValid())
-            failedMedicationName.setText("Invalid Medication Name.");
+            failedMedicationName.setText("Invalid Medication Name");
         else
             failedMedicationName.setText("");
 
         if (!dosageAmountInputValid())
-            failedDosageAmount.setText("Invalid Name Entry.");
+            failedDosageAmount.setText("Invalid Dosage Amount");
         else
             failedDosageAmount.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();

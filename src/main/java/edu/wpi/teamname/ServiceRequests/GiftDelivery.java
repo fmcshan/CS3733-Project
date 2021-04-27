@@ -305,16 +305,16 @@ public class GiftDelivery implements LanguageListener {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!checkBoxSelected())
-            failedGiftSelection.setText("Please select a gift to be delivered.");
+            failedGiftSelection.setText("Select a Gift to Be Delivered");
         else if (flowerCheckbox.isSelected() && !flowerSelectionValid())
-            failedGiftSelection.setText("Please select a flower type.");
+            failedGiftSelection.setText("Select a Flower Type");
         else if (!otherInputValid())
-            failedGiftSelection.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedGiftSelection.setText("Invalid Other Reason");
         else
             failedGiftSelection.setText("");
 
@@ -324,7 +324,7 @@ public class GiftDelivery implements LanguageListener {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
