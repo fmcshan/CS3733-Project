@@ -106,10 +106,10 @@ public class EmployeeTable implements UserListener {
 
     @Override
     public void refreshUsers() {
-        cellHolder.getChildren().clear();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                cellHolder.getChildren().clear();
                 populateTable();
             }
         });
@@ -117,10 +117,10 @@ public class EmployeeTable implements UserListener {
 
     @Override
     public void updateUser(User _user) {
-        cellHolder.getChildren().clear();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                cellHolder.getChildren().clear();
                 populateTable();
             }
         });
