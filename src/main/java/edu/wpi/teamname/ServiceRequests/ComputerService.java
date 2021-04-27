@@ -302,4 +302,8 @@ public class ComputerService {
             ex.printStackTrace();
         }
     }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
+    }
 }
