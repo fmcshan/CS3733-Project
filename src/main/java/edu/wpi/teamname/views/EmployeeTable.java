@@ -6,6 +6,8 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.UserListener;
+import edu.wpi.teamname.views.manager.EmployeeManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,13 +25,23 @@ public class EmployeeTable implements UserListener {
 
     @FXML
     private VBox cellHolder;
+    @FXML
+    private VBox userPop;
+
+    public EmployeeTable() {
+    }
+
+    public VBox getUserPop() {
+        return userPop;
+    }
 
     public void initialize() {
+        EmployeeManager.getInstance().setEmployeeTable(this);
         Initiator.getInstance().addUserListener(this);
         populateTable();
     }
 
-    private void populateTable() {
+    public void populateTable() {
         LocalStorage.getInstance().getUsers().forEach(r -> {
             try {
                 Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/EmployeeTableCells.fxml"));
@@ -124,5 +136,9 @@ public class EmployeeTable implements UserListener {
                 populateTable();
             }
         });
+    }
+
+    public void addUser() {
+        LoadFXML.getInstance().loadWindow("AddEmployee", "userBar", userPop);
     }
 }
