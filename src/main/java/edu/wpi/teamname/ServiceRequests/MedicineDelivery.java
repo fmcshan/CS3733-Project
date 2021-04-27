@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -11,6 +12,8 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +34,7 @@ import java.util.List;
  * Controller for the Medicine Delivery Request Page
  * @author Lauren Sowerbutts, Frank McShan
  */
-public class MedicineDelivery {
+public class MedicineDelivery implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -91,6 +95,20 @@ public class MedicineDelivery {
      */
     @FXML
     private Requests request;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askMed;
+    @FXML
+    private Label askDosage;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
 
     /**
      * List of Service Requests
@@ -105,7 +123,28 @@ public class MedicineDelivery {
         this.request = request;
     }
 
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("MedicineDelivery_title"));
+        desc.setText(Translator.getInstance().get("MedicineDelivery_desc"));
+        askName.setText(Translator.getInstance().get("MedicineDelivery_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("MedicineDelivery_nameInput"));
+        askMed.setText(Translator.getInstance().get("MedicineDelivery_askMed"));
+        medicationNameInput.setPromptText(Translator.getInstance().get("MedicineDelivery_medicationNameInput"));
+        askDosage.setText(Translator.getInstance().get("MedicineDelivery_askDosage"));
+        dosageAmountInput.setPromptText(Translator.getInstance().get("MedicineDelivery_dosageAmountInput"));
+        askLocation.setText(Translator.getInstance().get("MedicineDelivery_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("MedicineDelivery_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("MedicineDelivery_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {

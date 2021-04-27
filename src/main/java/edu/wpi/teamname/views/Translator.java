@@ -257,7 +257,105 @@ public class Translator {
         language_spanish.put("ComputerServices_requestLocation", "Localizacion"); //Localización
         language_spanish.put("ComputerServices_submitButton", "Enviar");
 
-//
+//Gift Delivery
+
+        language_english.put("GiftDelivers_title", "Gift Delivery Request");
+        language_english.put("GiftDelivers_desc", "Please fill in the following fields to send a gift to a patient.");
+        language_english.put("GiftDelivers_askName", "Please enter your full name:");
+        language_english.put("GiftDelivers_nameInput", "Full Name");
+        language_english.put("GiftDelivers_askGifts", "Please select the desired gift(s):");
+        language_english.put("GiftDelivers_teddyBearBox", "Teddy Bear");
+        language_english.put("GiftDelivers_flowerCheckbox", "Flowers");
+        language_english.put("GiftDelivers_flowerType", "Type");
+        language_english.put("GiftDelivers_chocolateBox", "Chocolates");
+        language_english.put("GiftDelivers_balloonsBox", "Balloons");
+        language_english.put("GiftDelivers_giftBasketBox", "Gift Basket");
+        language_english.put("GiftDelivers_otherCheckbox", "Other:");
+        language_english.put("GiftDelivers_askNumber", "Please enter your phone number to receive a confirmation for the delivery:");
+        language_english.put("GiftDelivers_phoneInput", "Phone Number");
+        language_english.put("GiftDelivers_askLocation", "Please enter the location for the delivery:");
+        language_english.put("GiftDelivers_requestLocation", "Location");
+        language_english.put("GiftDelivers_submitButton", "Submit");
+
+        language_spanish.put("GiftDelivers_title", "Solicitud de Entrega de Regalo");
+        language_spanish.put("GiftDelivers_desc", "Complete los siguientes campos para enviar un regalo a un paciente.");
+        language_spanish.put("GiftDelivers_askName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("GiftDelivers_nameInput", "Nombre Completo");
+        language_spanish.put("GiftDelivers_askGifts", "Seleccione los obsequios deseados:");
+        language_spanish.put("GiftDelivers_teddyBearBox", "Oso de peluche");
+        language_spanish.put("GiftDelivers_flowerCheckbox", "Flores");
+        language_spanish.put("GiftDelivers_flowerType", "Tipo");
+        language_spanish.put("GiftDelivers_chocolateBox", "Chocolates");
+        language_spanish.put("GiftDelivers_balloonsBox", "Globos");
+        language_spanish.put("GiftDelivers_giftBasketBox", "Cesta de Regalo");
+        language_spanish.put("GiftDelivers_otherCheckbox", "Otro/a:");
+        language_spanish.put("GiftDelivers_askNumber", "Ingrese su numero de telefono para recibir una confirmacion de la entrega:");
+        //Ingrese su número de teléfono para recibir una confirmación de la entrega:
+        language_spanish.put("GiftDelivers_phoneInput", "Numero de telefono"); //Número de teléfono
+        language_spanish.put("GiftDelivers_askLocation", "Por favor ingrese la ubicacion para la entrega:"); //Por favor ingrese la ubicación para la entrega:
+        language_spanish.put("GiftDelivers_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("GiftDelivers_submitButton", "Enviar");
+
+//Food Delivery
+
+        language_english.put("FoodDelivery_title", "Food Delivery Request");
+        language_english.put("FoodDelivery_desc", "Please fill in the following fields to send food to a patient.");
+        language_english.put("FoodDelivery_askName", "Please enter your full name:");
+        language_english.put("FoodDelivery_nameInput", "Full Name");
+        language_english.put("FoodDelivery_askFood", "Please select the desired food:");
+        language_english.put("FoodDelivery_hamburgerBox", "Hamburger");
+        language_english.put("FoodDelivery_hotdogBox", "Hot Dog");
+        language_english.put("FoodDelivery_impossibleBurgerBox", "Impossible Burger");
+        language_english.put("FoodDelivery_otherCheckbox", "Other:");
+        language_english.put("FoodDelivery_askNumber", "Please enter your phone number to receive a confirmation for the delivery:");
+        language_english.put("FoodDelivery_phoneInput", "Phone Number");
+        language_english.put("FoodDelivery_askLocation", "Please enter the location for the delivery:");
+        language_english.put("FoodDelivery_requestLocation", "Location");
+        language_english.put("FoodDelivery_submitButton", "Submit");
+
+        language_spanish.put("FoodDelivery_title", "Solicitud de Entrega de Alimentos");
+        language_spanish.put("FoodDelivery_desc", "Complete los siguientes campos para enviar alimentos a un paciente.");
+        language_spanish.put("FoodDelivery_askName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("FoodDelivery_nameInput", "Nombre Completo");
+        language_spanish.put("FoodDelivery_askFood", "Seleccione la comida deseada:");
+        language_spanish.put("FoodDelivery_hamburgerBox", "Hamburguesa");
+        language_spanish.put("FoodDelivery_hotdogBox", "Perro caliente:");
+        language_spanish.put("FoodDelivery_impossibleBurgerBox", "Hamburguesa imposible");
+        language_spanish.put("FoodDelivery_otherCheckbox", "Otra/o:");
+        language_spanish.put("FoodDelivery_askNumber", "Ingrese su numero de telefono para recibir una confirmacion de la entrega:");
+        //Ingrese su número de teléfono para recibir una confirmación de la entrega:
+        language_spanish.put("FoodDelivery_phoneInput", "Numero de telefono"); //Número de teléfono
+        language_spanish.put("FoodDelivery_askLocation", "Por favor ingrese la ubicacion para la entrega:"); //Por favor ingrese la ubicación para la entrega:
+        language_spanish.put("FoodDelivery_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("FoodDelivery_submitButton", "Enviar");
+
+//    Medicine Delivery
+
+        language_english.put("MedicineDelivery_title", "Medicine Delivery Request");
+        language_english.put("MedicineDelivery_desc", "Please fill in the following fields to place a medicine delivery request.");
+        language_english.put("MedicineDelivery_askName", "Please input the patient's full name:");
+        language_english.put("MedicineDelivery_nameInput", "Full Name");
+        language_english.put("MedicineDelivery_askMed", "Please input the name of the medication:");
+        language_english.put("MedicineDelivery_medicationNameInput", "Medication Name");
+        language_english.put("MedicineDelivery_askDosage", "Please input the dosage amount:");
+        language_english.put("MedicineDelivery_dosageAmountInput", "Dosage Amount");
+        language_english.put("MedicineDelivery_askLocation", "Please enter the location of the patient:");
+        language_english.put("MedicineDelivery_requestLocation", "Location");
+        language_english.put("MedicineDelivery_submitButton", "Submit");
+
+        language_spanish.put("MedicineDelivery_title", "Solicitud de Entrega de Medicamentos");
+        language_spanish.put("MedicineDelivery_desc", "Complete los siguientes campos para realizar una solicitud de entrega de medicamentos.");
+        language_spanish.put("MedicineDelivery_askName", "Please input the patient's full name:");
+        language_spanish.put("MedicineDelivery_nameInput", "Ingrese el nombre completo del paciente:");
+        language_spanish.put("MedicineDelivery_askMed", "Ingrese el nombre del medicamento:");
+        language_spanish.put("MedicineDelivery_medicationNameInput", "Nombre de la medicacion"); //Nombre de la medicación
+        language_spanish.put("MedicineDelivery_askDosage", "Por favor ingrese la cantidad de dosis:");
+        language_spanish.put("MedicineDelivery_dosageAmountInput", "Cantidad de dosis");
+        language_spanish.put("MedicineDelivery_askLocation", "Introduzca la ubicacion del paciente:"); //Introduzca la ubicación del paciente:
+        language_spanish.put("MedicineDelivery_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("MedicineDelivery_submitButton", "Enviar");
+
+
 
 
     }
