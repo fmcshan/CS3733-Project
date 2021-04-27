@@ -86,13 +86,16 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets left="25.0" top="20.0" />
+                     </VBox.margin>
                   </Label>
                   <Label fx:id="askDestination" text="Please select the destination of the patient:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="20.0" />
+                        <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
                   <JFXComboBox fx:id="destination" focusColor="WHITE" prefWidth="300.0" promptText="Destination" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6; -fx-prompt-text-fill: #bbbbbb\;" unFocusColor="WHITE">
@@ -104,13 +107,16 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets left="25.0" top="20.0" />
+                     </VBox.margin>
                   </Label>
                   <Label text="Please enter a reason for the transportation request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="20.0" />
+                        <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
                   <JFXTextField fx:id="reasonInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Reason" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
@@ -152,7 +158,6 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>
