@@ -133,7 +133,7 @@ public class PatientTransportation implements LanguageListener {
         askDestination.setText(Translator.getInstance().get("PatientTransportation_askDestination"));
         destination.setPromptText(Translator.getInstance().get("PatientTransportation_destination"));
         askAssistance.setText(Translator.getInstance().get("PatientTransportation_askAssistance"));
-        yesCheckbox.setText(Translator.getInstance().get("PatientTransportation_yesCheckbox"));
+        //yesCheckbox.setText(Translator.getInstance().get("PatientTransportation_yesCheckbox"));
         reasonInput.setPromptText(Translator.getInstance().get("PatientTransportation_reasonInput"));
         submitButton.setText(Translator.getInstance().get("PatientTransportation_submitButton"));
     }
@@ -230,7 +230,7 @@ public class PatientTransportation implements LanguageListener {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && currentLocationValid() && destinationLocationValid()) {
+        if (nameInputValid() && currentLocationValid() && destinationLocationValid() && reasonInput.getText() != null) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> reason = new ArrayList<>();
             reason.add(reasonInput.getText());
