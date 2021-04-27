@@ -20,7 +20,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Facilities Maintenance">
+            <Label fx:id="title" text="Facilities Maintenance">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -28,7 +28,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to submit a maintenance request." textAlignment="CENTER" wrappingWidth="435.2413330078125">
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to submit a maintenance request." textAlignment="CENTER" wrappingWidth="435.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -46,7 +46,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your full name:" textFill="#868686">
+                  <Label fx:id="askName" text="Please enter your full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <Insets left="25.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label prefHeight="20.0" prefWidth="393.0" text="Please enter a brief description of the desired request:" textFill="#868686">
+                  <Label fx:id="askDescription" prefHeight="22.0" prefWidth="509.0" text="Please enter a brief description of the desired request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -94,7 +94,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Level of urgency:" textFill="#868686">
+                  <Label fx:id="askUrgency" text="Level of urgency:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -134,7 +134,7 @@
                         <Insets left="25.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
+                  <Label fx:id="askPhoneNumber" text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -158,7 +158,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the location for the delivery:" textFill="#868686">
+                  <Label fx:id="askLocation" text="Please enter the location for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -180,7 +180,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

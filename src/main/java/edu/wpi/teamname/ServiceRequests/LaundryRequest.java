@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -12,6 +13,8 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ import java.util.List;
  * Controller for the Laundry Service Request Page
  * @author Lauren Sowerbutts, Frank McShan
  */
-public class LaundryRequest {
+public class LaundryRequest implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -135,6 +139,30 @@ public class LaundryRequest {
     @FXML
     private edu.wpi.teamname.views.Requests request;
 
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+
+    @FXML
+    private Label askName;
+
+    @FXML
+    private Label askType;
+
+    @FXML
+    private Label askTemperature;
+
+    @FXML
+    private Label askPhone;
+
+    @FXML
+    private Label askLocation;
+
+    @FXML
+    private JFXButton submitButton;
+
     /**
      * List of Service Requests
      */
@@ -148,9 +176,36 @@ public class LaundryRequest {
         this.request = request;
     }
 
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("LaundryServices_title"));
+        desc.setText(Translator.getInstance().get("LaundryServices_desc"));
+        askName.setText(Translator.getInstance().get("LaundryServices_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("LaundryServices_nameInput"));
+        askType.setText(Translator.getInstance().get("LaundryServices_askType"));
+        colorsBox.setText(Translator.getInstance().get("LaundryServices_colorsBox"));
+        whitesBox.setText(Translator.getInstance().get("LaundryServices_whitesBox"));
+        otherCheckbox.setText(Translator.getInstance().get("LaundryServices_otherCheckbox"));
+        askTemperature.setText(Translator.getInstance().get("LaundryServices_askTemperature"));
+        coldBox.setText(Translator.getInstance().get("LaundryServices_coldBox"));
+        warmBox.setText(Translator.getInstance().get("LaundryServices_warmBox"));
+        hotBox.setText(Translator.getInstance().get("LaundryServices_hotBox"));
+        askPhone.setText(Translator.getInstance().get("LaundryServices_askPhone"));
+        phoneInput.setPromptText(Translator.getInstance().get("LaundryServices_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("LaundryServices_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("LaundryServices_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("LaundryServices_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
