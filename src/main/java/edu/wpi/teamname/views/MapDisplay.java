@@ -289,8 +289,8 @@ public class MapDisplay implements LevelChangeListener {
                   // System.out.println("here");
                   //Text txt = new Text();
 //                  for (int i = 0; i < textLevels.get(text).size(); i++) {
-                  System.out.println("Indiovidual Text level Size: "+ textLevels.get(n).size());
-                    int d =0 ;
+                //  System.out.println("Indiovidual Text level Size: "+ textLevels.get(n).size());
+                    //int d =0 ;
 //                  for (int i = 0; i < textLevels.get(n).size(); i++) {
 //                      x.set(xCoordOnTopElement((int) (textToNodeMap.get(text).getX() + 10 * Math.cos(rotation))));
 //                      y.set(yCoordOnTopElement((int) (textToNodeMap.get(text).getY() + 10 * Math.sin(rotation))));
@@ -309,7 +309,7 @@ public class MapDisplay implements LevelChangeListener {
                                 genuineText.setRotate(rotation[0]);
                                 genuineText.setFont(font);
 //                      genuineText.setText(textLevels.get(n).get(i) + " ");
-                                System.out.println(genuineText.getText());
+                              //  System.out.println(genuineText.getText());
 //                          if(!onTopOfTopElements.getChildren().contains(genuineText)){
                                 onTopOfTopElements.getChildren().add(genuineText);//}
                                 rotation[0] += 1;
@@ -584,7 +584,6 @@ public class MapDisplay implements LevelChangeListener {
                 portalNodeMap.put(n.getNodeID(),n);
                // edgeTextList.add(text);
                 textLevels.put(n,new ArrayList<>());
-                System.out.println("edgeTextMap not empty");
             }
         });
 
@@ -692,6 +691,10 @@ public class MapDisplay implements LevelChangeListener {
      *
      * @param t Mouse Event
      */
+    boolean start =false;
+    boolean end = false;
+    Node sNode;
+    Node fNode;
     public void processClick(MouseEvent t, boolean dragged) {
         if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             return; // Don't process clicks outside of the map editor.
@@ -712,12 +715,40 @@ public class MapDisplay implements LevelChangeListener {
         }
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
+
+            if( !start && renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV")){
+                start =true;
+                 sNode= renderedNodeMap.get( ((Circle) t.getTarget()));
+                System.out.println("start " +start);
+            }
+             else if(!end &&renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV")){
+                fNode= renderedNodeMap.get( ((Circle) t.getTarget()));
+                end =true;
+                System.out.println("end "+end);
+            }
+            if(start && end){
+
+                Submit.getInstance().addEdge(new Edge(sNode.getNodeID()+"_"+fNode.getNodeID(),sNode.getNodeID(),fNode.getNodeID()));
+                System.out.println("edge submitted");
+                refreshData();
+                renderMap();
+                start =false;
+                end=false;
+                fNode= null;
+                sNode =null;
+            }
+
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
                 hidePopups(); // Hide all popups
-                dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
+                dragStart = (Circle) t.getTarget();
+
+                System.out.println(dragStart);
+              // Set selected circle as dragStart (new edge start)
             } else if (dragEnd == null) { // Else if dragEnd isn't null (IE: If the user is partway through creating an edge)
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
 
+
+                System.out.println(dragEnd);
                 // Build line between dragStart and dragEnd (potential new edge)
                 LineBuilder<?> edgeLocation = LineBuilder.create().startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(dragEnd.getCenterX()).endY(dragEnd.getCenterY());
                 topElements.getChildren().remove(renderedEdgePreview); // Remove previously displayed edge preview
@@ -785,7 +816,12 @@ public class MapDisplay implements LevelChangeListener {
      */
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Text){
-
+            Edge toRemove = textToEdgeMap.get(t.getTarget());
+            System.out.println("Gotcha");
+            Submit.getInstance().removeEdge(toRemove);
+            refreshData();
+            renderMap();
+            return;
         }
         if (t.getTarget() instanceof Circle) { // If the user clicks a circle/node
             Node toEdit = renderedNodeMap.get(t.getTarget()); // Get the node

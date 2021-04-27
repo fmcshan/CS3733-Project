@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
@@ -82,10 +83,6 @@ public class ZoomAndPan {
             }
 
             double boundariesOfViewPort = ensureRange(scaleDifference, minimumZoomScale, maximumZoomScale);
-            System.out.println("boundaries of viewPort: "+ boundariesOfViewPort);
-            System.out.println("scaleDiff: "+ scaleDifference);
-            System.out.println(" minimuZoomScale: "+ minimumZoomScale);
-            System.out.println("maximumZoomScale: "+  maximumZoomScale);
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, new Point2D(mouseEvent.getX(), mouseEvent.getY()));
 
@@ -97,12 +94,10 @@ public class ZoomAndPan {
 
             double widthDifferenceBetweenScaledAndNormal = page.mapWidth - page.scaledWidth;
             double heightDifferenceBetweenScaledAndNormal = page.mapHeight - page.scaledHeight;
-            System.out.println();
+
 
             double scaledMinWidth = ensureRange(minXValueOfMouseClick, 0, widthDifferenceBetweenScaledAndNormal);
             double scaledMinHeight = ensureRange(minYValueOfMouseClick, 0, heightDifferenceBetweenScaledAndNormal);
-            System.out.println(scaledMinWidth);
-            System.out.println(scaledMinHeight);
             page.setScaledX(scaledMinWidth);
             page.setScaledY(scaledMinHeight);
             Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
@@ -186,5 +181,7 @@ public class ZoomAndPan {
         }
 //        System.out.println("pan listener");
 //        page.drawPath(_listOfNodes);
+
+
     }
 }
