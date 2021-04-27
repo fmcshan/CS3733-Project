@@ -133,7 +133,7 @@ public class PatientTransportation implements LanguageListener {
         askDestination.setText(Translator.getInstance().get("PatientTransportation_askDestination"));
         destination.setPromptText(Translator.getInstance().get("PatientTransportation_destination"));
         askAssistance.setText(Translator.getInstance().get("PatientTransportation_askAssistance"));
-        yesCheckbox.setText(Translator.getInstance().get("PatientTransportation_yesCheckbox"));
+        //yesCheckbox.setText(Translator.getInstance().get("PatientTransportation_yesCheckbox"));
         reasonInput.setPromptText(Translator.getInstance().get("PatientTransportation_reasonInput"));
         submitButton.setText(Translator.getInstance().get("PatientTransportation_submitButton"));
     }

@@ -165,6 +165,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
         registrationPop.getChildren().clear();
+        employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
