@@ -166,7 +166,7 @@ public class SanitationService implements LanguageListener {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         Translator.getInstance().addLanguageListener(this);
-        setLanguages();
+//        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -242,24 +242,24 @@ public class SanitationService implements LanguageListener {
     public void submitRequest(ActionEvent event) {
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!reasonInputValid())
-            failedReason.setText("Invalid Reason Entry.");
+            failedReason.setText("Invalid Reason Entry");
         else
             failedReason.setText("");
 
         if (!checkBoxSelected())
-            failedUrgency.setText("Please select the urgency of the request.");
+            failedUrgency.setText("Select an Urgency Level");
         else if (!oneUrgencySelected())
-            failedUrgency.setText("Invalid Selection");
+            failedUrgency.setText("Select Only One Urgency Level");
         else
             failedUrgency.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
