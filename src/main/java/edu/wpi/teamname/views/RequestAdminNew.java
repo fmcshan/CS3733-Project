@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
+import edu.wpi.teamname.Database.Submit;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -14,6 +15,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -67,11 +69,18 @@ public class RequestAdminNew {
                                         case "locationCell":
                                             label.setText(g.getLocation());
                                             break;
-                                        case "assignToCell":
-                                            break;
                                         case "statusCell":
-                                            break;
-                                        case "actionCell":
+                                            if (g.isCompleted() == true) {
+                                                label.setText("Completed");
+                                                label.setTextFill(Color.WHITE);
+                                                label.setStyle("-fx-background-color: #00c455");
+//                                            } else if () {
+//                                                // has employee been assigned
+                                            } else {
+                                                label.setText("Unassigned");
+                                                label.setTextFill(Color.WHITE);
+                                                label.setStyle("-fx-background-color: #f13426 ");
+                                            }
                                             break;
                                         default:
                                             label.setText("PANIK");
@@ -84,33 +93,35 @@ public class RequestAdminNew {
                                             LocalStorage.getInstance().getUsers().forEach(u -> {
                                                 combo.getItems().add(u.getEmail());
                                             });
+                                            combo.setOnAction(c -> {
+
+                                            });
                                         } else if (v instanceof JFXButton) {
                                             System.out.println("in button");
                                             ContextMenu contextMenu = new ContextMenu();
-                                            MenuItem inProgress = new MenuItem("In Progress");
-                                            MenuItem completed = new MenuItem("Completed");
-                                            MenuItem unassigned = new MenuItem("Unassigned");
-                                            contextMenu.getItems().add(inProgress);
-                                            contextMenu.getItems().add(completed);
-                                            contextMenu.getItems().add(unassigned);
+                                            MenuItem completed = new MenuItem("Mark as Completed");
+                                            MenuItem delete = new MenuItem("Delete");
+                                            if (g.isCompleted()) {
+                                                contextMenu.getItems().add(delete);
+                                            } else {
+                                                contextMenu.getItems().add(completed);
+                                                contextMenu.getItems().add(delete);
+                                            }
                                             JFXButton button = (JFXButton) v;
                                             button.setOnAction(b -> {
                                                 contextMenu.show(button, Side.BOTTOM, 0, 0);
                                             });
                                             contextMenu.setOnAction(e -> {
                                                 switch (((MenuItem) e.getTarget()).getText()) {
-                                                    case "In Progress":
-
-                                                        break;
-                                                    case "Completed":
-
+                                                    case "Mark as Completed":
+                                                        g.setCompleted(true);
+                                                        Submit.getInstance().submitGiftDelivery(g);
                                                         break;
                                                     case "Delete":
-
+                                                        //delete
                                                         break;
                                                     default:
                                                         System.out.println("hi");
-                                                        ;
                                                 }
                                             });
                                         }
