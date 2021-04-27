@@ -15,6 +15,7 @@ import edu.wpi.teamname.views.manager.LevelManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -92,6 +93,9 @@ public class MapDisplay implements LevelChangeListener {
     Path tonysPath; // the path displayed on the map
     @FXML
     JFXButton adminButton; // button that allows you to sign in
+
+    @FXML
+    private JFXButton floor3Bttn, floor2Bttn,floor1Bttn,L1Bttn, L2Bttn, groundBttn;
     @FXML
     ImageView hospitalMap;
     @FXML
@@ -139,6 +143,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
@@ -731,7 +736,6 @@ public class MapDisplay implements LevelChangeListener {
                 System.out.println("end "+end);
             }
             if(start && end){
-
                 Submit.getInstance().addEdge(new Edge(sNode.getNodeID()+"_"+fNode.getNodeID(),sNode.getNodeID(),fNode.getNodeID()));
                 System.out.println("edge submitted");
                 refreshData();
@@ -740,6 +744,7 @@ public class MapDisplay implements LevelChangeListener {
                 end=false;
                 fNode= null;
                 sNode =null;
+                floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
                 return;
             }
 
@@ -1334,33 +1339,40 @@ public class MapDisplay implements LevelChangeListener {
     }
 
     @FXML
-    private void setFloor0(ActionEvent e) {
+    private void setFloor0() {
         LevelManager.getInstance().setFloor(0);
+        edgeBetweenFloors();
     }
 
     @FXML
-    private void setFloor1(ActionEvent e) {
+    private void setFloor1() {
         LevelManager.getInstance().setFloor(1);
+        edgeBetweenFloors();
     }
 
     @FXML
-    private void setFloor2(ActionEvent e) {
+    private void setFloor2() {
         LevelManager.getInstance().setFloor(2);
+        edgeBetweenFloors();
+
     }
 
     @FXML
-    private void setFloor3(ActionEvent e) {
+    private void setFloor3() {
         LevelManager.getInstance().setFloor(3);
+        edgeBetweenFloors();
     }
 
     @FXML
-    private void setFloor4(ActionEvent e) {
+    private void setFloor4() {
         LevelManager.getInstance().setFloor(4);
+        edgeBetweenFloors();
     }
 
     @FXML
-    private void setFloor5(ActionEvent e) {
+    private void setFloor5() {
         LevelManager.getInstance().setFloor(5);
+        edgeBetweenFloors();
     }
 
     @Override
@@ -1376,4 +1388,34 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-}
+    public void edgeBetweenFloors(){
+        if( start){
+             LineBuilder<?> edgeLocation = LineBuilder.create();
+            com.sun.glass.ui.Robot e =
+                    com.sun.glass.ui.Application.GetApplication().createRobot();
+
+            switch(sNode.getFloor()){
+                case "G":
+//                   edgeLocation.startX(groundBttn.getLayoutX()).startY(groundBttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+                    break;
+
+                case "1":  edgeLocation.startX(floor1Bttn.getLayoutX()).startY(floor1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+                    break;
+                case "2":  edgeLocation.startX(floor2Bttn.getLayoutX()).startY(floor2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    break;
+                case "3":  edgeLocation.startX(floor3Bttn.getLayoutX()).startY(floor3Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    break;
+                case "L2":  edgeLocation.startX(L2Bttn.getLayoutX()).startY(L2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    break;
+                case "L1":  edgeLocation.startX(L1Bttn.getLayoutX()).startY(L1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    break;
+
+            }
+//          Line newLine =  edgeLocation.stroke(Color.TOMATO).strokeWidth(3).opacity(1).build();
+////            this.renderedEdgePreview.setPickOnBounds(false);
+//            topElements.getChildren().add(newLine);
+     }
+
+    }}
