@@ -174,30 +174,33 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
     
-    void toggleButtons(ArrayList<String> floors){
+    void disableButtons(ArrayList<String> floors){
         if (floors.contains("L2"))
             L2Bttn.setDisable(true);
-        else
-            L2Bttn.setDisable(false);
         if (floors.contains("L1"))
             L1Bttn.setDisable(true);
-        else
-            L1Bttn.setDisable(false);
         if (floors.contains("G"))
             GBttn.setDisable(true);
-        else
-            GBttn.setDisable(false);
         if (floors.contains("1"))
             floor1Bttn.setDisable(true);
-        else
-            floor1Bttn.setDisable(false);
         if (floors.contains("2"))
             floor2Bttn.setDisable(true);
-        else
-            floor2Bttn.setDisable(false);
         if (floors.contains("3"))
             floor3Bttn.setDisable(true);
-        else
+    }
+
+    void enableButtons(ArrayList<String> floors){
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(false);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(false);
+        if (floors.contains("G"))
+            GBttn.setDisable(false);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(false);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(false);
+        if (floors.contains("3"))
             floor3Bttn.setDisable(false);
     }
 

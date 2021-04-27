@@ -90,11 +90,20 @@ public class AStar implements IAlgorithm {
         return nodes;
     }
 
+    /*public ArrayList<ArrayList<Node>> getAllFloorPaths(){
+        ArrayList<Node> nodes = new ArrayList<>();
+        ArrayList<ArrayList<Node>> allNodes = new ArrayList<>();
+        for (String relevantFloor : getRelevantFloors()) {
+            allNodes.add(getFloorNodes(relevantFloor));
+        }
+        return allNodes;
+    }*/
+
     /**
      * Returns a nested list of nodes representing the different sections of paths by floors
      * @return nested list of nodes representing the different sections of paths by floors
      */
-    public ArrayList<ArrayList<Node>> getFloorPaths(){
+    public ArrayList<ArrayList<Node>> getAllFloorPaths(){
         ArrayList<Node> nodes = new ArrayList<>();
         ArrayList<ArrayList<Node>> paths = new ArrayList<>();
         String currentfloor = start.getFloor();
@@ -112,7 +121,15 @@ public class AStar implements IAlgorithm {
         return paths;
     }
 
-
+    public ArrayList<ArrayList<Node>> getFloorPaths(String floor){
+        ArrayList<Node> nodes = new ArrayList<>();
+        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
+        for (ArrayList<Node> floorPath : getAllFloorPaths()) {
+            if (floorPath.get(0).getFloor().equals(floor))
+                paths.add(floorPath);
+        }
+        return paths;
+    }
     
     /**
      * Prints the path from the start node to the goal node
@@ -162,10 +179,10 @@ public class AStar implements IAlgorithm {
     @Override
     public ArrayList<Node> getPath(){
         Stack<Node> finalPath = this.returnPath();
-        ArrayList<Node> returnPath = new ArrayList<Node>();
+        ArrayList<Node> path = new ArrayList<Node>();
         while (!finalPath.isEmpty())
-            returnPath.add(finalPath.pop());
-        return returnPath;
+            path.add(finalPath.pop());
+        return path;
     }
 
     /**
