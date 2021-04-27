@@ -162,7 +162,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdminNew", "reqAdminBar", popPop);
     }
 
     /**

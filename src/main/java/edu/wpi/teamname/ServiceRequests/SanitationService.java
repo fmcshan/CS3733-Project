@@ -2,11 +2,10 @@ package edu.wpi.teamname.ServiceRequests;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
@@ -24,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComputerServices {
+public class SanitationService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -39,14 +38,8 @@ public class ComputerServices {
     private JFXTextField nameInput;
 
     /**
-     * Label indicating that a description wasn't entered
+     * Label indicating that an urgency wasn't selected
      */
-    @FXML
-    private Label failedServiceDescription;
-
-    @FXML
-    private JFXTextArea descriptionInput;
-
     @FXML
     private Label failedUrgency;
 
@@ -69,16 +62,16 @@ public class ComputerServices {
     private JFXCheckBox highUrgency;
 
     /**
-     * Label indicating the phone number text field has been filled in incorrectly
+     * Label indicating that a reason wasn't entered
      */
     @FXML
-    private Label failedPhoneNumber;
+    private Label failedReason;
 
     /**
-     * Text Field to enter phone number
+     * Text field to input reason
      */
     @FXML
-    private JFXTextField phoneInput;
+    private JFXTextField reasonInput;
 
     /**
      * Label indicating a location hasn't been selected
@@ -102,7 +95,7 @@ public class ComputerServices {
      * Instance of Requests class used to create a popup window
      */
     @FXML
-    private edu.wpi.teamname.views.Requests request;
+    private Requests request;
 
     /**
      * List of Service Requests
@@ -113,7 +106,7 @@ public class ComputerServices {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public ComputerServices(Requests request) {
+    public SanitationService(Requests request) {
         this.request = request;
     }
 
@@ -142,15 +135,6 @@ public class ComputerServices {
     }
 
     /**
-     * Checks if the description has been filled in
-     *
-     * @return true if there's a space between the first and last name, and false otherwise
-     */
-    public boolean descriptionValid() {
-        return !descriptionInput.getText().isEmpty();
-    }
-
-    /**
      * Checks if a checkbox has been selected
      *
      * @return true if any checkbox has been selected, and false otherwise
@@ -160,12 +144,12 @@ public class ComputerServices {
     }
 
     /**
-     * Checks if the phone number text field has been filled in correctly
+     * Checks if the "Reason" text box has been filled
      *
-     * @return true if the number matches the "XXX-XXX-XXXX" format
+     * @return true if the box was filled correctly, and false otherwise
      */
-    public boolean phoneNumberValid() {
-        return phoneInput.getText().matches("\\d{3}-\\d{3}-\\d{4}");
+    public boolean reasonInputValid() {
+        return !reasonInput.getText().isEmpty();
     }
 
     /**
@@ -192,30 +176,21 @@ public class ComputerServices {
      * @param event event triggering submission
      */
     public void submitRequest(ActionEvent event) {
-        if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
-            phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
-        }
-
         //Checks if all the inputs are valid
         if (!nameInputValid())
             failedName.setText("Invalid Name Entry.");
         else
             failedName.setText("");
 
-        if (!descriptionValid())
-            failedServiceDescription.setText("Enter a Brief Description of the Desired Request");
+        if (!reasonInputValid())
+            failedReason.setText("Invalid Reason Entry.");
         else
-            failedServiceDescription.setText("");
+            failedReason.setText("");
 
         if (!checkBoxSelected())
-            failedUrgency.setText("Please select a gift to be delivered.");
+            failedUrgency.setText("Please select the urgency of the request.");
         else
             failedUrgency.setText("");
-
-        if (!phoneNumberValid())
-            failedPhoneNumber.setText("Invalid Phone Number");
-        else
-            failedPhoneNumber.setText("");
 
         if (!locationValid())
             failedLocationEntry.setText("Please select a location");
@@ -224,7 +199,7 @@ public class ComputerServices {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid()) {
+        if (nameInputValid() && checkBoxSelected() && reasonInputValid() && locationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (lowUrgency.isSelected())
@@ -234,13 +209,11 @@ public class ComputerServices {
             if (highUrgency.isSelected())
                 selected.add("High Urgency");
 
-            selected.add("- " + descriptionInput.getText());
-
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Computer Services", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, reasonInput.getText(), nameInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -254,10 +227,10 @@ public class ComputerServices {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/ComputerService.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/SanitationServices.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == ComputerServices.class)
+                if (type == SanitationService.class)
                     return this;
                 else
                     try {
@@ -269,7 +242,7 @@ public class ComputerServices {
                     }
             });
             Parent root = loader.load();
-            LoadFXML.getInstance().openWindow("computerServicesBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
+            LoadFXML.getInstance().openWindow("sanitationServicesBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
         } catch (IOException ex) {
             ex.printStackTrace();
         }

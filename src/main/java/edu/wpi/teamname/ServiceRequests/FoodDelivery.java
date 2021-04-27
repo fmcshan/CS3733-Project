@@ -230,7 +230,7 @@ public class FoodDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/FoodDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/FoodDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == FoodDelivery.class)

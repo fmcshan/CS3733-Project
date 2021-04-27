@@ -234,13 +234,11 @@ public class FacilitiesMaintenanceRequest {
             if (highUrgency.isSelected())
                 selected.add("High Urgency");
 
-            selected.add("- " + descriptionInput.getText());
-
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Facilities Request", requestLocation.getValue(), selected, nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Facilities Maintenance", requestLocation.getValue(), selected, descriptionInput.getText(), nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -254,7 +252,7 @@ public class FacilitiesMaintenanceRequest {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/FacilitiesMaintenanceRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/FacilitiesMaintenanceRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == FacilitiesMaintenanceRequest.class)

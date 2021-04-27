@@ -43,8 +43,10 @@ public class Submit {
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
-        _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
-        items.setLength(items.length()-2);
+        if (_form.getRequestedItems().size() > 0) {
+            _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
+            items.setLength(items.length()-2);
+        }
         items.append("]");
 
         JSONObject data = new JSONObject();

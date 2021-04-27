@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.junit.runner.Computer;
 
 import java.io.IOException;
 
@@ -24,10 +23,10 @@ public class Success {
 
     private GiftDelivery giftDelivery;
 
-    private LaundryRequest laundryRequest;
+    private LaundryService laundryService;
 
     @FXML
-    private ComputerServices computerServices;
+    private ComputerService computerService;
 
     private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
 
@@ -35,7 +34,7 @@ public class Success {
 
     private FoodDelivery foodDelivery;
 
-    private SanitationServices sanitationServices;
+    private SanitationService sanitationService;
 
     private PatientTransportation patientTransportation;
 
@@ -50,12 +49,12 @@ public class Success {
         this.giftDelivery = giftDelivery;
     }
 
-    public Success(LaundryRequest laundryRequest) {
-        this.laundryRequest = laundryRequest;
+    public Success(LaundryService laundryService) {
+        this.laundryService = laundryService;
     }
 
-    public Success(ComputerServices computerServices) {
-        this.computerServices = computerServices;
+    public Success(ComputerService computerService) {
+        this.computerService = computerService;
     }
 
     public Success(PatientTransportation patientTransportation) {
@@ -70,8 +69,8 @@ public class Success {
         this.medicineDelivery = medicineDelivery;
     }
 
-    public Success(SanitationServices sanitationServices) {
-        this.sanitationServices = sanitationServices;
+    public Success(SanitationService sanitationService) {
+        this.sanitationService = sanitationService;
     }
 
     public Success(FoodDelivery foodDelivery) {

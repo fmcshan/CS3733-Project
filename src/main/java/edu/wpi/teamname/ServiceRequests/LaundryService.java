@@ -23,7 +23,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanitationServices {
+/**
+ * <h1>Laundry Request Controller</h1>
+ * Controller for the Laundry Service Request Page
+ * @author Lauren Sowerbutts, Frank McShan
+ */
+public class LaundryService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -38,40 +43,70 @@ public class SanitationServices {
     private JFXTextField nameInput;
 
     /**
-     * Label indicating that an urgency wasn't selected
+     * Label indicating if a load type hasn't been selected
      */
     @FXML
-    private Label failedUrgency;
+    private Label failedLoadType;
 
     /**
-     * Checkbox for selecting a low urgency request
+     * Check Box selecting colors for load type
      */
     @FXML
-    private JFXCheckBox lowUrgency;
+    private JFXCheckBox colorsBox;
 
     /**
-     * Checkbox for selecting a medium urgency request
+     * Check Box selecting whites for load type
      */
     @FXML
-    private JFXCheckBox mediumUrgency;
+    private JFXCheckBox whitesBox;
 
     /**
-     * Checkbox for selecting a high urgency request
+     * Check Box selecting some other load type
      */
     @FXML
-    private JFXCheckBox highUrgency;
+    private JFXCheckBox otherCheckbox;
 
     /**
-     * Label indicating that a reason wasn't entered
+     * Text Field to specify what load type
      */
     @FXML
-    private Label failedReason;
+    private JFXTextField otherInput;
 
     /**
-     * Text field to input reason
+     * Label indicating if a wash temp hasn't been selected
      */
     @FXML
-    private JFXTextField reasonInput;
+    private Label failedWashTemp;
+
+    /**
+     * Check Box selecting cold wash temperature
+     */
+    @FXML
+    private JFXCheckBox coldBox;
+
+    /**
+     * Check Box selecting warm wash temperature
+     */
+    @FXML
+    private JFXCheckBox warmBox;
+
+    /**
+     * Check Box selecting hot wash temperature
+     */
+    @FXML
+    private JFXCheckBox hotBox;
+
+    /**
+     * Label indicating if phone number wasn't entered
+     */
+    @FXML
+    private Label failedPhoneNumber;
+
+    /**
+     * Text Field to enter phone number
+     */
+    @FXML
+    private JFXTextField phoneInput;
 
     /**
      * Label indicating a location hasn't been selected
@@ -95,7 +130,7 @@ public class SanitationServices {
      * Instance of Requests class used to create a popup window
      */
     @FXML
-    private Requests request;
+    private edu.wpi.teamname.views.Requests request;
 
     /**
      * List of Service Requests
@@ -106,7 +141,7 @@ public class SanitationServices {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public SanitationServices(Requests request) {
+    public LaundryService(Requests request) {
         this.request = request;
     }
 
@@ -117,7 +152,7 @@ public class SanitationServices {
     }
 
     /**
-     * Retrieves sucess pop up page
+     * Retrieves success pop up page
      *
      * @return Success pop up page
      */
@@ -135,21 +170,39 @@ public class SanitationServices {
     }
 
     /**
-     * Checks if a checkbox has been selected
+     * Checks if a checkbox has been selected for load type
      *
      * @return true if any checkbox has been selected, and false otherwise
      */
-    public boolean checkBoxSelected() {
-        return lowUrgency.isSelected() || mediumUrgency.isSelected() || highUrgency.isSelected();
+    public boolean checkBoxLoadSelected() {
+        return colorsBox.isSelected() || whitesBox.isSelected() || otherCheckbox.isSelected();
     }
 
     /**
-     * Checks if the "Reason" text box has been filled
+     * Checks if a checkbox has been selected for wash temperature
+     *
+     * @return true if any checkbox has been selected, and false otherwise
+     */
+    public boolean checkBoxTempSelected() {
+        return coldBox.isSelected() || warmBox.isSelected() || hotBox.isSelected();
+    }
+
+    /**
+     * Checks if the "Other" text box for load type options has been filled correctly
      *
      * @return true if the box was filled correctly, and false otherwise
      */
-    public boolean reasonInputValid() {
-        return !reasonInput.getText().isEmpty();
+    public boolean otherInputValid() {
+        return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().isEmpty());
+    }
+
+    /**
+     * Checks if the phone number text field has been filled in correctly
+     *
+     * @return true if the number matches the "XXX-XXX-XXXX" format
+     */
+    public boolean phoneNumberValid() {
+        return phoneInput.getText().matches("\\d{3}-\\d{3}-\\d{4}");
     }
 
     /**
@@ -176,21 +229,33 @@ public class SanitationServices {
      * @param event event triggering submission
      */
     public void submitRequest(ActionEvent event) {
+        if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
+            phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
+        }
+
         //Checks if all the inputs are valid
         if (!nameInputValid())
             failedName.setText("Invalid Name Entry.");
         else
             failedName.setText("");
 
-        if (!reasonInputValid())
-            failedReason.setText("Invalid Reason Entry.");
-        else
-            failedReason.setText("");
 
-        if (!checkBoxSelected())
-            failedUrgency.setText("Please select the urgency of the request.");
+        if (!checkBoxLoadSelected())
+            failedLoadType.setText("Please select a load type.");
+        else if (!otherInputValid())
+            failedLoadType.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
         else
-            failedUrgency.setText("");
+            failedLoadType.setText("");
+
+        if (!checkBoxTempSelected())
+            failedWashTemp.setText("Please select a wash temperature.");
+        else
+            failedWashTemp.setText("");
+
+        if (!phoneNumberValid())
+            failedPhoneNumber.setText("Invalid Phone Number");
+        else
+            failedPhoneNumber.setText("");
 
         if (!locationValid())
             failedLocationEntry.setText("Please select a location");
@@ -199,21 +264,29 @@ public class SanitationServices {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && reasonInputValid() && locationValid()) {
+        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid()) {
             //Adds all the selected gifts to an arraylist
-            ArrayList<String> selected = new ArrayList<>();
-            if (lowUrgency.isSelected())
-                selected.add("Low Urgency");
-            if (mediumUrgency.isSelected())
-                selected.add("Medium Urgency");
-            if (highUrgency.isSelected())
-                selected.add("High Urgency");
+            ArrayList<String> laundryTypeSelected = new ArrayList<>();
+            if (colorsBox.isSelected())
+                laundryTypeSelected.add("Colors");
+            if (whitesBox.isSelected())
+                laundryTypeSelected.add("Whites");
+            if (otherCheckbox.isSelected())
+                laundryTypeSelected.add(otherInput.getText());
+            String washTemp = "";
+            if (coldBox.isSelected())
+                washTemp += "Cold";
+            if (warmBox.isSelected())
+                washTemp += "Warm";
+            if (hotBox.isSelected())
+                washTemp += "Hot";
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
-            //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, nameInput.getText(), "", "", false);
+//            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
+//            });
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, washTemp, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -227,10 +300,10 @@ public class SanitationServices {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/SanitationServices.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/LaundryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == SanitationServices.class)
+                if (type == LaundryService.class)
                     return this;
                 else
                     try {
@@ -242,7 +315,7 @@ public class SanitationServices {
                     }
             });
             Parent root = loader.load();
-            LoadFXML.getInstance().openWindow("sanitationServicesBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
+            LoadFXML.getInstance().openWindow("laundryBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
         } catch (IOException ex) {
             ex.printStackTrace();
         }
