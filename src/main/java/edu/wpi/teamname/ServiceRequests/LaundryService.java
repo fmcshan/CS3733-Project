@@ -12,8 +12,6 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +33,7 @@ import java.util.List;
  * @author Lauren Sowerbutts, Frank McShan
  */
 
-public class LaundryService implements LanguageListener {
+public class LaundryService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -176,36 +174,9 @@ public class LaundryService implements LanguageListener {
         this.request = request;
     }
 
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("LaundryServices_title"));
-        desc.setText(Translator.getInstance().get("LaundryServices_desc"));
-        askName.setText(Translator.getInstance().get("LaundryServices_askName"));
-        nameInput.setPromptText(Translator.getInstance().get("LaundryServices_nameInput"));
-        askType.setText(Translator.getInstance().get("LaundryServices_askType"));
-        colorsBox.setText(Translator.getInstance().get("LaundryServices_colorsBox"));
-        whitesBox.setText(Translator.getInstance().get("LaundryServices_whitesBox"));
-        otherCheckbox.setText(Translator.getInstance().get("LaundryServices_otherCheckbox"));
-        askTemperature.setText(Translator.getInstance().get("LaundryServices_askTemperature"));
-        coldBox.setText(Translator.getInstance().get("LaundryServices_coldBox"));
-        warmBox.setText(Translator.getInstance().get("LaundryServices_warmBox"));
-        hotBox.setText(Translator.getInstance().get("LaundryServices_hotBox"));
-        askPhone.setText(Translator.getInstance().get("LaundryServices_askPhone"));
-        phoneInput.setPromptText(Translator.getInstance().get("LaundryServices_phoneInput"));
-        askLocation.setText(Translator.getInstance().get("LaundryServices_askLocation"));
-        requestLocation.setPromptText(Translator.getInstance().get("LaundryServices_requestLocation"));
-        submitButton.setText(Translator.getInstance().get("LaundryServices_submitButton"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -257,7 +228,7 @@ public class LaundryService implements LanguageListener {
     }
 
     public boolean oneTempSelected() {
-        return (coldBox.isSelected() || !warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || !warmBox.isSelected() || hotBox.isSelected());
+        return (coldBox.isSelected() && !warmBox.isSelected() && !hotBox.isSelected()) || (!coldBox.isSelected() && warmBox.isSelected() && !hotBox.isSelected()) || (!coldBox.isSelected() && !warmBox.isSelected() && hotBox.isSelected());
     }
 
     /**
@@ -308,24 +279,24 @@ public class LaundryService implements LanguageListener {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
 
         if (!checkBoxLoadSelected())
-            failedLoadType.setText("Please select a load type.");
+            failedLoadType.setText("Select a Load Type");
         else if (!oneLoadSelected())
-            failedLoadType.setText("Invalid Selection");
+            failedLoadType.setText("Select Only One Load Type");
         else if (!otherInputValid())
-            failedLoadType.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedLoadType.setText("Invalid Other Reason");
         else
             failedLoadType.setText("");
 
         if (!checkBoxTempSelected())
-            failedWashTemp.setText("Please select a wash temperature.");
+            failedWashTemp.setText("Select a Wash Temperature");
         else if (!oneTempSelected())
-            failedWashTemp.setText("Invalid Selection");
+            failedWashTemp.setText("Select Only One Wash Temperature");
         else
             failedWashTemp.setText("");
 
@@ -336,7 +307,7 @@ public class LaundryService implements LanguageListener {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -370,7 +341,7 @@ public class LaundryService implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
@@ -397,5 +368,9 @@ public class LaundryService implements LanguageListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

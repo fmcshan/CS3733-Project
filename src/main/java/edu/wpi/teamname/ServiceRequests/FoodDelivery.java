@@ -12,8 +12,6 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class FoodDelivery implements LanguageListener {
+public class FoodDelivery {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -118,28 +116,6 @@ public class FoodDelivery implements LanguageListener {
     @FXML
     private JFXButton submitButton;
 
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("FoodDelivery_title"));
-        desc.setText(Translator.getInstance().get("FoodDelivery_desc"));
-        askName.setText(Translator.getInstance().get("FoodDelivery_askName"));
-        nameInput.setPromptText(Translator.getInstance().get("FoodDelivery_nameInput"));
-        askFood.setText(Translator.getInstance().get("FoodDelivery_askFood"));
-        hamburgerBox.setText(Translator.getInstance().get("FoodDelivery_hamburgerBox"));
-        hotdogBox.setText(Translator.getInstance().get("FoodDelivery_hotdogBox"));
-        impossibleBurgerBox.setText(Translator.getInstance().get("FoodDelivery_impossibleBurgerBox"));
-        otherCheckbox.setText(Translator.getInstance().get("FoodDelivery_otherCheckbox"));
-        askNumber.setText(Translator.getInstance().get("FoodDelivery_askNumber"));
-        phoneInput.setPromptText(Translator.getInstance().get("FoodDelivery_phoneInput"));
-        askLocation.setText(Translator.getInstance().get("FoodDelivery_askLocation"));
-        requestLocation.setPromptText(Translator.getInstance().get("FoodDelivery_requestLocation"));
-        submitButton.setText(Translator.getInstance().get("FoodDelivery_submitButton"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     /**
      * List of Service Requests
      */
@@ -154,8 +130,6 @@ public class FoodDelivery implements LanguageListener {
     }
 
     public void initialize() {
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
@@ -240,7 +214,7 @@ public class FoodDelivery implements LanguageListener {
 
 
         if (!checkBoxSelected())
-            failedFoodSelection.setText("Invalid Menu Item Selection");
+            failedFoodSelection.setText("Select at Least One Menu Item");
         else
             failedFoodSelection.setText("");
 
@@ -250,7 +224,7 @@ public class FoodDelivery implements LanguageListener {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -276,7 +250,7 @@ public class FoodDelivery implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
@@ -303,5 +277,9 @@ public class FoodDelivery implements LanguageListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

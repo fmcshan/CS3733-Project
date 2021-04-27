@@ -1,16 +1,13 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.views.manager.LanguageListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class CloseContact implements LanguageListener {
+public class CloseContact {
     @FXML private COVIDSurvey covidSurvey;
     @FXML private Label title;
     @FXML private Label desc;
@@ -21,25 +18,6 @@ public class CloseContact implements LanguageListener {
 
     public CloseContact(COVIDSurvey covidSurvey) {
         this.covidSurvey = covidSurvey;
-    }
-
-    public void initialize(){
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
-    }
-
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("CloseContact_title"));
-        desc.setText(Translator.getInstance().get("CloseContact_desc"));
-        b1.setText(Translator.getInstance().get("CloseContact_b1"));
-        b2.setText(Translator.getInstance().get("CloseContact_b2"));
-        b3.setText(Translator.getInstance().get("CloseContact_b3"));
-        b4.setText(Translator.getInstance().get("CloseContact_b4"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
     }
 
     /**

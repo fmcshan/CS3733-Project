@@ -7,11 +7,8 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
-import edu.wpi.teamname.views.Navigation;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class ComputerService implements LanguageListener {
+public class ComputerService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -137,36 +134,9 @@ public class ComputerService implements LanguageListener {
         this.request = request;
     }
 
-
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("ComputerServices_title"));
-        desc.setText(Translator.getInstance().get("ComputerServices_desc"));
-        askFullName.setText(Translator.getInstance().get("ComputerServices_askFullName"));
-        nameInput.setPromptText(Translator.getInstance().get("ComputerServices_nameInput"));
-        askDesc.setText(Translator.getInstance().get("ComputerServices_askDesc"));
-        descriptionInput.setPromptText(Translator.getInstance().get("ComputerServices_descriptionInput"));
-        askPriority.setText(Translator.getInstance().get("ComputerServices_askPriority"));
-        lowUrgency.setText(Translator.getInstance().get("ComputerServices_lowUrgency"));
-        mediumUrgency.setText(Translator.getInstance().get("ComputerServices_mediumUrgency"));
-        highUrgency.setText(Translator.getInstance().get("ComputerServices_highUrgency"));
-        askPhone.setText(Translator.getInstance().get("ComputerServices_askPhone"));
-        phoneInput.setPromptText(Translator.getInstance().get("ComputerServices_phoneInput"));
-        askLocation.setText(Translator.getInstance().get("ComputerServices_askLocation"));
-        requestLocation.setPromptText(Translator.getInstance().get("ComputerServices_requestLocation"));
-        submitButton.setText(Translator.getInstance().get("ComputerServices_submitButton"));
-
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -256,19 +226,19 @@ public class ComputerService implements LanguageListener {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!descriptionValid())
-            failedServiceDescription.setText("Enter a Brief Description of the Desired Request");
+            failedServiceDescription.setText("Invalid Description Entry");
         else
             failedServiceDescription.setText("");
 
         if (!checkBoxSelected())
-            failedUrgency.setText("Please select a gift to be delivered.");
+            failedUrgency.setText("Select an Urgency Level");
         else if (!oneUrgencySelected())
-            failedUrgency.setText("Invalid Selection");
+            failedUrgency.setText("Select Only One Urgency Level");
         else
             failedUrgency.setText("");
 
@@ -278,7 +248,7 @@ public class ComputerService implements LanguageListener {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -304,7 +274,7 @@ public class ComputerService implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
@@ -331,5 +301,9 @@ public class ComputerService implements LanguageListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

@@ -7,6 +7,7 @@ import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.ServiceRequests.FacilitiesRequest;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +52,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
         try {
             return FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestCells/" + fileName + "Cells.fxml"));
         } catch (IOException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
         return null;
     }
@@ -67,7 +68,6 @@ public class RequestAdminNew implements GiftDeliveryListener {
                 HBox hbox = (HBox) node;
                 switch (_req.getRequestType()) {
                     case "Gift Delivery":
-                        System.out.println("In gift delivery");
                         if (i == 1) {
                             giftCellHolder.getChildren().add(node);
                         }
@@ -95,7 +95,6 @@ public class RequestAdminNew implements GiftDeliveryListener {
                         });
                         break;
                     case "Food Delivery":
-                        System.out.println("in food delivery");
                         if (i == 1) {
                             foodCellHolder.getChildren().add(node);
                         }
@@ -153,7 +152,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                             } else loadData(_req, h);
                         });
                         break;
-                    case "Facilities Request":
+                    case "Facilities Maintenance":
                         if (i == 1) {
                             facilitiesCellHolder.getChildren().add(node);
                         }
@@ -293,7 +292,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                         System.out.println("PANIK");
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
             }
         }
     }
@@ -375,7 +374,12 @@ public class RequestAdminNew implements GiftDeliveryListener {
 
     @Override
     public void giftDeliveryAdded(MasterServiceRequestStorage _obj) {
-        loadTables();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loadTables();
+            }
+        });
     }
 
     @Override
