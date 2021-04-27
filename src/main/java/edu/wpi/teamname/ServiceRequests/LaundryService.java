@@ -242,6 +242,11 @@ public class LaundryService implements LanguageListener {
         return colorsBox.isSelected() || whitesBox.isSelected() || otherCheckbox.isSelected();
     }
 
+    public boolean oneLoadSelected() {
+        return (colorsBox.isSelected() && !whitesBox.isSelected() && !otherCheckbox.isSelected()) || (!colorsBox.isSelected() && whitesBox.isSelected() && !otherCheckbox.isSelected()) || (!colorsBox.isSelected() && !whitesBox.isSelected() && otherCheckbox.isSelected());
+    }
+
+
     /**
      * Checks if a checkbox has been selected for wash temperature
      *
@@ -249,6 +254,10 @@ public class LaundryService implements LanguageListener {
      */
     public boolean checkBoxTempSelected() {
         return coldBox.isSelected() || warmBox.isSelected() || hotBox.isSelected();
+    }
+
+    public boolean oneTempSelected() {
+        return (coldBox.isSelected() || !warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || !warmBox.isSelected() || hotBox.isSelected());
     }
 
     /**
@@ -306,6 +315,8 @@ public class LaundryService implements LanguageListener {
 
         if (!checkBoxLoadSelected())
             failedLoadType.setText("Please select a load type.");
+        else if (!oneLoadSelected())
+            failedLoadType.setText("Invalid Selection");
         else if (!otherInputValid())
             failedLoadType.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
         else
@@ -313,8 +324,11 @@ public class LaundryService implements LanguageListener {
 
         if (!checkBoxTempSelected())
             failedWashTemp.setText("Please select a wash temperature.");
+        else if (!oneTempSelected())
+            failedWashTemp.setText("Invalid Selection");
         else
             failedWashTemp.setText("");
+
 
         if (!phoneNumberValid())
             failedPhoneNumber.setText("Invalid Phone Number");
@@ -328,7 +342,7 @@ public class LaundryService implements LanguageListener {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid()) {
+        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid() && oneLoadSelected() && oneTempSelected()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> laundryTypeSelected = new ArrayList<>();
             if (colorsBox.isSelected())

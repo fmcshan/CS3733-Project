@@ -230,7 +230,7 @@ public class PatientTransportation implements LanguageListener {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && currentLocationValid() && destinationLocationValid()) {
+        if (nameInputValid() && currentLocationValid() && destinationLocationValid() && reasonInput.getText() != null) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> reason = new ArrayList<>();
             reason.add(reasonInput.getText());

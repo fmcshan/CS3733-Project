@@ -203,6 +203,10 @@ public class SanitationService implements LanguageListener {
         return lowUrgency.isSelected() || mediumUrgency.isSelected() || highUrgency.isSelected();
     }
 
+    public boolean oneUrgencySelected() {
+        return (lowUrgency.isSelected() && !mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && !mediumUrgency.isSelected() && highUrgency.isSelected());
+    }
+
     /**
      * Checks if the "Reason" text box has been filled
      *
@@ -249,6 +253,8 @@ public class SanitationService implements LanguageListener {
 
         if (!checkBoxSelected())
             failedUrgency.setText("Please select the urgency of the request.");
+        else if (!oneUrgencySelected())
+            failedUrgency.setText("Invalid Selection");
         else
             failedUrgency.setText("");
 
@@ -259,7 +265,7 @@ public class SanitationService implements LanguageListener {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && reasonInputValid() && locationValid()) {
+        if (nameInputValid() && checkBoxSelected() && reasonInputValid() && locationValid() && oneUrgencySelected()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (lowUrgency.isSelected())

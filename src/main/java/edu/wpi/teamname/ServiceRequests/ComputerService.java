@@ -213,6 +213,10 @@ public class ComputerService implements LanguageListener {
         return lowUrgency.isSelected() || mediumUrgency.isSelected() || highUrgency.isSelected();
     }
 
+    public boolean oneUrgencySelected() {
+        return (lowUrgency.isSelected() && !mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && !mediumUrgency.isSelected() && highUrgency.isSelected());
+    }
+
     /**
      * Checks if the phone number text field has been filled in correctly
      *
@@ -263,6 +267,8 @@ public class ComputerService implements LanguageListener {
 
         if (!checkBoxSelected())
             failedUrgency.setText("Please select a gift to be delivered.");
+        else if (!oneUrgencySelected())
+            failedUrgency.setText("Invalid Selection");
         else
             failedUrgency.setText("");
 
@@ -278,7 +284,7 @@ public class ComputerService implements LanguageListener {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid() && oneUrgencySelected()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (lowUrgency.isSelected())
