@@ -123,6 +123,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = 5000;
+        scaledHeight = 3400.0;
         clearMap();
         popPop.getChildren().clear();
         popPop2.getChildren().clear();
@@ -145,7 +149,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminViewNew", "registrationBar", popPop);
     }
 
     /**

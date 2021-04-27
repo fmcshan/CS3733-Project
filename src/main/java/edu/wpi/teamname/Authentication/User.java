@@ -1,13 +1,14 @@
 package edu.wpi.teamname.Authentication;
 
 public class User {
-    private final String idToken;
-    private final String name;
-    private final String email;
-    private final String localId;
-    private final String phone;
-    private final boolean admin;
-    private final boolean employee;
+    private String idToken;
+    private String name;
+    private String email;
+    private String localId;
+    private String phone;
+    private boolean admin;
+    private boolean employee;
+    private String password;
 
     public User(String idToken, String email, String name, String localId, String phone, boolean admin, boolean employee) {
         this.idToken = idToken;
@@ -19,11 +20,18 @@ public class User {
         this.employee = employee;
     }
 
+    public User(String email, String name, String phone, String password) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.password = password; // Only used when creating a new user
+    }
+
     protected String getIdToken() {
         return idToken;
     }
 
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
@@ -37,7 +45,19 @@ public class User {
 
     public String getPhone() { return phone; }
 
+    public String getPassword() { return password; }
+
+    public void clearPassword() { this.password = null; }
+
     public boolean isAdmin() { return admin; }
 
     public boolean isEmployee() { return employee; }
+
+    public void setName(String _name) { this.name = _name; }
+
+    public void setEmail(String _email) { this.email = _email; }
+
+    public void setPhone(String _phone) { this.phone = _phone; }
+
+
 }

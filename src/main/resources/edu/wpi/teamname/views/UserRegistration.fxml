@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.UserRegistration">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.UserRegistration">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;">
          <effect>
@@ -194,23 +194,20 @@
                         <Font size="18.0" />
                      </font>
                   </JFXTextField>
-                  <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0">
-                     <children>
-                        <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRegistration" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </JFXButton>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </VBox>
                </children>
                <VBox.margin>
                   <Insets top="25.0" />
                </VBox.margin>
             </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRegistration" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
          </children>
       </VBox>
       <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />

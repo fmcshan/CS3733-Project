@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 8px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.CloseContact">
+   <children>
+      <Label text="Potential Symptoms">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="25.0" />
+         </VBox.margin>
+      </Label>
+      <VBox prefHeight="338.0" prefWidth="306.0" style="-fx-background-color: white;">
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+         <children>
+            <Label text="&quot;Close contact&quot; means:">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+                  <Label prefHeight="69.0" prefWidth="210.0" text="Living in the same household as a person who has tested positive for COVID-19." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="40.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+                  <Label prefHeight="47.0" prefWidth="210.0" text="Caring for a person who has tested positive for COVID-19." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+                  <Label prefHeight="88.0" prefWidth="210.0" text="Being within 6 feet of a person who has tested positive for COVID-19 for 15 minutes or more." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8" />
+                  <Label prefHeight="130.0" prefWidth="210.0" text="Coming in direct contact with secretions (e.g. sharing utensils, being coughed on) from a person who has tested positive for COVID-19, while that person was symptomatic." wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="57.0" prefWidth="306.0">
+         <children>
+            <JFXButton contentDisplay="CENTER" onAction="#exitView" prefHeight="25.0" prefWidth="66.0" ripplerFill="#0067b1" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #c3c3c3; -fx-border-radius: 4px; -fx-focus-traversable: false;" text="OK" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+   <effect>
+      <DropShadow color="#757575" height="59.55" radius="21.119999999999997" width="26.93" />
+   </effect>
+</VBox>

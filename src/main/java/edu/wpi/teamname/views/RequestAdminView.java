@@ -1,21 +1,17 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.Database.GiftDeliveryStorage;
+import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.Parser;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.BooleanStringConverter;
 
@@ -43,9 +39,9 @@ public class RequestAdminView implements GiftDeliveryListener {
     @FXML
     public TableColumn completeCheckBox;
 
-    private GiftDeliveryStorage currentlySelected = null;
+    private MasterServiceRequestStorage currentlySelected = null;
 
-    private GiftDeliveryStorage updatedForm = null;
+    private MasterServiceRequestStorage updatedForm = null;
 
     /**
      * Run on startup
@@ -88,7 +84,7 @@ public class RequestAdminView implements GiftDeliveryListener {
         loadData(); // Load file to table
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (GiftDeliveryStorage) newSelection; // Listen for row selection events
+            currentlySelected = (MasterServiceRequestStorage) newSelection; // Listen for row selection events
         });
     }
 
@@ -96,7 +92,7 @@ public class RequestAdminView implements GiftDeliveryListener {
      * Load data into table
      */
     public void loadData() {
-        ArrayList<GiftDeliveryStorage> requests = LocalStorage.getInstance().getGiftDeliveryStorages();
+        ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getGiftDeliveryStorages();
 
         if (requests == null) {
             return;
@@ -112,7 +108,7 @@ public class RequestAdminView implements GiftDeliveryListener {
      * @param _obj
      */
     @Override
-    public void giftDeliveryAdded(GiftDeliveryStorage _obj) {
+    public void giftDeliveryAdded(MasterServiceRequestStorage _obj) {
         table.getItems().add(0, _obj);
     }
 
@@ -133,17 +129,17 @@ public class RequestAdminView implements GiftDeliveryListener {
     }
 
     public void assignToChange(TableColumn.CellEditEvent cellEditEvent) {
-        GiftDeliveryStorage request = (GiftDeliveryStorage) cellEditEvent.getRowValue(); // Current row
+        MasterServiceRequestStorage request = (MasterServiceRequestStorage) cellEditEvent.getRowValue(); // Current row
         String newAssignedTo = cellEditEvent.getNewValue().toString();
-        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), newAssignedTo, false);
+        MasterServiceRequestStorage newRequest = new MasterServiceRequestStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), newAssignedTo, false);
         Submit.getInstance().updateGiftDelivery(newRequest);
     }
 
     public void doneChange(TableColumn.CellEditEvent cellEditEvent) {
-        GiftDeliveryStorage request = (GiftDeliveryStorage) cellEditEvent.getRowValue(); // Current row
+        MasterServiceRequestStorage request = (MasterServiceRequestStorage) cellEditEvent.getRowValue(); // Current row
         Boolean isCompleted = Boolean.parseBoolean(String.valueOf(cellEditEvent.getNewValue()));
         //System.out.println(isCompleted);
-        GiftDeliveryStorage newRequest = new GiftDeliveryStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), request.getAssignTo(), isCompleted);
+        MasterServiceRequestStorage newRequest = new MasterServiceRequestStorage(request.getId(), request.getRequestType(), request.getLocation(), request.getRequestedItems(), request.getRequestedBy(), request.getContact(), request.getAssignTo(), isCompleted);
         Submit.getInstance().updateGiftDelivery(newRequest);
     }
 }

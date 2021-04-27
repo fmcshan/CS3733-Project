@@ -23,8 +23,8 @@ public class Change {
     private ArrayList<UserRegistration> userRegistrations;
     private UserRegistration userRegistration;
 
-    private ArrayList<GiftDeliveryStorage> giftDeliveries;
-    private GiftDeliveryStorage giftDelivery;
+    private ArrayList<MasterServiceRequestStorage> giftDeliveries;
+    private MasterServiceRequestStorage giftDelivery;
 
     public Change(String changeType, String changeId) {
         this.changeType = changeType;
@@ -76,19 +76,19 @@ public class Change {
         this.userRegistration = userRegistration;
     }
 
-    public ArrayList<GiftDeliveryStorage> getGiftDeliveries() {
+    public ArrayList<MasterServiceRequestStorage> getGiftDeliveries() {
         return giftDeliveries;
     }
 
-    public void setGiftDeliveries(ArrayList<GiftDeliveryStorage> giftDeliveries) {
+    public void setGiftDeliveries(ArrayList<MasterServiceRequestStorage> giftDeliveries) {
         this.giftDeliveries = giftDeliveries;
     }
 
-    public GiftDeliveryStorage getGiftDelivery() {
+    public MasterServiceRequestStorage getGiftDelivery() {
         return giftDelivery;
     }
 
-    public void setGiftDelivery(GiftDeliveryStorage giftDelivery) {
+    public void setGiftDelivery(MasterServiceRequestStorage giftDelivery) {
         this.giftDelivery = giftDelivery;
     }
 
