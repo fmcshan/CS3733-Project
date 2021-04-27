@@ -203,7 +203,7 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("2");
         allFloors.add("3");
         refreshNodes();
-        mapDisplay.clearMap();
+        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
