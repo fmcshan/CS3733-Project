@@ -7,11 +7,16 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.views.manager.LanguageListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +27,16 @@ import java.util.HashMap;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Navigation implements LevelChangeListener {
+public class Navigation implements LevelChangeListener, LanguageListener {
 
+    @FXML
+    private Label title;
+    @FXML
+    private Text description;
+    @FXML
+    private Label toLabel;
+    @FXML
+    private Label fromLabel;
     @FXML
     private ComboBox<String> toCombo; // destination drop down
     @FXML
@@ -52,10 +65,27 @@ public class Navigation implements LevelChangeListener {
         this.mapDisplay = mapDisplay;
     }
 
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("Navigation_title"));
+        description.setText(Translator.getInstance().get("Navigation_description"));
+        toLabel.setText(Translator.getInstance().get("Navigation_toLabel"));
+        fromLabel.setText(Translator.getInstance().get("Navigation_fromLabel"));
+        toCombo.setPromptText(Translator.getInstance().get("Navigation_toBox"));
+        fromCombo.setPromptText(Translator.getInstance().get("Navigation_fromBox"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     /**
      * run on startup
      */
     public void initialize() {
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         if (COVIDMessage.covid) {
             toCombo.setValue("Emergency Department Entrance");
             COVIDMessage.covid = false;
