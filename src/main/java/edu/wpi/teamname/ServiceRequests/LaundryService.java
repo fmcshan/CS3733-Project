@@ -12,8 +12,6 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +33,7 @@ import java.util.List;
  * @author Lauren Sowerbutts, Frank McShan
  */
 
-public class LaundryService implements LanguageListener {
+public class LaundryService {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -176,36 +174,9 @@ public class LaundryService implements LanguageListener {
         this.request = request;
     }
 
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("LaundryServices_title"));
-        desc.setText(Translator.getInstance().get("LaundryServices_desc"));
-        askName.setText(Translator.getInstance().get("LaundryServices_askName"));
-        nameInput.setPromptText(Translator.getInstance().get("LaundryServices_nameInput"));
-        askType.setText(Translator.getInstance().get("LaundryServices_askType"));
-        colorsBox.setText(Translator.getInstance().get("LaundryServices_colorsBox"));
-        whitesBox.setText(Translator.getInstance().get("LaundryServices_whitesBox"));
-        otherCheckbox.setText(Translator.getInstance().get("LaundryServices_otherCheckbox"));
-        askTemperature.setText(Translator.getInstance().get("LaundryServices_askTemperature"));
-        coldBox.setText(Translator.getInstance().get("LaundryServices_coldBox"));
-        warmBox.setText(Translator.getInstance().get("LaundryServices_warmBox"));
-        hotBox.setText(Translator.getInstance().get("LaundryServices_hotBox"));
-        askPhone.setText(Translator.getInstance().get("LaundryServices_askPhone"));
-        phoneInput.setPromptText(Translator.getInstance().get("LaundryServices_phoneInput"));
-        askLocation.setText(Translator.getInstance().get("LaundryServices_askLocation"));
-        requestLocation.setPromptText(Translator.getInstance().get("LaundryServices_requestLocation"));
-        submitButton.setText(Translator.getInstance().get("LaundryServices_submitButton"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -370,7 +341,7 @@ public class LaundryService implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
+            success.loadSuccess("Success", successPop);
         }
     }
 

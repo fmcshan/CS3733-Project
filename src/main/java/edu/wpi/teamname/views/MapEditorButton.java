@@ -1,41 +1,19 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import java.util.Map;
-
 /**
  * Opens the map editor
  */
-public class MapEditorButton implements LanguageListener {
+public class MapEditorButton {
 
     @FXML
     private JFXButton MapEditor;
 
-  //from here
-    public void initialize(){
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
-    }
-
-    private void setLanguages(){
-        MapEditor.setText(Translator.getInstance().get("NavMenu_MapEditor"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-    //to here
-
-
-    public void openMapEditor(ActionEvent actionEvent) {
+    public void openMapEditor() {
         SceneManager.getInstance().getDefaultPage().toggleMapEditor();
     }
-
-
 }

@@ -17,9 +17,6 @@
 <?import javafx.scene.shape.MoveTo?>
 <?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Label?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXComboBox?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
@@ -479,7 +476,6 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin></VBox>
-                  <JFXComboBox fx:id="languageBox" onAction="#languageSwitch" prefHeight="31.0" prefWidth="213.0" promptText="Select a language" />
                </children>
             </VBox>
          </children></VBox>
