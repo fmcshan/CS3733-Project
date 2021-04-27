@@ -2,6 +2,8 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -68,7 +70,24 @@ public class EmployeeTable {
                                     button.setOnAction(b -> {
                                         contextMenu.show(button, Side.BOTTOM, 0, 0);
                                     });
+                                    contextMenu.setOnAction(e -> {
+                                        switch (((MenuItem) e.getTarget()).getText()) {
+                                            case "make admin":
+//                                                 _emp.isAdmin() = true;
+//                                                Submit.getInstance().updateGiftDelivery(_emp);
+                                                break;
+                                            case "revoke admin":
+//                                                _emp.isAdmin() = false;
+//                                                Submit.getInstance().updateGiftDelivery(_emp);
+                                                break;
+                                            case "delete":
+//                                                Submit.getInstance().deleteGiftDelivery(_req);
+//                                                Submit.getInstance().updateGiftDelivery(_emp);
+                                                break;
+                                        }
+                                    });
                                 });
+
                                 break;
                         }
                     }
