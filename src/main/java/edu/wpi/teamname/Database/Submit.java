@@ -57,6 +57,7 @@ public class Submit {
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
+        data.put("description", _form.getDescription());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
 
@@ -81,10 +82,22 @@ public class Submit {
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
+        data.put("description", _form.getDescription());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void deleteGiftDelivery(MasterServiceRequestStorage _form) {
+        JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("id", String.valueOf(_form.getId()));
+
+        String url = SERVER_URL + "/api/delete-gift-delivery";
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);

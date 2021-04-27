@@ -5,13 +5,15 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,7 +21,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-public class RequestAdminNew {
+public class RequestAdminNew implements GiftDeliveryListener {
 
     @FXML
     private VBox cellHolder;
@@ -41,291 +43,8 @@ public class RequestAdminNew {
     private VBox sanitationCellHolder;
 
     public void initialize() {
-        LocalStorage.getInstance().getMasterStorages().forEach(g -> {
-            for (int i = 0; i < 2; i++) {
-                try {
-                    String requestType = g.getRequestType().replace(" ", "");
-                    System.out.println(requestType);
-                    Node node = loadWindow(requestType);
-                    if (i == 0) { cellHolder.getChildren().add(node); }
-                    HBox hbox = (HBox) node;
-                    switch (g.getRequestType()) {
-                        case "Gift Delivery":
-                            if (i == 1) { giftCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "giftCell":
-                                            String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                            label.setText(youAreStringNow.replace("\"", ""));
-                                            break;
-                                        case "phoneCell":
-                                            label.setText(g.getContact());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        case "statusCell":
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                } else if (h instanceof VBox) {
-                                    VBox vBox = (VBox) h;
-                                    vBox.getChildren().forEach(v -> {
-                                        if (v instanceof JFXComboBox) {
-                                            JFXComboBox combo = (JFXComboBox) v;
-                                            LocalStorage.getInstance().getUsers().forEach(u -> {
-                                                combo.getItems().add(u.getEmail());
-                                            });
-                                            combo.setOnAction(c -> {
-                                                g.setAssignTo(combo.getValue().toString());
-                                            });
-                                        } else if (v instanceof Label){
-                                            Label label = (Label) v;
-                                            if (g.isCompleted() == true) {
-                                                System.out.println("is completed");
-                                                label.setText("Completed");
-                                                label.setTextFill(Color.WHITE);
-                                                label.setStyle("-fx-background-color: #00c455");
-                                                label.setStyle("-fx-background-radius: 4");
-                                            } else if (!g.getAssignTo().isEmpty()) {
-                                                System.out.println("in progresss");
-                                                label.setText("In Progress");
-                                                label.setTextFill(Color.valueOf("#626d7c"));
-                                                label.setStyle("-fx-background-color: #ebf0f5");
-                                                label.setStyle("-fx-background-radius: 4");
-                                            } else {
-                                                System.out.println("unassigned");
-                                                label.setText("Unassigned");
-                                                label.setTextFill(Color.WHITE);
-                                                label.setStyle("-fx-background-color: #f13426");
-                                                label.setStyle("-fx-background-radius: 4");
-                                            }
-
-                                        } else if (v instanceof JFXButton) {
-                                            System.out.println("in button");
-                                            ContextMenu contextMenu = new ContextMenu();
-                                            MenuItem completed = new MenuItem("Mark as Completed");
-                                            MenuItem delete = new MenuItem("Delete");
-                                            if (g.isCompleted()) {
-                                                contextMenu.getItems().add(delete);
-                                            } else {
-                                                contextMenu.getItems().add(completed);
-                                                contextMenu.getItems().add(delete);
-                                            }
-                                            JFXButton button = (JFXButton) v;
-                                            button.setOnAction(b -> {
-                                                contextMenu.show(button, Side.BOTTOM, 0, 0);
-                                            });
-                                            contextMenu.setOnAction(e -> {
-                                                switch (((MenuItem) e.getTarget()).getText()) {
-                                                    case "Mark as Completed":
-                                                        g.setCompleted(true);
-                                                        Submit.getInstance().submitGiftDelivery(g);
-                                                        break;
-                                                    case "Delete":
-                                                        //delete
-                                                        break;
-                                                    default:
-                                                        System.out.println("hi");
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case "Food Delivery":
-                            if (i == 1) { foodCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "foodCell":
-                                            String youAreStringNow = String.join(", ", g.getRequestedItems());
-                                            label.setText(youAreStringNow.replace("\"", ""));
-                                            break;
-                                        case "phoneCell":
-                                            label.setText(g.getContact());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Computer Services":
-                            if (i == 1) { computerCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "descriptionCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "priorityCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        case "phoneCell":
-                                            label.setText(g.getContact());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Facilities Request":
-                            if (i == 1) { facilitiesCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "descriptionCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "urgencyCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        case "phoneCell":
-                                            label.setText(g.getContact());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Laundry Service":
-                            if (i == 1) { laundryCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "loadCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        case "washCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "phoneCell":
-                                            label.setText(g.getContact());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Medicine Delivery":
-                            if (i == 1) { medicineCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "medicationCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        case "dosageCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Patient Transportation":
-                            if (i == 1) { transportCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "currentCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        case "destCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "reasonCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        case "Sanitation Service":
-                            if (i == 1) { sanitationCellHolder.getChildren().add(node); }
-                            hbox.getChildren().forEach(h -> {
-                                if (h instanceof Label) {
-                                    Label label = (Label) h;
-                                    switch (label.getId()) {
-                                        case "nameCell":
-                                            label.setText(g.getRequestedBy());
-                                            break;
-                                        case "urgencyCell":
-                                            label.setText(g.getRequestedItems().get(0));
-                                            break;
-                                        case "reasonCell":
-                                            label.setText(g.getDescription());
-                                            break;
-                                        case "locationCell":
-                                            label.setText(g.getLocation());
-                                            break;
-                                        default:
-                                            label.setText("PANIK");
-                                    }
-                                }
-                            });
-                            break;
-                        default:
-                            System.out.println("PANIK");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+        Initiator.getInstance().addGiftDeliveryListener(this);
+        loadTables();
     }
 
     public Node loadWindow(String fileName) {
@@ -336,5 +55,335 @@ public class RequestAdminNew {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    private void addGiftDelivery(MasterServiceRequestStorage _req) {
+        for (int i = 0; i < 2; i++) {
+            try {
+                String requestType = _req.getRequestType().replace(" ", "");
+                Node node = loadWindow(requestType);
+                if (i == 0) {
+                    cellHolder.getChildren().add(node);
+                }
+                HBox hbox = (HBox) node;
+                switch (_req.getRequestType()) {
+                    case "Gift Delivery":
+                        if (i == 1) {
+                            giftCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "giftCell":
+                                        String youAreStringNow = String.join(", ", _req.getRequestedItems());
+                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        break;
+                                    case "phoneCell":
+                                        label.setText(_req.getContact());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    case "statusCell":
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            } else if (h instanceof VBox) {
+                                VBox vBox = (VBox) h;
+                                vBox.getChildren().forEach(v -> {
+                                    if (v instanceof JFXComboBox) {
+                                        JFXComboBox combo = (JFXComboBox) v;
+                                        combo.setValue(_req.getAssignTo());
+                                        LocalStorage.getInstance().getUsers().forEach(u -> {
+                                            combo.getItems().add(u.getName());
+                                        });
+                                        combo.setOnAction(c -> {
+                                            _req.setAssignTo(combo.getValue().toString());
+                                            Submit.getInstance().updateGiftDelivery(_req);
+                                        });
+                                    } else if (v instanceof Label) {
+                                        Label label = (Label) v;
+                                        if (_req.isCompleted()) {
+                                            label.setText("Completed");
+                                            label.setTextFill(Color.WHITE);
+                                            label.setStyle("-fx-background-color:#00c455;-fx-background-radius: 4px;");
+                                        } else if (!_req.getAssignTo().isEmpty()) {
+                                            label.setText("In Progress");
+                                            label.setTextFill(Color.valueOf("#626d7c"));
+                                            label.setStyle("-fx-background-color:#ebf0f5;-fx-background-radius: 4px;");
+                                        } else {
+                                            label.setText("Unassigned");
+                                            label.setTextFill(Color.WHITE);
+                                            label.setStyle("-fx-background-color:#f13426;-fx-background-radius: 4px;");
+                                        }
+
+                                    } else if (v instanceof JFXButton) {
+                                        ContextMenu contextMenu = new ContextMenu();
+                                        MenuItem completed = new MenuItem("Mark as Completed");
+                                        MenuItem reset = new MenuItem("Reset");
+                                        MenuItem delete = new MenuItem("Delete");
+                                        if (!_req.isCompleted()) {
+                                            contextMenu.getItems().add(completed);
+                                        } else {
+                                            contextMenu.getItems().add(reset);
+                                        }
+                                        contextMenu.getItems().add(delete);
+                                        JFXButton button = (JFXButton) v;
+                                        button.setOnAction(b -> {
+                                            contextMenu.show(button, Side.BOTTOM, 0, 0);
+                                        });
+                                        contextMenu.setOnAction(e -> {
+                                            switch (((MenuItem) e.getTarget()).getText()) {
+                                                case "Mark as Completed":
+                                                    _req.setCompleted(true);
+                                                    Submit.getInstance().updateGiftDelivery(_req);
+                                                    break;
+                                                case "Delete":
+                                                    Submit.getInstance().deleteGiftDelivery(_req);
+                                                    break;
+                                                case "Reset":
+                                                    _req.setAssignTo("");
+                                                    _req.setCompleted(false);
+                                                    Submit.getInstance().updateGiftDelivery(_req);
+                                                    break;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        break;
+                    case "Food Delivery":
+                        if (i == 1) {
+                            foodCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "foodCell":
+                                        String youAreStringNow = String.join(", ", _req.getRequestedItems());
+                                        label.setText(youAreStringNow.replace("\"", ""));
+                                        break;
+                                    case "phoneCell":
+                                        label.setText(_req.getContact());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Computer Services":
+                        if (i == 1) {
+                            computerCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "descriptionCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "priorityCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    case "phoneCell":
+                                        label.setText(_req.getContact());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Facilities Request":
+                        if (i == 1) {
+                            facilitiesCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "descriptionCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "urgencyCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    case "phoneCell":
+                                        label.setText(_req.getContact());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Laundry Service":
+                        if (i == 1) {
+                            laundryCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "loadCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    case "washCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "phoneCell":
+                                        label.setText(_req.getContact());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Medicine Delivery":
+                        if (i == 1) {
+                            medicineCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "medicationCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    case "dosageCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Patient Transportation":
+                        if (i == 1) {
+                            transportCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "currentCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    case "destCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "reasonCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    case "Sanitation Service":
+                        if (i == 1) {
+                            sanitationCellHolder.getChildren().add(node);
+                        }
+                        hbox.getChildren().forEach(h -> {
+                            if (h instanceof Label) {
+                                Label label = (Label) h;
+                                switch (label.getId()) {
+                                    case "nameCell":
+                                        label.setText(_req.getRequestedBy());
+                                        break;
+                                    case "urgencyCell":
+                                        label.setText(_req.getRequestedItems().get(0));
+                                        break;
+                                    case "reasonCell":
+                                        label.setText(_req.getDescription());
+                                        break;
+                                    case "locationCell":
+                                        label.setText(_req.getLocation());
+                                        break;
+                                    default:
+                                        label.setText("PANIK");
+                                }
+                            }
+                        });
+                        break;
+                    default:
+                        System.out.println("PANIK");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void loadTables() {
+        cellHolder.getChildren().clear();
+        giftCellHolder.getChildren().clear();
+        foodCellHolder.getChildren().clear();
+        computerCellHolder.getChildren().clear();
+        facilitiesCellHolder.getChildren().clear();
+        laundryCellHolder.getChildren().clear();
+        medicineCellHolder.getChildren().clear();
+        transportCellHolder.getChildren().clear();
+        sanitationCellHolder.getChildren().clear();
+        LocalStorage.getInstance().getMasterStorages().forEach(this::addGiftDelivery);
+    }
+
+    @Override
+    public void giftDeliveryAdded(MasterServiceRequestStorage _obj) {
+        loadTables();
+    }
+
+    @Override
+    public void giftDeliveryUpdated() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loadTables();
+            }
+        });
     }
 }

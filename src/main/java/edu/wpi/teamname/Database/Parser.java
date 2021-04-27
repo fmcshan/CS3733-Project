@@ -110,6 +110,7 @@ public class Parser {
                 giftDeliveryStorage.getString("requestType"),
                 giftDeliveryStorage.getString("location"),
                 requestedItems,
+                giftDeliveryStorage.getString("description"),
                 giftDeliveryStorage.getString("requestedBy"),
                 giftDeliveryStorage.getString("phone"),
                 giftDeliveryStorage.getString("assignedTo"),

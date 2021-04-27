@@ -5,9 +5,7 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -171,7 +169,13 @@ public class LocalStorage {
         if (this.masterStorages == null) {
             return null;
         } else {
-            return (ArrayList<MasterServiceRequestStorage>) this.masterStorages.clone();
+            ArrayList<MasterServiceRequestStorage> ret = (ArrayList<MasterServiceRequestStorage>) this.masterStorages.clone();
+            ret.sort(new Comparator<MasterServiceRequestStorage>() {
+                public int compare(MasterServiceRequestStorage r1, MasterServiceRequestStorage r2) {
+                    return r2.getId() - r1.getId();
+                }
+            });
+            return ret;
         }
     }
 
