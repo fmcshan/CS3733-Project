@@ -95,6 +95,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
+        languageBox.setVisible(false);
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
