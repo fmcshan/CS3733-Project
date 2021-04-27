@@ -1,12 +1,16 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -14,47 +18,84 @@ import java.util.ArrayList;
  * Controller for UserRegistration.fxml
  * @author Frank McShan, Lauren Sowerbutts
  */
-public class UserRegistration {
+public class UserRegistration implements LanguageListener {
+
+
+    @FXML
+    private Label registrationForm;
+
+    @FXML
+    private Text fillfieldsDesc;
 
     @FXML
     private Label failedName;
+
     @FXML
-    private JFXTextField nameInput;
+    private Label fullNameDesc;
+
     @FXML
-    private JFXDatePicker dateOfBirth;
+    private JFXTextField fullName;
+
     @FXML
     private Label failedDate;
+
     @FXML
-    private JFXCheckBox emergencyRoomCheckbox;
+    private Label birthdayDesc;
+
     @FXML
-    private JFXCheckBox xrayCheckbox;
-    @FXML
-    private JFXCheckBox mriCheckbox;
-    @FXML
-    private JFXCheckBox eyeExamCheckbox;
-    @FXML
-    private JFXCheckBox labWorkCheckbox;
-    @FXML
-    private JFXCheckBox physicalTherapyCheckbox;
-    @FXML
-    private JFXCheckBox otherCheckbox;
+    private JFXDatePicker dateOfBirth;
+
     @FXML
     private Label failedReason;
+
+    @FXML
+    private Label reasonsLabel;
+
+    @FXML
+    private JFXCheckBox emergencyRoomCheckbox;
+
+    @FXML
+    private JFXCheckBox xrayCheckbox;
+
+    @FXML
+    private JFXCheckBox mriCheckbox;
+
+    @FXML
+    private JFXCheckBox eyeExamCheckbox;
+
+    @FXML
+    private JFXCheckBox labWorkCheckbox;
+
+    @FXML
+    private JFXCheckBox physicalTherapyCheckbox;
+
+    @FXML
+    private JFXCheckBox otherCheckbox;
+
     @FXML
     private JFXTextField otherInput;
-    @FXML
-    private JFXTextField phoneInput;
+
     @FXML
     private Label failedPhoneNumber;
+
     @FXML
-    private VBox successPop; // this Vbox will be used to display the success page
+    private Label enterPhoneDesc;
+
+    @FXML
+    private JFXTextField phoneInput;
+
+    @FXML
+    private JFXButton submitButton;
+
+    @FXML
+    private VBox successPop;
 
     /**
      * Check if name input contains a space for first and last name
      * @return true if there is a space
      */
     public boolean nameInputValid() {
-        return nameInput.getText().contains(" ");
+        return fullName.getText().contains(" ");
     }
 
     /**
@@ -73,7 +114,34 @@ public class UserRegistration {
 
         return ans;
     }
+    public void initialize(){
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
+    }
 
+    private void setLanguages(){
+        submitButton.setText(Translator.getInstance().get("Registration_submitButton"));
+        phoneInput.setPromptText(Translator.getInstance().get("Registration_phoneInput"));
+        enterPhoneDesc.setText(Translator.getInstance().get("Registration_enterPhoneDesc"));
+        otherCheckbox.setText(Translator.getInstance().get("Registration_otherCheckbox"));
+        physicalTherapyCheckbox.setText(Translator.getInstance().get("Registration_physicalTherapyCheckbox"));
+        labWorkCheckbox.setText(Translator.getInstance().get("Registration_labWorkCheckbox"));
+        eyeExamCheckbox.setText(Translator.getInstance().get("Registration_eyeExamCheckbox"));
+        mriCheckbox.setText(Translator.getInstance().get("Registration_mriCheckbox"));
+        xrayCheckbox.setText(Translator.getInstance().get("Registration_xrayCheckbox"));
+        emergencyRoomCheckbox.setText(Translator.getInstance().get("Registration_emergencyRoomCheckbox"));
+        reasonsLabel.setText(Translator.getInstance().get("Registration_reasonsLabel"));
+        birthdayDesc.setText(Translator.getInstance().get("Registration_birthdayDesc"));
+        fullName.setPromptText(Translator.getInstance().get("Registration_fullName"));
+        fullNameDesc.setText(Translator.getInstance().get("Registration_fullNameDesc"));
+        fillfieldsDesc.setText(Translator.getInstance().get("Registration_fillfieldsDesc"));
+        registrationForm.setText(Translator.getInstance().get("Registration_registrationForm"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
     /**
      * Check is there is a checkbox selected
      * @return true if there is a checkbox selected
@@ -162,13 +230,13 @@ public class UserRegistration {
             LoadFXML.setCurrentWindow("");
 
             //submit
-            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText());
             Submit.getInstance().submitUserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Success_successText"), successPop);
         }
     }
 }

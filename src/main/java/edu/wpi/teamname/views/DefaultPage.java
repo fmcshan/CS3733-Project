@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Edge;
@@ -43,7 +44,53 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
+    @FXML
+    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    @FXML
+    private Path tonysPath; // the path displayed on the map
+    @FXML
+    private ImageView hospitalMap; // the map
+    @FXML
+    private StackPane stackPane; // the pane the map is housed in
+    @FXML
+    private JFXButton adminButton; // button that allows you to sign in
+    @FXML
+    private AnchorPane topElements; // anchor pane where displayed nodes reside
+    @FXML
+    private JFXComboBox<String> languageBox; //selects language you want
+    @FXML
+    private JFXButton Navigation;
+    @FXML
+    private JFXButton CheckIn;
+    @FXML
+    private JFXButton Requests;
 
+
+    public String languageHelper(String getText){ //simplifies the language in helper 2, gets the value for given language
+        return Translator.getInstance().languageHashmap.get(Translator.getInstance().getCurrentLanguage()).get(getText);
+    }
+
+    public void languageHelper2(){ //can call this for each language
+        Navigation.setText(languageHelper("Navigation"));
+        CheckIn.setText(languageHelper("CheckIn"));
+        Requests.setText(languageHelper("Requests"));
+    }
+
+
+    public void languageSwitch() { //picks a language and checks current language
+        if(languageBox.getValue().equals("English")){
+            Translator.getInstance().setCurrentLanguage("language_english");
+            languageHelper2();
+        }
+        if(languageBox.getValue().equals("Spanish")){
+            Translator.getInstance().setCurrentLanguage("language_spanish");
+            languageHelper2();
+        }
+        if(languageBox.getValue().equals("Chinese - Simplified")){
+            Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
+            languageHelper2();
+        }
+    }
     /**
      * run on startup
      */
@@ -52,6 +99,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
+        languageBox.getItems().add("English");
+        languageBox.getItems().add("Spanish");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();

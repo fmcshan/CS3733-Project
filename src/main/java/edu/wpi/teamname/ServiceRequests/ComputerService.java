@@ -1,17 +1,17 @@
 package edu.wpi.teamname.ServiceRequests;
 
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
+import edu.wpi.teamname.views.Navigation;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,12 +19,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class ComputerService {
+public class ComputerService implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -97,6 +100,23 @@ public class ComputerService {
      */
     @FXML
     private VBox successPop;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askFullName;
+    @FXML
+    private Label askDesc;
+    @FXML
+    private Label askPriority;
+    @FXML
+    private Label askPhone;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
+
 
     /**
      * Instance of Requests class used to create a popup window
@@ -117,10 +137,44 @@ public class ComputerService {
         this.request = request;
     }
 
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("ComputerServices_title"));
+        desc.setText(Translator.getInstance().get("ComputerServices_desc"));
+        askFullName.setText(Translator.getInstance().get("ComputerServices_askFullName"));
+        nameInput.setPromptText(Translator.getInstance().get("ComputerServices_nameInput"));
+        askDesc.setText(Translator.getInstance().get("ComputerServices_askDesc"));
+        descriptionInput.setPromptText(Translator.getInstance().get("ComputerServices_descriptionInput"));
+        askPriority.setText(Translator.getInstance().get("ComputerServices_askPriority"));
+        lowUrgency.setText(Translator.getInstance().get("ComputerServices_lowUrgency"));
+        mediumUrgency.setText(Translator.getInstance().get("ComputerServices_mediumUrgency"));
+        highUrgency.setText(Translator.getInstance().get("ComputerServices_highUrgency"));
+        askPhone.setText(Translator.getInstance().get("ComputerServices_askPhone"));
+        phoneInput.setPromptText(Translator.getInstance().get("ComputerServices_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("ComputerServices_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("ComputerServices_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("ComputerServices_submitButton"));
+
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
+
     }
 
     /**

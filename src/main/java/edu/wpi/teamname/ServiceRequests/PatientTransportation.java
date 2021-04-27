@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -18,9 +19,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -89,6 +93,20 @@ public class PatientTransportation {
      */
     @FXML
     private Requests request;
+    @FXML
+    private Text title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private Label askDestination;
+    @FXML
+    private Label askAssistance;
+    @FXML
+    private JFXButton submitButton;
 
     /**
      * List of Service Requests
@@ -104,10 +122,16 @@ public class PatientTransportation {
     }
 
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            currentLocation.getItems().add(node.getNodeID());
-            destination.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            currentLocation.getItems().add(n); // make the nodes appear in the combobox
+            destination.getItems().add(n);
+        });
     }
 
     /**

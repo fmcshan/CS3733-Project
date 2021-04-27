@@ -18,7 +18,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Transportation Request" textAlignment="CENTER" wrappingWidth="600.0">
+            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Transportation Request" textAlignment="CENTER" wrappingWidth="600.0">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
@@ -26,7 +26,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to transport a patient." textAlignment="CENTER" wrappingWidth="414.2413330078125">
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to transport a patient." textAlignment="CENTER" wrappingWidth="414.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -44,7 +44,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter patient's full name:" textFill="#868686">
+                  <Label fx:id="askName" text="Please enter patient's full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -68,7 +68,7 @@
                         <Insets left="25.0" top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select the current location of the patient:" textFill="#868686">
+                  <Label fx:id="askLocation" text="Please select the current location of the patient:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -86,7 +86,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label text="Please select the destination of the patient:" textFill="#868686">
+                  <Label fx:id="askDestination" text="Please select the destination of the patient:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -129,7 +129,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>
