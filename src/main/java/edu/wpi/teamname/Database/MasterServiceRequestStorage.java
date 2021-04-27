@@ -35,6 +35,18 @@ public class MasterServiceRequestStorage {
         this.completed = completed;
     }
 
+    public MasterServiceRequestStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
+        this.id = id;
+        this.requestType = requestType;
+        this.location = location;
+        this.requestedItems = requestedItems;
+        this.description = description;
+        this.requestedBy = requestedBy;
+        this.contact = contact;
+        this.assignTo = assignTo;
+        this.completed = completed;
+    }
+
     public MasterServiceRequestStorage(String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
         this.requestType = requestType;
         this.location = location;
@@ -85,6 +97,10 @@ public class MasterServiceRequestStorage {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public void setAssignTo(String assignTo) {
+        this.assignTo = assignTo;
     }
 }
 
