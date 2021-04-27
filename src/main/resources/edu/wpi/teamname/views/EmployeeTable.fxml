@@ -57,7 +57,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label prefWidth="300.0" text="Role">
+                  <Label prefWidth="300.0" text="Admin">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

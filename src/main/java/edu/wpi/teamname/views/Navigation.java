@@ -57,7 +57,9 @@ public class Navigation implements LevelChangeListener {
      */
     public void initialize() {
         if (COVIDMessage.covid) {
-            toCombo.setValue("Emergency Department Entrance");
+            System.out.println("made it here");
+            AutoCompleteComboBoxListener newListener = new AutoCompleteComboBoxListener(toCombo);
+            newListener.setValue("Emergency Department Entrance");
             COVIDMessage.covid = false;
         }
 
@@ -124,6 +126,7 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
+        System.out.println(toCombo.getValue());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }

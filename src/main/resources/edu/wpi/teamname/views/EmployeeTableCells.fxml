@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -24,9 +25,9 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="300.0">
+      <VBox fx:id="roleBox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="300.0">
          <children>
-            <Label fx:id="statusCell" alignment="CENTER" style="-fx-background-color: #00c455; -fx-background-radius: 6px;" text="Employee Role" textFill="WHITE">
+            <Label fx:id="roleCell" alignment="CENTER" style="-fx-background-color: #00c455; -fx-background-radius: 4px;" text="Employee Role" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Semibold" size="14.0" />
                </font>
@@ -50,5 +51,17 @@
             <Insets left="20.0" />
          </padding>
       </Label>
+      <VBox fx:id="actionsBox" alignment="CENTER" prefHeight="200.0" prefWidth="73.0">
+         <children>
+            <JFXButton fx:id="actionCell" text="...">
+               <padding>
+                  <Insets left="5.0" right="5.0" top="-15.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
    </children>
 </HBox>

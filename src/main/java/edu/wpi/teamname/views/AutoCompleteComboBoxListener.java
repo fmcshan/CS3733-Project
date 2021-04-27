@@ -98,4 +98,8 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         moveCaretToPos = false;
     }
 
+    public void setValue(String value) {
+        this.comboBox.setValue(value);
+    }
+
 }
