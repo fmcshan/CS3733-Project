@@ -67,7 +67,7 @@ public class Requests implements LanguageListener {
      */
     public void initialize(){
         Translator.getInstance().addLanguageListener(this);
-        setLanguages();
+        //setLanguages();
        // requestsBox.getItems().add("Gift Delivery"); //ADD BACK IN ITERATION 3
     }
 
