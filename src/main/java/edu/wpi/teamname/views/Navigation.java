@@ -6,15 +6,10 @@ import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
-import edu.wpi.teamname.views.manager.SceneManager;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import edu.wpi.teamname.views.manager.LanguageListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
@@ -28,16 +23,8 @@ import java.util.HashMap;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Navigation implements LevelChangeListener, LanguageListener {
+public class Navigation implements LevelChangeListener {
 
-    @FXML
-    private Label title;
-    @FXML
-    private Text description;
-    @FXML
-    private Label toLabel;
-    @FXML
-    private Label fromLabel;
     @FXML
     private ComboBox<String> toCombo; // destination drop down
     @FXML
@@ -46,8 +33,6 @@ public class Navigation implements LevelChangeListener, LanguageListener {
     private Label textDirections;
     @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
-    @FXML
-    private Label directions;
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -67,28 +52,10 @@ public class Navigation implements LevelChangeListener, LanguageListener {
         this.mapDisplay = mapDisplay;
     }
 
-
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("Navigation_title"));
-        description.setText(Translator.getInstance().get("Navigation_description"));
-        toLabel.setText(Translator.getInstance().get("Navigation_toLabel"));
-        fromLabel.setText(Translator.getInstance().get("Navigation_fromLabel"));
-        toCombo.setPromptText(Translator.getInstance().get("Navigation_toBox"));
-        fromCombo.setPromptText(Translator.getInstance().get("Navigation_fromBox"));
-        directions.setText(Translator.getInstance().get("Navigation_directions"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     /**
      * run on startup
      */
     public void initialize() {
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         if (COVIDMessage.covid) {
             System.out.println("made it here");
             AutoCompleteComboBoxListener newListener = new AutoCompleteComboBoxListener(toCombo);

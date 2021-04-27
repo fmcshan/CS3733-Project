@@ -1,7 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
@@ -12,8 +11,6 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +31,7 @@ import java.util.List;
  * Controller for the Gift Delivery Request Page
  * @author Lauren Sowerbutts, Frank McShan
  */
-public class PatientTransportation implements LanguageListener {
+public class PatientTransportation {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -123,31 +120,9 @@ public class PatientTransportation implements LanguageListener {
         this.request = request;
     }
 
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("PatientTransportation_title"));
-        desc.setText(Translator.getInstance().get("PatientTransportation_desc"));
-        askName.setText(Translator.getInstance().get("PatientTransportation_askName"));
-        nameInput.setPromptText(Translator.getInstance().get("PatientTransportation_nameInput"));
-        askLocation.setText(Translator.getInstance().get("PatientTransportation_askLocation"));
-        currentLocation.setPromptText(Translator.getInstance().get("PatientTransportation_currentLocation"));
-        askDestination.setText(Translator.getInstance().get("PatientTransportation_askDestination"));
-        destination.setPromptText(Translator.getInstance().get("PatientTransportation_destination"));
-        askAssistance.setText(Translator.getInstance().get("PatientTransportation_askAssistance"));
-        //yesCheckbox.setText(Translator.getInstance().get("PatientTransportation_yesCheckbox"));
-        reasonInput.setPromptText(Translator.getInstance().get("PatientTransportation_reasonInput"));
-        submitButton.setText(Translator.getInstance().get("PatientTransportation_submitButton"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
-        Translator.getInstance().addLanguageListener(this);
-        //setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -245,7 +220,7 @@ public class PatientTransportation implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
+            success.loadSuccess("Success", successPop);
         }
     }
 
