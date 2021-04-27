@@ -20,7 +20,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Laundry Services Request">
+            <Label fx:id="title" text="Laundry Services Request">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -28,7 +28,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request laundry services." textAlignment="CENTER" wrappingWidth="391.2413330078125">
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request laundry services." textAlignment="CENTER" wrappingWidth="391.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -46,7 +46,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your full name:" textFill="#868686">
+                  <Label fx:id="askName" text="Please enter your full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select load type:" textFill="#868686">
+                  <Label fx:id="askType" text="Please select load type:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -125,7 +125,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Choose wash temperature:" textFill="#868686">
+                  <Label fx:id="askTemperature" text="Choose wash temperature:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -165,7 +165,7 @@
                         <Insets left="25.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
+                  <Label fx:id="askPhone" text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -189,7 +189,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the location for delivery:" textFill="#868686">
+                  <Label fx:id="askLocation" text="Please enter the location for delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -211,7 +211,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

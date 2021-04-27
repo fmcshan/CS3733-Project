@@ -12,6 +12,8 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class SanitationService {
+public class SanitationService implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -139,9 +141,32 @@ public class SanitationService {
         this.request = request;
     }
 
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("SanitationService_title"));
+        desc.setText(Translator.getInstance().get("SanitationService_desc"));
+        askName.setText(Translator.getInstance().get("SanitationService_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("SanitationService_nameInput"));
+        askUrgency.setText(Translator.getInstance().get("SanitationService_askUrgency"));
+        highUrgency.setText(Translator.getInstance().get("SanitationService_highUrgency"));
+        mediumUrgency.setText(Translator.getInstance().get("SanitationService_mediumUrgency"));
+        lowUrgency.setText(Translator.getInstance().get("SanitationService_lowUrgency"));
+        askReason.setText(Translator.getInstance().get("SanitationService_askReason"));
+        reasonInput.setPromptText(Translator.getInstance().get("SanitationService_reasonInput"));
+        askLocation.setText(Translator.getInstance().get("SanitationService_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("SanitationService_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("SanitationService_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
@@ -254,7 +279,7 @@ public class SanitationService {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
         }
     }
 

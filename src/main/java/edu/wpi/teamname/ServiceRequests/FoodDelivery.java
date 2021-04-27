@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -11,6 +12,8 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class FoodDelivery {
+public class FoodDelivery implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -95,6 +99,46 @@ public class FoodDelivery {
      */
     @FXML
     private edu.wpi.teamname.views.Requests request;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askFood;
+    @FXML
+    private JFXCheckBox otherCheckbox;
+    @FXML
+    private JFXTextField otherInput;
+    @FXML
+    private Label askNumber;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("FoodDelivery_title"));
+        desc.setText(Translator.getInstance().get("FoodDelivery_desc"));
+        askName.setText(Translator.getInstance().get("FoodDelivery_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("FoodDelivery_nameInput"));
+        askFood.setText(Translator.getInstance().get("FoodDelivery_askFood"));
+        hamburgerBox.setText(Translator.getInstance().get("FoodDelivery_hamburgerBox"));
+        hotdogBox.setText(Translator.getInstance().get("FoodDelivery_hotdogBox"));
+        impossibleBurgerBox.setText(Translator.getInstance().get("FoodDelivery_impossibleBurgerBox"));
+        otherCheckbox.setText(Translator.getInstance().get("FoodDelivery_otherCheckbox"));
+        askNumber.setText(Translator.getInstance().get("FoodDelivery_askNumber"));
+        phoneInput.setPromptText(Translator.getInstance().get("FoodDelivery_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("FoodDelivery_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("FoodDelivery_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("FoodDelivery_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
 
     /**
      * List of Service Requests
@@ -110,6 +154,8 @@ public class FoodDelivery {
     }
 
     public void initialize() {
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
@@ -230,7 +276,7 @@ public class FoodDelivery {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
         }
     }
 
