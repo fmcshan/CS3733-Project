@@ -147,7 +147,7 @@ public class PatientTransportation implements LanguageListener {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         Translator.getInstance().addLanguageListener(this);
-        setLanguages();
+        //setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());
