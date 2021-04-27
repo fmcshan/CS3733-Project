@@ -6,19 +6,32 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequests.GiftDelivery">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" style="-fx-background-radius: 15; -fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequests.GiftDelivery">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <effect>
-            <DropShadow color="#a4a4a4" />
-         </effect>
+      <ImageView fitHeight="394.0" fitWidth="316.0" layoutX="-3.0" opacity="0.6" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/blob1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="527.0" fitWidth="257.0" layoutX="400.0" layoutY="284.0" opacity="0.4" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/blob3right.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="346.0" fitWidth="150.0" layoutX="-2.0" layoutY="586.0" opacity="0.07" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/blob2.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: transparent; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="title" text="Gift Delivery Request">
                <font>
