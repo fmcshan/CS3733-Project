@@ -228,7 +228,7 @@ public class LaundryService {
     }
 
     public boolean oneTempSelected() {
-        return (coldBox.isSelected() || !warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || !warmBox.isSelected() || hotBox.isSelected());
+        return (coldBox.isSelected() && !warmBox.isSelected() && !hotBox.isSelected()) || (!coldBox.isSelected() && warmBox.isSelected() && !hotBox.isSelected()) || (!coldBox.isSelected() && !warmBox.isSelected() && hotBox.isSelected());
     }
 
     /**
