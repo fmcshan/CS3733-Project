@@ -28,7 +28,7 @@ public class EmployeeTable {
                 hbox.getChildren().forEach(h -> {
                     if (h instanceof Label) {
                         Label label = (Label) h;
-                        switch(label.getId()) {
+                        switch (label.getId()) {
                             case "nameCell":
                                 label.setText(r.getName());
                                 break;
@@ -43,31 +43,33 @@ public class EmployeeTable {
                         }
                     } else if (h instanceof VBox) {
                         VBox vbox = (VBox) h;
-                        switch(vbox.getId()) {
+                        switch (vbox.getId()) {
                             case "roleBox":
                                 vbox.getChildren().forEach(v -> {
                                     Label label = (Label) v;
                                     label.setText(r.isAdmin() ? "True" : "False");
-                                    if (!r.isAdmin()) { label.setStyle("-fx-background-color: #f13426; -fx-background-radius: 4px"); }
+                                    if (!r.isAdmin()) {
+                                        label.setStyle("-fx-background-color: #f13426; -fx-background-radius: 4px");
+                                    }
                                     System.out.println(r.isAdmin());
                                 });
-                            break;
+                                break;
                             case "actionsBox":
                                 System.out.println("made it here");
                                 vbox.getChildren().forEach(v -> {
                                     JFXButton button = (JFXButton) v;
-                                        ContextMenu contextMenu = new ContextMenu();
-                                        MenuItem inProgress = new MenuItem("In Progress");
-                                        MenuItem completed = new MenuItem("Completed");
-                                        MenuItem unassigned = new MenuItem("Unassigned");
-                                        contextMenu.getItems().add(inProgress);
-                                        contextMenu.getItems().add(completed);
-                                        contextMenu.getItems().add(unassigned);
-                                        button.setOnAction(b -> {
-                                            contextMenu.show(button, Side.BOTTOM, 0, 0);
+                                    ContextMenu contextMenu = new ContextMenu();
+                                    MenuItem makeAdmin = new MenuItem("make admin");
+                                    MenuItem revokeAdmin = new MenuItem("revoke admin");
+                                    MenuItem delete = new MenuItem("delete");
+                                    contextMenu.getItems().add(makeAdmin);
+                                    contextMenu.getItems().add(revokeAdmin);
+                                    contextMenu.getItems().add(delete);
+                                    button.setOnAction(b -> {
+                                        contextMenu.show(button, Side.BOTTOM, 0, 0);
                                     });
                                 });
-                            break;
+                                break;
                         }
                     }
                 });
