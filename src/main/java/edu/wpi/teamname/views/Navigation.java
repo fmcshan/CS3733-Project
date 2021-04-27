@@ -66,12 +66,17 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
+        if (COVIDMessage.covid) {
+            AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener(toCombo);
+            listener.setValue("Emergency Department Entrance[1]");
+            COVIDMessage.covid = false;
+        }
+
         LevelManager.getInstance().addListener(this);
         refreshNodes();
 
         new AutoCompleteComboBoxListener<>(fromCombo);
         new AutoCompleteComboBoxListener<>(toCombo);
-
 
     }
 
