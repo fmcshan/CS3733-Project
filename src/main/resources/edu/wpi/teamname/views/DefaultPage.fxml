@@ -17,6 +17,9 @@
 <?import javafx.scene.shape.MoveTo?>
 <?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXComboBox?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
@@ -46,24 +49,11 @@
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
-                     <children>
-                        <VBox style="-fx-background-color: white; -fx-background-radius: 10px;">
-                           <children>
-                              <Label fx:id="textDirections" text="Label" />
-                              <JFXButton fx:id="L2Bttn1" onAction="#setFloor0" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="L2" textFill="#9e9e9e">
-                                 <effect>
-                                    <DropShadow color="#a4a4a4" />
-                                 </effect>
-                                 <font>
-                                    <Font name="System Bold" size="22.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                           <effect>
-                              <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
-                           </effect>
-                        </VBox>
-                     </children>
+                  </VBox>
+                  <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>
@@ -252,7 +242,7 @@
                   </JFXTextField>
                   <JFXButton alignment="BASELINE_LEFT" onAction="#editNodeSave" prefWidth="180.0" text="Save" textFill="#9e9e9e">
                      <graphic>
-                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="26" />
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="26" wrappingWidth="26.0" />
                      </graphic>
                      <font>
                         <Font name="System Bold" size="20.0" />
@@ -405,7 +395,7 @@
             </ImageView>
             <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
                <children>
-                  <JFXButton alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px; -jfx-disable-visual-focus: true;" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -426,7 +416,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </JFXButton>
-                  <JFXButton alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="CheckIn" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -451,7 +441,7 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </JFXButton>
-                  <JFXButton alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="Requests" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 8px;" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -481,11 +471,15 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0" />
                   <VBox fx:id="requestPop" layoutX="35.0" layoutY="298.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin></VBox>
+                  <VBox fx:id="employeePop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+                  <JFXComboBox fx:id="languageBox" onAction="#languageSwitch" prefHeight="31.0" prefWidth="213.0" promptText="Select a language" />
                </children>
             </VBox>
          </children></VBox>

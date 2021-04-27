@@ -7,6 +7,7 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -36,6 +38,7 @@ public class Navigation implements LevelChangeListener {
     private Button cancelNavigation;
     @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
+
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -83,6 +86,7 @@ public class Navigation implements LevelChangeListener {
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
             listOfNodeNames.add(n.getLongName());
+            Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
             /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
 
@@ -124,19 +128,15 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
-        if (fromCombo.getValue() == null) { // if combobox is null or the key does not exist
+        if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
-        if (toCombo.getValue() == null) { // if combobox is null or the key does not exist
+        if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         pathCanceled = false;
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
-        System.out.println("AAAAAAHHHHHHHHHHH");
-        System.out.println(startNode.getLongName());
-        System.out.println(endNode.getLongName());
-        System.out.println("HHHHHHHHAAAAAAAHAHAHHA");
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
         residentAStar = AStar;
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path

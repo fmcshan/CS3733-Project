@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -7,11 +8,12 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,9 +21,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,7 +34,7 @@ import java.util.List;
  * Controller for the Gift Delivery Request Page
  * @author Emmanuel Ola, Frank McShan
  */
-public class GiftDelivery {
+public class GiftDelivery implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -150,6 +155,50 @@ public class GiftDelivery {
      */
     private List<ServiceRequest> requests;
 
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askGifts;
+    @FXML
+    private Label askNumber;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
+    @FXML
+    private VBox successPop;
+
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("GiftDelivers_title"));
+        desc.setText(Translator.getInstance().get("GiftDelivers_desc"));
+        askName.setText(Translator.getInstance().get("GiftDelivers_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("GiftDelivers_nameInput"));
+        askGifts.setText(Translator.getInstance().get("GiftDelivers_askGifts"));
+        teddyBearBox.setText(Translator.getInstance().get("GiftDelivers_teddyBearBox"));
+        flowerCheckbox.setText(Translator.getInstance().get("GiftDelivers_flowerCheckbox"));
+        flowerType.setPromptText(Translator.getInstance().get("GiftDelivers_flowerType"));
+        chocolateBox.setText(Translator.getInstance().get("GiftDelivers_chocolateBox"));
+        balloonsBox.setText(Translator.getInstance().get("GiftDelivers_balloonsBox"));
+        giftBasketBox.setText(Translator.getInstance().get("GiftDelivers_giftBasketBox"));
+        otherCheckbox.setText(Translator.getInstance().get("GiftDelivers_otherCheckbox"));
+        askNumber.setText(Translator.getInstance().get("GiftDelivers_askNumber"));
+        phoneInput.setPromptText(Translator.getInstance().get("GiftDelivers_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("GiftDelivers_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("GiftDelivers_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("GiftDelivers_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     /**
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
@@ -159,9 +208,17 @@ public class GiftDelivery {
     }
 
     public void initialize() {
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
         ArrayList<String> flowers = new ArrayList<>();
         flowers.add("Roses");
         flowers.add("Daisies");
@@ -299,7 +356,7 @@ public class GiftDelivery {
             // load Success page in successPop VBox
             giftPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", giftPop);
+            success.loadSuccess(Translator.getInstance().get("Requests_success"), giftPop);
         }
     }
 
@@ -307,7 +364,7 @@ public class GiftDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/GiftDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/GiftDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == GiftDelivery.class)

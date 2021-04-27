@@ -1,9 +1,6 @@
 package edu.wpi.teamname.Database;
 
-import edu.wpi.teamname.Algo.Edge;
-import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.User;
-import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -53,7 +50,7 @@ public class AuthSocket extends WebSocketClient {
             LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
             ArrayList<MasterServiceRequestStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
-            LocalStorage.getInstance().setGiftDeliveryStorages(giftDeliveries);
+            LocalStorage.getInstance().setMasterStorages(giftDeliveries);
 
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
             LocalStorage.getInstance().setUsers(users);
@@ -79,13 +76,24 @@ public class AuthSocket extends WebSocketClient {
             return;
         }
 
-        if (payloadId.equals("gift_delivery_updated")) {
+        if (payloadId.equals("reload_employee")) {
             payload = payload.getJSONObject("data");
-            Change change = new Change("gift_delivery_updated");
-            change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
+            Change change = new Change("reload_employee");
+            change.setUsers(Parser.parseUsers(payload.getJSONArray("users")));
             ChangeManager.getInstance().processChange(change);
             return;
         }
+
+        if (payloadId.equals("update_employee")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("update_employee");
+            change.setUsers(Parser.parseUsers(payload.getJSONArray("users")));
+            change.setUser(Parser.parseUser(payload.getJSONObject("user")));
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+
     }
 
     @Override

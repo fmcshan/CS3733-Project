@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -25,6 +26,9 @@ public class Change {
 
     private ArrayList<MasterServiceRequestStorage> giftDeliveries;
     private MasterServiceRequestStorage giftDelivery;
+
+    private ArrayList<User> users;
+    private User user;
 
     public Change(String changeType, String changeId) {
         this.changeType = changeType;
@@ -107,4 +111,11 @@ public class Change {
     public void setModifiedEdge(Edge modifiedEdge) {
         this.modifiedEdge = modifiedEdge;
     }
+
+    public void setUsers(ArrayList<User> users) { this.users = users; }
+    public ArrayList<User> getUsers() { return users; }
+
+    public void setUser(User user) { this.user = user; }
+    public User getUser() { return user; }
+
 }

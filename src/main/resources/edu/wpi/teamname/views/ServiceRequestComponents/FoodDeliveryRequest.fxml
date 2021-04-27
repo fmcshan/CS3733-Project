@@ -13,22 +13,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequests.GiftDelivery">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequests.FoodDelivery">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="657.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Transportation Request" textAlignment="CENTER" wrappingWidth="600.0">
+            <Label fx:id="title" text="Food Delivery Request">
                <font>
-                  <Font name="System Bold" size="48.0" />
+                  <Font name="System Bold" size="45.0" />
                </font>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets top="20.0" />
                </VBox.margin>
-            </Text>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to transport a patient." textAlignment="CENTER" wrappingWidth="414.2413330078125">
+            </Label>
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to send food to a patient." textAlignment="CENTER" wrappingWidth="391.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -46,7 +46,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter patient's full name:" textFill="#868686">
+                  <Label fx:id="askName" text="Please enter your full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -62,15 +62,15 @@
                         <Font size="18.0" />
                      </font>
                   </JFXTextField>
-                  <Label fx:id="failedGiftSelection" textFill="RED">
+                  <Label fx:id="failedFoodSelection" textFill="RED">
                      <font>
                         <Font size="14.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="20.0" />
+                        <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select the current location of the patient:" textFill="#868686">
+                  <Label fx:id="askFood" text="Please select the desired food:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -78,36 +78,33 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXComboBox fx:id="requestLocation1" focusColor="WHITE" prefWidth="300.0" promptText="Location" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6; -fx-prompt-text-fill: #bbbbbb\;" unFocusColor="WHITE">
+                  <JFXCheckBox fx:id="hamburgerBox" checkedColor="#0067b1" text="Hamburger" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
-                  </JFXComboBox>
-                  <Label text="Please select the destination of the patient:" textFill="#868686">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="18.0" />
                      </font>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="hotdogBox" checkedColor="#0067b1" text="Hot Dog" textFill="#868686">
                      <VBox.margin>
-                        <Insets left="25.0" top="20.0" />
+                        <Insets left="50.0" top="20.0" />
                      </VBox.margin>
-                  </Label>
-                  <JFXComboBox fx:id="requestLocation" focusColor="WHITE" prefWidth="300.0" promptText="Location" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6; -fx-prompt-text-fill: #bbbbbb\;" unFocusColor="WHITE">
-                     <VBox.margin>
-                        <Insets left="50.0" top="10.0" />
-                     </VBox.margin>
-                  </JFXComboBox>
-                  <Label text="Does the patient need immediate medical assistance?" textFill="#868686">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="18.0" />
                      </font>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="impossibleBurgerBox" checkedColor="#0067b1" text="Impossible Burger" textFill="#868686">
                      <VBox.margin>
-                        <Insets left="25.0" top="20.0" />
+                        <Insets left="50.0" top="20.0" />
                      </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" />
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXCheckBox>
                   <HBox alignment="CENTER_LEFT" prefWidth="657.0">
                      <children>
-                        <JFXCheckBox fx:id="otherCheckbox" checkedColor="#0067b1" text="Yes" textFill="#868686">
+                        <JFXCheckBox fx:id="otherCheckbox" checkedColor="#0067b1" text="Other:" textFill="#868686">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -115,7 +112,7 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </JFXCheckBox>
-                        <JFXTextField fx:id="otherInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Reason" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                        <JFXTextField fx:id="otherInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -136,7 +133,7 @@
                         <Insets left="25.0" top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your employee ID number for comfirmation." textFill="#868686">
+                  <Label fx:id="askNumber" text="Please enter your phone number to receive a confirmation for the delivery:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -144,7 +141,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="ID number." style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                  <JFXTextField fx:id="phoneInput" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Phone Number" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
@@ -160,6 +157,19 @@
                         <Insets left="25.0" top="20.0" />
                      </VBox.margin>
                   </Label>
+                  <Label fx:id="askLocation" text="Please enter the location for the delivery:" textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXComboBox fx:id="requestLocation" focusColor="WHITE" prefWidth="300.0" promptText="Location" style="-fx-font-size: 18; -fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 6; -fx-prompt-text-fill: #bbbbbb\;" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
                </children>
                <VBox.margin>
                   <Insets top="25.0" />
@@ -169,7 +179,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>
@@ -177,6 +187,5 @@
          </children>
       </VBox>
       <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <VBox fx:id="giftPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

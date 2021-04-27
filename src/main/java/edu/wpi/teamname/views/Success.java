@@ -1,13 +1,13 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.*;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.junit.runner.Computer;
 
 import java.io.IOException;
 
@@ -15,26 +15,30 @@ import java.io.IOException;
  * Controller for Success.fxml
  * @author Lauren Sowerbutts
  */
-public class Success {
+public class Success implements LanguageListener {
 
-    @FXML
-    public Label successText;
+    @FXML public Label successText;
+    @FXML private Label title;
+
     @FXML
     private UserRegistration userRegistration;
 
     private GiftDelivery giftDelivery;
 
-    private LaundryRequest laundryRequest;
+    private LaundryService laundryService;
 
     @FXML
-    private ComputerServices computerServices;
+    private ComputerService computerService;
 
-    private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
+    private FacilitiesRequest facilitiesRequest;
 
     private MedicineDelivery medicineDelivery;
+
     private FoodDelivery foodDelivery;
 
-    private SanitationServices sanitationServices;
+    private SanitationService sanitationService;
+
+    private PatientTransportation patientTransportation;
 
 
     private VBox pop;
@@ -47,24 +51,28 @@ public class Success {
         this.giftDelivery = giftDelivery;
     }
 
-    public Success(LaundryRequest laundryRequest) {
-        this.laundryRequest = laundryRequest;
+    public Success(LaundryService laundryService) {
+        this.laundryService = laundryService;
     }
 
-    public Success(ComputerServices computerServices) {
-        this.computerServices = computerServices;
+    public Success(ComputerService computerService) {
+        this.computerService = computerService;
     }
 
-    public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
-        this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
+    public Success(PatientTransportation patientTransportation) {
+        this.patientTransportation = patientTransportation;
+    }
+
+    public Success(FacilitiesRequest facilitiesRequest) {
+        this.facilitiesRequest = facilitiesRequest;
     }
 
     public Success(MedicineDelivery medicineDelivery) {
         this.medicineDelivery = medicineDelivery;
     }
 
-    public Success(SanitationServices sanitationServices) {
-        this.sanitationServices = sanitationServices;
+    public Success(SanitationService sanitationService) {
+        this.sanitationService = sanitationService;
     }
 
     public Success(FoodDelivery foodDelivery) {
@@ -105,5 +113,19 @@ public class Success {
     public void closeSuccess() {
         pop.getChildren().clear(); // clear the successPop vbox
         SceneManager.getInstance().getDefaultPage().closeWindows();
+    }
+    public void initialize(){
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
+    }
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("Success_title"));
+        successText.setText(Translator.getInstance().get("Success_successText"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
     }
 }

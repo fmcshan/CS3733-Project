@@ -2,6 +2,7 @@ package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
@@ -42,8 +43,10 @@ public class Submit {
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
-        _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
-        items.setLength(items.length()-2);
+        if (_form.getRequestedItems().size() > 0) {
+            _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
+            items.setLength(items.length()-2);
+        }
         items.append("]");
 
         JSONObject data = new JSONObject();
@@ -54,6 +57,7 @@ public class Submit {
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
+        data.put("description", _form.getDescription());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
 
@@ -78,10 +82,22 @@ public class Submit {
         data.put("requestedItems", items.toString());
         data.put("requestedBy", _form.getRequestedBy());
         data.put("phone", _form.getContact());
+        data.put("description", _form.getDescription());
         data.put("assignedTo", _form.getAssignTo());
         data.put("completed", String.valueOf(_form.isCompleted()));
 
         String url = SERVER_URL + "/api/update-gift-delivery";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void deleteGiftDelivery(MasterServiceRequestStorage _form) {
+        JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("id", String.valueOf(_form.getId()));
+
+        String url = SERVER_URL + "/api/delete-gift-delivery";
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
@@ -186,5 +202,72 @@ public class Submit {
 
     public void removeEdge(Edge _form) {
         modifyEdge(_form, "remove");
+    }
+
+    public void newUser(User _form) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("name", _form.getName());
+        data.put("email", _form.getEmail());
+        data.put("phone", _form.getPhone());
+        data.put("password", _form.getPassword());
+        _form.clearPassword();
+
+        String url = SERVER_URL + "/api/create-user";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void editUser(User _form) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("uid", _form.getLocalId());
+        data.put("name", _form.getName());
+        data.put("email", _form.getEmail());
+        data.put("phone", _form.getPhone());
+
+        String url = SERVER_URL + "/api/edit-user";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void grantAdmin(User _form) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("uid", _form.getLocalId());
+
+        String url = SERVER_URL + "/api/grant-admin";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void revokeAdmin(User _form) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("uid", _form.getLocalId());
+
+        String url = SERVER_URL + "/api/revoke-admin";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void deleteUser(User _form) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("uid", _form.getLocalId());
+
+        String url = SERVER_URL + "/api/delete-admin";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
     }
 }

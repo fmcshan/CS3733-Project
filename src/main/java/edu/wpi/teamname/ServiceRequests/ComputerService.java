@@ -1,16 +1,17 @@
 package edu.wpi.teamname.ServiceRequests;
 
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
+import edu.wpi.teamname.views.Navigation;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,12 +19,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class SanitationServices {
+public class ComputerService implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -38,8 +42,14 @@ public class SanitationServices {
     private JFXTextField nameInput;
 
     /**
-     * Label indicating that an urgency wasn't selected
+     * Label indicating that a description wasn't entered
      */
+    @FXML
+    private Label failedServiceDescription;
+
+    @FXML
+    private JFXTextArea descriptionInput;
+
     @FXML
     private Label failedUrgency;
 
@@ -62,16 +72,16 @@ public class SanitationServices {
     private JFXCheckBox highUrgency;
 
     /**
-     * Label indicating that a reason wasn't entered
+     * Label indicating the phone number text field has been filled in incorrectly
      */
     @FXML
-    private Label failedReason;
+    private Label failedPhoneNumber;
 
     /**
-     * Text field to input reason
+     * Text Field to enter phone number
      */
     @FXML
-    private JFXTextField reasonInput;
+    private JFXTextField phoneInput;
 
     /**
      * Label indicating a location hasn't been selected
@@ -90,12 +100,29 @@ public class SanitationServices {
      */
     @FXML
     private VBox successPop;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askFullName;
+    @FXML
+    private Label askDesc;
+    @FXML
+    private Label askPriority;
+    @FXML
+    private Label askPhone;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
+
 
     /**
      * Instance of Requests class used to create a popup window
      */
     @FXML
-    private Requests request;
+    private edu.wpi.teamname.views.Requests request;
 
     /**
      * List of Service Requests
@@ -106,14 +133,48 @@ public class SanitationServices {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public SanitationServices(Requests request) {
+    public ComputerService(Requests request) {
         this.request = request;
     }
 
+
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("ComputerServices_title"));
+        desc.setText(Translator.getInstance().get("ComputerServices_desc"));
+        askFullName.setText(Translator.getInstance().get("ComputerServices_askFullName"));
+        nameInput.setPromptText(Translator.getInstance().get("ComputerServices_nameInput"));
+        askDesc.setText(Translator.getInstance().get("ComputerServices_askDesc"));
+        descriptionInput.setPromptText(Translator.getInstance().get("ComputerServices_descriptionInput"));
+        askPriority.setText(Translator.getInstance().get("ComputerServices_askPriority"));
+        lowUrgency.setText(Translator.getInstance().get("ComputerServices_lowUrgency"));
+        mediumUrgency.setText(Translator.getInstance().get("ComputerServices_mediumUrgency"));
+        highUrgency.setText(Translator.getInstance().get("ComputerServices_highUrgency"));
+        askPhone.setText(Translator.getInstance().get("ComputerServices_askPhone"));
+        phoneInput.setPromptText(Translator.getInstance().get("ComputerServices_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("ComputerServices_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("ComputerServices_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("ComputerServices_submitButton"));
+
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
+
     }
 
     /**
@@ -135,6 +196,15 @@ public class SanitationServices {
     }
 
     /**
+     * Checks if the description has been filled in
+     *
+     * @return true if there's a space between the first and last name, and false otherwise
+     */
+    public boolean descriptionValid() {
+        return !descriptionInput.getText().isEmpty();
+    }
+
+    /**
      * Checks if a checkbox has been selected
      *
      * @return true if any checkbox has been selected, and false otherwise
@@ -143,13 +213,17 @@ public class SanitationServices {
         return lowUrgency.isSelected() || mediumUrgency.isSelected() || highUrgency.isSelected();
     }
 
+    public boolean oneUrgencySelected() {
+        return (lowUrgency.isSelected() && !mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && mediumUrgency.isSelected() && !highUrgency.isSelected()) || (!lowUrgency.isSelected() && !mediumUrgency.isSelected() && highUrgency.isSelected());
+    }
+
     /**
-     * Checks if the "Reason" text box has been filled
+     * Checks if the phone number text field has been filled in correctly
      *
-     * @return true if the box was filled correctly, and false otherwise
+     * @return true if the number matches the "XXX-XXX-XXXX" format
      */
-    public boolean reasonInputValid() {
-        return !reasonInput.getText().isEmpty();
+    public boolean phoneNumberValid() {
+        return phoneInput.getText().matches("\\d{3}-\\d{3}-\\d{4}");
     }
 
     /**
@@ -176,21 +250,32 @@ public class SanitationServices {
      * @param event event triggering submission
      */
     public void submitRequest(ActionEvent event) {
+        if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
+            phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
+        }
+
         //Checks if all the inputs are valid
         if (!nameInputValid())
             failedName.setText("Invalid Name Entry.");
         else
             failedName.setText("");
 
-        if (!reasonInputValid())
-            failedReason.setText("Invalid Reason Entry.");
+        if (!descriptionValid())
+            failedServiceDescription.setText("Enter a Brief Description of the Desired Request");
         else
-            failedReason.setText("");
+            failedServiceDescription.setText("");
 
         if (!checkBoxSelected())
-            failedUrgency.setText("Please select the urgency of the request.");
+            failedUrgency.setText("Please select a gift to be delivered.");
+        else if (!oneUrgencySelected())
+            failedUrgency.setText("Invalid Selection");
         else
             failedUrgency.setText("");
+
+        if (!phoneNumberValid())
+            failedPhoneNumber.setText("Invalid Phone Number");
+        else
+            failedPhoneNumber.setText("");
 
         if (!locationValid())
             failedLocationEntry.setText("Please select a location");
@@ -199,7 +284,7 @@ public class SanitationServices {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && reasonInputValid() && locationValid()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid() && oneUrgencySelected()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (lowUrgency.isSelected())
@@ -213,13 +298,13 @@ public class SanitationServices {
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Sanitation Service", requestLocation.getValue(), selected, nameInput.getText(), "", "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Computer Services", requestLocation.getValue(), selected, descriptionInput.getText(), nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
         }
     }
 
@@ -227,10 +312,10 @@ public class SanitationServices {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/SanitationServices.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/ComputerService.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == SanitationServices.class)
+                if (type == ComputerService.class)
                     return this;
                 else
                     try {
@@ -242,7 +327,7 @@ public class SanitationServices {
                     }
             });
             Parent root = loader.load();
-            LoadFXML.getInstance().openWindow("sanitationServicesBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
+            LoadFXML.getInstance().openWindow("computerServicesBar", root, SceneManager.getInstance().getDefaultPage().getPopPop()); //open/close request form
         } catch (IOException ex) {
             ex.printStackTrace();
         }

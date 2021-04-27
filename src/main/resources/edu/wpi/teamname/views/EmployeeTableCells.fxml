@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.CheckInTableCells">
+   <children>
+      <Label fx:id="nameCell" prefWidth="300.0" text="Employee Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="emailCell" prefWidth="300.0" text="Employee Email Address">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <VBox fx:id="roleBox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="300.0">
+         <children>
+            <Label fx:id="roleCell" alignment="CENTER" style="-fx-background-color: #00c455; -fx-background-radius: 4px;" text="Employee Role" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Semibold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+      <Label fx:id="phoneCell" prefWidth="300.0" text="Employee Phone Number">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <VBox fx:id="actionsBox" alignment="CENTER" prefHeight="200.0" prefWidth="73.0">
+         <children>
+            <JFXButton fx:id="actionCell" text="...">
+               <padding>
+                  <Insets left="5.0" right="5.0" top="-15.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+</HBox>

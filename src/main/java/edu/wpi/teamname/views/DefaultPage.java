@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Edge;
@@ -43,15 +44,64 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
+    @FXML
+    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    @FXML
+    private Path tonysPath; // the path displayed on the map
+    @FXML
+    private ImageView hospitalMap; // the map
+    @FXML
+    private StackPane stackPane; // the pane the map is housed in
+    @FXML
+    private JFXButton adminButton; // button that allows you to sign in
+    @FXML
+    private AnchorPane topElements; // anchor pane where displayed nodes reside
+    @FXML
+    private JFXComboBox<String> languageBox; //selects language you want
+    @FXML
+    private JFXButton Navigation;
+    @FXML
+    private JFXButton CheckIn;
+    @FXML
+    private JFXButton Requests;
 
+
+    public String languageHelper(String getText){ //simplifies the language in helper 2, gets the value for given language
+        return Translator.getInstance().languageHashmap.get(Translator.getInstance().getCurrentLanguage()).get(getText);
+    }
+
+    public void languageHelper2(){ //can call this for each language
+        Navigation.setText(languageHelper("Navigation"));
+        CheckIn.setText(languageHelper("CheckIn"));
+        Requests.setText(languageHelper("Requests"));
+    }
+
+
+    public void languageSwitch() { //picks a language and checks current language
+        if(languageBox.getValue().equals("English")){
+            Translator.getInstance().setCurrentLanguage("language_english");
+            languageHelper2();
+        }
+        if(languageBox.getValue().equals("Spanish")){
+            Translator.getInstance().setCurrentLanguage("language_spanish");
+            languageHelper2();
+        }
+        if(languageBox.getValue().equals("Chinese - Simplified")){
+            Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
+            languageHelper2();
+        }
+    }
     /**
      * run on startup
      */
     public void initialize() {
+        languageBox.setVisible(false);
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
+        languageBox.getItems().add("English");
+        languageBox.getItems().add("Spanish");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -93,6 +143,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
         LoadFXML.getInstance().loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
         LoadFXML.getInstance().loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
+        LoadFXML.getInstance().loadWindow("EmployeeTableButton", "employeeButton", employeePop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -115,6 +166,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
         registrationPop.getChildren().clear();
+        employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -126,6 +178,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = 5000;
+        scaledHeight = 3400.0;
         clearMap();
         popPop.getChildren().clear();
         popPop2.getChildren().clear();
@@ -157,7 +213,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdminNew", "reqAdminBar", popPop);
+    }
+
+    /**
+     * toggle the admin request window
+     */
+    public void toggleEmployee() {
+        clearMap();
+        popPop.setPrefWidth(1000);
+        LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
     }
 
     @FXML

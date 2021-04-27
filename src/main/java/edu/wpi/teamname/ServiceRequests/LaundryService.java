@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -7,11 +8,12 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,9 +21,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,7 +34,8 @@ import java.util.List;
  * Controller for the Laundry Service Request Page
  * @author Lauren Sowerbutts, Frank McShan
  */
-public class LaundryRequest {
+
+public class LaundryService implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -133,6 +139,30 @@ public class LaundryRequest {
     @FXML
     private edu.wpi.teamname.views.Requests request;
 
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+
+    @FXML
+    private Label askName;
+
+    @FXML
+    private Label askType;
+
+    @FXML
+    private Label askTemperature;
+
+    @FXML
+    private Label askPhone;
+
+    @FXML
+    private Label askLocation;
+
+    @FXML
+    private JFXButton submitButton;
+
     /**
      * List of Service Requests
      */
@@ -142,14 +172,47 @@ public class LaundryRequest {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public LaundryRequest(Requests request) {
+    public LaundryService(Requests request) {
         this.request = request;
     }
 
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("LaundryServices_title"));
+        desc.setText(Translator.getInstance().get("LaundryServices_desc"));
+        askName.setText(Translator.getInstance().get("LaundryServices_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("LaundryServices_nameInput"));
+        askType.setText(Translator.getInstance().get("LaundryServices_askType"));
+        colorsBox.setText(Translator.getInstance().get("LaundryServices_colorsBox"));
+        whitesBox.setText(Translator.getInstance().get("LaundryServices_whitesBox"));
+        otherCheckbox.setText(Translator.getInstance().get("LaundryServices_otherCheckbox"));
+        askTemperature.setText(Translator.getInstance().get("LaundryServices_askTemperature"));
+        coldBox.setText(Translator.getInstance().get("LaundryServices_coldBox"));
+        warmBox.setText(Translator.getInstance().get("LaundryServices_warmBox"));
+        hotBox.setText(Translator.getInstance().get("LaundryServices_hotBox"));
+        askPhone.setText(Translator.getInstance().get("LaundryServices_askPhone"));
+        phoneInput.setPromptText(Translator.getInstance().get("LaundryServices_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("LaundryServices_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("LaundryServices_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("LaundryServices_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
     }
 
     /**
@@ -179,6 +242,11 @@ public class LaundryRequest {
         return colorsBox.isSelected() || whitesBox.isSelected() || otherCheckbox.isSelected();
     }
 
+    public boolean oneLoadSelected() {
+        return (colorsBox.isSelected() && !whitesBox.isSelected() && !otherCheckbox.isSelected()) || (!colorsBox.isSelected() && whitesBox.isSelected() && !otherCheckbox.isSelected()) || (!colorsBox.isSelected() && !whitesBox.isSelected() && otherCheckbox.isSelected());
+    }
+
+
     /**
      * Checks if a checkbox has been selected for wash temperature
      *
@@ -186,6 +254,10 @@ public class LaundryRequest {
      */
     public boolean checkBoxTempSelected() {
         return coldBox.isSelected() || warmBox.isSelected() || hotBox.isSelected();
+    }
+
+    public boolean oneTempSelected() {
+        return (coldBox.isSelected() || !warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || warmBox.isSelected() || !hotBox.isSelected()) || (!coldBox.isSelected() || !warmBox.isSelected() || hotBox.isSelected());
     }
 
     /**
@@ -243,6 +315,8 @@ public class LaundryRequest {
 
         if (!checkBoxLoadSelected())
             failedLoadType.setText("Please select a load type.");
+        else if (!oneLoadSelected())
+            failedLoadType.setText("Invalid Selection");
         else if (!otherInputValid())
             failedLoadType.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
         else
@@ -250,8 +324,11 @@ public class LaundryRequest {
 
         if (!checkBoxTempSelected())
             failedWashTemp.setText("Please select a wash temperature.");
+        else if (!oneTempSelected())
+            failedWashTemp.setText("Invalid Selection");
         else
             failedWashTemp.setText("");
+
 
         if (!phoneNumberValid())
             failedPhoneNumber.setText("Invalid Phone Number");
@@ -265,34 +342,35 @@ public class LaundryRequest {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid()) {
+        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid() && oneLoadSelected() && oneTempSelected()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> laundryTypeSelected = new ArrayList<>();
             if (colorsBox.isSelected())
-                laundryTypeSelected.add("Colors -");
+                laundryTypeSelected.add("Colors");
             if (whitesBox.isSelected())
-                laundryTypeSelected.add("Whites -");
+                laundryTypeSelected.add("Whites");
             if (otherCheckbox.isSelected())
-                laundryTypeSelected.add(otherInput.getText() + " -");
+                laundryTypeSelected.add(otherInput.getText());
+            String washTemp = "";
             if (coldBox.isSelected())
-                laundryTypeSelected.add("Cold");
+                washTemp += "Cold";
             if (warmBox.isSelected())
-                laundryTypeSelected.add("Warm");
+                washTemp += "Warm";
             if (hotBox.isSelected())
-                laundryTypeSelected.add("Hot");
+                washTemp += "Hot";
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
 //            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
 //            });
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Laundry Service", requestLocation.getValue(), laundryTypeSelected, washTemp, nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Requests_success"), successPop);
         }
     }
 
@@ -300,10 +378,10 @@ public class LaundryRequest {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/LaundryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/LaundryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == LaundryRequest.class)
+                if (type == LaundryService.class)
                     return this;
                 else
                     try {
