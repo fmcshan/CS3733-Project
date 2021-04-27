@@ -153,6 +153,10 @@ public class MapDisplay implements LevelChangeListener {
         return popPop2;
     }
 
+    public Path getTonysPath() {
+        return tonysPath;
+    }
+
     /**
      * Display localNodes on the map
      *

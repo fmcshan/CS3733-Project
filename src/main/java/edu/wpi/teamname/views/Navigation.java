@@ -7,15 +7,12 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
@@ -25,7 +22,6 @@ import java.util.HashMap;
 
 /**
  * Controller for Navigation.fxml
- *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
 public class Navigation implements LevelChangeListener {
@@ -36,8 +32,6 @@ public class Navigation implements LevelChangeListener {
     private ComboBox<String> fromCombo; // start location drop down
     @FXML
     private Label textDirections;
-    @FXML
-    private Button cancelNavigation;
     @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
 
@@ -95,10 +89,6 @@ public class Navigation implements LevelChangeListener {
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
             listOfNodeNames.add(n.getLongName());
             Collections.sort(listOfNodeNames);
-            nodeNameNodes.add(n);
-            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
-
-            }*/
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
@@ -193,10 +183,9 @@ public class Navigation implements LevelChangeListener {
                 mapDisplay.drawPath(floorPath); // draw the path on the map
             }
         }
-        //refreshNodes();
     }
 
-    public void cancelNavigation(ActionEvent actionEvent) {
+    public void cancelNavigation() {
         ArrayList<String> allFloors = new ArrayList<>();
         allFloors.add("L2");
         allFloors.add("L1");
@@ -205,7 +194,8 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("2");
         allFloors.add("3");
         refreshNodes();
-        mapDisplay.clearMap();
+        SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
