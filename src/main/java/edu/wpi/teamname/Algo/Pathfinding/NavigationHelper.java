@@ -84,7 +84,7 @@ public class NavigationHelper {
         double angle = this.NormalizeAngle(b - a);
 
         if (angle >= 315 || angle <= 45) {
-            return "Straight";
+            return "Straight ";
         }
         else if (angle >= 135 && angle <= 215) {
             return "Turn ";
