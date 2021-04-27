@@ -91,9 +91,9 @@ public class Requests {
      */
     public void openFacilitiesMaintenance() {
         requestPop.setPrefWidth(657.0);
-        FacilitiesMaintenanceRequest fmq = new FacilitiesMaintenanceRequest(this);
+        FacilitiesRequest fmq = new FacilitiesRequest(this);
         fmq.loadRequest();
-        //LoadFXML.getInstance().loadWindow("FacilitiesMaintenanceRequest", "facilitiesMaintenance", requestPop);
+        //LoadFXML.getInstance().loadWindow("FacilitiesRequest", "facilitiesMaintenance", requestPop);
     }
 
     /**
