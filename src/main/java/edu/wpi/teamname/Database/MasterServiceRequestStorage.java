@@ -86,5 +86,9 @@ public class MasterServiceRequestStorage {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public void setAssignTo(String assignTo) {
+        this.assignTo = assignTo;
+    }
 }
 

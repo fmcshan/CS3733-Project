@@ -70,17 +70,6 @@ public class RequestAdminNew {
                                             label.setText(g.getLocation());
                                             break;
                                         case "statusCell":
-                                            if (g.isCompleted() == true) {
-                                                label.setText("Completed");
-                                                label.setTextFill(Color.WHITE);
-                                                label.setStyle("-fx-background-color: #00c455");
-//                                            } else if () {
-//                                                // has employee been assigned
-                                            } else {
-                                                label.setText("Unassigned");
-                                                label.setTextFill(Color.WHITE);
-                                                label.setStyle("-fx-background-color: #f13426 ");
-                                            }
                                             break;
                                         default:
                                             label.setText("PANIK");
@@ -94,8 +83,30 @@ public class RequestAdminNew {
                                                 combo.getItems().add(u.getEmail());
                                             });
                                             combo.setOnAction(c -> {
-
+                                                g.setAssignTo(combo.getValue().toString());
                                             });
+                                        } else if (v instanceof Label){
+                                            Label label = (Label) v;
+                                            if (g.isCompleted() == true) {
+                                                System.out.println("is completed");
+                                                label.setText("Completed");
+                                                label.setTextFill(Color.WHITE);
+                                                label.setStyle("-fx-background-color: #00c455");
+                                                label.setStyle("-fx-background-radius: 4");
+                                            } else if (!g.getAssignTo().isEmpty()) {
+                                                System.out.println("in progresss");
+                                                label.setText("In Progress");
+                                                label.setTextFill(Color.valueOf("#626d7c"));
+                                                label.setStyle("-fx-background-color: #ebf0f5");
+                                                label.setStyle("-fx-background-radius: 4");
+                                            } else {
+                                                System.out.println("unassigned");
+                                                label.setText("Unassigned");
+                                                label.setTextFill(Color.WHITE);
+                                                label.setStyle("-fx-background-color: #f13426");
+                                                label.setStyle("-fx-background-radius: 4");
+                                            }
+
                                         } else if (v instanceof JFXButton) {
                                             System.out.println("in button");
                                             ContextMenu contextMenu = new ContextMenu();
