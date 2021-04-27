@@ -63,15 +63,15 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
-    HashMap<String,ArrayList<Text>> nodeToTextMap = new HashMap<>();
-    HashMap<Text,Edge> textToEdgeMap =new HashMap<>();
-   ArrayList<Text> allText =new ArrayList<>();
-    HashMap<Text,Node> textToNodeMap = new HashMap<>();
-    HashMap<String,Node> portalNodeMap = new HashMap<>();
+    HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
+    HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
+    ArrayList<Text> allText = new ArrayList<>();
+    HashMap<Text, Node> textToNodeMap = new HashMap<>();
+    HashMap<String, Node> portalNodeMap = new HashMap<>();
 
-//    ArrayList<Text> edgeTextList = new ArrayList<>();
-    HashMap<Node,Circle> edgeCircles = new HashMap<>();
-    HashMap<Node,ArrayList<String>> textLevels =new HashMap<>();
+    //    ArrayList<Text> edgeTextList = new ArrayList<>();
+    HashMap<Node, Circle> edgeCircles = new HashMap<>();
+    HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
@@ -95,7 +95,7 @@ public class MapDisplay implements LevelChangeListener {
     JFXButton adminButton; // button that allows you to sign in
 
     @FXML
-    private JFXButton floor3Bttn, floor2Bttn,floor1Bttn,L1Bttn, L2Bttn, groundBttn;
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
     ImageView hospitalMap;
     @FXML
@@ -292,52 +292,51 @@ public class MapDisplay implements LevelChangeListener {
             }
         }
         AtomicInteger edgeCounter = new AtomicInteger();
-        portalNodeMap.forEach((Id, n)-> {
-          if (nodesMap.containsKey(Id)) {
-              Circle circle = edgeCircles.get(n);
-              circle.setCenterX(xCoordOnTopElement(n.getX()));
-              circle.setCenterY(yCoordOnTopElement(n.getY()));
-              circle.setRadius(15);
-              circle.setFill(Color.YELLOW);
-              onTopOfTopElements.getChildren().add(circle);
-
+        portalNodeMap.forEach((Id, n) -> {
+            if (nodesMap.containsKey(Id)) {
+                Circle circle = edgeCircles.get(n);
+                circle.setCenterX(xCoordOnTopElement(n.getX()));
+                circle.setCenterY(yCoordOnTopElement(n.getY()));
+                circle.setRadius(15);
+                circle.setFill(Color.YELLOW);
+                onTopOfTopElements.getChildren().add(circle);
 
 
 //              Text text = new Text(x,y,"");
-              if (textLevels != null) {
-                  final double[] rotation = {1}; // in radians
-                  AtomicReference<Double> x = new AtomicReference<>((double) 0);
-                  AtomicReference<Double> y = new AtomicReference<>((double) 0);
-                  AtomicInteger ic =new AtomicInteger();
-                  Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 10);
-                  // System.out.println("here");
-                  //Text txt = new Text();
+                if (textLevels != null) {
+                    final double[] rotation = {1}; // in radians
+                    AtomicReference<Double> x = new AtomicReference<>((double) 0);
+                    AtomicReference<Double> y = new AtomicReference<>((double) 0);
+                    AtomicInteger ic = new AtomicInteger();
+                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 10);
+                    // System.out.println("here");
+                    //Text txt = new Text();
 //                  for (int i = 0; i < textLevels.get(text).size(); i++) {
-                //  System.out.println("Indiovidual Text level Size: "+ textLevels.get(n).size());
+                    //  System.out.println("Indiovidual Text level Size: "+ textLevels.get(n).size());
                     //int d =0 ;
 //                  for (int i = 0; i < textLevels.get(n).size(); i++) {
 //                      x.set(xCoordOnTopElement((int) (textToNodeMap.get(text).getX() + 10 * Math.cos(rotation))));
 //                      y.set(yCoordOnTopElement((int) (textToNodeMap.get(text).getY() + 10 * Math.sin(rotation))));
 
-                        if(nodeToTextMap.containsKey(Id)) {
+                    if (nodeToTextMap.containsKey(Id)) {
 
 
-                            nodeToTextMap.get(n.getNodeID()).forEach( genuineText -> {
-                                //  System.out.println(genuineText.getText());
-                                x.set(xCoordOnTopElement((int) (n.getX() + 10 * Math.cos(rotation[0]))));
-                                y.set(yCoordOnTopElement((int) (n.getY() + 10 * Math.sin(rotation[0]))));
+                        nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
+                            //  System.out.println(genuineText.getText());
+                            x.set(xCoordOnTopElement((int) (n.getX() + 10 * Math.cos(rotation[0]))));
+                            y.set(yCoordOnTopElement((int) (n.getY() + 10 * Math.sin(rotation[0]))));
 //                          Text genuineText = new Text(text.getText());
-                                genuineText.setX(x.get());
-                                genuineText.setY(y.get());
-                                genuineText.setFill(Color.RED);
-                                genuineText.setRotate(rotation[0]);
-                                genuineText.setFont(font);
+                            genuineText.setX(x.get());
+                            genuineText.setY(y.get());
+                            genuineText.setFill(Color.RED);
+                            genuineText.setRotate(rotation[0]);
+                            genuineText.setFont(font);
 //                      genuineText.setText(textLevels.get(n).get(i) + " ");
-                              //  System.out.println(genuineText.getText());
+                            //  System.out.println(genuineText.getText());
 //                          if(!onTopOfTopElements.getChildren().contains(genuineText)){
-                                onTopOfTopElements.getChildren().add(genuineText);//}
-                                rotation[0] += 1;
-                            });
+                            onTopOfTopElements.getChildren().add(genuineText);//}
+                            rotation[0] += 1;
+                        });
 
 //                      });
 //                        Text genuineText =  allText.get(d);
@@ -346,32 +345,32 @@ public class MapDisplay implements LevelChangeListener {
 
 
 //                 Text transformedText
-                            // Text txt = new Text(x.get(),y.get(),textLevels.get(text).get(i) + " " ) ;
+                        // Text txt = new Text(x.get(),y.get(),textLevels.get(text).get(i) + " " ) ;
 
 //                      txt.setX(x.get());
 //                      txt.setY(y.get());
 //                      txt.setText(textLevels.get(text).get(i) + " ");
 
 
-                            // }
+                        // }
 //                  textLevels.get(text).forEach( i ->{
 //
-                            //   });
+                        //   });
 //                  });
 
 
-                            //}
+                        //}
 
-                        }
-              }
+                    }
+                }
 //              edgeCircles.put(n,newCircle);
 //              nodeTextMap.put(text,n);
 //              edgeTextList.add(text);
 
 
-
-          }});
-      // Set sizing info
+            }
+        });
+        // Set sizing info
 //        AtomicInteger edgeLabelCounter = new AtomicInteger();
 //        if (localNodes.contains(edgeLabelMap.))
 
@@ -580,25 +579,25 @@ public class MapDisplay implements LevelChangeListener {
         nodes = LocalStorage.getInstance().getNodes(); // Get nodes from LocalStorage
         localNodes = new ArrayList<>();// Reset localNodes
         nodeToTextMap = new HashMap<>();
-     //   edgeTextList = new ArrayList<>();
+        //   edgeTextList = new ArrayList<>();
         allText = new ArrayList<>();
         nodes.forEach(n -> { // For node in nodes
             if (nodeWithinSpec(n)) { // If node is within spec (IE: building/floor)
                 localNodes.add(n); // Add to local nodes
             }
-            if ( n.getNodeType().equals("STAI")||n.getNodeType().equals("ELEV")){
+            if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
                 Circle newCircle = new Circle(); //new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()),12);
-                edgeCircles.put(n,newCircle);
+                edgeCircles.put(n, newCircle);
 
                 Text text = new Text();
-               // text.setTextFill(Color.web("#ff0000", 0.8));
+                // text.setTextFill(Color.web("#ff0000", 0.8));
 
-              //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+                //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
 
-                textToNodeMap.put(text,n);
-                portalNodeMap.put(n.getNodeID(),n);
-               // edgeTextList.add(text);
-                textLevels.put(n,new ArrayList<>());
+                textToNodeMap.put(text, n);
+                portalNodeMap.put(n.getNodeID(), n);
+                // edgeTextList.add(text);
+                textLevels.put(n, new ArrayList<>());
             }
         });
 
@@ -611,17 +610,17 @@ public class MapDisplay implements LevelChangeListener {
         localEdges = new ArrayList<>(); // Reset localEdges
         edges.forEach(e -> { // For edge in edges
 
-            int toNodeIndex =  nodes.indexOf(new Node(e.getEndNode(),0,0));
-            int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(),0,0));
+            int toNodeIndex = nodes.indexOf(new Node(e.getEndNode(), 0, 0));
+            int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(), 0, 0));
             // Label label = edgeLabel.get(labelCounter.getAndIncrement());
 
-            if( toNodeIndex!=-1 && fromNodeIndex!=-1 &&!(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
-                     if(!nodeToTextMap.containsKey(e.getEndNode())){
-                         nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
-                     }
+            if (toNodeIndex != -1 && fromNodeIndex != -1 && !(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
+                if (!nodeToTextMap.containsKey(e.getEndNode())) {
+                    nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
+                }
 //                          textLevels.put(nodeToTextMap.get(nodes.get(toNodeIndex)), new ArrayList<>());
 //                      }
-                if(!nodeToTextMap.containsKey(e.getStartNode())){
+                if (!nodeToTextMap.containsKey(e.getStartNode())) {
                     nodeToTextMap.put(e.getStartNode(), new ArrayList<Text>());
                 }
 //                if(textLevels.get(nodeToTextMap.get(nodes.get(fromNodeIndex)))== null){
@@ -629,18 +628,19 @@ public class MapDisplay implements LevelChangeListener {
 //                }
 //                      if(nodeToTextMap.containsKey(nodes.get(toNodeIndex)) && nodeToTextMap.containsKey(nodes.get(fromNodeIndex))){
 
-                textLevels.get(portalNodeMap.get( e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
+                textLevels.get(portalNodeMap.get(e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
 
                 Text newText = new Text(e.getStartNode().substring(e.getStartNode().length() - 2));
-                nodeToTextMap.get(e.getEndNode()).add( newText);//.add(newText);
+                nodeToTextMap.get(e.getEndNode()).add(newText);//.add(newText);
                 allText.add(newText);
-                textLevels.get(portalNodeMap.get( e.getStartNode())).add(e.getEndNode().substring(e.getEndNode().length() - 2));
+                textLevels.get(portalNodeMap.get(e.getStartNode())).add(e.getEndNode().substring(e.getEndNode().length() - 2));
                 Text otherText = new Text(e.getEndNode().substring(e.getEndNode().length() - 2));
-                nodeToTextMap.get(e.getStartNode()).add( otherText);
+                nodeToTextMap.get(e.getStartNode()).add(otherText);
                 allText.add(otherText);
-              //  nodeToTextMap.put(e.getStartNode(), otherText);
-                textToEdgeMap.put(newText,e);
-                textToEdgeMap.put(otherText,e);}
+                //  nodeToTextMap.put(e.getStartNode(), otherText);
+                textToEdgeMap.put(newText, e);
+                textToEdgeMap.put(otherText, e);
+            }
 
 //                Text fromText = edgeTextMap.get(nodes.get(fromNodeIndex));
 //                Text toText = edgeTextMap.get(nodes.get(toNodeIndex));
@@ -672,10 +672,8 @@ public class MapDisplay implements LevelChangeListener {
 //            }
 
 
-
-
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
-             // If nodes exist in nodes map
+                // If nodes exist in nodes map
                 /* We don't have to check if the start and end nodes
                 are within spec as all nodes in nodesMap are in spec. */
                 localEdges.add(e); // Add edge to local edges
@@ -705,10 +703,11 @@ public class MapDisplay implements LevelChangeListener {
      *
      * @param t Mouse Event
      */
-    boolean start =false;
+    boolean start = false;
     boolean end = false;
     Node sNode;
     Node fNode;
+
     public void processClick(MouseEvent t, boolean dragged) {
         if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             return; // Don't process clicks outside of the map editor.
@@ -725,26 +724,30 @@ public class MapDisplay implements LevelChangeListener {
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
 
-            if( !start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))){
-                start =true;
-                 sNode= renderedNodeMap.get( ((Circle) t.getTarget()));
-                System.out.println("start " +start);
+            if (!start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
+                start = true;
+                sNode = renderedNodeMap.get(((Circle) t.getTarget()));
+                System.out.println("start " + start);
+            } else if (!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
+                fNode = renderedNodeMap.get(((Circle) t.getTarget()));
+                end = true;
+                System.out.println("end " + end);
             }
-             else if(!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))){
-                fNode= renderedNodeMap.get( ((Circle) t.getTarget()));
-                end =true;
-                System.out.println("end "+end);
-            }
-            if(start && end){
-                Submit.getInstance().addEdge(new Edge(sNode.getNodeID()+"_"+fNode.getNodeID(),sNode.getNodeID(),fNode.getNodeID()));
+            if (start && end) {
+                Submit.getInstance().addEdge(new Edge(sNode.getNodeID() + "_" + fNode.getNodeID(), sNode.getNodeID(), fNode.getNodeID()));
                 System.out.println("edge submitted");
                 refreshData();
                 renderMap();
-                start =false;
-                end=false;
-                fNode= null;
-                sNode =null;
+                start = false;
+                end = false;
+                fNode = null;
+                sNode = null;
                 floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+                floor2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+                floor3Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+                L1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+                L2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+                groundBttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
                 return;
             }
 
@@ -753,7 +756,7 @@ public class MapDisplay implements LevelChangeListener {
                 dragStart = (Circle) t.getTarget();
 
                 System.out.println(dragStart);
-              // Set selected circle as dragStart (new edge start)
+                // Set selected circle as dragStart (new edge start)
             } else if (dragEnd == null) { // Else if dragEnd isn't null (IE: If the user is partway through creating an edge)
                 dragEnd = (Circle) t.getTarget(); // Set selected circle as dragEnd (new edge end)
 
@@ -832,7 +835,7 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse Event
      */
     private void processRightClick(MouseEvent t) {
-        if (t.getTarget() instanceof Text){
+        if (t.getTarget() instanceof Text) {
             Edge toRemove = textToEdgeMap.get(t.getTarget());
             System.out.println("Gotcha");
             Submit.getInstance().removeEdge(toRemove);
@@ -1388,34 +1391,45 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-    public void edgeBetweenFloors(){
-        if( start){
-             LineBuilder<?> edgeLocation = LineBuilder.create();
+
+    public void edgeBetweenFloors() {
+        if (start) {
+            LineBuilder<?> edgeLocation = LineBuilder.create();
             com.sun.glass.ui.Robot e =
                     com.sun.glass.ui.Application.GetApplication().createRobot();
 
-            switch(sNode.getFloor()){
+            switch (sNode.getFloor()) {
                 case "G":
 //                   edgeLocation.startX(groundBttn.getLayoutX()).startY(groundBttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
                     groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
 
-                case "1":  edgeLocation.startX(floor1Bttn.getLayoutX()).startY(floor1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                case "1":
+                    edgeLocation.startX(floor1Bttn.getLayoutX()).startY(floor1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
                     floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-                case "2":  edgeLocation.startX(floor2Bttn.getLayoutX()).startY(floor2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                case "2":
+                    edgeLocation.startX(floor2Bttn.getLayoutX()).startY(floor2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-                case "3":  edgeLocation.startX(floor3Bttn.getLayoutX()).startY(floor3Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                case "3":
+                    edgeLocation.startX(floor3Bttn.getLayoutX()).startY(floor3Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-                case "L2":  edgeLocation.startX(L2Bttn.getLayoutX()).startY(L2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                case "L2":
+                    edgeLocation.startX(L2Bttn.getLayoutX()).startY(L2Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-                case "L1":  edgeLocation.startX(L1Bttn.getLayoutX()).startY(L1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                case "L1":
+                    edgeLocation.startX(L1Bttn.getLayoutX()).startY(L1Bttn.getLayoutY()).endX(e.getMouseX()).endY(e.getMouseY());
+                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
 
             }
 //          Line newLine =  edgeLocation.stroke(Color.TOMATO).strokeWidth(3).opacity(1).build();
 ////            this.renderedEdgePreview.setPickOnBounds(false);
 //            topElements.getChildren().add(newLine);
-     }
+        }
 
-    }}
+    }
+}
