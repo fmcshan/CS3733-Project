@@ -720,12 +720,12 @@ public class MapDisplay implements LevelChangeListener {
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
 
-            if( !start && renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV")){
+            if( !start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))){
                 start =true;
                  sNode= renderedNodeMap.get( ((Circle) t.getTarget()));
                 System.out.println("start " +start);
             }
-             else if(!end &&renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV")){
+             else if(!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") ||renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))){
                 fNode= renderedNodeMap.get( ((Circle) t.getTarget()));
                 end =true;
                 System.out.println("end "+end);
@@ -740,6 +740,7 @@ public class MapDisplay implements LevelChangeListener {
                 end=false;
                 fNode= null;
                 sNode =null;
+                return;
             }
 
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
