@@ -408,7 +408,7 @@ public class Translator {
         language_spanish.put("FacilitiesMaintenance_desc", "Complete los siguientes campos para enviar una solicitud de mantenimiento.");
         language_spanish.put("FacilitiesMaintenance_askName", "Por favor ingresa tu nombre completo:");
         language_spanish.put("FacilitiesMaintenance_nameInput", "Nombre completo");
-        language_spanish.put("FacilitiesMaintenance_askDescription", "Introduzca una breve descripción de la solicitud deseada:");
+        language_spanish.put("FacilitiesMaintenance_askDescription", "Introduzca una breve descripcion de la solicitud deseada:");
         language_spanish.put("FacilitiesMaintenance_descriptionInput", "Descripcion"); //Descripción
         language_spanish.put("FacilitiesMaintenance_askUrgency", "Nivel de urgencia:");
         language_spanish.put("FacilitiesMaintenance_lowUrgency", "Bajo / Baja");
