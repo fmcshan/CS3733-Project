@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.ServiceRequestCells.FoodDeliveryCells">
    <children>
-      <Label fx:id="nameCell" prefWidth="254.0" text="Name">
+      <Label fx:id="nameCell" prefWidth="181.14" text="Name">
          <font>
             <Font size="14.0" />
          </font>
@@ -15,7 +18,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="foodCell" prefWidth="584.0" style="-fx-border-width: 1 0 1 0;" text="Desired Food">
+      <Label fx:id="foodCell" prefWidth="262.28" style="-fx-border-width: 1 0 1 0;" text="Selected Food">
          <font>
             <Font size="14.0" />
          </font>
@@ -23,7 +26,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="phoneCell" prefWidth="232.0" text="Phone Number">
+      <Label fx:id="phoneCell" prefWidth="181.14" text="Phone Number">
          <font>
             <Font size="14.0" />
          </font>
@@ -31,7 +34,7 @@
             <Insets left="20.0" />
          </padding>
       </Label>
-      <Label fx:id="locationCell" prefWidth="204.0" text="Location">
+      <Label fx:id="locationCell" prefWidth="181.14" text="Location">
          <font>
             <Font size="14.0" />
          </font>
@@ -39,5 +42,38 @@
             <Insets left="20.0" />
          </padding>
       </Label>
+      <VBox fx:id="assignToBox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="181.14">
+         <children>
+            <JFXComboBox focusColor="#ababab" prefHeight="30.0" prefWidth="163.0" promptText="Employee" style="-fx-font-size: 14; -fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </JFXComboBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="181.14">
+         <children>
+            <Label fx:id="statusCell" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 6px;" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Semibold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <JFXButton fx:id="actionCell" text="...">
+               <padding>
+                  <Insets left="5.0" right="5.0" top="-15.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
    </children>
 </HBox>
