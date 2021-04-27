@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,6 +98,31 @@ public class SanitationServices {
      */
     @FXML
     private Requests request;
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+
+    @FXML
+    private Label askName;
+
+    @FXML
+    private Label askUrgency;
+
+    @FXML
+    private JFXCheckBox meduimUrgency;
+
+    @FXML
+    private Label askReason;
+
+    @FXML
+    private Label askLocation;
+
+    @FXML
+    private JFXButton submitButton;
+
+  ;
 
     /**
      * List of Service Requests

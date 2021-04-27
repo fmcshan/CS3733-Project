@@ -19,7 +19,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Sanitation Request">
+            <Label fx:id="title" text="Sanitation Request">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -27,7 +27,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to place a sanitation request." textAlignment="CENTER" wrappingWidth="422.2413330078125">
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to place a sanitation request." textAlignment="CENTER" wrappingWidth="422.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -45,7 +45,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your full name:" textFill="#868686">
+                  <Label fx:id="askName" text="Please enter your full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -69,7 +69,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please select the urgency of the request:" textFill="#868686">
+                  <Label fx:id="askUrgency" text="Please select the urgency of the request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -109,7 +109,7 @@
                         <Insets left="25.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the reason for this request:" textFill="#868686">
+                  <Label fx:id="askReason" text="Please enter the reason for this request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -133,7 +133,7 @@
                         <Insets left="25.0" top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter the location you are requesting to sanitize:" textFill="#868686">
+                  <Label fx:id="askLocation" text="Please enter the location you are requesting to sanitize:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -155,7 +155,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

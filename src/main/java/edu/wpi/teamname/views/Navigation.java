@@ -45,7 +45,8 @@ public class Navigation implements LevelChangeListener, LanguageListener {
     private Label textDirections;
     @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
-
+    @FXML
+    private Label directions;
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -73,6 +74,7 @@ public class Navigation implements LevelChangeListener, LanguageListener {
         fromLabel.setText(Translator.getInstance().get("Navigation_fromLabel"));
         toCombo.setPromptText(Translator.getInstance().get("Navigation_toBox"));
         fromCombo.setPromptText(Translator.getInstance().get("Navigation_fromBox"));
+        directions.setText(Translator.getInstance().get("Navigation_directions"));
     }
 
     @Override

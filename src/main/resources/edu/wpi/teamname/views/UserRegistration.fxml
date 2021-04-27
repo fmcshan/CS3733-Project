@@ -203,7 +203,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRegistration" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRegistration" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

@@ -21,7 +21,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Computer Service Request">
+            <Label fx:id="title" text="Computer Service Request">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -29,7 +29,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request computer services." textAlignment="CENTER" wrappingWidth="444.2413330078125">
+            <Text fx:id="desc" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill in the following fields to request computer services." textAlignment="CENTER" wrappingWidth="444.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,7 +47,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your full name:" textFill="#868686">
+                  <Label fx:id="askFullName" text="Please enter your full name:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -71,7 +71,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label layoutX="35.0" layoutY="28.0" prefHeight="20.0" prefWidth="393.0" text="Please enter a brief description of the issue:" textFill="#868686">
+                  <Label fx:id="askDesc" layoutX="35.0" layoutY="28.0" prefHeight="20.0" prefWidth="393.0" text="Please enter a brief description of the issue:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -95,7 +95,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label prefHeight="20.0" prefWidth="261.0" text="Please select a request priority level:" textFill="#868686">
+                  <Label fx:id="askPriority" prefHeight="20.0" prefWidth="261.0" text="Please select a request priority level:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -140,7 +140,7 @@
                         <Insets left="25.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Please enter your phone number to receive a confirmation of the request:" textFill="#868686">
+                  <Label fx:id="askPhone" text="Please enter your phone number to receive a confirmation of the request:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -164,7 +164,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label prefHeight="20.0" prefWidth="438.0" text="Please enter the location of the computer that requires service:" textFill="#868686">
+                  <Label fx:id="askLocation" prefHeight="20.0" prefWidth="438.0" text="Please enter the location of the computer that requires service:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -186,7 +186,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitRequest" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

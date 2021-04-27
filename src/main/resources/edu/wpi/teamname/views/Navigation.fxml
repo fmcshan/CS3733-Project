@@ -63,10 +63,13 @@
       </JFXComboBox>
       <VBox alignment="TOP_CENTER">
          <children>
-            <Label text="Directions">
+            <Label fx:id="directions" text="Directions">
                <font>
                   <Font size="24.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </Label>
             <Label fx:id="textDirections" layoutX="170.0" layoutY="10.0" textFill="#9e9e9e" />
          </children>

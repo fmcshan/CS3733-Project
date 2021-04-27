@@ -20,13 +20,13 @@ public class Translator {
         language_chineseSimplified.put("Requests", "请求");
         language_english.put("CheckIn", "Check-In"); // default page, check in button
         language_spanish.put("CheckIn", "Registrarse");
-        language_chineseSimplified.put("CheckIn", "登记");
+        //language_chineseSimplified.put("CheckIn", "登记");
         language_english.put("NavMenu_MapEditor","Map Editor"); //navigation menu, map editor button
         language_spanish.put("NavMenu_MapEditor","Editor de Mapas");
-        language_chineseSimplified.put("NavMenu_MapEditor", "地图编辑器");
+        //language_chineseSimplified.put("NavMenu_MapEditor", "地图编辑器");
         language_english.put("NavMenu_SubmittedRequests","Submitted Requests"); //navigation menu, submitted requests button
         language_spanish.put("NavMenu_SubmittedRequests","Solicitudes Enviadas");
-        language_chineseSimplified.put("NavMenu_SubmittedRequests", "提交申请");
+        //language_chineseSimplified.put("NavMenu_SubmittedRequests", "提交申请");
         language_english.put("NavMenu_Registrations","Registrations"); //navigation menu, registrations button
         language_spanish.put("NavMenu_Registrations","Inscripciones"); //navigation menu, registrations button
         language_spanish.put("NavMenu_SubmittedRequests","Solicitudes Enviadas");
@@ -64,7 +64,6 @@ public class Translator {
         language_english.put("Registration_fullNameDesc","Please enter your full name:");
         language_english.put("Registration_fillfieldsDesc","Please fill in the following fields to register:");
         language_english.put("Registration_registrationForm","Registration Form");
-
         language_spanish.put("Registration_submitButton","Enviar");
         language_spanish.put("Registration_phoneInput","Numero de telefono"); //Número de teléfono
         language_spanish.put("Registration_enterPhoneDesc","Ingrese su numero de telefono para recibir una confirmacion de su visita:");
@@ -84,7 +83,7 @@ public class Translator {
         language_spanish.put("Registration_registrationForm","Formulario de Inscripcion"); //Formulario de inscripción
 
         //Navigation Page
-
+        language_spanish.put("Navigation_directions","Direcciones en Ingles");
         language_spanish.put("Navigation_title","Navegacion"); //Navegacion
         language_spanish.put("Navigation_description", "Ingrese su ubicacion actual y destino para recibir una ruta."); //Ingrese su ubicación actual y destino para recibir una ruta.
         language_spanish.put("Navigation_toLabel", "A");
@@ -97,23 +96,172 @@ public class Translator {
         language_english.put("Navigation_fromLabel","From");
         language_english.put("Navigation_toBox","Current Location"); //Ubicación actual
         language_english.put("Navigation_fromBox","Destination");
+        language_english.put("Navigation_directions","Directions");
 
         //Requests
 
-        language_spanish.put("Requests_header", "Peticiones"); //Ingrese su ubicación actual y destino para recibir una ruta.
-        language_spanish.put("Requests_openButton", "Seleccione la solicitud de servicio que le gustaria realizar."); //Seleccione la solicitud de servicio que le gustaría realizar.
-        language_spanish.put("Requests_requestsBox","Tipo");
-        language_spanish.put("Requests_typeLabel","Peticiones"); //Ubicación actual
-        language_spanish.put("Requests_description", "Formulario de Solicitud Abierto");
-        language_english.put("Requests_header", "Peticiones"); //Ingrese su ubicación actual y destino para recibir una ruta.
-        language_english.put("Requests_openButton", "Seleccione la solicitud de servicio que le gustaria realizar."); //Seleccione la solicitud de servicio que le gustaría realizar.
-        language_english.put("Requests_requestsBox","Tipo");
-        language_english.put("Requests_typeLabel","Peticiones"); //Ubicación actual
-        language_english.put("Requests_description", "Formulario de Solicitud Abierto");
 
+        language_spanish.put("Requests_header", "Peticiones"); //Ingrese su ubicación actual y destino para recibir una ruta.
+        language_spanish.put("Requests_desc", "Seleccione la solicitud de servicio que le gustaria realizar."); //Seleccione la solicitud de servicio que le gustaría realizar.
+        language_spanish.put("Requests_GiftDelivery", "Entrega de Regalo");
+        language_spanish.put("Requests_FoodDelivery", "Entrega de Comida");
+        language_spanish.put("Requests_MedicineDelivery", "Entrega de Medicamentos");
+        language_spanish.put("Requests_LaundryServices", "Servicios de Lavanderia");
+        language_spanish.put("Requests_ComputerService", "Servicio Informatico"); //Servicio informático
+        language_spanish.put("Requests_FacilitiesMaintenance", "Mantenimiento de Instalaciones");
+        language_spanish.put("Requests_SanitationServices", "Servicios de Saneamiento");
+        language_spanish.put("Requests_PatientTransportation", "Transporte de Pacientes");
+        language_english.put("Requests_header", "Requests"); //Ingrese su ubicación actual y destino para recibir una ruta.
+        language_english.put("Requests_desc", "Please select the service request you would like to make."); //Seleccione la solicitud de servicio que le gustaría realizar.
+        language_english.put("Requests_GiftDelivery", "Gift Delivery");
+        language_english.put("Requests_FoodDelivery", "Food Delivery");
+        language_english.put("Requests_MedicineDelivery", "Medicine Delivery");
+        language_english.put("Requests_LaundryServices", "Laundry Services");
+        language_english.put("Requests_ComputerService", "Computer Services"); //Servicio informático
+        language_english.put("Requests_FacilitiesMaintenance", "Facilities Maintenance");
+        language_english.put("Requests_SanitationServices", "Sanitation Services");
+        language_english.put("Requests_PatientTransportation", "Patient Transportation");
+
+
+//Covid Screening Page
+        language_english.put("Covid_title", "COVID-19 Screening");
+        language_english.put("Covid_desc", "The CDC recommends these steps to reduce your risk of getting and spreading COVID-19: ");
+        language_english.put("Covid_check1", "Wear a mask over your nose and mouth.");
+        language_english.put("Covid_check2", "Stay at least six feet away from people who don't live with you.");
+        language_english.put("Covid_check3", "Get a COVID-19 vaccine when it is available to you.");
+        language_english.put("Covid_check4", "Avoid crowded areas and poorly ventinated spaces.");
+        language_english.put("Covid_check5", "Wash your hands often with soap and water or use hand sanitizer with at least 60% alcohol.");
+        language_english.put("Covid_checkInst", "Please check all that apply:");
+        language_english.put("Covid_symptom1Checkbox", "I have had a symptomatic COVID-19 test in the last 14 days.");
+        language_english.put("Covid_symptom2Checkbox", "I have received a positive test result for COVID-19 in the last 14 days.");
+        language_english.put("Covid_symptom3Checkbox", "I have been in close contact with someone diagnosed with COVID-19 in the last 14 days.");
+        language_english.put("Covid_symptom4Checkbox", "I am experiencing COVID-19-like symptoms.");
+        language_english.put("Covid_submitButton", "Submit");
+        language_spanish.put("Covid_title", "Deteccion de COVID-19"); //Detección de COVID-19
+        language_spanish.put("Covid_desc", "El CDC recomienda estos pasos para reducir su riesgo de contraer y propagar COVID-19:");
+        language_spanish.put("Covid_check1", "Use una mascarilla sobre su nariz y boca.");
+        language_spanish.put("Covid_check2", "Mantengase al menos a seis pies de distancia de las personas que no viven con usted.");
+        //Manténgase al menos a seis pies de distancia de las personas que no viven con usted.
+        language_spanish.put("Covid_check3", "Obtenga una vacuna COVID-19 cuando este disponible para usted.");
+        //Obtenga una vacuna COVID-19 cuando esté disponible para usted.
+        language_spanish.put("Covid_check4", "Evite las areas concurridas y los espacios mal ventilados.");
+        //Evite las áreas concurridas y los espacios mal ventilados.
+        language_spanish.put("Covid_check5", "Lavese las manos con frecuencia con agua y jabon o use un desinfectante de manos con al menos un 60% de alcohol.");
+        //Lávese las manos con frecuencia con agua y jabón o use un desinfectante de manos con al menos un 60% de alcohol.
+        language_spanish.put("Covid_checkInst", "Por favor marque todos los que apliquen:");
+        language_spanish.put("Covid_symptom1Checkbox", "He tenido una prueba de COVID-19 sintomatica en los" + "\n" + " ultimos 14 días.");
+        //He tenido una prueba de COVID-19 sintomática en los últimos 14 días.
+        language_spanish.put("Covid_symptom2Checkbox", "He estado en contacto cercano con alguien diagnosticado"+ "\n" + " con COVID-19 en los ultimos 14 dias.");
+        //He estado en contacto cercano con alguien diagnosticado con COVID-19 en los últimos 14 días.
+        language_spanish.put("Covid_symptom3Checkbox", "I have been in close contact with someone diagnosed with" + "\n" + " COVID-19 in the last 14 days.");
+        language_spanish.put("Covid_symptom4Checkbox", "Estoy experimentando sintomas similares al COVID-19.");
+        //Estoy experimentando síntomas similares al COVID-19.
+        language_spanish.put("Covid_submitButton", "Enviar");
+
+
+
+//Symptoms Page
+        language_spanish.put("Symptoms_title", "Sintomas potenciales"); //Síntomas potenciales
+        language_spanish.put("Symptoms_symptomsInclude", "Los sintomas pueden incluir:");
+        language_spanish.put("Symptoms_s1", "fiebre"); //Los síntomas pueden incluir:
+        language_spanish.put("Symptoms_s2", "escalofrios"); //escalofríos
+        language_spanish.put("Symptoms_s3", "tos");
+        language_spanish.put("Symptoms_s4", "dificultad para respirar");
+        language_spanish.put("Symptoms_s5", "dolor de garganta");
+        language_spanish.put("Symptoms_s6", "fatiga");
+        language_spanish.put("Symptoms_s7", "dolor de cabeza");
+        language_spanish.put("Symptoms_s8", "dolor de cuerpo");
+        language_spanish.put("Symptoms_s9", "secrecion nasal / congestion"); //secreción nasal / congestión
+        language_spanish.put("Symptoms_s10", "perdida del gusto u olfato"); //pérdida del gusto u olfato
+        language_spanish.put("Symptoms_s11", "nauseas, vomitos o diarrea"); //náuseas, vómitos o diarrea
+        language_spanish.put("Symptoms_OKButton", "OK");
+        language_english.put("Symptoms_title", "Potential Symptoms"); //Síntomas potenciales
+        language_english.put("Symptoms_symptomsInclude", "Symptoms may include:");
+        language_english.put("Symptoms_s1", "fever"); //Los síntomas pueden incluir:
+        language_english.put("Symptoms_s2", "chills"); //escalofríos
+        language_english.put("Symptoms_s3", "cough");
+        language_english.put("Symptoms_s4", "shortness of breath");
+        language_english.put("Symptoms_s5", "sore throat");
+        language_english.put("Symptoms_s6", "fatigue");
+        language_english.put("Symptoms_s7", "headache");
+        language_english.put("Symptoms_s8", "muscle/body aches");
+        language_english.put("Symptoms_s9", "runny nose/congestion"); //secreción nasal / congestión
+        language_english.put("Symptoms_s10", "new loss of taste or smell"); //pérdida del gusto u olfato
+        language_english.put("Symptoms_s11", "nausea, vomiting, or diarrhea"); //náuseas, vómitos o diarrea
+        language_english.put("Symptoms_OKButton", "OK");
+
+        //Close Contact
+
+        language_english.put("CloseContact_title", "Close Contacts");
+        language_english.put("CloseContact_desc", "\"Close contact\" means:");
+        language_english.put("CloseContact_b1", "Living in the same household as a person who has tested positive for COVID-19.");
+        language_english.put("CloseContact_b2", "Caring for a person who has tested positive for COVID-19.");
+        language_english.put("CloseContact_b3", "Being within 6 feet of a person who has tested positive for COVID-19 for 15 minutes or more.");
+        language_english.put("CloseContact_b4", "Coming in direct contact with secretions (e.g. sharing utensils, being coughed on) from a person who has tested positive for COVID-19, while that person was symptomatic.");
+        language_spanish.put("CloseContact_title", "Cerrar Contactos");
+        language_spanish.put("CloseContact_desc", "\"Contacto cercano\" significa:");
+        language_spanish.put("CloseContact_b1", "Vivir en el mismo hogar que una persona que dio positivo en la prueba de COVID-19.");
+        language_spanish.put("CloseContact_b2", "Cuidar a una persona que dio positivo en la prueba de COVID-19.");
+        language_spanish.put("CloseContact_b3", "Estar a menos de 6 pies de una persona que haya dado positivo en la prueba de COVID-19 durante 15 minutos o mas.");
+        //Estar a menos de 6 pies de una persona que haya dado positivo en la prueba de COVID-19 durante 15 minutos o más.
+        language_spanish.put("CloseContact_b4", "Entrar en contacto directo con secreciones (por ejemplo, compartir utensilios, toser) de una persona que dio positivo en la prueba de COVID-19, mientras esa persona tenia sintomas.");
+        //Entrar en contacto directo con secreciones (por ejemplo, compartir utensilios, toser) de una persona que dio positivo en la prueba de COVID-19, mientras esa persona tenía síntomas.
+
+//Covid Message
+
+        language_english.put("CovidMessage_title", "Stop!");
+        language_english.put("CovidMessage_successText", "Based on your answers, you might have COVID-19. Please proceed to the emergency entrance for further evaluation.");
+        language_spanish.put("CovidMessage_title", "Detener");
+        language_spanish.put("CovidMessage_successText", "Segun sus respuestas, es posible que tenga COVID-19. Dirijase a la entrada de emergencia para una evaluacion adicional.");
+        //Según sus respuestas, es posible que tenga COVID-19. Diríjase a la entrada de emergencia para una evaluación adicional.
+
+        //Success Page
+
+        language_english.put("Success_title", "Success!");
+        language_english.put("Success_successText", "You have successfully submitted the form. A receptionist will be with you shortly.");
+        language_spanish.put("Success_title", "Exito"); //Éxito
+        language_spanish.put("Success_successText", "Ha enviado correctamente el formulario. Una recepcionista estara con usted en breve.");
+        //Ha enviado correctamente el formulario. Una recepcionista estará con usted en breve.
+
+   //Computer Services
+
+        language_english.put("ComputerServices_title", "Computer Service Request!");
+        language_english.put("ComputerServices_desc", "Please fill in the following fields to request computer services.");
+        language_english.put("ComputerServices_askFullName", "Please enter your full name:");
+        language_english.put("ComputerServices_nameInput", "Full Name");
+        language_english.put("ComputerServices_askDesc", "Please enter a brief description of the issue:");
+        language_english.put("ComputerServices_descriptionInput", "Description");
+        language_english.put("ComputerServices_askPriority", "Please select a request priority level:");
+        language_english.put("ComputerServices_lowUrgency", "Low");
+        language_english.put("ComputerServices_mediumUrgency", "Medium");
+        language_english.put("ComputerServices_highUrgency", "High");
+        language_english.put("ComputerServices_askPhone", "Please enter your phone number to receive a confirmation of the request:");
+        language_english.put("ComputerServices_phoneInput", "Phone Number");
+        language_english.put("ComputerServices_askLocation", "Please enter the location of the computer that requires service:");
+        language_english.put("ComputerServices_requestLocation", "Location");
+        language_english.put("ComputerServices_submitButton", "Submit");
+
+        language_spanish.put("ComputerServices_title", "Solicitud de Servicio Informatico"); //Solicitud de servicio informático
+        language_spanish.put("ComputerServices_desc", "Complete los siguientes campos para solicitar servicios informaticos."); //Complete los siguientes campos para solicitar servicios informáticos.
+        language_spanish.put("ComputerServices_askFullName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("ComputerServices_nameInput", "Nombre completo");
+        language_spanish.put("ComputerServices_askDesc", "Introduzca una breve descripcion del problema:"); //Introduzca una breve descripción del problema:
+        language_spanish.put("ComputerServices_descriptionInput", "Descripcion"); //Descripción
+        language_spanish.put("ComputerServices_askPriority", "Seleccione un nivel de prioridad de solicitud:"); //Seleccione un nivel de prioridad de solicitud:
+        language_spanish.put("ComputerServices_lowUrgency", "Baja");
+        language_spanish.put("ComputerServices_mediumUrgency", "Medio");
+        language_spanish.put("ComputerServices_highUrgency", "High");
+        language_spanish.put("ComputerServices_askPhone", "Ingrese su numero de telefono para recibir una confirmacion de la solicitud:"); //Ingrese su número de teléfono para recibir una confirmación de la solicitud:
+        language_spanish.put("ComputerServices_phoneInput", "Numero de telefono"); //Número de teléfono
+        language_spanish.put("ComputerServices_askLocation", "Ingrese la ubicacion de la computadora que requiere servicio:"); //Ingrese la ubicación de la computadora que requiere servicio:
+        language_spanish.put("ComputerServices_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("ComputerServices_submitButton", "Enviar");
+
+//
 
 
     }
+
 
     private static final Translator instance = new Translator();
 

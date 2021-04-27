@@ -22,8 +22,6 @@ public class UserRegistration implements LanguageListener {
 
 
     @FXML
-    private JFXTextField nameInput;
-    @FXML
     private Label registrationForm;
 
     @FXML
@@ -97,7 +95,7 @@ public class UserRegistration implements LanguageListener {
      * @return true if there is a space
      */
     public boolean nameInputValid() {
-        return nameInput.getText().contains(" ");
+        return fullName.getText().contains(" ");
     }
 
     /**
@@ -232,13 +230,13 @@ public class UserRegistration implements LanguageListener {
             LoadFXML.setCurrentWindow("");
 
             //submit
-            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(nameInput.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText());
             Submit.getInstance().submitUserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+            success.loadSuccess(Translator.getInstance().get("Success_successText"), successPop);
         }
     }
 }

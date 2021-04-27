@@ -16,20 +16,29 @@ import javafx.scene.text.Text;
  * Controller for Requests.fxml
  */
 public class Requests implements LanguageListener {
+
+
+
     @FXML
     private Label header;
-
     @FXML
-    private Text description;
-
+    private Text desc;
     @FXML
-    private Label typeLabel;
-
+    private JFXButton GiftDelivery;
     @FXML
-    private ComboBox<String> requestsBox;
+    private JFXButton FoodDelivery;
     @FXML
-    private JFXButton openButton;
-
+    private JFXButton MedicineDelivery;
+    @FXML
+    private JFXButton LaundryServices;
+    @FXML
+    private JFXButton ComputerService;
+    @FXML
+    private JFXButton FacilitiesMaintenance;
+    @FXML
+    private JFXButton SanitationServices;
+    @FXML
+    private JFXButton PatientTransportation;
     @FXML
     private VBox requestPop;
 
@@ -38,10 +47,15 @@ public class Requests implements LanguageListener {
 
     private void setLanguages(){
         header.setText(Translator.getInstance().get("Requests_header"));
-        openButton.setText(Translator.getInstance().get("Requests_openButton"));
-        requestsBox.setPromptText(Translator.getInstance().get("Requests_requestsBox"));
-        typeLabel.setText(Translator.getInstance().get("Requests_typeLabel"));
-        description.setText(Translator.getInstance().get("Requests_description"));
+        desc.setText(Translator.getInstance().get("Requests_desc"));
+        GiftDelivery.setText(Translator.getInstance().get("Requests_GiftDelivery"));
+        FoodDelivery.setText(Translator.getInstance().get("Requests_FoodDelivery"));
+        MedicineDelivery.setText(Translator.getInstance().get("Requests_MedicineDelivery"));
+        LaundryServices.setText(Translator.getInstance().get("Requests_LaundryServices"));
+        ComputerService.setText(Translator.getInstance().get("Requests_ComputerService"));
+        FacilitiesMaintenance.setText(Translator.getInstance().get("Requests_FacilitiesMaintenance"));
+        SanitationServices.setText(Translator.getInstance().get("Requests_SanitationServices"));
+        PatientTransportation.setText(Translator.getInstance().get("Requests_PatientTransportation"));
     }
 
     @Override
@@ -84,13 +98,13 @@ public class Requests implements LanguageListener {
         //LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
     }
 
-        public void openRequest() {
-        if (requestsBox.getValue().equals("Gift Delivery")){
-            requestPop.setPrefWidth(657.0);
-            GiftDelivery gdr = new GiftDelivery(this);
-            gdr.loadRequest();
-        }
-    }
+//        public void openRequest() {
+//        if (requestsBox.getValue().equals("Gift Delivery")){
+//            requestPop.setPrefWidth(657.0);
+//            GiftDelivery gdr = new GiftDelivery(this);
+//            gdr.loadRequest();
+//        }
+//    }
 
     /**
      * OnAction command for clicking the "Open Request Form" button

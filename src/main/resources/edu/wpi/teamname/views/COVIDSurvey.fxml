@@ -19,7 +19,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="COVID-19 Screening">
+            <Label fx:id="title" text="COVID-19 Screening">
                <font>
                   <Font name="System Bold" size="45.0" />
                </font>
@@ -29,7 +29,7 @@
             </Label>
             <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="799.0" prefWidth="657.0">
                <children>
-                  <Label prefHeight="50.0" prefWidth="632.0" text="The CDC recommends these steps to reduce your risk of getting and spreading COVID-19: " textFill="#868686" wrapText="true">
+                  <Label fx:id="desc" prefHeight="50.0" prefWidth="632.0" text="The CDC recommends these steps to reduce your risk of getting and spreading COVID-19: " textFill="#868686" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -51,7 +51,7 @@
                               </FontAwesomeIconView>
                            </children>
                         </VBox>
-                        <Label prefHeight="37.0" prefWidth="563.0" text="Wear a mask over your nose and mouth." textFill="#868686">
+                        <Label fx:id="check1" prefHeight="37.0" prefWidth="563.0" text="Wear a mask over your nose and mouth." textFill="#868686">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -72,7 +72,7 @@
                               </FontAwesomeIconView>
                            </children>
                         </VBox>
-                        <Label prefHeight="39.0" prefWidth="644.0" text="Stay at least six feet away from people who don't live with you." textFill="#868686">
+                        <Label fx:id="check2" prefHeight="39.0" prefWidth="644.0" text="Stay at least six feet away from people who don't live with you." textFill="#868686">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -93,7 +93,7 @@
                               </FontAwesomeIconView>
                            </children>
                         </VBox>
-                        <Label prefHeight="42.0" prefWidth="644.0" text="Get a COVID-19 vaccine when it is available to you." textFill="#868686">
+                        <Label fx:id="check3" prefHeight="42.0" prefWidth="644.0" text="Get a COVID-19 vaccine when it is available to you." textFill="#868686">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -114,7 +114,7 @@
                               </FontAwesomeIconView>
                            </children>
                         </VBox>
-                        <Label prefHeight="35.0" prefWidth="711.0" text="Avoid crowded areas and poorly ventinated spaces." textFill="#868686">
+                        <Label fx:id="check4" prefHeight="35.0" prefWidth="711.0" text="Avoid crowded areas and poorly ventinated spaces." textFill="#868686">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -135,14 +135,14 @@
                               </FontAwesomeIconView>
                            </children>
                         </VBox>
-                        <Label prefHeight="53.0" prefWidth="516.0" text="Wash your hands often with soap and water or use hand sanitizer with at least 60% alcohol." textFill="#868686" wrapText="true">
+                        <Label fx:id="check5" prefHeight="53.0" prefWidth="516.0" text="Wash your hands often with soap and water or use hand sanitizer with at least 60% alcohol." textFill="#868686" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <Label text="Please check all that apply:" textFill="#868686">
+                  <Label fx:id="checkInst" text="Please check all that apply:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -212,7 +212,7 @@
       </VBox>
       <VBox alignment="CENTER" layoutY="717.0" prefHeight="183.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitScreening" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#submitScreening" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>

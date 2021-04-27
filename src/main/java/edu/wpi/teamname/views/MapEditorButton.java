@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class MapEditorButton implements LanguageListener {
     @FXML
     private JFXButton MapEditor;
 
+  //from here
     public void initialize(){
         Translator.getInstance().addLanguageListener(this);
         setLanguages();
@@ -28,6 +30,7 @@ public class MapEditorButton implements LanguageListener {
     public void updateLanguage() {
         setLanguages();
     }
+    //to here
 
 
     public void openMapEditor(ActionEvent actionEvent) {
