@@ -22,18 +22,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MapDisplay implements LevelChangeListener {
 
@@ -57,6 +59,15 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
+    HashMap<String,ArrayList<Text>> nodeToTextMap = new HashMap<>();
+    HashMap<Text,Edge> textToEdgeMap =new HashMap<>();
+   ArrayList<Text> allText =new ArrayList<>();
+    HashMap<Text,Node> textToNodeMap = new HashMap<>();
+    HashMap<String,Node> portalNodeMap = new HashMap<>();
+
+//    ArrayList<Text> edgeTextList = new ArrayList<>();
+    HashMap<Node,Circle> edgeCircles = new HashMap<>();
+    HashMap<Node,ArrayList<String>> textLevels =new HashMap<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
@@ -123,6 +134,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
@@ -255,9 +267,98 @@ public class MapDisplay implements LevelChangeListener {
      * @param _opacity Edge opacity
      */
     public void displayEdges(double _opacity) {
-        resizingInfo(); // Set sizing info
+        resizingInfo();
+        portalNodeMap.forEach((Id, n)-> {
+          if (nodesMap.containsKey(Id)) {
+              Circle circle = edgeCircles.get(n);
+              circle.setCenterX(xCoordOnTopElement(n.getX()));
+              circle.setCenterY(yCoordOnTopElement(n.getY()));
+              circle.setRadius(15);
+              circle.setFill(Color.YELLOW);
+              onTopOfTopElements.getChildren().add(circle);
+
+
+
+//              Text text = new Text(x,y,"");
+              if (textLevels != null) {
+                  final double[] rotation = {1}; // in radians
+                  AtomicReference<Double> x = new AtomicReference<>((double) 0);
+                  AtomicReference<Double> y = new AtomicReference<>((double) 0);
+                  AtomicInteger ic =new AtomicInteger();
+                  Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 10);
+                  // System.out.println("here");
+                  //Text txt = new Text();
+//                  for (int i = 0; i < textLevels.get(text).size(); i++) {
+                  System.out.println("Indiovidual Text level Size: "+ textLevels.get(n).size());
+                    int d =0 ;
+//                  for (int i = 0; i < textLevels.get(n).size(); i++) {
+//                      x.set(xCoordOnTopElement((int) (textToNodeMap.get(text).getX() + 10 * Math.cos(rotation))));
+//                      y.set(yCoordOnTopElement((int) (textToNodeMap.get(text).getY() + 10 * Math.sin(rotation))));
+
+                        if(nodeToTextMap.containsKey(Id)) {
+
+
+                            nodeToTextMap.get(n.getNodeID()).forEach( genuineText -> {
+                                //  System.out.println(genuineText.getText());
+                                x.set(xCoordOnTopElement((int) (n.getX() + 10 * Math.cos(rotation[0]))));
+                                y.set(yCoordOnTopElement((int) (n.getY() + 10 * Math.sin(rotation[0]))));
+//                          Text genuineText = new Text(text.getText());
+                                genuineText.setX(x.get());
+                                genuineText.setY(y.get());
+                                genuineText.setFill(Color.RED);
+                                genuineText.setRotate(rotation[0]);
+                                genuineText.setFont(font);
+//                      genuineText.setText(textLevels.get(n).get(i) + " ");
+                                System.out.println(genuineText.getText());
+//                          if(!onTopOfTopElements.getChildren().contains(genuineText)){
+                                onTopOfTopElements.getChildren().add(genuineText);//}
+                                rotation[0] += 1;
+                            });
+
+//                      });
+//                        Text genuineText =  allText.get(d);
+//                   //   System.out.println(d);
+//                        d++;
+
+
+//                 Text transformedText
+                            // Text txt = new Text(x.get(),y.get(),textLevels.get(text).get(i) + " " ) ;
+
+//                      txt.setX(x.get());
+//                      txt.setY(y.get());
+//                      txt.setText(textLevels.get(text).get(i) + " ");
+
+
+                            // }
+//                  textLevels.get(text).forEach( i ->{
+//
+                            //   });
+//                  });
+
+
+                            //}
+
+                        }
+              }
+//              edgeCircles.put(n,newCircle);
+//              nodeTextMap.put(text,n);
+//              edgeTextList.add(text);
+
+
+
+          }});
+      // Set sizing info
+//        AtomicInteger edgeLabelCounter = new AtomicInteger();
+//        if (localNodes.contains(edgeLabelMap.))
+
         localEdges.forEach(e -> { // For edge in localEdges
+
+
+
+
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
+
+
                 double startX = xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX());
                 double startY = yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY());
                 double endX = xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX());
@@ -337,6 +438,11 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse event
      */
     private void processMovement(MouseEvent t) {
+        if(t.getClickCount()==2){
+            System.out.println("haha");
+            topElements.getChildren().remove(renderedEdgePreview);
+            return;
+        }
         if (dragStart != null && dragEnd != null) {
             return;
         }
@@ -457,10 +563,28 @@ public class MapDisplay implements LevelChangeListener {
      */
     void refreshData() {
         nodes = LocalStorage.getInstance().getNodes(); // Get nodes from LocalStorage
-        localNodes = new ArrayList<>(); // Reset localNodes
+        localNodes = new ArrayList<>();// Reset localNodes
+        nodeToTextMap = new HashMap<>();
+     //   edgeTextList = new ArrayList<>();
+        allText = new ArrayList<>();
         nodes.forEach(n -> { // For node in nodes
             if (nodeWithinSpec(n)) { // If node is within spec (IE: building/floor)
                 localNodes.add(n); // Add to local nodes
+            }
+            if ( n.getNodeType().equals("STAI")||n.getNodeType().equals("ELEV")){
+                Circle newCircle = new Circle(); //new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()),12);
+                edgeCircles.put(n,newCircle);
+
+                Text text = new Text();
+               // text.setTextFill(Color.web("#ff0000", 0.8));
+
+              //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+
+                textToNodeMap.put(text,n);
+                portalNodeMap.put(n.getNodeID(),n);
+               // edgeTextList.add(text);
+                textLevels.put(n,new ArrayList<>());
+                System.out.println("edgeTextMap not empty");
             }
         });
 
@@ -471,8 +595,74 @@ public class MapDisplay implements LevelChangeListener {
 
         edges = LocalStorage.getInstance().getEdges(); // Get edges from LocalStorage
         localEdges = new ArrayList<>(); // Reset localEdges
+
         edges.forEach(e -> { // For edge in edges
-            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist in nodes map
+
+            int toNodeIndex =  nodes.indexOf(new Node(e.getEndNode(),0,0));
+            int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(),0,0));
+            // Label label = edgeLabel.get(labelCounter.getAndIncrement());
+
+            if( toNodeIndex!=-1 && fromNodeIndex!=-1 &&!(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
+                     if(!nodeToTextMap.containsKey(e.getEndNode())){
+                         nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
+                     }
+//                          textLevels.put(nodeToTextMap.get(nodes.get(toNodeIndex)), new ArrayList<>());
+//                      }
+                if(!nodeToTextMap.containsKey(e.getStartNode())){
+                    nodeToTextMap.put(e.getStartNode(), new ArrayList<Text>());
+                }
+//                if(textLevels.get(nodeToTextMap.get(nodes.get(fromNodeIndex)))== null){
+//                    textLevels.put(nodeToTextMap.get(nodes.get(fromNodeIndex)), new ArrayList<>());
+//                }
+//                      if(nodeToTextMap.containsKey(nodes.get(toNodeIndex)) && nodeToTextMap.containsKey(nodes.get(fromNodeIndex))){
+
+                textLevels.get(portalNodeMap.get( e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
+
+                Text newText = new Text(e.getStartNode().substring(e.getStartNode().length() - 2));
+                nodeToTextMap.get(e.getEndNode()).add( newText);//.add(newText);
+                allText.add(newText);
+                textLevels.get(portalNodeMap.get( e.getStartNode())).add(e.getEndNode().substring(e.getEndNode().length() - 2));
+                Text otherText = new Text(e.getEndNode().substring(e.getEndNode().length() - 2));
+                nodeToTextMap.get(e.getStartNode()).add( otherText);
+                allText.add(otherText);
+              //  nodeToTextMap.put(e.getStartNode(), otherText);
+                textToEdgeMap.put(newText,e);
+                textToEdgeMap.put(otherText,e);}
+
+//                Text fromText = edgeTextMap.get(nodes.get(fromNodeIndex));
+//                Text toText = edgeTextMap.get(nodes.get(toNodeIndex));
+
+//                if(fromLabel.getText().equals("")) edgeTextMap.get(nodes.get(fromNodeIndex)).setText(e.getEndNode().substring(e.getEndNode().length() - 2));
+//                else{
+
+//                double rotation = 90;
+//                double x = Math.cos(rotation) * 100;
+//                double y = Math.sin(rotation) * 100;
+//                Text text = new Text(x, y, "");
+//            }
+//                    text.set
+//                    String newText = fromLabel.getText()+"\n"+e.getEndNode().substring(e.getEndNode().length() - 2);
+//                    edgeTextMap.get(nodes.get(fromNodeIndex)).setText(newText);
+//                }
+//                if (toLabel.getText().equals(""))  edgeTextMap.get(nodes.get(toNodeIndex)).setText(e.getStartNode().substring(e.getEndNode().length() - 2));
+//
+////
+//                else{
+//                    String newText = toLabel.getText()+", "+e.getStartNode().substring(e.getStartNode().length() - 2);
+//                    edgeTextMap.get(nodes.get(toNodeIndex)).setText(newText);
+//                }
+//
+////            if(nodesMap.containsKey(e.getStartNode())&& toNodeIndex!= -1){
+////                    if (nodesMap.get(e.getStartNode()).getFloor() != nodes.get(toNodeIndex).getFloor()){
+////                        localEdges.add(e);
+////                    }
+//            }
+
+
+
+
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
+             // If nodes exist in nodes map
                 /* We don't have to check if the start and end nodes
                 are within spec as all nodes in nodesMap are in spec. */
                 localEdges.add(e); // Add edge to local edges
@@ -512,7 +702,12 @@ public class MapDisplay implements LevelChangeListener {
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
             return;
-        } else if (t.getButton() != MouseButton.PRIMARY) {
+        } 
+        else if(t.getClickCount()==2){
+            processMovement(t);
+            return;
+        }
+        else if (t.getButton() != MouseButton.PRIMARY) {
             return;
         }
 
@@ -526,12 +721,19 @@ public class MapDisplay implements LevelChangeListener {
                 // Build line between dragStart and dragEnd (potential new edge)
                 LineBuilder<?> edgeLocation = LineBuilder.create().startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(dragEnd.getCenterX()).endY(dragEnd.getCenterY());
                 topElements.getChildren().remove(renderedEdgePreview); // Remove previously displayed edge preview
-                this.renderedEdgePreview = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(1).build(); // Set potential edge styling
-                topElements.getChildren().add(renderedEdgePreview); // Display potential edge
 
-                // Edge popup
                 addEdgeStart = renderedNodeMap.get(dragStart); // Get potential edge start node
                 addEdgeEnd = renderedNodeMap.get(dragEnd); // Get potential edge end node
+//                if(!(addEdgeStart.getFloor().equals(addEdgeEnd.getFloor()))){
+//                    Submit.getInstance().addEdge(new Edge(addEdgeStart.getNodeID()+"_"+addEdgeEnd.getNodeID(),addEdgeStart.getNodeID(),addEdgeEnd.getNodeID()));
+//                    System.out.println("processed");
+//                }
+//                else{
+//                this.renderedEdgePreview = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(1).build(); // Set potential edge styling
+//                topElements.getChildren().add(renderedEdgePreview); // Display potential edge
+//                     }
+                // Edge popup
+
                 showEdgePopup(renderedNodeMap.get(dragStart), renderedNodeMap.get(dragEnd), dragEnd); // Show edge confirmation window
 
                 dragStart = null; // Reset dragStart
@@ -582,6 +784,9 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse Event
      */
     private void processRightClick(MouseEvent t) {
+        if (t.getTarget() instanceof Text){
+
+        }
         if (t.getTarget() instanceof Circle) { // If the user clicks a circle/node
             Node toEdit = renderedNodeMap.get(t.getTarget()); // Get the node
             showEditNodePopup(toEdit, t); // Show edit node popup
@@ -943,6 +1148,7 @@ public class MapDisplay implements LevelChangeListener {
      * @param event Action event
      */
     public void addEdge(ActionEvent event) {
+
         String edgeId = addEdgeStart.getNodeID() + "_" + addEdgeEnd.getNodeID(); // Create edgeId
         // If the edge (or the reverse edge) already exists
         if (edgesMap.containsKey(edgeId) || edgesMap.containsKey(addEdgeEnd.getNodeID() + "_" + addEdgeStart.getNodeID()) || addEdgeStart.getNodeID().equals(addEdgeEnd.getNodeID())) {
