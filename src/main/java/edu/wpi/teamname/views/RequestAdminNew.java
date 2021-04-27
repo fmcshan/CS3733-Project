@@ -49,8 +49,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
 
     public Node loadWindow(String fileName) {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestCells/" + fileName + "Cells.fxml"));
-            return node;
+            return FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestCells/" + fileName + "Cells.fxml"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -68,6 +67,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                 HBox hbox = (HBox) node;
                 switch (_req.getRequestType()) {
                     case "Gift Delivery":
+                        System.out.println("In gift delivery");
                         if (i == 1) {
                             giftCellHolder.getChildren().add(node);
                         }
@@ -88,77 +88,14 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     case "locationCell":
                                         label.setText(_req.getLocation());
                                         break;
-                                    case "statusCell":
-                                        break;
                                     default:
                                         label.setText("PANIK");
                                 }
-                            } else if (h instanceof VBox) {
-                                VBox vBox = (VBox) h;
-                                vBox.getChildren().forEach(v -> {
-                                    if (v instanceof JFXComboBox) {
-                                        JFXComboBox combo = (JFXComboBox) v;
-                                        combo.setValue(_req.getAssignTo());
-                                        LocalStorage.getInstance().getUsers().forEach(u -> {
-                                            combo.getItems().add(u.getName());
-                                        });
-                                        combo.setOnAction(c -> {
-                                            _req.setAssignTo(combo.getValue().toString());
-                                            Submit.getInstance().updateGiftDelivery(_req);
-                                        });
-                                    } else if (v instanceof Label) {
-                                        Label label = (Label) v;
-                                        if (_req.isCompleted()) {
-                                            label.setText("Completed");
-                                            label.setTextFill(Color.WHITE);
-                                            label.setStyle("-fx-background-color:#00c455;-fx-background-radius: 4px;");
-                                        } else if (!_req.getAssignTo().isEmpty()) {
-                                            label.setText("In Progress");
-                                            label.setTextFill(Color.valueOf("#626d7c"));
-                                            label.setStyle("-fx-background-color:#ebf0f5;-fx-background-radius: 4px;");
-                                        } else {
-                                            label.setText("Unassigned");
-                                            label.setTextFill(Color.WHITE);
-                                            label.setStyle("-fx-background-color:#f13426;-fx-background-radius: 4px;");
-                                        }
-
-                                    } else if (v instanceof JFXButton) {
-                                        ContextMenu contextMenu = new ContextMenu();
-                                        MenuItem completed = new MenuItem("Mark as Completed");
-                                        MenuItem reset = new MenuItem("Reset");
-                                        MenuItem delete = new MenuItem("Delete");
-                                        if (!_req.isCompleted()) {
-                                            contextMenu.getItems().add(completed);
-                                        } else {
-                                            contextMenu.getItems().add(reset);
-                                        }
-                                        contextMenu.getItems().add(delete);
-                                        JFXButton button = (JFXButton) v;
-                                        button.setOnAction(b -> {
-                                            contextMenu.show(button, Side.BOTTOM, 0, 0);
-                                        });
-                                        contextMenu.setOnAction(e -> {
-                                            switch (((MenuItem) e.getTarget()).getText()) {
-                                                case "Mark as Completed":
-                                                    _req.setCompleted(true);
-                                                    Submit.getInstance().updateGiftDelivery(_req);
-                                                    break;
-                                                case "Delete":
-                                                    Submit.getInstance().deleteGiftDelivery(_req);
-                                                    break;
-                                                case "Reset":
-                                                    _req.setAssignTo("");
-                                                    _req.setCompleted(false);
-                                                    Submit.getInstance().updateGiftDelivery(_req);
-                                                    break;
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Food Delivery":
+                        System.out.println("in food delivery");
                         if (i == 1) {
                             foodCellHolder.getChildren().add(node);
                         }
@@ -182,6 +119,8 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
+                            } else {
+                                loadData(_req, h);
                             }
                         });
                         break;
@@ -200,7 +139,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                         label.setText(_req.getDescription());
                                         break;
                                     case "priorityCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     case "phoneCell":
                                         label.setText(_req.getContact());
@@ -211,7 +150,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Facilities Request":
@@ -229,7 +168,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                         label.setText(_req.getDescription());
                                         break;
                                     case "urgencyCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     case "phoneCell":
                                         label.setText(_req.getContact());
@@ -240,7 +179,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Laundry Service":
@@ -255,7 +194,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                         label.setText(_req.getRequestedBy());
                                         break;
                                     case "loadCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     case "washCell":
                                         label.setText(_req.getDescription());
@@ -269,7 +208,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Medicine Delivery":
@@ -283,8 +222,8 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     case "nameCell":
                                         label.setText(_req.getRequestedBy());
                                         break;
-                                    case "medicationCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                    case "medicationNameCell":
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     case "dosageCell":
                                         label.setText(_req.getDescription());
@@ -295,7 +234,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Patient Transportation":
@@ -309,19 +248,19 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     case "nameCell":
                                         label.setText(_req.getRequestedBy());
                                         break;
-                                    case "currentCell":
+                                    case "currentLocationCell":
                                         label.setText(_req.getLocation());
                                         break;
-                                    case "destCell":
+                                    case "destinationCell":
                                         label.setText(_req.getDescription());
                                         break;
                                     case "reasonCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     case "Sanitation Service":
@@ -336,10 +275,10 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                         label.setText(_req.getRequestedBy());
                                         break;
                                     case "urgencyCell":
-                                        label.setText(_req.getRequestedItems().get(0));
+                                        label.setText(_req.getRequestedItems().get(0).replace("\"", ""));
                                         break;
                                     case "reasonCell":
-                                        label.setText(_req.getDescription());
+                                        label.setText(_req.getContact());
                                         break;
                                     case "locationCell":
                                         label.setText(_req.getLocation());
@@ -347,7 +286,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
-                            }
+                            } else loadData(_req, h);
                         });
                         break;
                     default:
@@ -356,6 +295,68 @@ public class RequestAdminNew implements GiftDeliveryListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    private void loadData(MasterServiceRequestStorage _req, Node h) {
+        if (h instanceof VBox) {
+            VBox vBox = (VBox) h;
+            vBox.getChildren().forEach(v -> {
+                if (v instanceof JFXComboBox) {
+                    JFXComboBox combo = (JFXComboBox) v;
+                    combo.setValue(_req.getAssignTo());
+                    LocalStorage.getInstance().getUsers().forEach(u -> combo.getItems().add(u.getName()));
+                    combo.setOnAction(c -> {
+                        _req.setAssignTo(combo.getValue().toString());
+                        Submit.getInstance().updateGiftDelivery(_req);
+                    });
+                } else if (v instanceof Label) {
+                    Label label = (Label) v;
+                    if (_req.isCompleted()) {
+                        label.setText("Completed");
+                        label.setTextFill(Color.WHITE);
+                        label.setStyle("-fx-background-color:#00c455;-fx-background-radius: 4px;");
+                    } else if (!_req.getAssignTo().isEmpty()) {
+                        label.setText("In Progress");
+                        label.setTextFill(Color.valueOf("#626d7c"));
+                        label.setStyle("-fx-background-color:#ebf0f5;-fx-background-radius: 4px;");
+                    } else {
+                        label.setText("Unassigned");
+                        label.setTextFill(Color.WHITE);
+                        label.setStyle("-fx-background-color:#f13426;-fx-background-radius: 4px;");
+                    }
+
+                } else if (v instanceof JFXButton) {
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem completed = new MenuItem("Mark as Completed");
+                    MenuItem reset = new MenuItem("Reset");
+                    MenuItem delete = new MenuItem("Delete");
+                    if (!_req.isCompleted()) {
+                        contextMenu.getItems().add(completed);
+                    } else {
+                        contextMenu.getItems().add(reset);
+                    }
+                    contextMenu.getItems().add(delete);
+                    JFXButton button = (JFXButton) v;
+                    button.setOnAction(b -> contextMenu.show(button, Side.BOTTOM, 0, 0));
+                    contextMenu.setOnAction(e -> {
+                        switch (((MenuItem) e.getTarget()).getText()) {
+                            case "Mark as Completed":
+                                _req.setCompleted(true);
+                                Submit.getInstance().updateGiftDelivery(_req);
+                                break;
+                            case "Delete":
+                                Submit.getInstance().deleteGiftDelivery(_req);
+                                break;
+                            case "Reset":
+                                _req.setAssignTo("");
+                                _req.setCompleted(false);
+                                Submit.getInstance().updateGiftDelivery(_req);
+                                break;
+                        }
+                    });
+                }
+            });
         }
     }
 

@@ -85,7 +85,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="meduimUrgency" checkedColor="#0067b1" text="Medium" textFill="#868686">
+                  <JFXCheckBox fx:id="mediumUrgency" checkedColor="#0067b1" text="Medium" textFill="#868686">
                      <VBox.margin>
                         <Insets left="50.0" top="15.0" />
                      </VBox.margin>

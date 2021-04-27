@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacilitiesMaintenanceRequest {
+public class FacilitiesRequest {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -113,7 +113,7 @@ public class FacilitiesMaintenanceRequest {
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
      */
-    public FacilitiesMaintenanceRequest(Requests request) {
+    public FacilitiesRequest(Requests request) {
         this.request = request;
     }
 
@@ -238,7 +238,7 @@ public class FacilitiesMaintenanceRequest {
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Facilities Maintenance", requestLocation.getValue(), selected, descriptionInput.getText(), nameInput.getText(), phoneInput.getText(), "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Facilities Request", requestLocation.getValue(), selected, descriptionInput.getText(), nameInput.getText(), phoneInput.getText(), "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -255,7 +255,7 @@ public class FacilitiesMaintenanceRequest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/FacilitiesMaintenanceRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
-                if (type == FacilitiesMaintenanceRequest.class)
+                if (type == FacilitiesRequest.class)
                     return this;
                 else
                     try {

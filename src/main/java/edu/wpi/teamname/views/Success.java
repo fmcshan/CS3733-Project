@@ -28,7 +28,7 @@ public class Success {
     @FXML
     private ComputerService computerService;
 
-    private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
+    private FacilitiesRequest facilitiesRequest;
 
     private MedicineDelivery medicineDelivery;
 
@@ -61,8 +61,8 @@ public class Success {
         this.patientTransportation = patientTransportation;
     }
 
-    public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
-        this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
+    public Success(FacilitiesRequest facilitiesRequest) {
+        this.facilitiesRequest = facilitiesRequest;
     }
 
     public Success(MedicineDelivery medicineDelivery) {
