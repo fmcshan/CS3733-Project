@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
@@ -19,7 +20,6 @@ public class ZoomAndPan {
     double windowHeight;
     double windowSmallestScale;
     boolean dragged = false;
-    double minPixels = 10;
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
@@ -41,6 +41,7 @@ public class ZoomAndPan {
         page.onTopOfTopElements.setOnMouseDragged(mouseEvent -> {
             dragged = true;
             if (mouseEvent.getTarget() instanceof Circle) {
+                dragged = false; //this should be here right?
                 return;
             }
 
@@ -57,18 +58,18 @@ public class ZoomAndPan {
             double viewportWidth = viewportOfImage.getWidth();
             double viewportHeight = viewportOfImage.getHeight();
 
-            if (viewportWidth < 300 && mouseDeltaY > 0) { // prevent from zooming in too much
+            if (viewportWidth < 1000 && mouseDeltaY > 0) { // prevent from zooming in too much
                 return;
             }
             if (viewportWidth > 5000 && mouseDeltaY < 0) { // prevent from zooming out too much
                 return;
             }
 
-            double boundariesOfViewPort = 0;
+            double boundariesOfViewPort;
             if (mouseDeltaY > 0) { // <0 for zoom out, >0 for zoom in
-                boundariesOfViewPort = 0.8;
+                boundariesOfViewPort = 1 / 1.1;
             } else {
-                boundariesOfViewPort = 1.25;
+                boundariesOfViewPort = 1.1;
             }
 
             Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
@@ -79,12 +80,12 @@ public class ZoomAndPan {
             double mouseCursorX = mouseCursorLocationOnMap.getX();
             double mouseCursorY = mouseCursorLocationOnMap.getY();
 
-            page.scaledX = (ensureRange(mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * boundariesOfViewPort), 0, page.mapWidth - page.scaledWidth));
-            page.scaledY = (ensureRange(mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * boundariesOfViewPort), 0, page.mapHeight - page.scaledHeight));
+            page.scaledX = mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * boundariesOfViewPort);
+            page.scaledY = mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * boundariesOfViewPort);
             Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
             render();
-            if (!LoadFXML.getCurrentWindow().equals("navBar")){
-                page.currentPath= new ArrayList();
+            if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+                page.currentPath = new ArrayList();
             }
             page.hospitalMap.setViewport(newViewPort);
 
@@ -99,8 +100,9 @@ public class ZoomAndPan {
 
     private void render() {
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            page.renderMap();}
-        if (LoadFXML.getCurrentWindow().equals("navBar")){
+            page.renderMap();
+        }
+        if (LoadFXML.getCurrentWindow().equals("navBar")) {
             page.onTopOfTopElements.getChildren().clear();
             page.topElements.getChildren().clear(); // Clear top elements
             page.tonysPath.getElements().clear(); // Clear Tony's path
@@ -143,8 +145,8 @@ public class ZoomAndPan {
         double viewPortWidth = theViewPort.getWidth();
         double viewPortHeight = theViewPort.getHeight();
 
-        page.scaledX = ensureRange(theViewPort.getMinX() - changeInShift.getX(), 0, inputMap.getImage().getWidth() - viewPortWidth);
-        page.scaledY = ensureRange(theViewPort.getMinY() - changeInShift.getY(), 0, inputMap.getImage().getHeight() - viewPortHeight);
+        page.scaledX = theViewPort.getMinX() - changeInShift.getX();
+        page.scaledY = theViewPort.getMinY() - changeInShift.getY();
 
         inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
 
