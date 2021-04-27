@@ -250,7 +250,7 @@ public class FoodDelivery {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("Success", successPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
@@ -277,5 +277,9 @@ public class FoodDelivery {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }
