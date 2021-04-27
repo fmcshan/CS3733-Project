@@ -14,19 +14,14 @@ public class Translator {
 
         language_english.put("Navigation", "Navigation"); //default page, navigation button
         language_spanish.put("Navigation", "Navegacion");
-        //language_chineseSimplified.put("Navigation", "导航");
         language_english.put("Requests", "Requests"); //default page, requests button
         language_spanish.put("Requests", "Peticiones");
-        //language_chineseSimplified.put("Requests", "请求");
         language_english.put("CheckIn", "Check-In"); // default page, check in button
         language_spanish.put("CheckIn", "Registrarse");
-        //language_chineseSimplified.put("CheckIn", "登记");
         language_english.put("NavMenu_MapEditor","Map Editor"); //navigation menu, map editor button
         language_spanish.put("NavMenu_MapEditor","Editor de Mapas");
-        //language_chineseSimplified.put("NavMenu_MapEditor", "地图编辑器");
         language_english.put("NavMenu_SubmittedRequests","Submitted Requests"); //navigation menu, submitted requests button
         language_spanish.put("NavMenu_SubmittedRequests","Solicitudes Enviadas");
-        //language_chineseSimplified.put("NavMenu_SubmittedRequests", "提交申请");
         language_english.put("NavMenu_Registrations","Registrations"); //navigation menu, registrations button
         language_spanish.put("NavMenu_Registrations","Inscripciones"); //navigation menu, registrations button
         language_spanish.put("NavMenu_SubmittedRequests","Solicitudes Enviadas");
@@ -485,6 +480,9 @@ public class Translator {
         language_spanish.put("PatientTransportation_yesCheckbox", "si"); //sí
         language_spanish.put("PatientTransportation_reasonInput", "Razon"); //Razón
         language_spanish.put("PatientTransportation_submitButton", "Enviar");
+
+        language_spanish.put("Requests_success", "Ha enviado correctamente el formulario. Su solicitud se cumplira en breve."); //Ha enviado correctamente el formulario. Su solicitud se cumplirá en breve.
+        language_english.put("Requests_success", "You have successfully submitted the form. Your request will be fulfilled shortly.");
 
     }
 
