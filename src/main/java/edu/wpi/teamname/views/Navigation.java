@@ -2,7 +2,9 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Algo.NodeComparator;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
+import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
@@ -80,13 +82,14 @@ public class Navigation implements LevelChangeListener {
         nodesMap.clear();
         toCombo.getItems().clear();
         fromCombo.getItems().clear();
+        Collections.sort(listOfNodes, new NodeSortComparator());
         listOfNodes.forEach(n -> {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            listOfNodeNames.add(n.getLongName());
-            Collections.sort(listOfNodeNames);
+            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+            //Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
             /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
 
