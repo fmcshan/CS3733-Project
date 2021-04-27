@@ -305,7 +305,6 @@ public class Translator {
         language_english.put("FacilitiesMaintenance_requestLocation", "Location");
         language_english.put("FacilitiesMaintenance_submitButton", "Submit");
 
-
         language_spanish.put("FacilitiesMaintenance_title", "Mantenimiento De Instalaciones");
         language_spanish.put("FacilitiesMaintenance_desc", "Complete los siguientes campos para enviar una solicitud de mantenimiento.");
         language_spanish.put("FacilitiesMaintenance_askName", "Por favor ingresa tu nombre completo:");
@@ -321,6 +320,72 @@ public class Translator {
         language_spanish.put("FacilitiesMaintenance_askLocation", "Por favor ingrese la ubicacion para la entrega:"); //Por favor ingrese la ubicación para la entrega:
         language_spanish.put("FacilitiesMaintenance_requestLocation", "Localizacion"); //Localización
         language_spanish.put("FacilitiesMaintenance_submitButton", "Enviar");
+
+        //Laundry Services
+
+        language_english.put("LaundryServices_title", "Laundry Services Request");
+        language_english.put("LaundryServices_desc", "Please fill in the following fields to request laundry services.");
+        language_english.put("LaundryServices_askName", "Please enter your full name:");
+        language_english.put("LaundryServices_nameInput", "Full name");
+        language_english.put("LaundryServices_askType", "Please select load type:");
+        language_english.put("LaundryServices_colorsBox", "Colors");
+        language_english.put("LaundryServices_whitesBox", "Whites");
+        language_english.put("LaundryServices_otherCheckbox", "Other:");
+        language_english.put("LaundryServices_askTemperature", "Choose wash temperature:");
+        language_english.put("LaundryServices_coldBox", "Cold");
+        language_english.put("LaundryServices_warmBox", "Warm");
+        language_english.put("LaundryServices_hotBox", "Hot");
+        language_english.put("LaundryServices_askPhone", "Please enter your phone number to receive a confirmation for the delivery:");
+        language_english.put("LaundryServices_phoneInput", "Phone Number");
+        language_english.put("LaundryServices_askLocation", "Please enter the location for delivery:");
+        language_english.put("LaundryServices_requestLocation", "Location");
+        language_english.put("LaundryServices_submitButton", "Submit");
+
+        language_spanish.put("LaundryServices_title", "Solicitud de servicios de lavanderia"); //Solicitud de servicios de lavandería
+        language_spanish.put("LaundryServices_desc", "Por favor complete los siguientes campos para solicitar el servicio de lavanderia."); //Por favor complete los siguientes campos para solicitar el servicio de lavandería.
+        language_spanish.put("LaundryServices_askName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("LaundryServices_nameInput", "Nombre completo");
+        language_spanish.put("LaundryServices_askType", "Seleccione el tipo de carga:");
+        language_spanish.put("LaundryServices_colorsBox", "Colores");
+        language_spanish.put("LaundryServices_whitesBox", "Blancos / Blancas");
+        language_spanish.put("LaundryServices_otherCheckbox", "Otro / Otra:");
+        language_spanish.put("LaundryServices_askTemperature", "Elija la temperatura de lavado:");
+        language_spanish.put("LaundryServices_coldBox", "Frio / Fria"); //Frío / Fría
+        language_spanish.put("LaundryServices_warmBox", "Calido / Calida"); //Cálido / Cálida
+        language_spanish.put("LaundryServices_hotBox", "Caliente");
+        language_spanish.put("LaundryServices_askPhone", "Por favor ingrese su numero de telefono para recibir una confirmacion de la entrega:"); //Por favor ingrese su número de teléfono para recibir una confirmación de la entrega:
+        language_spanish.put("LaundryServices_phoneInput", "Numero de telefono"); //Número de teléfono
+        language_spanish.put("LaundryServices_askLocation", "Introduzca la ubicacion para la entrega:"); //Introduzca la ubicación para la entrega:
+        language_spanish.put("LaundryServices_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("LaundryServices_submitButton", "Enviar");
+
+        //Patient Transportaion
+
+        language_english.put("PatientTransportation_title", "Patient Transportation Request");
+        language_english.put("PatientTransportation_desc", "Please fill in the following fields to transport a patient.");
+        language_english.put("PatientTransportation_askName", "Please enter patient's full name:");
+        language_english.put("PatientTransportation_nameInput", "Full Name");
+        language_english.put("PatientTransportation_askLocation", "Please select the current location of the patient:");
+        language_english.put("PatientTransportation_currentLocation", "Current Location");
+        language_english.put("PatientTransportation_askDestination", "Please select the destination of the patient:");
+        language_english.put("PatientTransportation_destination", "Destination");
+        language_english.put("PatientTransportation_askAssistance", "Does the patient need immediate medical assistance?");
+        language_english.put("PatientTransportation_yesCheckbox", "Yes");
+        language_english.put("PatientTransportation_reasonInput", "Reason");
+        language_english.put("PatientTransportation_submitButton", "Submit");
+
+        language_spanish.put("PatientTransportation_title", "Solicitud De Transporte Del Paciente");
+        language_spanish.put("PatientTransportation_desc", "Complete los siguientes campos para transportar a un paciente.");
+        language_spanish.put("PatientTransportation_askName", "Ingrese el nombre completo del paciente:");
+        language_spanish.put("PatientTransportation_nameInput", "Nombre completo");
+        language_spanish.put("PatientTransportation_askLocation", "Seleccione la ubicacion actual del paciente:"); //Seleccione la ubicación actual del paciente:
+        language_spanish.put("PatientTransportation_currentLocation", "Ubicacion actual"); //Ubicación actual
+        language_spanish.put("PatientTransportation_askDestination", "Seleccione el destino del paciente:");
+        language_spanish.put("PatientTransportation_destination", "Destino");
+        language_spanish.put("PatientTransportation_askAssistance", "El paciente necesita asistencia medica inmediata?"); //¿El paciente necesita asistencia médica inmediata?
+        language_spanish.put("PatientTransportation_yesCheckbox", "si"); //sí
+        language_spanish.put("PatientTransportation_reasonInput", "Razon"); //Razón
+        language_spanish.put("PatientTransportation_submitButton", "Enviar");
 
     }
 
