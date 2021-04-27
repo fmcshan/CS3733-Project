@@ -1,16 +1,15 @@
 package edu.wpi.teamname.views;
 
-import javafx.event.ActionEvent;
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
 public class Symptoms {
-    @FXML
-    private COVIDSurvey covidSurvey;
+    @FXML private COVIDSurvey covidSurvey;
 
     public Symptoms(COVIDSurvey covidSurvey) {
         this.covidSurvey = covidSurvey;

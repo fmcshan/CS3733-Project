@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Edge;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -40,6 +42,18 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     // used to save the current list of nodes after AStar
 
+    @FXML
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
+    @FXML
+    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    @FXML
+    private Path tonysPath; // the path displayed on the map
+    @FXML
+    private ImageView hospitalMap; // the map
+    @FXML
+    private JFXButton adminButton; // button that allows you to sign in
+    @FXML
+    private AnchorPane topElements; // anchor pane where displayed nodes reside
 
     /**
      * run on startup
@@ -90,6 +104,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
         LoadFXML.getInstance().loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
         LoadFXML.getInstance().loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
+        LoadFXML.getInstance().loadWindow("EmployeeTableButton", "employeeButton", employeePop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -112,6 +127,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
         registrationPop.getChildren().clear();
+        employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
@@ -158,7 +174,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminView", "reqAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdminNew", "reqAdminBar", popPop);
+    }
+
+    /**
+     * toggle the admin request window
+     */
+    public void toggleEmployee() {
+        clearMap();
+        popPop.setPrefWidth(1000);
+        LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
     }
 
     @FXML
@@ -173,6 +198,36 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
+    }
+    
+    void disableButtons(ArrayList<String> floors){
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(true);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(true);
+        if (floors.contains("G"))
+            GBttn.setDisable(true);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(true);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(true);
+        if (floors.contains("3"))
+            floor3Bttn.setDisable(true);
+    }
+
+    void enableButtons(ArrayList<String> floors){
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(false);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(false);
+        if (floors.contains("G"))
+            GBttn.setDisable(false);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(false);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(false);
+        if (floors.contains("3"))
+            floor3Bttn.setDisable(false);
     }
 
     public void closeWindows() {

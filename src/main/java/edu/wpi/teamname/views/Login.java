@@ -1,11 +1,14 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import org.apache.commons.validator.EmailValidator;
 
 /**
@@ -13,6 +16,8 @@ import org.apache.commons.validator.EmailValidator;
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
 public class Login {
+
+
 
     @FXML
     private JFXTextField emailField;
@@ -26,6 +31,12 @@ public class Login {
      */
     @FXML
     private Label failedLogin;
+    @FXML
+    private Label loginLabel;
+    @FXML
+    private Text loginDescription;
+    @FXML
+    private JFXButton loginButton;
 
     /**
      * Check if the email is valid using EmailValidator
@@ -48,7 +59,7 @@ public class Login {
         String email = emailField.getText();
 
         if (!isValidEmail(email)) {
-            failedLogin.setText("Invalid Credentials");
+            failedLogin.setText("failed login");
             return;
         } else {
             failedLogin.setText("");
@@ -56,9 +67,11 @@ public class Login {
 
         AuthenticationManager.getInstance().loginWithEmailAndPassword(emailField.getText(), passwordField.getText());
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            failedLogin.setText("Invalid Credentials");
+            failedLogin.setText("failed login");
             return;
         }
         SceneManager.getInstance().getDefaultPage().closeWindows();
     }
+
+
 }

@@ -1,6 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
-import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
@@ -18,9 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -89,6 +92,20 @@ public class MedicineDelivery {
      */
     @FXML
     private Requests request;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askMed;
+    @FXML
+    private Label askDosage;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
 
     /**
      * List of Service Requests
@@ -104,9 +121,15 @@ public class MedicineDelivery {
     }
 
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
     }
 
     /**
@@ -171,22 +194,22 @@ public class MedicineDelivery {
     public void submitRequest(ActionEvent event) {
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!medicationNameInputValid())
-            failedMedicationName.setText("Invalid Medication Name.");
+            failedMedicationName.setText("Invalid Medication Name");
         else
             failedMedicationName.setText("");
 
         if (!dosageAmountInputValid())
-            failedDosageAmount.setText("Invalid Name Entry.");
+            failedDosageAmount.setText("Invalid Dosage Amount");
         else
             failedDosageAmount.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -195,15 +218,14 @@ public class MedicineDelivery {
         if (nameInputValid() && medicationNameInputValid() && dosageAmountInputValid() && locationValid()) {
 
             ArrayList<String> items = new ArrayList<>();
-            items.add(medicationNameInput.getText() + " -");
-            items.add(dosageAmountInput.getText());
+            items.add(medicationNameInput.getText());
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
 //            requests.add(new ServiceRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()) {
 //            });
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Medicine Delivery", requestLocation.getValue(), items, nameInput.getText(), "", "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Medicine Delivery", requestLocation.getValue(), items, dosageAmountInput.getText(), nameInput.getText(), "", "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -217,7 +239,7 @@ public class MedicineDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/MedicineDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/MedicineDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == MedicineDelivery.class)
@@ -236,5 +258,9 @@ public class MedicineDelivery {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

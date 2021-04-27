@@ -16,7 +16,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Success!">
+            <Label fx:id="title" text="Success!">
                <graphic>
                   <FontAwesomeIconView fill="#0067b1" glyphName="CHECK_SQUARE_ALT" size="48" />
                </graphic>

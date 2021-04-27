@@ -88,7 +88,7 @@ public class MapDisplay implements LevelChangeListener {
     List<Circle> circles = new ArrayList<>();
     List<LineBuilder> lines = new ArrayList<>();
     @FXML
-    VBox popPop, popPop2, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML
@@ -169,6 +169,10 @@ public class MapDisplay implements LevelChangeListener {
 
     public VBox getPopPop2() {
         return popPop2;
+    }
+
+    public Path getTonysPath() {
+        return tonysPath;
     }
 
     /**
@@ -1101,7 +1105,7 @@ public class MapDisplay implements LevelChangeListener {
             return;
         }
         currentPath = _listOfNodes;
-        tonysPath.getElements().clear();
+        //tonysPath.getElements().clear();
         Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
         tonysPath.getElements().add(start);
@@ -1143,8 +1147,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(657.0); // Set preferable width to 350
@@ -1156,8 +1158,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         // currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1172,8 +1172,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the check in window
      */
     public void openCheckIn() {
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
         LoadFXML.getInstance().loadWindow("COVIDSurvey", "covidBar", popPop); // Load registration window

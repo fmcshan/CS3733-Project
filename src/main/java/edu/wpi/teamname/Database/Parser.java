@@ -101,7 +101,8 @@ public class Parser {
         ArrayList<String> requestedItems = new ArrayList<String>();
         try {
             String requested = giftDeliveryStorage.getString("requestedItems");
-            requested = requested.replace("\\", "").substring(1, requested.length()-1);
+            requested = requested.replace("\\", "");
+            requested = requested.substring(1, requested.length()-1);
             requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
         } catch (Exception e) {e.printStackTrace();}
         return new MasterServiceRequestStorage(
@@ -109,6 +110,7 @@ public class Parser {
                 giftDeliveryStorage.getString("requestType"),
                 giftDeliveryStorage.getString("location"),
                 requestedItems,
+                giftDeliveryStorage.getString("description"),
                 giftDeliveryStorage.getString("requestedBy"),
                 giftDeliveryStorage.getString("phone"),
                 giftDeliveryStorage.getString("assignedTo"),

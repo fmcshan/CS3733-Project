@@ -1,6 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
-import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Algo.Node;
@@ -18,9 +18,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,12 +56,6 @@ public class PatientTransportation {
      */
     @FXML
     private Label failedCurrentLocation;
-
-    /**
-     * Checkbox selecting yes for immediate medical assistance
-     */
-    @FXML
-    private JFXCheckBox yesCheckbox;
 
     /**
      * Combo Box selecting current location
@@ -96,6 +92,20 @@ public class PatientTransportation {
      */
     @FXML
     private Requests request;
+    @FXML
+    private Text title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private Label askDestination;
+    @FXML
+    private Label askAssistance;
+    @FXML
+    private JFXButton submitButton;
 
     /**
      * List of Service Requests
@@ -111,10 +121,16 @@ public class PatientTransportation {
     }
 
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            currentLocation.getItems().add(node.getNodeID());
-            destination.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            currentLocation.getItems().add(n); // make the nodes appear in the combobox
+            destination.getItems().add(n);
+        });
     }
 
     /**
@@ -135,16 +151,6 @@ public class PatientTransportation {
         return nameInput.getText().contains(" ");
     }
 
-
-    /**
-     * Checks if the "Other" text box for gift delivery options has been filled correctly
-     *
-     * @return true if the box was filled correctly, and false otherwise
-     */
-    public boolean otherInputValid() {
-        return !yesCheckbox.isSelected() || (yesCheckbox.isSelected() && !reasonInput.getText().isEmpty());
-    }
-
     /**
      * Checks if a current location has been selected correctly
      *
@@ -161,6 +167,15 @@ public class PatientTransportation {
      */
     public boolean destinationLocationValid() {
         return destination.getValue() != null;
+    }
+
+    /**
+     * Checks if the "Reason" text box has been filled
+     *
+     * @return true if the box was filled correctly, and false otherwise
+     */
+    public boolean reasonInputValid() {
+        return !reasonInput.getText().isEmpty();
     }
 
     public void addRequest(ServiceRequest request) {
@@ -180,36 +195,35 @@ public class PatientTransportation {
     public void submitRequest(ActionEvent event) {
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
-        if (!yesCheckbox.isSelected() && reasonInput.getText() != null)
-            failedReason.setText("Please ensure you have selected the \"Yes\" box and have correctly filled in the text field.");
+        if (!reasonInputValid())
+            failedReason.setText("Invalid Reason Entry");
         else
             failedReason.setText("");
 
         if (!currentLocationValid())
-            failedCurrentLocation.setText("Please select a current location");
+            failedCurrentLocation.setText("Invalid Current Location Selection");
 
         if (!destinationLocationValid())
-            failedDestination.setText("Please select a destination");
+            failedDestination.setText("Invalid Destination Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && currentLocationValid() && destinationLocationValid()) {
+        if (nameInputValid() && currentLocationValid() && destinationLocationValid() && reasonInput.getText() != null) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> reason = new ArrayList<>();
-            if (yesCheckbox.isSelected())
-                reason.add(reasonInput.getText());
+            reason.add(reasonInput.getText());
 
             LoadFXML.setCurrentWindow("");
 
             //Add this request to our list of requests
             //requests.add(new GiftRequest(phoneInput.getText(), requestLocation.getValue(), nameInput.getText()));
-            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Patient Transportation", currentLocation.getValue().toString() + " to " + destination.getValue().toString(), reason, nameInput.getText(), "", "", false);
+            MasterServiceRequestStorage request = new MasterServiceRequestStorage("Patient Transportation", currentLocation.getValue().toString(), reason, destination.getValue().toString(), nameInput.getText(), "", "", false);
             Submit.getInstance().submitGiftDelivery(request);
 
             // load Success page in successPop VBox
@@ -223,7 +237,7 @@ public class PatientTransportation {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/PatientTransportation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/PatientTransportation.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == PatientTransportation.class)
@@ -242,5 +256,9 @@ public class PatientTransportation {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

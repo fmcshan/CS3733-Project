@@ -1,41 +1,24 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.*;
-import edu.wpi.teamname.views.manager.SceneManager;
-import javafx.event.ActionEvent;
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 /**
  * Controller for Requests.fxml
  */
 public class Requests {
-    @FXML
-    private ComboBox<String> requestsBox;
-    @FXML
-    private VBox requestPop; //VBox to display the Request page
 
-    String openWindow = ""; //variable for currently open window
-
-    /**
-     * Method that runs when this page is initialized
-     */
-    public void initialize(){
-       // requestsBox.getItems().add("Gift Delivery"); //ADD BACK IN ITERATION 3
-    }
+    @FXML
+    private VBox requestPop;
 
     /**
      * OnAction command for clicking the "Open Request Form" button
      */
     public void openGiftRequest() {
-//        if (requestsBox.getValue().equals("Gift Delivery")){ //ADD BACK IN ITERATION 3
-//            System.out.println("click worked");
-//            requestPop.setPrefWidth(657.0);
-//            GiftDelivery gdr = new GiftDelivery(this);
-//            gdr.loadRequest();
-//        }
         requestPop.setPrefWidth(657.0);
         GiftDelivery gdr = new GiftDelivery(this);
         gdr.loadRequest();
@@ -52,13 +35,13 @@ public class Requests {
         //LoadFXML.getInstance().loadWindow("FoodDeliveryRequest", "foodDelivery", requestPop);
     }
 
-        public void openRequest() {
-        if (requestsBox.getValue().equals("Gift Delivery")){
-            requestPop.setPrefWidth(657.0);
-            GiftDelivery gdr = new GiftDelivery(this);
-            gdr.loadRequest();
-        }
-    }
+//        public void openRequest() {
+//        if (requestsBox.getValue().equals("Gift Delivery")){
+//            requestPop.setPrefWidth(657.0);
+//            GiftDelivery gdr = new GiftDelivery(this);
+//            gdr.loadRequest();
+//        }
+//    }
 
     /**
      * OnAction command for clicking the "Open Request Form" button
@@ -75,7 +58,7 @@ public class Requests {
      */
     public void openLaundryServices() {
         requestPop.setPrefWidth(657.0);
-        LaundryRequest lr = new LaundryRequest(this);
+        LaundryService lr = new LaundryService(this);
         lr.loadRequest();
     }
 
@@ -84,7 +67,7 @@ public class Requests {
      */
     public void openComputerService() {
         requestPop.setPrefWidth(657.0);
-        ComputerServices cs = new ComputerServices(this);
+        ComputerService cs = new ComputerService(this);
         cs.loadRequest();
         //LoadFXML.getInstance().loadWindow("ComputerService", "computerService", requestPop);
     }
@@ -94,9 +77,9 @@ public class Requests {
      */
     public void openFacilitiesMaintenance() {
         requestPop.setPrefWidth(657.0);
-        FacilitiesMaintenanceRequest fmq = new FacilitiesMaintenanceRequest(this);
+        FacilitiesRequest fmq = new FacilitiesRequest(this);
         fmq.loadRequest();
-        //LoadFXML.getInstance().loadWindow("FacilitiesMaintenanceRequest", "facilitiesMaintenance", requestPop);
+        //LoadFXML.getInstance().loadWindow("FacilitiesRequest", "facilitiesMaintenance", requestPop);
     }
 
     /**
@@ -104,9 +87,9 @@ public class Requests {
      */
     public void openSanitationServices() {
         requestPop.setPrefWidth(657.0);
-        SanitationServices ss = new SanitationServices(this);
+        SanitationService ss = new SanitationService(this);
         ss.loadRequest();
-        //LoadFXML.getInstance().loadWindow("SanitationServices", "sanitationServices", requestPop);
+        //LoadFXML.getInstance().loadWindow("SanitationService", "sanitationServices", requestPop);
     }
 
     /**

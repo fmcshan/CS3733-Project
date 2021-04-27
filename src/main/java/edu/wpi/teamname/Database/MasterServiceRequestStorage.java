@@ -6,6 +6,7 @@ public class MasterServiceRequestStorage {
     private String requestType;
     private String location;
     private ArrayList<String> requestedItems;
+    private String description;
     private String requestedBy;
     private String contact;
     private String assignTo;
@@ -34,6 +35,29 @@ public class MasterServiceRequestStorage {
         this.completed = completed;
     }
 
+    public MasterServiceRequestStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
+        this.id = id;
+        this.requestType = requestType;
+        this.location = location;
+        this.requestedItems = requestedItems;
+        this.description = description;
+        this.requestedBy = requestedBy;
+        this.contact = contact;
+        this.assignTo = assignTo;
+        this.completed = completed;
+    }
+
+    public MasterServiceRequestStorage(String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
+        this.requestType = requestType;
+        this.location = location;
+        this.requestedItems = requestedItems;
+        this.description = description;
+        this.requestedBy = requestedBy;
+        this.contact = contact;
+        this.assignTo = assignTo;
+        this.completed = completed;
+    }
+
 
     public String getRequestType() {
         return requestType;
@@ -45,6 +69,10 @@ public class MasterServiceRequestStorage {
 
     public ArrayList<String> getRequestedItems() {
         return requestedItems;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getRequestedBy() {
@@ -65,6 +93,14 @@ public class MasterServiceRequestStorage {
 
     public boolean isCompleted() {
        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setAssignTo(String assignTo) {
+        this.assignTo = assignTo;
     }
 }
 

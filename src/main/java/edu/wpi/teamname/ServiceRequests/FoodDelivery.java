@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -18,9 +19,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class FoodDelivery {
@@ -93,6 +97,24 @@ public class FoodDelivery {
      */
     @FXML
     private edu.wpi.teamname.views.Requests request;
+    @FXML
+    private Label title;
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askFood;
+    @FXML
+    private JFXCheckBox otherCheckbox;
+    @FXML
+    private JFXTextField otherInput;
+    @FXML
+    private Label askNumber;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
 
     /**
      * List of Service Requests
@@ -108,9 +130,15 @@ public class FoodDelivery {
     }
 
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
     }
 
     /**
@@ -186,7 +214,7 @@ public class FoodDelivery {
 
 
         if (!checkBoxSelected())
-            failedFoodSelection.setText("Invalid Menu Item Selection");
+            failedFoodSelection.setText("Select at Least One Menu Item");
         else
             failedFoodSelection.setText("");
 
@@ -196,7 +224,7 @@ public class FoodDelivery {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -230,7 +258,7 @@ public class FoodDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/FoodDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/FoodDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == FoodDelivery.class)
@@ -249,5 +277,9 @@ public class FoodDelivery {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

@@ -16,7 +16,7 @@
             <DropShadow color="#a4a4a4" />
          </effect>
          <children>
-            <Label text="Stop!">
+            <Label fx:id="title" text="Stop!">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>

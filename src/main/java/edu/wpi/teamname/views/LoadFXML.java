@@ -46,7 +46,7 @@ public class LoadFXML {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
             openWindow(windowName, root, vbox);
         } catch (IOException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 

@@ -1,16 +1,20 @@
 package edu.wpi.teamname.views;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
 public class CloseContact {
-    @FXML
-    private COVIDSurvey covidSurvey;
+    @FXML private COVIDSurvey covidSurvey;
+    @FXML private Label title;
+    @FXML private Label desc;
+    @FXML private Label b1;
+    @FXML private Label b2;
+    @FXML private Label b3;
+    @FXML private Label b4;
 
     public CloseContact(COVIDSurvey covidSurvey) {
         this.covidSurvey = covidSurvey;

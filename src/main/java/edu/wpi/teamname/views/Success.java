@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.junit.runner.Computer;
 
 import java.io.IOException;
 
@@ -17,25 +16,24 @@ import java.io.IOException;
  */
 public class Success {
 
-    @FXML
-    public Label successText;
-    @FXML
+    @FXML public Label successText;
+    @FXML private Label title;
+
     private UserRegistration userRegistration;
 
     private GiftDelivery giftDelivery;
 
-    private LaundryRequest laundryRequest;
+    private LaundryService laundryService;
 
-    @FXML
-    private ComputerServices computerServices;
+    private ComputerService computerService;
 
-    private FacilitiesMaintenanceRequest facilitiesMaintenanceRequest;
+    private FacilitiesRequest facilitiesRequest;
 
     private MedicineDelivery medicineDelivery;
 
     private FoodDelivery foodDelivery;
 
-    private SanitationServices sanitationServices;
+    private SanitationService sanitationService;
 
     private PatientTransportation patientTransportation;
 
@@ -50,28 +48,28 @@ public class Success {
         this.giftDelivery = giftDelivery;
     }
 
-    public Success(LaundryRequest laundryRequest) {
-        this.laundryRequest = laundryRequest;
+    public Success(LaundryService laundryService) {
+        this.laundryService = laundryService;
     }
 
-    public Success(ComputerServices computerServices) {
-        this.computerServices = computerServices;
+    public Success(ComputerService computerService) {
+        this.computerService = computerService;
     }
 
     public Success(PatientTransportation patientTransportation) {
         this.patientTransportation = patientTransportation;
     }
 
-    public Success(FacilitiesMaintenanceRequest facilitiesMaintenanceRequest) {
-        this.facilitiesMaintenanceRequest = facilitiesMaintenanceRequest;
+    public Success(FacilitiesRequest facilitiesRequest) {
+        this.facilitiesRequest = facilitiesRequest;
     }
 
     public Success(MedicineDelivery medicineDelivery) {
         this.medicineDelivery = medicineDelivery;
     }
 
-    public Success(SanitationServices sanitationServices) {
-        this.sanitationServices = sanitationServices;
+    public Success(SanitationService sanitationService) {
+        this.sanitationService = sanitationService;
     }
 
     public Success(FoodDelivery foodDelivery) {

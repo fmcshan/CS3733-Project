@@ -1,5 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -7,7 +8,6 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.Entities.ServiceRequests.GiftRequest;
 import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
@@ -19,9 +19,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -150,6 +153,24 @@ public class GiftDelivery {
      */
     private List<ServiceRequest> requests;
 
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+    @FXML
+    private Label askName;
+    @FXML
+    private Label askGifts;
+    @FXML
+    private Label askNumber;
+    @FXML
+    private Label askLocation;
+    @FXML
+    private JFXButton submitButton;
+    @FXML
+    private VBox successPop;
+
     /**
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
@@ -159,9 +180,15 @@ public class GiftDelivery {
     }
 
     public void initialize() {
+        ArrayList<String> listOfNodeNames = new ArrayList<>();
+        HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
-            requestLocation.getItems().add(node.getNodeID());
-        }
+            nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
+            listOfNodeNames.add(node.getLongName());
+            Collections.sort(listOfNodeNames);
+        }  listOfNodeNames.forEach(n -> {
+            requestLocation.getItems().add(n); // make the nodes appear in the combobox
+        });
         ArrayList<String> flowers = new ArrayList<>();
         flowers.add("Roses");
         flowers.add("Daisies");
@@ -248,16 +275,16 @@ public class GiftDelivery {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!checkBoxSelected())
-            failedGiftSelection.setText("Please select a gift to be delivered.");
+            failedGiftSelection.setText("Select a Gift to Be Delivered");
         else if (flowerCheckbox.isSelected() && !flowerSelectionValid())
-            failedGiftSelection.setText("Please select a flower type.");
+            failedGiftSelection.setText("Select a Flower Type");
         else if (!otherInputValid())
-            failedGiftSelection.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedGiftSelection.setText("Invalid Other Reason");
         else
             failedGiftSelection.setText("");
 
@@ -267,7 +294,7 @@ public class GiftDelivery {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -307,7 +334,7 @@ public class GiftDelivery {
      * Load Request form when the button is pressed/make it disappear
      */
     public void loadRequest() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/Service Request Components/GiftDeliveryRequest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/ServiceRequestComponents/GiftDeliveryRequest.fxml"));
         try {
             loader.setControllerFactory(type -> {
                 if (type == GiftDelivery.class)
@@ -326,5 +353,9 @@ public class GiftDelivery {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests2", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

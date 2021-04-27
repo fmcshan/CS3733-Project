@@ -1,24 +1,43 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
-import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 
 public class COVIDSurvey {
     @FXML
-    public JFXCheckBox symptom1Checkbox;
+    private Label title;
     @FXML
-    public JFXCheckBox symptom2Checkbox;
+    private Label desc;
     @FXML
-    public JFXCheckBox symptom3Checkbox;
+    private Label check1;
     @FXML
-    public JFXCheckBox symptom4Checkbox;
+    private Label check2;
     @FXML
-    public VBox symptomsPop;
+    private Label check3;
+    @FXML
+    private Label check4;
+    @FXML
+    private Label check5;
+    @FXML
+    private Label checkInst;
+    @FXML
+    private JFXCheckBox symptom1Checkbox;
+    @FXML
+    private JFXCheckBox symptom2Checkbox;
+    @FXML
+    private JFXCheckBox symptom3Checkbox;
+    @FXML
+    private JFXCheckBox symptom4Checkbox;
+    @FXML
+    private JFXButton submitButton;
+    @FXML
+    private VBox symptomsPop;
 
     public VBox getSymptomsPop() {
         return symptomsPop;

@@ -4,15 +4,9 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
-import edu.wpi.teamname.simplify.Config;
-import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.lang.reflect.Method;
 
 
 public class LocalStorage {
@@ -25,7 +19,7 @@ public class LocalStorage {
     private HashMap<String, Node> nodeMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
-    private ArrayList<MasterServiceRequestStorage> giftDeliveryStorages;
+    private ArrayList<MasterServiceRequestStorage> masterStorages;
     private ArrayList<User> users;
 
     public static synchronized LocalStorage getInstance() {
@@ -143,26 +137,26 @@ public class LocalStorage {
         this.registrations.add(_registration);
     }
 
-    public void setGiftDeliveryStorages(ArrayList<MasterServiceRequestStorage> _giftDeliveryStorages) {
-        this.giftDeliveryStorages = _giftDeliveryStorages;
+    public void setMasterStorages(ArrayList<MasterServiceRequestStorage> _masterStorages) {
+        this.masterStorages = _masterStorages;
     }
 
     public void setUsers(ArrayList<User> _users) {
         this.users = _users;
     }
 
-    public void addGiftDeliveryStorage(MasterServiceRequestStorage _giftDelivery) {
-        this.giftDeliveryStorages.add(_giftDelivery);
+    public void addMasterStorage(MasterServiceRequestStorage _masterStorages) {
+        this.masterStorages.add(_masterStorages);
     }
 
-    public ArrayList<MasterServiceRequestStorage> getGiftDeliveryStorages() {
+    public ArrayList<MasterServiceRequestStorage> getMasterStorages() {
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
             return null;
         }
 
-        if (this.giftDeliveryStorages == null) {
+        if (this.masterStorages == null) {
             for (int i = 0; i < 100; i++) {
-                if (this.giftDeliveryStorages != null) {
+                if (this.masterStorages != null) {
                     break;
                 }
                 try {
@@ -172,10 +166,16 @@ public class LocalStorage {
                 }
             }
         }
-        if (this.giftDeliveryStorages == null) {
+        if (this.masterStorages == null) {
             return null;
         } else {
-            return (ArrayList<MasterServiceRequestStorage>) this.giftDeliveryStorages.clone();
+            ArrayList<MasterServiceRequestStorage> ret = (ArrayList<MasterServiceRequestStorage>) this.masterStorages.clone();
+            ret.sort(new Comparator<MasterServiceRequestStorage>() {
+                public int compare(MasterServiceRequestStorage r1, MasterServiceRequestStorage r2) {
+                    return r2.getId() - r1.getId();
+                }
+            });
+            return ret;
         }
     }
 
