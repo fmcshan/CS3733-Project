@@ -226,19 +226,19 @@ public class ComputerService {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!descriptionValid())
-            failedServiceDescription.setText("Enter a Brief Description of the Desired Request");
+            failedServiceDescription.setText("Invalid Description Entry");
         else
             failedServiceDescription.setText("");
 
         if (!checkBoxSelected())
-            failedUrgency.setText("Please select a gift to be delivered.");
+            failedUrgency.setText("Select an Urgency Level");
         else if (!oneUrgencySelected())
-            failedUrgency.setText("Invalid Selection");
+            failedUrgency.setText("Select Only One Urgency Level");
         else
             failedUrgency.setText("");
 
@@ -248,7 +248,7 @@ public class ComputerService {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();

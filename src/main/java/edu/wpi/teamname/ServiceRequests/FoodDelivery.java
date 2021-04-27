@@ -214,7 +214,7 @@ public class FoodDelivery {
 
 
         if (!checkBoxSelected())
-            failedFoodSelection.setText("Invalid Menu Item Selection");
+            failedFoodSelection.setText("Select at Least One Menu Item");
         else
             failedFoodSelection.setText("");
 
@@ -224,7 +224,7 @@ public class FoodDelivery {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();

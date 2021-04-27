@@ -279,24 +279,24 @@ public class LaundryService {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
 
         if (!checkBoxLoadSelected())
-            failedLoadType.setText("Please select a load type.");
+            failedLoadType.setText("Select a Load Type");
         else if (!oneLoadSelected())
-            failedLoadType.setText("Invalid Selection");
+            failedLoadType.setText("Select Only One Load Type");
         else if (!otherInputValid())
-            failedLoadType.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedLoadType.setText("Invalid Other Reason");
         else
             failedLoadType.setText("");
 
         if (!checkBoxTempSelected())
-            failedWashTemp.setText("Please select a wash temperature.");
+            failedWashTemp.setText("Select a Wash Temperature");
         else if (!oneTempSelected())
-            failedWashTemp.setText("Invalid Selection");
+            failedWashTemp.setText("Select Only One Wash Temperature");
         else
             failedWashTemp.setText("");
 
@@ -307,7 +307,7 @@ public class LaundryService {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();

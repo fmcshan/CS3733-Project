@@ -186,20 +186,20 @@ public class PatientTransportation {
     public void submitRequest(ActionEvent event) {
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (reasonInput.getText() == null)
-            failedReason.setText("Please ensure you have filled in the text field.");
+            failedReason.setText("Invalid Reason Entry");
         else
             failedReason.setText("");
 
         if (!currentLocationValid())
-            failedCurrentLocation.setText("Please select a current location");
+            failedCurrentLocation.setText("Invalid Current Location Selection");
 
         if (!destinationLocationValid())
-            failedDestination.setText("Please select a destination");
+            failedDestination.setText("Invalid Destination Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
