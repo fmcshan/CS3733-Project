@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -83,6 +84,7 @@ public class Navigation implements LevelChangeListener {
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
             listOfNodeNames.add(n.getLongName());
+            Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
             /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
 
