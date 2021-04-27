@@ -111,6 +111,16 @@ public class ChangeManager extends Thread {
                 LocalStorage.getInstance().setMasterStorages(_change.getGiftDeliveries());
                 Initiator.getInstance().triggerGiftDeliveryUpdated();
                 break;
+
+            case "reload_employee":
+                LocalStorage.getInstance().setUsers(_change.getUsers());
+                Initiator.getInstance().triggerUserRefresh();
+                break;
+
+            case "update_employee":
+                LocalStorage.getInstance().setUsers(_change.getUsers());
+                Initiator.getInstance().triggerUserUpdate(_change.getUser());
+                break;
         }
     }
 }
