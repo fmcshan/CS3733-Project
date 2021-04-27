@@ -1,9 +1,6 @@
 package edu.wpi.teamname.ServiceRequests;
 
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.LocalStorage;
@@ -12,6 +9,8 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.Translator;
+import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class FacilitiesMaintenanceRequest {
+public class FacilitiesMaintenanceRequest implements LanguageListener {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -106,6 +106,30 @@ public class FacilitiesMaintenanceRequest {
     @FXML
     private edu.wpi.teamname.views.Requests request;
 
+    @FXML
+    private Label title;
+
+    @FXML
+    private Text desc;
+
+    @FXML
+    private Label askName;
+
+    @FXML
+    private Label askDescription;
+
+    @FXML
+    private Label askUrgency;
+
+    @FXML
+    private Label askPhoneNumber;
+
+    @FXML
+    private Label askLocation;
+
+    @FXML
+    private JFXButton submitButton;
+
     /**
      * List of Service Requests
      */
@@ -119,9 +143,34 @@ public class FacilitiesMaintenanceRequest {
         this.request = request;
     }
 
+    private void setLanguages(){
+        title.setText(Translator.getInstance().get("FacilitiesMaintenance_title"));
+        desc.setText(Translator.getInstance().get("FacilitiesMaintenance_desc"));
+        askName.setText(Translator.getInstance().get("FacilitiesMaintenance_askName"));
+        nameInput.setPromptText(Translator.getInstance().get("FacilitiesMaintenance_nameInput"));
+        askDescription.setText(Translator.getInstance().get("FacilitiesMaintenance_askDescription"));
+        descriptionInput.setPromptText(Translator.getInstance().get("FacilitiesMaintenance_descriptionInput"));
+        askUrgency.setText(Translator.getInstance().get("FacilitiesMaintenance_askUrgency"));
+        lowUrgency.setText(Translator.getInstance().get("FacilitiesMaintenance_lowUrgency"));
+        mediumUrgency.setText(Translator.getInstance().get("FacilitiesMaintenance_mediumUrgency"));
+        highUrgency.setText(Translator.getInstance().get("FacilitiesMaintenance_highUrgency"));
+        askPhoneNumber.setText(Translator.getInstance().get("FacilitiesMaintenance_askPhoneNumber"));
+        phoneInput.setPromptText(Translator.getInstance().get("FacilitiesMaintenance_phoneInput"));
+        askLocation.setText(Translator.getInstance().get("FacilitiesMaintenance_askLocation"));
+        requestLocation.setPromptText(Translator.getInstance().get("FacilitiesMaintenance_requestLocation"));
+        submitButton.setText(Translator.getInstance().get("FacilitiesMaintenance_submitButton"));
+    }
+
+    @Override
+    public void updateLanguage() {
+        setLanguages();
+    }
+
     public void initialize() {
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
+        Translator.getInstance().addLanguageListener(this);
+        setLanguages();
         for (Node node : LocalStorage.getInstance().getNodes()) {
             nodesMap.put(node.getNodeID(), node); // put the nodes in the hashmap
             listOfNodeNames.add(node.getLongName());

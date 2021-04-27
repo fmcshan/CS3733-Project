@@ -273,7 +273,7 @@ public class Translator {
         language_english.put("SanitationService_requestLocation", "Location");
         language_english.put("SanitationService_submitButton", "Submit");
 
-        language_spanish.put("SanitationService_title", "Solicitud de saneamiento");
+        language_spanish.put("SanitationService_title", "Solicitud De Saneamiento");
         language_spanish.put("SanitationService_desc", "Complete los siguientes campos para realizar una solicitud de saneamiento.");
         language_spanish.put("SanitationService_askName", "Por favor ingresa tu nombre completo:");
         language_spanish.put("SanitationService_nameInput", "Nombre completo");
@@ -286,6 +286,41 @@ public class Translator {
         language_spanish.put("SanitationService_askLocation", "Ingrese la ubicacion que solicita desinfectar:"); //Ingrese la ubicación que solicita desinfectar:
         language_spanish.put("SanitationService_requestLocation", "Localizacion"); //Localización
         language_spanish.put("SanitationService_submitButton", "Enviar");
+
+        //Facilities Maintenance
+
+        language_english.put("FacilitiesMaintenance_title", "Facilities Maintenance");
+        language_english.put("FacilitiesMaintenance_desc", "Please fill in the following fields to submit a maintenance request.");
+        language_english.put("FacilitiesMaintenance_askName", "Please enter your full name:");
+        language_english.put("FacilitiesMaintenance_nameInput", "Full name");
+        language_english.put("FacilitiesMaintenance_askDescription", "Please enter a brief description of the desired request:");
+        language_english.put("FacilitiesMaintenance_descriptionInput", "Description");
+        language_english.put("FacilitiesMaintenance_askUrgency", "Level of urgency:");
+        language_english.put("FacilitiesMaintenance_lowUrgency", "Low");
+        language_english.put("FacilitiesMaintenance_mediumUrgency", "Medium");
+        language_english.put("FacilitiesMaintenance_highUrgency", "High");
+        language_english.put("FacilitiesMaintenance_askPhoneNumber", "Please enter your phone number to receive a confirmation for the delivery:");
+        language_english.put("FacilitiesMaintenance_phoneInput", "Phone Number");
+        language_english.put("FacilitiesMaintenance_askLocation", "Please enter the location for the delivery:");
+        language_english.put("FacilitiesMaintenance_requestLocation", "Location");
+        language_english.put("FacilitiesMaintenance_submitButton", "Submit");
+
+
+        language_spanish.put("FacilitiesMaintenance_title", "Mantenimiento De Instalaciones");
+        language_spanish.put("FacilitiesMaintenance_desc", "Complete los siguientes campos para enviar una solicitud de mantenimiento.");
+        language_spanish.put("FacilitiesMaintenance_askName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("FacilitiesMaintenance_nameInput", "Nombre completo");
+        language_spanish.put("FacilitiesMaintenance_askDescription", "Introduzca una breve descripción de la solicitud deseada:");
+        language_spanish.put("FacilitiesMaintenance_descriptionInput", "Descripcion"); //Descripción
+        language_spanish.put("FacilitiesMaintenance_askUrgency", "Nivel de urgencia:");
+        language_spanish.put("FacilitiesMaintenance_lowUrgency", "Bajo / Baja");
+        language_spanish.put("FacilitiesMaintenance_mediumUrgency", "Medio");
+        language_spanish.put("FacilitiesMaintenance_highUrgency", "Alto / Alta");
+        language_spanish.put("FacilitiesMaintenance_askPhoneNumber", "Por favor ingrese su numero de telefono para recibir una confirmacion de la entrega:"); //Por favor ingrese su número de teléfono para recibir una confirmación de la entrega:
+        language_spanish.put("FacilitiesMaintenance_phoneInput", "Numero de telefono"); //Número de teléfono
+        language_spanish.put("FacilitiesMaintenance_askLocation", "Por favor ingrese la ubicacion para la entrega:"); //Por favor ingrese la ubicación para la entrega:
+        language_spanish.put("FacilitiesMaintenance_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("FacilitiesMaintenance_submitButton", "Enviar");
 
     }
 

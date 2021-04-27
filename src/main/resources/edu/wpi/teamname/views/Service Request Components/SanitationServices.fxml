@@ -77,9 +77,9 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXCheckBox fx:id="highUrgency" checkedColor="#0067b1" text="High" textFill="#868686">
+                  <JFXCheckBox fx:id="lowUrgency" checkedColor="#0067b1" text="Low" textFill="#868686">
                      <VBox.margin>
-                        <Insets left="50.0" top="10.0" />
+                        <Insets left="50.0" top="15.0" />
                      </VBox.margin>
                      <font>
                         <Font size="18.0" />
@@ -93,9 +93,9 @@
                         <Font size="18.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="lowUrgency" checkedColor="#0067b1" text="Low" textFill="#868686">
+                  <JFXCheckBox fx:id="highUrgency" checkedColor="#0067b1" text="High" textFill="#868686">
                      <VBox.margin>
-                        <Insets left="50.0" top="15.0" />
+                        <Insets left="50.0" top="10.0" />
                      </VBox.margin>
                      <font>
                         <Font size="18.0" />
