@@ -153,6 +153,10 @@ public class MapDisplay implements LevelChangeListener {
         return popPop2;
     }
 
+    public Path getTonysPath() {
+        return tonysPath;
+    }
+
     /**
      * Display localNodes on the map
      *
@@ -877,7 +881,7 @@ public class MapDisplay implements LevelChangeListener {
             return;
         }
         currentPath = _listOfNodes;
-        tonysPath.getElements().clear();
+        //tonysPath.getElements().clear();
         Node firstNode = _listOfNodes.get(0);
         MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
         tonysPath.getElements().add(start);

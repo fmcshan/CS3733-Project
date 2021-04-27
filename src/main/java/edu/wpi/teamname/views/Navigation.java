@@ -6,12 +6,14 @@ import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import java.util.HashMap;
 
 /**
  * Controller for Navigation.fxml
- *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
 public class Navigation implements LevelChangeListener {
@@ -38,6 +39,8 @@ public class Navigation implements LevelChangeListener {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
+    AStar residentAStar;
+    boolean pathCanceled;
 
     public ArrayList<Node> getListOfNodes() {
         return listOfNodes;
@@ -86,10 +89,6 @@ public class Navigation implements LevelChangeListener {
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
             listOfNodeNames.add(n.getLongName());
             Collections.sort(listOfNodeNames);
-            nodeNameNodes.add(n);
-            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
-
-            }*/
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
@@ -127,19 +126,24 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
-        System.out.println(toCombo.getValue());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
+        pathCanceled = false;
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
         AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
+        residentAStar = AStar;
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
-        mapDisplay.drawPath(AStar.getFloorNodes(currentFloor)); // draw the path on the map
+        for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
+            mapDisplay.drawPath(floorPath); // draw the path on the map
+        }
+        System.out.println("number of paths: " + residentAStar.getFloorPaths(currentFloor).size());
+
         ArrayList<String> allFloors = new ArrayList<>();
         allFloors.add("L2");
         allFloors.add("L1");
@@ -156,22 +160,44 @@ public class Navigation implements LevelChangeListener {
         NavigationHelper nav = new NavigationHelper(AStar);
         String result = "";
         for (String textDirection : nav.getTextDirections()) {
-            //System.out.println(textDirection);
             result = result + textDirection + "\n";
         }
-        //System.out.println("done");
-        //System.out.println("done" + result);
         setTextDirections(result);
-        //SceneManager.getInstance().getDefaultPage().toggleButtons(unusedFloors);
+        LevelManager.getInstance().setFloor(startNode.getFloor());
+        SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
     }
 
     void setTextDirections(String directions){
         textDirections.setText(directions);
     }
+    void clearDirections(){textDirections.setText("");}
 
     @Override
     public void levelChanged(int _level) {
-        calcPath();
-        //refreshNodes();
+        if (pathCanceled) {
+            mapDisplay.clearMap();
+        }
+        else {
+            String currentFloor = LevelManager.getInstance().getFloor();
+            for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
+                mapDisplay.drawPath(floorPath); // draw the path on the map
+            }
+        }
+    }
+
+    public void cancelNavigation() {
+        ArrayList<String> allFloors = new ArrayList<>();
+        allFloors.add("L2");
+        allFloors.add("L1");
+        allFloors.add("G");
+        allFloors.add("1");
+        allFloors.add("2");
+        allFloors.add("3");
+        refreshNodes();
+        SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
+        clearDirections();
+        pathCanceled = true;
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
     }
 }
