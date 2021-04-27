@@ -68,6 +68,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                 HBox hbox = (HBox) node;
                 switch (_req.getRequestType()) {
                     case "Gift Delivery":
+                        System.out.println("In gift delivery");
                         if (i == 1) {
                             giftCellHolder.getChildren().add(node);
                         }
@@ -87,8 +88,6 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                         break;
                                     case "locationCell":
                                         label.setText(_req.getLocation());
-                                        break;
-                                    case "statusCell":
                                         break;
                                     default:
                                         label.setText("PANIK");
@@ -159,6 +158,7 @@ public class RequestAdminNew implements GiftDeliveryListener {
                         });
                         break;
                     case "Food Delivery":
+                        System.out.println("in food delivery");
                         if (i == 1) {
                             foodCellHolder.getChildren().add(node);
                         }
@@ -182,6 +182,68 @@ public class RequestAdminNew implements GiftDeliveryListener {
                                     default:
                                         label.setText("PANIK");
                                 }
+                            } else if (h instanceof VBox) {
+                                VBox vBox = (VBox) h;
+                                vBox.getChildren().forEach(v -> {
+                                    if (v instanceof JFXComboBox) {
+                                        JFXComboBox combo = (JFXComboBox) v;
+                                        combo.setValue(_req.getAssignTo());
+                                        LocalStorage.getInstance().getUsers().forEach(u -> {
+                                            combo.getItems().add(u.getName());
+                                        });
+                                        combo.setOnAction(c -> {
+                                            _req.setAssignTo(combo.getValue().toString());
+                                            Submit.getInstance().updateGiftDelivery(_req);
+                                        });
+                                    } else if (v instanceof Label) {
+                                        Label label = (Label) v;
+                                        if (_req.isCompleted()) {
+                                            label.setText("Completed");
+                                            label.setTextFill(Color.WHITE);
+                                            label.setStyle("-fx-background-color:#00c455;-fx-background-radius: 4px;");
+                                        } else if (!_req.getAssignTo().isEmpty()) {
+                                            label.setText("In Progress");
+                                            label.setTextFill(Color.valueOf("#626d7c"));
+                                            label.setStyle("-fx-background-color:#ebf0f5;-fx-background-radius: 4px;");
+                                        } else {
+                                            label.setText("Unassigned");
+                                            label.setTextFill(Color.WHITE);
+                                            label.setStyle("-fx-background-color:#f13426;-fx-background-radius: 4px;");
+                                        }
+
+                                    } else if (v instanceof JFXButton) {
+                                        ContextMenu contextMenu = new ContextMenu();
+                                        MenuItem completed = new MenuItem("Mark as Completed");
+                                        MenuItem reset = new MenuItem("Reset");
+                                        MenuItem delete = new MenuItem("Delete");
+                                        if (!_req.isCompleted()) {
+                                            contextMenu.getItems().add(completed);
+                                        } else {
+                                            contextMenu.getItems().add(reset);
+                                        }
+                                        contextMenu.getItems().add(delete);
+                                        JFXButton button = (JFXButton) v;
+                                        button.setOnAction(b -> {
+                                            contextMenu.show(button, Side.BOTTOM, 0, 0);
+                                        });
+                                        contextMenu.setOnAction(e -> {
+                                            switch (((MenuItem) e.getTarget()).getText()) {
+                                                case "Mark as Completed":
+                                                    _req.setCompleted(true);
+                                                    Submit.getInstance().updateGiftDelivery(_req);
+                                                    break;
+                                                case "Delete":
+                                                    Submit.getInstance().deleteGiftDelivery(_req);
+                                                    break;
+                                                case "Reset":
+                                                    _req.setAssignTo("");
+                                                    _req.setCompleted(false);
+                                                    Submit.getInstance().updateGiftDelivery(_req);
+                                                    break;
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                         break;
