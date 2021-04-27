@@ -14,10 +14,10 @@ public class Translator {
 
         language_english.put("Navigation", "Navigation"); //default page, navigation button
         language_spanish.put("Navigation", "Navegacion");
-        language_chineseSimplified.put("Navigation", "导航");
+        //language_chineseSimplified.put("Navigation", "导航");
         language_english.put("Requests", "Requests"); //default page, requests button
         language_spanish.put("Requests", "Peticiones");
-        language_chineseSimplified.put("Requests", "请求");
+        //language_chineseSimplified.put("Requests", "请求");
         language_english.put("CheckIn", "Check-In"); // default page, check in button
         language_spanish.put("CheckIn", "Registrarse");
         //language_chineseSimplified.put("CheckIn", "登记");
@@ -257,8 +257,35 @@ public class Translator {
         language_spanish.put("ComputerServices_requestLocation", "Localizacion"); //Localización
         language_spanish.put("ComputerServices_submitButton", "Enviar");
 
-//
+//Sanitation Request
 
+        language_english.put("SanitationService_title", "Sanitation Request");
+        language_english.put("SanitationService_desc", "Please fill in the following fields to place a sanitation request.");
+        language_english.put("SanitationService_askName", "Please enter your full name:");
+        language_english.put("SanitationService_nameInput", "Full name");
+        language_english.put("SanitationService_askUrgency", "Please select the urgency of the request:");
+        language_english.put("SanitationService_highUrgency", "High");
+        language_english.put("SanitationService_mediumUrgency", "Medium");
+        language_english.put("SanitationService_lowUrgency", "Low");
+        language_english.put("SanitationService_askReason", "Please enter the reason for this request:");
+        language_english.put("SanitationService_reasonInput", "Reason");
+        language_english.put("SanitationService_askLocation", "Please enter the location you are requesting to sanitize:");
+        language_english.put("SanitationService_requestLocation", "Location");
+        language_english.put("SanitationService_submitButton", "Submit");
+
+        language_spanish.put("SanitationService_title", "Solicitud de saneamiento");
+        language_spanish.put("SanitationService_desc", "Complete los siguientes campos para realizar una solicitud de saneamiento.");
+        language_spanish.put("SanitationService_askName", "Por favor ingresa tu nombre completo:");
+        language_spanish.put("SanitationService_nameInput", "Nombre completo");
+        language_spanish.put("SanitationService_askUrgency", "Seleccione la urgencia de la solicitud:");
+        language_spanish.put("SanitationService_highUrgency", "Alto / Alta");
+        language_spanish.put("SanitationService_mediumUrgency", "Medio");
+        language_spanish.put("SanitationService_lowUrgency", "Bajo / Baja");
+        language_spanish.put("SanitationService_askReason", "Por favor ingrese el motivo de esta solicitud:");
+        language_spanish.put("SanitationService_reasonInput", "Razon"); //Razón
+        language_spanish.put("SanitationService_askLocation", "Ingrese la ubicacion que solicita desinfectar:"); //Ingrese la ubicación que solicita desinfectar:
+        language_spanish.put("SanitationService_requestLocation", "Localizacion"); //Localización
+        language_spanish.put("SanitationService_submitButton", "Enviar");
 
     }
 
