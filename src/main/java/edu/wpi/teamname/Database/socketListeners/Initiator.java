@@ -27,8 +27,8 @@ public class Initiator extends Thread {
     public void addGiftDeliveryListener(GiftDeliveryListener _toAdd) {
         giftDeliveryListeners.add(_toAdd);
     }
-    public void addUserListener(GiftDeliveryListener _toAdd) {
-        giftDeliveryListeners.add(_toAdd);
+    public void addUserListener(UserListener _toAdd) {
+        userListeners.add(_toAdd);
     }
 
     public void triggerRegistration(UserRegistration _obj) {
