@@ -274,7 +274,7 @@ public class ComputerService {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess("Success", successPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
         }
     }
 
