@@ -169,6 +169,15 @@ public class PatientTransportation {
         return destination.getValue() != null;
     }
 
+    /**
+     * Checks if the "Reason" text box has been filled
+     *
+     * @return true if the box was filled correctly, and false otherwise
+     */
+    public boolean reasonInputValid() {
+        return !reasonInput.getText().isEmpty();
+    }
+
     public void addRequest(ServiceRequest request) {
         requests.add(request);
     }
@@ -190,7 +199,7 @@ public class PatientTransportation {
         else
             failedName.setText("");
 
-        if (reasonInput.getText() == null)
+        if (!reasonInputValid())
             failedReason.setText("Invalid Reason Entry");
         else
             failedReason.setText("");
