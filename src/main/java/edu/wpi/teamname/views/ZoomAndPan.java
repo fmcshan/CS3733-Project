@@ -1,8 +1,6 @@
 package edu.wpi.teamname.views;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -100,7 +98,15 @@ public class ZoomAndPan {
 
     private void render() {
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            page.renderMap();
+            page.clearMap();
+            page.dragStart = null; // Reset dragStart (IE: user clicks away)
+            page.dragEnd = null;// Clear map
+            page.redrawExistingNodeAndEdges();
+           // page.displayEdges(.6); // Display edges at 0.6 opacity
+            //displayNodes(.8); // Display nodes at 0.8 opacity
+             // Reset dragEnd (IE: user clicks away)
+         //   page.renderMap();
+
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             page.onTopOfTopElements.getChildren().clear();
@@ -109,6 +115,7 @@ public class ZoomAndPan {
             page.hidePopups();
             page.drawPath(page.currentPath);
             page.displayHotspots(0.8);
+
 
         }
     }

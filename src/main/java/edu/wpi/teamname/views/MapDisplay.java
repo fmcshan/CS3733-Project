@@ -62,6 +62,9 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
+    HashMap<Node, Circle> nodeToCircleMap = new HashMap<>();
+    HashMap<Edge,LineBuilder> edgeToLineMap = new HashMap<>();
+
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
@@ -176,7 +179,6 @@ public class MapDisplay implements LevelChangeListener {
      */
     public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
         resizingInfo(); // Set resizing info
-
         _nodes.forEach(n -> { // For each node in localNodes
             if (n.equals(draggedNode)) {
                 return;
@@ -192,6 +194,13 @@ public class MapDisplay implements LevelChangeListener {
                 circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
+                if(nodeToCircleMap.containsKey((n))){
+                    nodeToCircleMap.remove(n);
+                }
+
+                    nodeToCircleMap.put(n,circle);
+
+
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
                 circle.setOnMouseEntered(e -> { // Show a hover effect
@@ -248,6 +257,146 @@ public class MapDisplay implements LevelChangeListener {
             }
         });
     }
+    public void redrawExistingNodeAndEdges(){
+        portalNodeMap.forEach((Id, n) -> {
+            if (nodesMap.containsKey(Id)) {
+                Circle circle = edgeCircles.get(n);
+                circle.setCenterX(xCoordOnTopElement(n.getX()));
+                circle.setCenterY(yCoordOnTopElement(n.getY()));
+                circle.setRadius(15);
+                circle.setFill(Color.YELLOW);
+                onTopOfTopElements.getChildren().add(circle);
+
+                if (textLevels != null) {
+                    final double[] rotation = {1}; // in radians
+                    AtomicReference<Double> x = new AtomicReference<>((double) 0);
+                    AtomicReference<Double> y = new AtomicReference<>((double) 0);
+                    AtomicInteger ic = new AtomicInteger();
+                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 10);
+
+                    if (nodeToTextMap.containsKey(Id)) {
+
+
+                        nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
+                            x.set(xCoordOnTopElement((n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
+                            y.set(yCoordOnTopElement((n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
+                            genuineText.setX(x.get());
+                            genuineText.setY(y.get());
+                            genuineText.setFill(Color.RED);
+                            genuineText.setRotate(rotation[0]);
+                            genuineText.setFont(font);
+                            onTopOfTopElements.getChildren().add(genuineText);
+                            rotation[0] += 1;
+                        });
+                    }
+                }
+            }
+        });
+        edgeToLineMap.forEach((e,lineBuilder) -> { // For each node in localNodes
+//            if (draggedNode != null && e.getStartNode().equals(draggedNode.getNodeID())) {
+//                startX = draggedCircle.getCenterX();
+//                startY = draggedCircle.getCenterY();
+//            }
+//            if (draggedNode != null && e.getEndNode().equals(draggedNode.getNodeID())) {
+//                endX = draggedCircle.getCenterX();
+//                endY = draggedCircle.getCenterY();
+//            }
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
+                if (onScreen(nodesMap.get(e.getStartNode())) || onScreen(nodesMap.get(e.getEndNode()))) {
+
+                    lineBuilder.startX(xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX()));
+                    lineBuilder.startY(yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY()));
+                    lineBuilder.endX(xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX()));
+                    lineBuilder.endY(yCoordOnTopElement(nodesMap.get(e.getEndNode()).getY()));
+                    Line edge = lineBuilder.stroke(Color.BLUE).strokeWidth(3).opacity(0.6).;//build();
+
+                    topElements.getChildren().add(line);
+
+//                    line.setOnMouseEntered(t -> { // Show a hover effect
+//                        line.setStrokeWidth(6); // Increase width
+//                        line.setOpacity(1); // Increase opacity
+//                    });
+//
+//                    line.setOnMouseExited(t -> { // Hide hover effect
+//                        line.setOpacity(0.6); // Reset/set opacity
+//                        line.setStrokeWidth(3); // Reset/set stroke width
+//                    });
+                }
+            }
+        });
+
+        resizingInfo(); // Set resizing info
+       // clearMap();
+        nodeToCircleMap.forEach((n,circle) -> { // For each node in localNodes
+            Tooltip tooltip = new Tooltip(n.getLongName());
+//            if (n.equals(draggedNode)) {
+//                return;
+//            }
+//            if (onScreen(n)) {
+                circle.setCenterX(xCoordOnTopElement(n.getX()));
+                circle.setCenterY(yCoordOnTopElement(n.getY()));
+            onTopOfTopElements.getChildren().add(circle);
+//                circle.setRadius(8);
+//                circle.setStrokeWidth(4); // Set the stroke with to 4
+           // }
+            circle.setOnMouseEntered(e -> { // Show a hover effect
+                circle.setRadius(12); // Increase radius
+                circle.setOpacity(0.6); // Decrease opacity
+            });
+            circle.setOnMouseExited(e -> { // Hide hover effect
+                circle.setRadius(8); // Reset/set radius
+                circle.setOpacity(0.8); // Reset/set opacity
+                tooltip.hide();
+            });
+            circle.setOnMouseMoved(
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
+                            tooltip.show(circle, event.getScreenX() - 15, event.getScreenY() + 20);
+                        }
+                    });
+            circle.setOnMouseDragged(e -> {
+                nodeBeingDragged = true;
+                draggedCircle = (Circle) e.getTarget();
+                draggedCircle.setCenterX(e.getX());
+                draggedCircle.setCenterY(e.getY());
+                draggedNode = renderedNodeMap.get(draggedCircle);
+                refreshDraggedEdges();
+            });
+
+            circle.setOnMouseReleased(e -> {
+                if (!nodeBeingDragged) {
+                    return;
+                }
+                nodeBeingDragged = false;
+                Submit.getInstance().editNode(new Node(
+                        draggedNode.getNodeID(),
+                        (int) actualX(draggedCircle.getCenterX()),
+                        (int) actualY(draggedCircle.getCenterY()),
+                        draggedNode.getFloor(),
+                        draggedNode.getBuilding(),
+                        draggedNode.getNodeType(),
+                        draggedNode.getLongName(),
+                        draggedNode.getShortName()
+                ));
+                draggedCircle = null;
+                draggedNode = null;
+                refreshData();
+                //renderMap();
+                clearMap(); // Clear map
+                System.out.println("here");
+                displayEdges(.6); // Display edges at 0.6 opacity
+                displayNodes(.8); // Display nodes at 0.8 opacity
+                dragStart = null; // Reset dragStart (IE: user clicks away)
+                dragEnd = null;
+            });
+
+        });
+
+
+
+    }
 
     /**
      * To prevent breaking changes
@@ -296,8 +445,8 @@ public class MapDisplay implements LevelChangeListener {
 
 
                         nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
-                            x.set(xCoordOnTopElement((int) (n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-                            y.set(yCoordOnTopElement((int) (n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
+                            x.set(xCoordOnTopElement((n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
+                            y.set(yCoordOnTopElement((n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
                             genuineText.setX(x.get());
                             genuineText.setY(y.get());
                             genuineText.setFill(Color.RED);
@@ -330,6 +479,10 @@ public class MapDisplay implements LevelChangeListener {
                     LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
                     Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
                     renderedEdgeMap.put(edge, e);
+                    if(edgeToLineMap.containsKey(e)){
+                        edgeToLineMap.remove(e);
+                    }
+                    edgeToLineMap.put(e,edgeLocation);
                     onTopOfTopElements.getChildren().add(edge); // Render edge
 
                     edge.setOnMouseEntered(t -> { // Show a hover effect
@@ -419,18 +572,16 @@ public class MapDisplay implements LevelChangeListener {
         fileFxHeightRatio = mapHeight / fileHeight;
     }
 
+
+public double viewportSmallestScale(){
+    return Math.max(Math.min(scaledHeight / 3400.0, scaledWidth / 5000.0), 0);
+}
+
+    public double windowSmallestScale(){
+        return  Math.max(Math.min(hospitalMap.boundsInParentProperty().get().getHeight() / 3400.0,  hospitalMap.boundsInParentProperty().get().getWidth() / 5000.0), 0);
+    }
     public double xCoordOnTopElement(int x) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+        return ((x - scaledX) / viewportSmallestScale()) * windowSmallestScale();
     }
 
     /**
@@ -440,17 +591,7 @@ public class MapDisplay implements LevelChangeListener {
      * @return The actual (non-scaled) x coordinate
      */
     public double actualX(double _x) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return (((_x / windowSmallestScale) * viewportSmallestScale) + scaledX);
+        return (((_x / windowSmallestScale()) * viewportSmallestScale()) + scaledX);
     }
 
     /**
@@ -460,17 +601,7 @@ public class MapDisplay implements LevelChangeListener {
      * @return the scaled y coordinate
      */
     public double yCoordOnTopElement(int y) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+        return ((y - scaledY) / viewportSmallestScale()) * windowSmallestScale();
     }
 
     /**
@@ -480,17 +611,7 @@ public class MapDisplay implements LevelChangeListener {
      * @return The actual (non-scaled) x coordinate
      */
     public double actualY(double _y) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return (((_y / windowSmallestScale) * viewportSmallestScale) + scaledY);
+        return (((_y / windowSmallestScale()) * viewportSmallestScale()) + scaledY);
     }
 
     private void refreshDraggedEdges() {
