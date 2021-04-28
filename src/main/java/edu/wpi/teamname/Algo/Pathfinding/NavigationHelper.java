@@ -51,9 +51,9 @@ public class NavigationHelper {
                         result.add("Head for " + next.getLongName());
                     else {
                         if (i > 2 && (i < path.size() - 3)){
-                            boolean isPrevStraight = getDirection(getAngle(path.get(i-2), prev), getAngle(prev, node)).equals("Straight");
-                            boolean isNextStraight = getDirection(getAngle(node, next), getAngle(next, path.get(i+2))).equals("Straight");
-                            boolean goStraight = getDirection(getAngle(prev, node), getAngle(node, next)).equals("Straight");
+                            boolean isPrevStraight = getDirection(getAngle(path.get(i-2), prev), getAngle(prev, node)).equals("Straight ");
+                            boolean isNextStraight = getDirection(getAngle(node, next), getAngle(next, path.get(i+2))).equals("Straight ");
+                            boolean goStraight = getDirection(getAngle(prev, node), getAngle(node, next)).equals("Straight ");
                             if (!isPrevStraight && goStraight && isNextStraight){
                                 total = 0;
                                 total += pathfinder.distance(node, next)/SCALE;

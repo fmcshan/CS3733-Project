@@ -247,7 +247,7 @@ public class Navigation implements LevelChangeListener {
             navBox.getChildren().add(spacer);
         });
         LevelManager.getInstance().setFloor(startNode.getFloor());
-        SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        //SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
     }
 
     void clearDirections() {
@@ -280,6 +280,6 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
         clearDirections();
         pathCanceled = true;
-        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
     }
 }
