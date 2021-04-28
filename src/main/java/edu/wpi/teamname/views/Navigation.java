@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
@@ -48,6 +49,11 @@ public class Navigation implements LevelChangeListener, LanguageListener {
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
     @FXML
     private Label directions;
+    @FXML
+    private JFXButton mapsButton;
+    @FXML
+    private JFXButton mapsButtonHome;
+
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -201,6 +207,16 @@ public class Navigation implements LevelChangeListener, LanguageListener {
     void setTextDirections(String directions){
         textDirections.setText(directions);
     }
+    @FXML
+    void googleMaps(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMaps();
+    }
+
+    @FXML
+    void googleMapsHome(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMapsHome();
+    }
+
 
     @Override
     public void levelChanged(int _level) {

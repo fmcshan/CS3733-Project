@@ -225,6 +225,18 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
     }
 
+    public void toggleGoogleMaps() {
+        clearMap();
+        popPop.setPrefWidth(400);
+        popPop.getChildren().clear();
+        LoadFXML.getInstance().loadWindow("GoogleMapForm", "googleMapBar", popPop);
+    }
+    public void toggleGoogleMapsHome() {
+        clearMap();
+        popPop.setPrefWidth(400);
+        popPop.getChildren().clear();
+        LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
+    }
     @FXML
     private void openHelp() {
         popPop.setPrefWidth(340);
