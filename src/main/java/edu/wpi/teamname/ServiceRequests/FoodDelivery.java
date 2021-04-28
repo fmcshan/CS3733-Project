@@ -166,7 +166,7 @@ public class FoodDelivery {
      * @return true if any checkbox has been selected, and false otherwise
      */
     public boolean checkBoxSelected() {
-        return hamburgerBox.isSelected() || hotdogBox.isSelected() || impossibleBurgerBox.isSelected();
+        return hamburgerBox.isSelected() || hotdogBox.isSelected() || impossibleBurgerBox.isSelected() || otherCheckbox.isSelected();
     }
 
     /**
