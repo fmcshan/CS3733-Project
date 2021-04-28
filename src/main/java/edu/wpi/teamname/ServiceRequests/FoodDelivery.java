@@ -170,6 +170,15 @@ public class FoodDelivery {
     }
 
     /**
+     * Checks if the "Other" text box for gift delivery options has been filled correctly
+     *
+     * @return true if the box was filled correctly, and false otherwise
+     */
+    public boolean otherInputValid() {
+        return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().isEmpty());
+    }
+
+    /**
      * Checks if the phone number text field has been filled in correctly
      *
      * @return true if the number matches the "XXX-XXX-XXXX" format
@@ -215,6 +224,8 @@ public class FoodDelivery {
 
         if (!checkBoxSelected())
             failedFoodSelection.setText("Select at Least One Menu Item");
+        else if (!otherInputValid())
+            failedFoodSelection.setText("Invalid Other Reason");
         else
             failedFoodSelection.setText("");
 
@@ -239,6 +250,9 @@ public class FoodDelivery {
                 selected.add("Hot Dog");
             if (impossibleBurgerBox.isSelected())
                 selected.add("Impossible Burger");
+            if (otherCheckbox.isSelected()) {
+                selected.add(otherInput.getText());
+            }
 
             LoadFXML.setCurrentWindow("");
 
