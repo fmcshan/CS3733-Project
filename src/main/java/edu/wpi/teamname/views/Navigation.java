@@ -256,7 +256,7 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("2");
         allFloors.add("3");
         refreshNodes();
-        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
+        //SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
         clearDirections();
         pathCanceled = true;
