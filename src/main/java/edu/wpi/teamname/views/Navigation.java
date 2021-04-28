@@ -19,11 +19,13 @@ import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +59,9 @@ public class Navigation implements LevelChangeListener {
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
     @FXML
     private VBox navBox;
+    @FXML
+    private ScrollPane scrollBar;
+
 
     /**
      * constructor for Navigation
@@ -86,17 +91,20 @@ public class Navigation implements LevelChangeListener {
 
         new AutoCompleteComboBoxListener<>(fromCombo);
         new AutoCompleteComboBoxListener<>(toCombo);
+
+        scrollBar.setFitToHeight(true);
     }
 
     private HBox generateNavElem(String _direction) {
         String directionText = _direction.toLowerCase();
         HBox directionGuiWrapper = new HBox();
-        directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 20 0 0 0;");
+        directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 0 0 0 0;");
         DropShadow shadow = new DropShadow();
         shadow.setBlurType(GAUSSIAN);
         shadow.setSpread(0.33);
         shadow.setColor(Color.valueOf("#ebebeb"));
         directionGuiWrapper.setEffect(shadow);
+        directionGuiWrapper.setMaxWidth(300);
 
         VBox navIconWrapper = new VBox();
         navIconWrapper.setStyle("-fx-background-color: #37d461; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
@@ -125,13 +133,20 @@ public class Navigation implements LevelChangeListener {
         navigationIcon.setGlyphSize(56);
         navIconWrapper.getChildren().add(navigationIcon);
 
+        VBox spacer = new VBox();
+        spacer.setPrefSize(10, 1);
+        spacer.setMinSize(10, 1);
+
         VBox navLabelWrapper = new VBox();
-        Label navigationLabel = new Label(_direction);
+        Text navigationLabel = new Text(_direction);
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-        navigationLabel.setWrapText(true);
+        navigationLabel.setWrappingWidth(200);
         navLabelWrapper.getChildren().add(navigationLabel);
+        navigationLabel.prefWidth(200);
+        navigationLabel.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
+        directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
         return directionGuiWrapper;
     }
@@ -198,6 +213,7 @@ public class Navigation implements LevelChangeListener {
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
+        navBox.getChildren().clear();
         pathCanceled = false;
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
@@ -225,6 +241,10 @@ public class Navigation implements LevelChangeListener {
         NavigationHelper nav = new NavigationHelper(AStar);
         nav.getTextDirections().forEach(t -> {
             navBox.getChildren().add(generateNavElem(t));
+            VBox spacer = new VBox();
+            spacer.setPrefSize(1, 10);
+            spacer.setMinSize(1, 10);
+            navBox.getChildren().add(spacer);
         });
         LevelManager.getInstance().setFloor(startNode.getFloor());
         SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
