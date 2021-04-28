@@ -16,6 +16,7 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -45,7 +46,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
     @FXML
-    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
