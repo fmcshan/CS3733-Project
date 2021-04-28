@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class EmployeeTable implements UserListener {
 
@@ -27,6 +29,10 @@ public class EmployeeTable implements UserListener {
     private VBox cellHolder;
     @FXML
     private VBox userPop;
+
+    HashMap<String, JFXTextField> userNameMap  = new HashMap<>();
+    HashMap<String, JFXTextField> userEmailMap = new HashMap<>();
+    HashMap<String, JFXTextField> userPhoneMap = new HashMap<>();
 
     public EmployeeTable() {
     }
@@ -48,20 +54,20 @@ public class EmployeeTable implements UserListener {
                 cellHolder.getChildren().add(node);
                 HBox hbox = (HBox) node;
                 hbox.getChildren().forEach(h -> {
-                    if (h instanceof Label) {
-                        Label label = (Label) h;
-                        switch (label.getId()) {
+                    if (h instanceof JFXTextField) {
+                        JFXTextField textField = (JFXTextField) h;
+                        switch (textField.getId()) {
                             case "nameCell":
-                                label.setText(r.getName());
+                                textField.setText(r.getName());
                                 break;
                             case "emailCell":
-                                label.setText(r.getEmail());
+                                textField.setText(r.getEmail());
                                 break;
                             case "phoneCell":
-                                label.setText(r.getPhone());
+                                textField.setText(r.getPhone());
                                 break;
                             default:
-                                label.setText("PANIK");
+                                textField.setText("PANIK");
                         }
                     } else if (h instanceof VBox) {
                         VBox vbox = (VBox) h;
@@ -82,12 +88,14 @@ public class EmployeeTable implements UserListener {
                                     MenuItem makeAdmin = new MenuItem("Make Admin");
                                     MenuItem revokeAdmin = new MenuItem("Revoke Admin");
                                     MenuItem delete = new MenuItem("Delete");
+                                    MenuItem saveEdit = new MenuItem("Save Edit");
                                     if (!r.isAdmin()) {
                                         contextMenu.getItems().add(makeAdmin);
                                     } else {
                                         contextMenu.getItems().add(revokeAdmin);
                                     }
                                     contextMenu.getItems().add(delete);
+                                    contextMenu.getItems().add(saveEdit);
                                     button.setOnAction(b -> {
                                         contextMenu.show(button, Side.BOTTOM, 0, 0);
                                     });
@@ -102,10 +110,14 @@ public class EmployeeTable implements UserListener {
                                             case "Delete":
                                                 Submit.getInstance().deleteUser(r);
                                                 break;
+                                            case "Save Edit":
+//                                                r.setName();
+//                                                r.setEmail();
+//                                                r.setPhone();
+                                                Submit.getInstance().editUser(r);
                                         }
                                     });
                                 });
-
                                 break;
                         }
                     }
