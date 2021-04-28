@@ -180,7 +180,7 @@ public class LocalStorage {
     }
 
     public ArrayList<User> getUsers() {
-        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+        if (!AuthenticationManager.getInstance().isAdmin()) {
             return null;
         }
 

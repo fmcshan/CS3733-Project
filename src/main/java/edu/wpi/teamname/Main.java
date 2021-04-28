@@ -15,7 +15,7 @@ public class Main {
         System.setProperty("javafx.animation.fullspeed", "true");
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
-        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
+//        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
   //   DatabaseThread.getInstance().start();
         App.launch(App.class, args);
