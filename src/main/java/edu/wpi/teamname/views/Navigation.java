@@ -221,9 +221,7 @@ public class Navigation implements LevelChangeListener {
         residentAStar = AStar;
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
-        for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-            mapDisplay.drawPath(floorPath); // draw the path on the map
-        }
+        mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
 
         ArrayList<String> allFloors = new ArrayList<>();
         allFloors.add("L2");
@@ -247,7 +245,7 @@ public class Navigation implements LevelChangeListener {
             navBox.getChildren().add(spacer);
         });
         LevelManager.getInstance().setFloor(startNode.getFloor());
-        //SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
     }
 
     void clearDirections() {
@@ -260,9 +258,7 @@ public class Navigation implements LevelChangeListener {
             mapDisplay.clearMap();
         } else {
             String currentFloor = LevelManager.getInstance().getFloor();
-            for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-                mapDisplay.drawPath(floorPath); // draw the path on the map
-            }
+            mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         }
         //refreshNodes();
     }
@@ -280,6 +276,6 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
         clearDirections();
         pathCanceled = true;
-        //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
     }
 }
