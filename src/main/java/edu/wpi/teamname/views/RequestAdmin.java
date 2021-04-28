@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-public class RequestAdminNew implements GiftDeliveryListener {
+public class RequestAdmin implements GiftDeliveryListener {
 
     @FXML
     private VBox cellHolder;

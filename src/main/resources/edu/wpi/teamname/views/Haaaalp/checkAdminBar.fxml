@@ -13,14 +13,18 @@
       <DropShadow color="#a4a4a4" />
    </effect>
    <children>
-      <Label text="Help">
-         <font>
-            <Font name="System Bold" size="48.0" />
-         </font>
+      <VBox>
          <VBox.margin>
-            <Insets right="190.0" top="15.0" />
+            <Insets top="15.0" />
          </VBox.margin>
-      </Label>
+         <children>
+            <Label alignment="CENTER" prefHeight="60.0" prefWidth="343.0" text="Help">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
       <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="All the patient information is included in the table. The data is collected from the check in form patients fill out before or upon arrival to the hospital. Fields include the patient's name, date of birth, reason for visit, and phone number." wrappingWidth="316.0">
          <font>
             <Font size="16.0" />

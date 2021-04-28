@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class RegistrationAdminViewNew {
+public class RegistrationAdminView {
 
     @FXML
     private VBox cellHolder;
