@@ -221,9 +221,7 @@ public class Navigation implements LevelChangeListener {
         residentAStar = AStar;
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
-        for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-            mapDisplay.drawPath(floorPath); // draw the path on the map
-        }
+        mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
 
         ArrayList<String> allFloors = new ArrayList<>();
         allFloors.add("L2");
@@ -260,9 +258,7 @@ public class Navigation implements LevelChangeListener {
             mapDisplay.clearMap();
         } else {
             String currentFloor = LevelManager.getInstance().getFloor();
-            for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-                mapDisplay.drawPath(floorPath); // draw the path on the map
-            }
+            mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         }
         //refreshNodes();
     }
@@ -278,6 +274,7 @@ public class Navigation implements LevelChangeListener {
         refreshNodes();
         //SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        mapDisplay.clearMap();
         clearDirections();
         pathCanceled = true;
         //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
