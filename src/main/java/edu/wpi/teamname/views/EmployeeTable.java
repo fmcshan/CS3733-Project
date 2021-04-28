@@ -10,6 +10,8 @@ import edu.wpi.teamname.Database.socketListeners.UserListener;
 import edu.wpi.teamname.views.manager.EmployeeManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -53,6 +55,13 @@ public class EmployeeTable implements UserListener {
                 Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/EmployeeTableCells.fxml"));
                 cellHolder.getChildren().add(node);
                 HBox hbox = (HBox) node;
+                hbox.setOnMouseEntered(e -> {
+                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
+                });
+
+                hbox.setOnMouseExited(e -> {
+                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
+                });
                 hbox.getChildren().forEach(h -> {
                     if (h instanceof JFXTextField) {
                         JFXTextField textField = (JFXTextField) h;
@@ -60,6 +69,14 @@ public class EmployeeTable implements UserListener {
                             case "nameCell":
                                 userNameMap.put(r.getLocalId(), textField);
                                 textField.setText(r.getName());
+
+                                hbox.setOnMouseEntered(e -> {
+                                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
+                                });
+
+                                hbox.setOnMouseExited(e -> {
+                                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
+                                });
                                 break;
                             case "emailCell":
                                 userEmailMap.put(r.getLocalId(), textField);
@@ -117,9 +134,6 @@ public class EmployeeTable implements UserListener {
                                                 String name = userNameMap.get(r.getLocalId()).getText();
                                                 String email = userEmailMap.get(r.getLocalId()).getText();
                                                 String phone = userPhoneMap.get(r.getLocalId()).getText();
-                                                System.out.println(name);
-                                                System.out.println(email);
-                                                System.out.println(phone);
                                                 r.setName(name);
                                                 r.setEmail(email);
                                                 r.setPhone(phone);
