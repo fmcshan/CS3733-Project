@@ -58,12 +58,15 @@ public class EmployeeTable implements UserListener {
                         JFXTextField textField = (JFXTextField) h;
                         switch (textField.getId()) {
                             case "nameCell":
+                                userNameMap.put(r.getLocalId(), textField);
                                 textField.setText(r.getName());
                                 break;
                             case "emailCell":
+                                userEmailMap.put(r.getLocalId(), textField);
                                 textField.setText(r.getEmail());
                                 break;
                             case "phoneCell":
+                                userPhoneMap.put(r.getLocalId(), textField);
                                 textField.setText(r.getPhone());
                                 break;
                             default:
@@ -111,9 +114,15 @@ public class EmployeeTable implements UserListener {
                                                 Submit.getInstance().deleteUser(r);
                                                 break;
                                             case "Save Edit":
-//                                                r.setName();
-//                                                r.setEmail();
-//                                                r.setPhone();
+                                                String name = userNameMap.get(r.getLocalId()).getText();
+                                                String email = userEmailMap.get(r.getLocalId()).getText();
+                                                String phone = userPhoneMap.get(r.getLocalId()).getText();
+                                                System.out.println(name);
+                                                System.out.println(email);
+                                                System.out.println(phone);
+                                                r.setName(name);
+                                                r.setEmail(email);
+                                                r.setPhone(phone);
                                                 Submit.getInstance().editUser(r);
                                         }
                                     });
