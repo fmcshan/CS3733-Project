@@ -1061,8 +1061,6 @@ public class MapDisplay implements LevelChangeListener {
      */
     public void openCheckIn() {
         popPop.setPrefWidth(657);
-        popPop.setPickOnBounds(true); // Set clickable to true
-        popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
         LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
