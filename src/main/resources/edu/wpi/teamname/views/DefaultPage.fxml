@@ -29,7 +29,7 @@
             </ImageView>
             <AnchorPane fx:id="pathAnchor" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Path fx:id="tonysPath" fill="#ff634700" stroke="TOMATO" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
+                  <Path fx:id="tonysPath" fill="#ff634700" stroke="#ff2802" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
                      <elements>
                         <MoveTo x="800.0" y="800.0" />
                         <LineTo x="600.0" y="600.0" />
