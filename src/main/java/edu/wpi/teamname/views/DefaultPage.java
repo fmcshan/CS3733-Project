@@ -64,6 +64,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
+        LoadFXML.setCurrentHelp("");
+        LoadFXML.setCurrentWindow("");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -189,15 +191,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
-        popPop.setPrefWidth(340);
         if (LoadFXML.getCurrentWindow().equals("")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
             return;
         }
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
             return;
         }
+        System.out.println(LoadFXML.getCurrentWindow());
+        System.out.println("dino");
+        System.out.println(LoadFXML.getCurrentHelp());
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
     

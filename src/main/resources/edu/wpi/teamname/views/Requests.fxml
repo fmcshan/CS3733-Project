@@ -30,7 +30,7 @@
                   <Insets top="25.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="660.0" prefWidth="657.0">
+            <VBox alignment="TOP_CENTER" minWidth="657.0" prefHeight="660.0" prefWidth="657.0">
                <children>
                   <JFXButton fx:id="GiftDelivery" buttonType="RAISED" onAction="#openGiftRequest" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Gift Delivery" textFill="WHITE">
                      <font>
