@@ -290,7 +290,7 @@ public class MapDisplay implements LevelChangeListener {
                     AtomicReference<Double> x = new AtomicReference<>((double) 0);
                     AtomicReference<Double> y = new AtomicReference<>((double) 0);
                     AtomicInteger ic = new AtomicInteger();
-                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 10);
+                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 16);
 
                     if (nodeToTextMap.containsKey(Id)) {
 
