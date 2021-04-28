@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-public class RequestAdminNew implements GiftDeliveryListener {
+public class RequestAdmin implements GiftDeliveryListener {
 
     @FXML
     private VBox cellHolder;
@@ -66,6 +66,13 @@ public class RequestAdminNew implements GiftDeliveryListener {
                     cellHolder.getChildren().add(node);
                 }
                 HBox hbox = (HBox) node;
+                hbox.setOnMouseEntered(e -> {
+                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
+                });
+
+                hbox.setOnMouseExited(e -> {
+                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
+                });
                 switch (_req.getRequestType()) {
                     case "Gift Delivery":
                         if (i == 1) {

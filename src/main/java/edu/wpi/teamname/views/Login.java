@@ -59,7 +59,7 @@ public class Login {
         String email = emailField.getText();
 
         if (!isValidEmail(email)) {
-            failedLogin.setText("failed login");
+            failedLogin.setText("Invalid Credentials");
             return;
         } else {
             failedLogin.setText("");
@@ -67,7 +67,7 @@ public class Login {
 
         AuthenticationManager.getInstance().loginWithEmailAndPassword(emailField.getText(), passwordField.getText());
         if (!AuthenticationManager.getInstance().isAuthenticated()) {
-            failedLogin.setText("failed login");
+            failedLogin.setText("Invalid Credentials");
             return;
         }
         SceneManager.getInstance().getDefaultPage().closeWindows();

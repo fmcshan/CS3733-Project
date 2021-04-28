@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class RegistrationAdminViewNew {
+public class RegistrationAdminView {
 
     @FXML
     private VBox cellHolder;
@@ -21,6 +21,14 @@ public class RegistrationAdminViewNew {
                 Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/CheckInTableCells.fxml"));
                 cellHolder.getChildren().add(node);
                 HBox hbox = (HBox) node;
+                hbox.setOnMouseEntered(e -> {
+                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
+                });
+
+                hbox.setOnMouseExited(e -> {
+                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
+                });
+
                 hbox.getChildren().forEach(h -> {
                     if (h instanceof Label) {
                         Label label = (Label) h;

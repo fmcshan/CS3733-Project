@@ -15,6 +15,10 @@ public class LoadFXML {
     private LoadFXML() {
     }
 
+    public static String getCurrentHelp() {
+        return currentHelp;
+    }
+
     public static synchronized LoadFXML getInstance() { return instance; }
 
     private static final LoadFXML instance = new LoadFXML();

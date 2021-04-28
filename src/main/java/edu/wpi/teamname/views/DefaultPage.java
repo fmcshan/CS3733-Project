@@ -16,6 +16,7 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -45,7 +46,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
     @FXML
-    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
@@ -63,6 +64,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
+        LoadFXML.setCurrentHelp("");
+        LoadFXML.setCurrentWindow("");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -165,7 +168,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminViewNew", "registrationBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
     }
 
     /**
@@ -174,7 +177,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminNew", "reqAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdmin", "reqAdminBar", popPop);
     }
 
     /**
@@ -188,12 +191,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
-        popPop.setPrefWidth(340);
         if (LoadFXML.getCurrentWindow().equals("")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
             return;
         }
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
             return;
         }

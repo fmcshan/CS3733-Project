@@ -4,6 +4,7 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.simplify.Config;
 import edu.wpi.teamname.views.manager.LevelManager;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.UUID;
