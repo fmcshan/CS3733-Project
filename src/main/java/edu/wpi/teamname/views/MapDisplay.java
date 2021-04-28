@@ -45,7 +45,7 @@ public class MapDisplay implements LevelChangeListener {
     double scaledWidth = 5000;
     double scaledHeight = 3400.0;
     double scaledX = 0;
-    ArrayList<Node> currentPath = new ArrayList<>();
+    ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
@@ -985,18 +985,21 @@ public class MapDisplay implements LevelChangeListener {
      *
      * @param _listOfNodes Arraylist of nodes to render
      */
-    public void drawPath(ArrayList<Node> _listOfNodes) {
+    public void drawPath(ArrayList<ArrayList<Node>> _listOfNodes) {
         if (_listOfNodes.size() < 1) {
             return;
         }
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        Node firstNode = _listOfNodes.get(0);
-        MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-        tonysPath.getElements().add(start);
-        _listOfNodes.forEach(n -> {
-            tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-        });
+        for (ArrayList<Node> listOfNode : _listOfNodes) {
+            Node firstNode = listOfNode.get(0);
+            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+            tonysPath.getElements().add(start);
+            listOfNode.forEach(n -> {
+                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+            });
+        }
+
     }
 
     /**
