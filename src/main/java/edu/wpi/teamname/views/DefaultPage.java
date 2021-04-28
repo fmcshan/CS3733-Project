@@ -201,9 +201,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
             return;
         }
-        System.out.println(LoadFXML.getCurrentWindow());
-        System.out.println("dino");
-        System.out.println(LoadFXML.getCurrentHelp());
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
     
