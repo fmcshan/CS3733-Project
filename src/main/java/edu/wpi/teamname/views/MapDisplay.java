@@ -1065,7 +1065,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop2.setPickOnBounds(true); // Set clickable to true
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("UserRegistration", "checkBar", popPop); // Load registration window
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
     }
 
     /**
