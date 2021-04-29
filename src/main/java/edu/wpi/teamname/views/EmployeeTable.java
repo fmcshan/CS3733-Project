@@ -10,16 +10,11 @@ import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.UserListener;
 import edu.wpi.teamname.views.manager.EmployeeManager;
-import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -28,8 +23,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-
-import java.io.IOException;
 import java.util.HashMap;
 
 public class EmployeeTable implements UserListener {
@@ -121,103 +114,6 @@ public class EmployeeTable implements UserListener {
             });
 
             generateRow(r.getLocalId(), r.getName(), r.getEmail(), roleCell, r.getPhone(), actionsButton);
-//            try {
-//                Node node = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/EmployeeTableCells.fxml"));
-//                cellHolder.getChildren().add(node);
-//                HBox hbox = (HBox) node;
-//                hbox.setOnMouseEntered(e -> {
-//                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
-//                });
-//
-//                hbox.setOnMouseExited(e -> {
-//                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
-//                });
-//                hbox.getChildren().forEach(h -> {
-//                    if (h instanceof JFXTextField) {
-//                        JFXTextField textField = (JFXTextField) h;
-//                        switch (textField.getId()) {
-//                            case "nameCell":
-//                                userNameMap.put(r.getLocalId(), textField);
-//                                textField.setText(r.getName());
-//
-//                                hbox.setOnMouseEntered(e -> {
-//                                    hbox.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
-//                                });
-//
-//                                hbox.setOnMouseExited(e -> {
-//                                    hbox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
-//                                });
-//                                break;
-//                            case "emailCell":
-//                                userEmailMap.put(r.getLocalId(), textField);
-//                                textField.setText(r.getEmail());
-//                                break;
-//                            case "phoneCell":
-//                                userPhoneMap.put(r.getLocalId(), textField);
-//                                textField.setText(r.getPhone());
-//                                break;
-//                            default:
-//                                textField.setText("PANIK");
-//                        }
-//                    } else if (h instanceof VBox) {
-//                        VBox vbox = (VBox) h;
-//                        switch (vbox.getId()) {
-//                            case "roleBox":
-//                                vbox.getChildren().forEach(v -> {
-//                                    Label label = (Label) v;
-//                                    label.setText(r.isAdmin() ? "True" : "False");
-//                                    if (!r.isAdmin()) {
-//                                        label.setStyle("-fx-background-color: #f13426; -fx-background-radius: 4px");
-//                                    }
-//                                });
-//                                break;
-//                            case "actionsBox":
-//                                vbox.getChildren().forEach(v -> {
-//                                    JFXButton button = (JFXButton) v;
-//                                    ContextMenu contextMenu = new ContextMenu();
-//                                    MenuItem makeAdmin = new MenuItem("Make Admin");
-//                                    MenuItem revokeAdmin = new MenuItem("Revoke Admin");
-//                                    MenuItem delete = new MenuItem("Delete");
-//                                    MenuItem saveEdit = new MenuItem("Save Edit");
-//                                    if (!r.isAdmin()) {
-//                                        contextMenu.getItems().add(makeAdmin);
-//                                    } else {
-//                                        contextMenu.getItems().add(revokeAdmin);
-//                                    }
-//                                    contextMenu.getItems().add(delete);
-//                                    contextMenu.getItems().add(saveEdit);
-//                                    button.setOnAction(b -> {
-//                                        contextMenu.show(button, Side.BOTTOM, 0, 0);
-//                                    });
-//                                    contextMenu.setOnAction(e -> {
-//                                        switch (((MenuItem) e.getTarget()).getText()) {
-//                                            case "Make Admin":
-//                                                Submit.getInstance().grantAdmin(r);
-//                                                break;
-//                                            case "Revoke Admin":
-//                                                Submit.getInstance().revokeAdmin(r);
-//                                                break;
-//                                            case "Delete":
-//                                                Submit.getInstance().deleteUser(r);
-//                                                break;
-//                                            case "Save Edit":
-//                                                String name = userNameMap.get(r.getLocalId()).getText();
-//                                                String email = userEmailMap.get(r.getLocalId()).getText();
-//                                                String phone = userPhoneMap.get(r.getLocalId()).getText();
-//                                                r.setName(name);
-//                                                r.setEmail(email);
-//                                                r.setPhone(phone);
-//                                                Submit.getInstance().editUser(r);
-//                                        }
-//                                    });
-//                                });
-//                                break;
-//                        }
-//                    }
-//                });
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
         });
     }
 
@@ -391,7 +287,6 @@ public class EmployeeTable implements UserListener {
                         HBox invalidRow = new HBox(invalidName, invalidEmail, invalidPassword, invalidPhone);
                         cellHolder.getChildren().add(0, invalidRow);
                         invalidUser = true;
-                        return;
                     }
                 });
             }
@@ -407,8 +302,6 @@ public class EmployeeTable implements UserListener {
         });
 
         userAdded = true;
-
-//        LoadFXML.getInstance().loadWindow("AddEmployee", "userBar", userPop);
     }
 
     private void generateRow(String employeeID, String employeeName, String employeeEmail, Label roleCell, String employeePhone, JFXButton actionsButton) {
