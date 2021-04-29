@@ -231,6 +231,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapForm", "googleMapBar", popPop);
     }
+
     public void toggleGoogleMapsHome() {
         clearMap();
         popPop.setPrefWidth(400);

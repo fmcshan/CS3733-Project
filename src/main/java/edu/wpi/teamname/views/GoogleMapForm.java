@@ -1,5 +1,20 @@
 package edu.wpi.teamname.views;
 
+import com.google.api.client.json.Json;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.maps.DirectionsApi;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsStep;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+import org.json.*;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.GeocodingResult;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -12,10 +27,13 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GoogleMapForm {
 
@@ -81,21 +99,65 @@ public class GoogleMapForm {
     }
 
     @FXML
-    void submit() throws URISyntaxException, IOException {
+    void submit() throws URISyntaxException, IOException, InterruptedException, ApiException {
         Stage stage = new Stage();
         Desktop aDesktop = java.awt.Desktop.getDesktop();
-        String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
-                "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&travelmode=" + travelMode.getValue().toString();
-        URI link = new URI(URL);
+       // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
+            //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
+       // URI link = new URI(URL);
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyCsYyTEAMqOBjOpG84HSCXDUJ7iQsNF1bA")
+                .build();
+        DirectionsResult results =  DirectionsApi.getDirections(context, "24 Delaney Drive, Walpole MA 02081", "75 Francis Street, Boston MA").await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+       // System.out.println(gson.toJson(results.routes[0].legs));
+        DirectionsLeg[] feet = results.routes[0].legs;
+        for (DirectionsLeg foot: feet) {
+            for (DirectionsStep step: foot.steps
+                 ) {
+               String newStep = cleanTags(step.htmlInstructions);
+                System.out.println(newStep);
+
+
+            }
+            System.out.println("start location " + foot.startLocation);
+            System.out.println("end location " + foot.endLocation);
+            System.out.println("duration " + foot.duration);
+
+
+        }
+
+
+
+
         //aDesktop.browse(link);
-        WebView view = new WebView();
-        WebEngine engine = view.getEngine();
-        engine.load(URL);
-        VBox box = new VBox();
-        box.getChildren().addAll(view);
-        Scene scene = new Scene(box, 1000,500);
-        stage.setScene(scene);
-        stage.show();
+//        WebView view = new WebView();
+//        WebEngine engine = view.getEngine();
+//        engine.load(URL);
+//        VBox box = new VBox();
+//        box.getChildren().addAll(view);
+//        Scene scene = new Scene(box, 1000,500);
+//        stage.setScene(scene);
+//        stage.show();
 
     }
+
+    public String cleanTags(String s){
+        String pattern = @"<(img|a)[^>]*>(?<content>[^<]*)<";
+        Regex regex = new Regex(pattern);
+        Pattern thePat = Pattern.compile(pattern);
+        Matcher theMat =
+        String m = regex.Match(sSummary);
+        if ( m.Success ) {
+            sResult = m.Groups["content"].Value;
+//        s = s.replaceAll("<b>", "");
+//        s = s.replaceAll("</b>", "");
+//        s = s.replaceAll("</div>", "");
+//        s = s.replaceAll("</<wbr/>", "");
+//        s = s.replaceAll("<div style=\"font-size:0.9em\">", "");
+//        s = s.replaceAll("/<wbr/>", "");
+//        s = s.replaceAll("/<wbr/>", "");
+        return s;
+    }
+
 }
