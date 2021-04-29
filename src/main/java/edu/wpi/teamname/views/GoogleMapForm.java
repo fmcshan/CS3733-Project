@@ -28,7 +28,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,7 +100,7 @@ public class GoogleMapForm {
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException {
         Stage stage = new Stage();
-        Desktop aDesktop = java.awt.Desktop.getDesktop();
+
        // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
             //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
        // URI link = new URI(URL);
@@ -113,8 +112,8 @@ public class GoogleMapForm {
        // System.out.println(gson.toJson(results.routes[0].legs));
         DirectionsLeg[] feet = results.routes[0].legs;
         for (DirectionsLeg foot: feet) {
-            for (DirectionsStep step: foot.steps
-                 ) {
+            for (DirectionsStep step: foot.steps) {
+
                String newStep = cleanTags(step.htmlInstructions);
                 System.out.println(newStep);
 
@@ -141,22 +140,10 @@ public class GoogleMapForm {
 //        stage.show();
 
     }
-
     public String cleanTags(String s){
-        String pattern = @"<(img|a)[^>]*>(?<content>[^<]*)<";
-        Regex regex = new Regex(pattern);
-        Pattern thePat = Pattern.compile(pattern);
-        Matcher theMat =
-        String m = regex.Match(sSummary);
-        if ( m.Success ) {
-            sResult = m.Groups["content"].Value;
-//        s = s.replaceAll("<b>", "");
-//        s = s.replaceAll("</b>", "");
-//        s = s.replaceAll("</div>", "");
-//        s = s.replaceAll("</<wbr/>", "");
-//        s = s.replaceAll("<div style=\"font-size:0.9em\">", "");
-//        s = s.replaceAll("/<wbr/>", "");
-//        s = s.replaceAll("/<wbr/>", "");
+
+
+        s = s.replaceAll("<[^>]*>", "");
         return s;
     }
 
