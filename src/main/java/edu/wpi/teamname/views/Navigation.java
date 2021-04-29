@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
@@ -28,6 +29,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,6 +63,8 @@ public class Navigation implements LevelChangeListener {
     private VBox navBox;
     @FXML
     private ScrollPane scrollBar;
+    @FXML
+    private JFXButton handicapButton;
 
 
     /**
@@ -163,13 +167,22 @@ public class Navigation implements LevelChangeListener {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
-            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
-            //Collections.sort(listOfNodeNames);
-            nodeNameNodes.add(n);
+            if(handicapButton.getText().equals("Handicap On") && !n.getNodeType().equals("STAI")){
+                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+                //Collections.sort(listOfNodeNames);
+                nodeNameNodes.add(n);
+            }
+            if(handicapButton.getText().equals("Handicap Off")){
+                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+                //Collections.sort(listOfNodeNames);
+                nodeNameNodes.add(n);
             /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
 
             }*/
+            }
+
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
@@ -217,7 +230,14 @@ public class Navigation implements LevelChangeListener {
         pathCanceled = false;
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
-        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
+        boolean handicap = true;
+        if(handicapButton.getText().equals("Handicap On")){
+            handicap = true;
+        }
+        if(handicapButton.getText().equals("Handicap Off")){
+            handicap = false;
+        }
+        AStar AStar = new AStar(listOfNodes, startNode, endNode, handicap); // perform AStar
         residentAStar = AStar;
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
@@ -279,4 +299,19 @@ public class Navigation implements LevelChangeListener {
         pathCanceled = true;
         //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
     }
+
+    @FXML
+    void toggleHandicap(ActionEvent event) {
+        boolean flag = true;
+        if(handicapButton.getText().equals("Handicap Off")){
+            handicapButton.setText("Handicap On");
+            flag = false;
+        }
+        if(handicapButton.getText().equals("Handicap On") && flag){
+            handicapButton.setText("Handicap Off");
+        }
+        refreshNodes();
+    }
+
+
 }

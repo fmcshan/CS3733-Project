@@ -71,6 +71,14 @@
             <Insets left="25.0" top="40.0" />
          </VBox.margin>
       </JFXButton>
+      <JFXButton fx:id="handicapButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#toggleHandicap" prefHeight="47.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Handicap Off" textFill="#bbbbbb">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" top="25.0" />
+         </VBox.margin>
+      </JFXButton>
       <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="552.0" prefWidth="350.0" style="-fx-background-color: white;" vbarPolicy="NEVER">
          <content>
             <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="413.0" prefWidth="329.0" style="-fx-background-color: white;">
