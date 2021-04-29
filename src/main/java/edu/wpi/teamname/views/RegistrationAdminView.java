@@ -14,7 +14,7 @@ public class RegistrationAdminView {
 
     public void initialize() {
         LocalStorage.getInstance().getRegistrations().forEach(r -> {
-            String reasonsForVisit = String.join(", ", r.getReasonsForVisit());
+            String reasonsForVisit = String.join(", ", r.getReasonsForVisit()).replace("\"", "");
             generateRow(r.getName(), r.getDate(), reasonsForVisit, r.getPhoneNumber());
         });
     }
