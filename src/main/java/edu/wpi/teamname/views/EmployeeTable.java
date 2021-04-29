@@ -370,7 +370,7 @@ public class EmployeeTable implements UserListener {
                 return;
             }
 
-            if (!passwordCell.getText().matches("[^ ]{6,}")) {
+            if (!passwordCell.getText().matches(".{6,32}")) {
                 invalidName.setText("Invalid Password");
                 HBox invalidRow = new HBox(invalidName, invalidEmail, invalidPassword, invalidPhone);
                 cellHolder.getChildren().add(0, invalidRow);
