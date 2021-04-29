@@ -4,8 +4,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
@@ -77,11 +82,20 @@ public class GoogleMapHome {
 
     @FXML
     void submit() throws URISyntaxException, IOException {
+        Stage stage = new Stage();
         Desktop aDesktop = Desktop.getDesktop();
         String URL = "https://www.google.com/maps/dir/?api=1&origin=75+Francis+St+Boston+MA&destination=" + numInput.getText() + "+" + streetInput.getText() +
 "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&travelmode=" + travelMode.getValue().toString();
         URI link = new URI(URL);
-        aDesktop.browse(link);
+        //aDesktop.browse(link);
+        WebView view = new WebView();
+        WebEngine engine = view.getEngine();
+        engine.load(URL);
+        VBox box = new VBox();
+        box.getChildren().addAll(view);
+        Scene scene = new Scene(box, 1000,500);
+        stage.setScene(scene);
+        stage.show();
 
     }
 }
