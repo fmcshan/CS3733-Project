@@ -1,41 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.reqBar">
-    <effect>
-        <DropShadow color="#a4a4a4" />
-    </effect>
-    <children>
-        <Label text="Help">
-            <font>
-                <Font name="System Bold" size="48.0" />
-            </font>
-            <VBox.margin>
-                <Insets right="190.0" top="15.0" />
-            </VBox.margin>
-        </Label>
-        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the service request form you would like to fill out from the dropdown menu. Select open request form to open the form and fill it out." wrappingWidth="316.0">
-            <font>
-                <Font size="16.0" />
-            </font>
-            <VBox.margin>
-                <Insets top="10.0" />
-            </VBox.margin>
-        </Text>
-        <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="300.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
-            <font>
-                <Font size="24.0" />
-            </font>
-            <VBox.margin>
-                <Insets top="30.0" />
-            </VBox.margin>
-        </JFXButton>
-    </children>
-</VBox>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow color="#a4a4a4" />
+         </effect>
+         <children>
+            <Label text="Help">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Label>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the service request form you would like to fill out." wrappingWidth="236.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Upon selecting a service request, the form will open and can be filled out." wrappingWidth="282.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="250.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

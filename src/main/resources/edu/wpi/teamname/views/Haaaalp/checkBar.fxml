@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -25,30 +26,66 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" layoutX="43.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill out this form before or upon arrival to the hospital. " wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Text>
-            <Text fill="#868686" layoutX="43.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fields include: your name, date of birth, reason for visit, and phone number." wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
+            <HBox prefHeight="38.0" prefWidth="298.0">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-            </Text>
-            <Text fill="#868686" layoutX="43.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" text="When you are finished filling out the form, make sure to click the submit button so the hospital can recieve your information." wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill out this form before or upon arrival to the hospital. " wrappingWidth="237.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-            </Text>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fields include: your name, date of birth, reason for visit, and phone number." wrappingWidth="260.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="When you are finished filling out the form, make sure to click the submit button so the hospital can recieve your information." wrappingWidth="276.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
