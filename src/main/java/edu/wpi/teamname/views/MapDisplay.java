@@ -189,7 +189,7 @@ public class MapDisplay implements LevelChangeListener {
             This allows us to have an invisible border
             around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
+                circle.setFill(Color.OLIVE); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node

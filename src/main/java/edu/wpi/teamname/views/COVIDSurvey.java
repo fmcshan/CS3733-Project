@@ -8,7 +8,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Controller for COVIDSurvey.fxml
+ *
+ * @author Lauren Sowerbutts, Frank McShan
+ */
 public class COVIDSurvey {
     @FXML
     private Label title;
