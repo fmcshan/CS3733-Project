@@ -105,6 +105,9 @@ public class TableCellFactory {
         MenuItem completed = new MenuItem("Mark as Completed");
         MenuItem reset = new MenuItem("Reset");
         MenuItem delete = new MenuItem("Delete");
+        completed.setStyle("-fx-font-weight: 400; -fx-font-size: 14");
+        reset.setStyle("-fx-font-weight: 400; -fx-font-size: 14");
+        delete.setStyle("-fx-font-weight: 400; -fx-font-size: 14");
         if (!_req.isCompleted()) {
             contextMenu.getItems().add(completed);
         } else {
