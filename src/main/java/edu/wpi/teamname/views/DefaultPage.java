@@ -2,6 +2,7 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Edge;
@@ -16,18 +17,19 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
     @FXML
-    private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
@@ -54,7 +56,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
-    private AnchorPane topElements; // anchor pane where displayed nodes reside
+    private AnchorPane topElements, chatBot; // anchor pane where displayed nodes reside
+    @FXML
+    private JFXTextField enteredMessage;
+    @FXML
+    private ScrollPane chatScrollPane;
+
+    boolean opened = false;
 
     /**
      * run on startup
@@ -202,6 +210,45 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
+    }
+
+    @FXML
+    private void openChatBot() {
+        if (!opened) {
+            System.out.println("chat bot not opened");
+            chatBot.setVisible(true);
+            chatBot.setPickOnBounds(true);
+            opened = true;
+            return;
+        }
+        System.out.println("chat bot opened");
+        chatBot.setVisible(false);
+        chatBot.setPickOnBounds(false);
+        opened = false;
+    }
+
+    @FXML
+    void sendMessage() {
+        String message = enteredMessage.getText();
+        if (message.isEmpty()) {
+            return;
+        }
+        Label sentMessage = new Label();
+        sentMessage.setStyle("-fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 16; -fx-text-fill: white; -fx-background-color: #317fb8; " +
+                "-fx-background-radius: 20 20 0 20; -fx-border-radius: 20 20 0 20; -fx-border-width: 1.5; -fx-wrap-text: true; -fx-min-height: 50; " +
+                "-fx-min-width: 50; -fx-padding: 10 10 10 15");
+
+        VBox sentVBox = new VBox(sentMessage);
+        sentVBox.setMaxWidth(275);
+        sentVBox.setAlignment(Pos.BOTTOM_RIGHT);
+        VBox.setMargin(sentVBox, new Insets(0, -50, 10, 0));
+
+        sentMessage.setText(message);
+        chatBox.getChildren().add(sentVBox);
+        enteredMessage.clear();
+
+        chatScrollPane.setVvalue(1);
+        chatScrollPane.setFitToHeight(false);
     }
     
     void disableButtons(ArrayList<String> floors){

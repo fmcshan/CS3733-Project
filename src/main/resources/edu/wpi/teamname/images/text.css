@@ -1,7 +1,25 @@
-.text {
-    -fx-font-family: 'Poppins-Regular';
-    -fx-font-size: 48;
-    -fx-font-weight: 400
-;
+@font-face {
+    font-family: 'Graphik';
+    src: url("Graphik-Regular_1.ttf");
+}
+
+@font-face {
+    font-family: 'Proximanova';
+    src: url("proximanova-regular.a7942249_1.ttf");
+}
+
+.header {
+    -fx-font-family: "Graphik";
+    -fx-font-size: 25;
+}
+
+.message {
+    -fx-font-family: "Proximanova";
+    -fx-font-size: 16;
+}
+
+.navigation {
+    -fx-font-family: "Proximanova";
+    -fx-font-size: 24;
 }
 
