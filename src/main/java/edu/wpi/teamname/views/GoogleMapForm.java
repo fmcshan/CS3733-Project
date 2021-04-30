@@ -7,16 +7,15 @@ import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApi;
 import com.google.maps.PlaceAutocompleteRequest;
 import com.google.maps.PlacesApi;
-import com.google.maps.model.AutocompletePrediction;
+import com.google.maps.model.*;
 import com.google.maps.*;
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsStep;
 import com.google.maps.GeoApiContext;
+import com.jfoenix.controls.JFXTextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.json.*;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.GeocodingResult;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -29,10 +28,12 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,10 +78,13 @@ public class GoogleMapForm {
     private Label toLabel;
 
     @FXML
-    private JFXComboBox<String> travelMode;
+    private JFXComboBox<String> addressFill;
 
     @FXML
     private JFXButton submitButton;
+
+    @FXML
+    private JFXTextArea directionSpace;
 
     String allDirFran = "";
     String allDirWhit = "";
@@ -93,6 +97,11 @@ public class GoogleMapForm {
 
     @FXML
     private Text errorMes;
+    @FXML
+    private ImageView imageBox;
+
+
+    String chosenPark = "";
 
     @FXML
     private JFXButton printButton;
@@ -114,6 +123,9 @@ public class GoogleMapForm {
 //        streetEnding.getItems().add("Blvd");
 //        streetEnding.getItems().add("Cir");
 //        streetEnding.getItems().add("Ln");
+     directionSpace.setVisible(false);
+     errorMes.setVisible(false);
+     addressFill.setDisable(true);
         context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyCZVPvXk5oKKZvJKEEe6uaBmA8FuzzgbJg")
                 .build();
@@ -129,9 +141,10 @@ public class GoogleMapForm {
        // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
             //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
        // URI link = new URI(URL);
-        String origin = numInput.getText() + " " + streetInput.getText() + " " + streetEnding.getValue()
-                + ", " + townInput.getText() + " " + stateInput.getText();
-        DirectionsResult results =  DirectionsApi.getDirections(context, "24 Delaney Drive, Walpole MA 02081", "75 Francis Street, Boston MA").await();
+//        String origin = numInput.getText() + " " + streetInput.getText() + " " + streetEnding.getValue()
+//                + ", " + townInput.getText() + " " + stateInput.getText();
+        String origin = addressFill.getValue();
+        DirectionsResult results =  DirectionsApi.getDirections(context, origin, "75 Francis Street, Boston MA").await();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         DirectionsLeg[] feet = results.routes[0].legs;
 
@@ -174,6 +187,7 @@ public class GoogleMapForm {
                 }
 
             }
+            chosenPark = "75 Francis Street, Boston MA";
         } else {
             System.out.println("Whitney shorter");
             for (DirectionsLeg foot : feet2) {
@@ -186,7 +200,27 @@ public class GoogleMapForm {
                 }
                 String durationFWhit = foot.duration.toString();
             }
+            chosenPark = "15 New Whitney St, Boston MA";
         }
+        directionSpace.setVisible(true);
+        directionSpace.setText(lowDir);
+        Size size = new Size(500,400);
+        StaticMapsRequest request = StaticMapsApi.newRequest(context, size);
+        request.center(origin);
+        request.scale(2);
+        request.format(StaticMapsRequest.ImageFormat.png32);
+        request.maptype(StaticMapsRequest.StaticMapType.terrain);
+        StaticMapsRequest.Path path = new StaticMapsRequest.Path();
+        path.color("blue");
+        path.addPoint(origin);
+        path.addPoint(chosenPark);
+        path.fillcolor("red");
+        request.path(path);
+        ByteArrayInputStream bais = new ByteArrayInputStream(request.await().imageData);
+        Image img = new Image(bais);
+        imageBox.setImage(img);
+
+
     }
 
     @FXML
@@ -221,11 +255,12 @@ public class GoogleMapForm {
     }
 
     public void lookUp(){
+        addressFill.setDisable(false);
         String input = numInput.getText();
-        System.out.println(input);
+       // System.out.println(input);
         List<String> results = getAddresses(input) ;
         results.forEach(n->{
-            travelMode.getItems().add(n);
+            addressFill.getItems().add(n);
         });
     }
 
@@ -234,7 +269,7 @@ public class GoogleMapForm {
         AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context,lookup, token).awaitIgnoreError();
         List<String>  results = new ArrayList<>();
         if(autocompletePredictions!=null){
-            System.out.println("not null");
+            //System.out.println("not null");
         for (int i = 0; i < autocompletePredictions.length; i++) {
             results.add(autocompletePredictions[i].description);
         }}
