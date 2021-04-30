@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -64,8 +65,17 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private ScrollPane scrollBar;
     @FXML
-    private JFXButton handicapButton;
+    public JFXButton handicapButton;
 
+    public void setToCombo(String nodeName) {
+        AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
+        box.setValue("Emergency Department Entrance[1]");
+    }
+
+    public void setFromCombo(String nodeName) {
+        AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(fromCombo);
+        box.setValue("Emergency Department Entrance[1]");
+    }
 
     /**
      * constructor for Navigation
@@ -78,6 +88,10 @@ public class Navigation implements LevelChangeListener {
 
     public ArrayList<Node> getListOfNodes() {
         return listOfNodes;
+    }
+
+    public VBox getNavBox() {
+        return navBox;
     }
 
     /**
@@ -99,7 +113,7 @@ public class Navigation implements LevelChangeListener {
         scrollBar.setFitToHeight(true);
     }
 
-    private HBox generateNavElem(String _direction) {
+    public HBox generateNavElem(String _direction) {
         String directionText = _direction.toLowerCase();
         HBox directionGuiWrapper = new HBox();
         directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 0 0 0 0;");
@@ -228,6 +242,7 @@ public class Navigation implements LevelChangeListener {
         }
         navBox.getChildren().clear();
         pathCanceled = false;
+
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
         boolean handicap = true;

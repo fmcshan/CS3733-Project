@@ -2,6 +2,8 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -75,6 +78,10 @@ public class MapDisplay implements LevelChangeListener {
     Edge selectedEdge;
     Circle draggedCircle;
     Node draggedNode;
+
+    Node startNode;
+    Node endNode;
+
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
@@ -606,11 +613,27 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse Event
      */
     public void processClick(MouseEvent t, boolean dragged) {
-        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            return; // Don't process clicks outside of the map editor.
-        }
         if (dragged) {
             return;
+        }
+        if (LoadFXML.getCurrentWindow().equals("navBar")) {
+            if (t.getTarget() instanceof Circle) {
+                Navigation navigation = new Navigation(this);
+                if (startNode == null) {
+                    startNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential start node for pathfinding
+                    navigation.setFromCombo(startNode.getLongName());
+                } else {
+                    endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
+                    navigation.setToCombo(endNode.getLongName());
+                    startNode = null;
+                    endNode = null;
+                }
+                return;
+            }
+        }
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            System.out.println("i got in here though");
+            return; // Don't process clicks outside of the map editor.
         }
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
@@ -999,7 +1022,6 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-
     }
 
     /**
