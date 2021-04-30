@@ -67,6 +67,8 @@ public class Navigation implements LevelChangeListener {
     @FXML
     public JFXButton handicapButton;
 
+    ArrayList<String> allFloors = new ArrayList<>();
+
     public void setToCombo(String nodeName) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
         box.setValue("Emergency Department Entrance[1]");
@@ -241,6 +243,13 @@ public class Navigation implements LevelChangeListener {
             return;
         }
         navBox.getChildren().clear();
+        allFloors.add("L2");
+        allFloors.add("L1");
+        allFloors.add("G");
+        allFloors.add("1");
+        allFloors.add("2");
+        allFloors.add("3");
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
         pathCanceled = false;
 
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
@@ -257,14 +266,6 @@ public class Navigation implements LevelChangeListener {
         ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
-
-        ArrayList<String> allFloors = new ArrayList<>();
-        allFloors.add("L2");
-        allFloors.add("L1");
-        allFloors.add("G");
-        allFloors.add("1");
-        allFloors.add("2");
-        allFloors.add("3");
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -280,7 +281,7 @@ public class Navigation implements LevelChangeListener {
             navBox.getChildren().add(spacer);
         });
         LevelManager.getInstance().setFloor(startNode.getFloor());
-        //SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
     }
 
     void clearDirections() {
@@ -298,8 +299,7 @@ public class Navigation implements LevelChangeListener {
         //refreshNodes();
     }
 
-    public void cancelNavigation(ActionEvent actionEvent) {
-        ArrayList<String> allFloors = new ArrayList<>();
+    public void cancelNavigation() {
         allFloors.add("L2");
         allFloors.add("L1");
         allFloors.add("G");
@@ -307,12 +307,11 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("2");
         allFloors.add("3");
         refreshNodes();
-        //SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
+        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
-        mapDisplay.clearMap();
         clearDirections();
         pathCanceled = true;
-        //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
     }
 
     @FXML

@@ -149,6 +149,10 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private VBox rightClick;
 
+    public Path getTonysPath() {
+        return tonysPath;
+    }
+
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
 
