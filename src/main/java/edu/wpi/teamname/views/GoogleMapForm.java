@@ -5,21 +5,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApi;
+import com.google.maps.PlaceAutocompleteRequest;
+import com.google.maps.PlacesApi;
+import com.google.maps.model.AutocompletePrediction;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
-import org.json.*;
-import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.GeocodingResult;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.views.help.Addresses;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -31,6 +29,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,24 +77,30 @@ public class GoogleMapForm {
 
     @FXML
     private JFXComboBox<String> streetEnding;
+    PlaceAutocompleteRequest.SessionToken token;
+    GeoApiContext context;
 
     public void start(Stage stage) throws Exception{
 
 
     }
-
+ @FXML
     public void initialize() {
-        travelMode.getItems().add("driving");
-        travelMode.getItems().add("bicycling");
-        travelMode.getItems().add("walking");
-        streetEnding.getItems().add("St");
-        streetEnding.getItems().add("Dr");
-        streetEnding.getItems().add("Rd");
-        streetEnding.getItems().add("St");
-        streetEnding.getItems().add("Ave");
-        streetEnding.getItems().add("Blvd");
-        streetEnding.getItems().add("Cir");
-        streetEnding.getItems().add("Ln");
+//        travelMode.getItems().add("driving");
+//        travelMode.getItems().add("bicycling");
+//        travelMode.getItems().add("walking");
+//        streetEnding.getItems().add("St");
+//        streetEnding.getItems().add("Dr");
+//        streetEnding.getItems().add("Rd");
+//        streetEnding.getItems().add("St");
+//        streetEnding.getItems().add("Ave");
+//        streetEnding.getItems().add("Blvd");
+//        streetEnding.getItems().add("Cir");
+//        streetEnding.getItems().add("Ln");
+        context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyCsYyTEAMqOBjOpG84HSCXDUJ7iQsNF1bA")
+                .build();
+        token = new PlaceAutocompleteRequest.SessionToken();
     }
 
     @FXML
@@ -104,9 +110,7 @@ public class GoogleMapForm {
        // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
             //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
        // URI link = new URI(URL);
-        GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyCsYyTEAMqOBjOpG84HSCXDUJ7iQsNF1bA")
-                .build();
+
         DirectionsResult results =  DirectionsApi.getDirections(context, "24 Delaney Drive, Walpole MA 02081", "75 Francis Street, Boston MA").await();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
        // System.out.println(gson.toJson(results.routes[0].legs));
@@ -145,6 +149,27 @@ public class GoogleMapForm {
 
         s = s.replaceAll("<[^>]*>", "");
         return s;
+    }
+
+    public void lookUp(){
+        String input = numInput.getText();
+        System.out.println(input);
+        List<String> results = getAddresses(input) ;
+        results.forEach(n->{
+            travelMode.getItems().add(n);
+        });
+    }
+
+
+    public List <String> getAddresses(String lookup){
+        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context,lookup, token).awaitIgnoreError();
+        List<String>  results = new ArrayList<>();
+        if(autocompletePredictions!=null){
+            System.out.println("not null");
+        for (int i = 0; i < autocompletePredictions.length; i++) {
+            results.add(autocompletePredictions[i].description);
+        }}
+        return results;
     }
 
 }
