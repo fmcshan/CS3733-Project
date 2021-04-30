@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -27,44 +28,92 @@
             </Label>
             <Text fill="#868686" layoutX="43.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Brigham and Women's Hospital." textAlignment="CENTER" wrappingWidth="327.0">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>
             </Text>
-            <Text fill="#868686" layoutX="43.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to navigate to a location in the hospital, select the Navigation button." wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </Text>
-            <Text fill="#868686" layoutX="43.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to check in, select the Check-In button. " wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
+            <HBox>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-            </Text>
-            <Text fill="#868686" layoutX="43.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to place a service request, select the Requests button." wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to navigate to a location in the hospital, select the Navigation button." wrappingWidth="293.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-            </Text>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign in, press the 'profile' icon in the bottom left." wrappingWidth="300.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to check in, select the Check-In button. " wrappingWidth="300.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-            </Text>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to place a service request, select the Requests button." wrappingWidth="272.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign in, press the 'profile' icon in the bottom left." wrappingWidth="282.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
