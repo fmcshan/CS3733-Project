@@ -98,7 +98,7 @@ public class GoogleMapForm {
 //        streetEnding.getItems().add("Cir");
 //        streetEnding.getItems().add("Ln");
         context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyCsYyTEAMqOBjOpG84HSCXDUJ7iQsNF1bA")
+                .apiKey("AIzaSyCZVPvXk5oKKZvJKEEe6uaBmA8FuzzgbJg")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
     }
