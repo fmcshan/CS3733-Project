@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Objects;
 
 /**
  * <h1>Node</h1>
@@ -134,13 +135,13 @@ public class Node {
      * Overloaded constructor that loads all of the info from the original constructor
      * as well as other extraneous info related to a node
      * @param nodeID    nodeID for this node
-     * @param longName the full name of the node
-     * @param shortName the short name of the node
+     * @param x         x value of the node's location
+     * @param y         y value of the node's location
      * @param floor the floor the node is located on
      * @param building the building the node is located in
      * @param nodeType the node's type
-     * @param x         x value of the node's location
-     * @param y         y value of the node's location
+     * @param longName the full name of the node
+     * @param shortName the short name of the node
      */
     public Node(String nodeID, int x, int y, String floor, String building, String nodeType, String longName, String shortName) {
         //coordinates
@@ -162,6 +163,38 @@ public class Node {
         this.visitedFlag = false;
         this.costSoFar = Double.POSITIVE_INFINITY;
         this.AStarScore = Double.POSITIVE_INFINITY;
+    }
+
+    public void setNodeID(String nodeID) {
+        this.nodeID = nodeID;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     /**
@@ -272,6 +305,10 @@ public class Node {
         aNode.edges.add(this);
     }
 
+    public void setEdges(ArrayList<Node> edges) {
+        this.edges = edges;
+    }
+
     /**
      * Retrieves all the nodes connected to this node
      *
@@ -289,4 +326,19 @@ public class Node {
     public String getNodeID() {
         return nodeID;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return nodeID.equals(node.nodeID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodeID);
+    }
+
 }

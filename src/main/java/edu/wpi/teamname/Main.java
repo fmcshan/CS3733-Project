@@ -1,19 +1,23 @@
 package edu.wpi.teamname;
 
-import edu.wpi.teamname.Database.AsynchronousQueue;
-import edu.wpi.teamname.Database.DatabaseThread;
-import edu.wpi.teamname.Database.Socket;
-import edu.wpi.teamname.Database.SocketManager;
-import org.java_websocket.client.WebSocketClient;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.*;
+import edu.wpi.teamname.simplify.Config;
+import edu.wpi.teamname.views.manager.LevelManager;
+import javafx.scene.text.Font;
 
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class Main {
 
     public static void main(String[] args) {
+        System.setProperty("javafx.animation.fullspeed", "true");
+        Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
+//        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
-//        DatabaseThread.getInstance().start();
+  //   DatabaseThread.getInstance().start();
         App.launch(App.class, args);
     }
 }

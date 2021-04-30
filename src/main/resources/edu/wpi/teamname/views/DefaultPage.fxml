@@ -1,87 +1,698 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.LineTo?>
+<?import javafx.scene.shape.MoveTo?>
+<?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
-    <children>
-        <VBox layoutX="459.0" layoutY="14.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #041627;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <VBox alignment="CENTER" maxHeight="125.0" prefHeight="200.0" prefWidth="100.0">
-                    <children>
-                        <Label text="Default Page" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="48.0" />
-                            </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                        </Label>
-                    </children>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </VBox>
-                <HBox>
-                    <VBox.margin>
-                        <Insets bottom="30.0" />
-                    </VBox.margin>
-                </HBox>
-            </children>
-        </VBox>
-        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #173c5f; -fx-background-radius: 4px; -fx-border-color: #947a27; -fx-border-width: 6px;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
-            <children>
-            <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
+   <children>
+      <StackPane fx:id="stackPane" alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #d6d8d5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="hospitalMap" fitHeight="970.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/01_thefirstfloor.png" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="pathAnchor" prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#nodesEditor" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Nodes">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </JFXButton>
-                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#edgesEditor" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Edges">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                     <VBox.margin>
-                        <Insets top="75.0" />
-                     </VBox.margin>
-                      </JFXButton>
-                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#pathFinding" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Pathfinding">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                     <VBox.margin>
-                        <Insets top="75.0" />
-                     </VBox.margin>
-                      </JFXButton>
-                      <JFXButton buttonType="RAISED" minWidth="200.0" onAction="#serviceRequests" ripplerFill="#cccccc" style="-fx-background-color: #eeeeee;" text="Service Requests">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                     <VBox.margin>
-                        <Insets top="75.0" />
-                     </VBox.margin>
-                      </JFXButton>
+                  <Path fx:id="tonysPath" fill="#ff634700" stroke="#ff2802" strokeLineJoin="ROUND" strokeMiterLimit="20.0" strokeWidth="5.0">
+                     <elements>
+                        <MoveTo x="800.0" y="800.0" />
+                        <LineTo x="600.0" y="600.0" />
+                        <LineTo x="500.0" y="500.0" />
+                     </elements>
+                  </Path>
                </children>
-            </VBox>
-            <HBox alignment="BOTTOM_RIGHT" maxHeight="50.0" prefHeight="0.0" prefWidth="923.0" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets bottom="15.0" right="15.0" />
-               </VBox.margin>
+            </AnchorPane>
+            <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane fx:id="onTopOfTopElements" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+            <VBox fx:id="helpPop" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false" StackPane.alignment="TOP_RIGHT">
                <children>
-                  <JFXButton buttonType="RAISED" onAction="#exitApplication" ripplerFill="#c94d37" style="-fx-background-color: #ff6347;" text="Exit">
+                  <JFXButton alignment="BASELINE_LEFT" onAction="#loadNodesCsv" prefWidth="180.0" text="Load Nodes" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="UPLOAD" size="24" />
+                     </graphic>
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="20.0" layoutY="95.0" onAction="#saveNodesCsv" prefWidth="180.0" text="Save Nodes" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="15.0" layoutY="15.0" onAction="#loadEdgesCsv" prefWidth="180.0" text="Load Edges" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="UPLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="15.0" layoutY="72.0" onAction="#saveEdgesCsv" prefWidth="180.0" text="Save Edges" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
                   </JFXButton>
                </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+               <StackPane.margin>
+                  <Insets right="100.0" top="25.0" />
+               </StackPane.margin>
+            </VBox>
+            <HBox alignment="CENTER_LEFT" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="popPop" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
             </HBox>
-            </children>
-        </VBox>
-    </children>
+            <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Add Node">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Separator prefWidth="50.0" />
+                  <JFXTextField fx:id="nodeId" focusColor="#ababab" promptText="Node ID" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="nodeBuilding" focusColor="#ababab" layoutX="20.0" layoutY="53.0" promptText="Building" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="nodeType" focusColor="#ababab" layoutX="10.0" layoutY="93.0" promptText="Node Type" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="nodeShortName" focusColor="#ababab" layoutX="20.0" layoutY="103.0" promptText="Short Name" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="nodeLongName" focusColor="#ababab" layoutX="10.0" layoutY="128.0" promptText="Long Name" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton onAction="#addNode" prefWidth="180.0" text="Add" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="PLUS_CIRCLE_OUTLINE" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </JFXButton>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" height="27.67" radius="18.9175" width="50.0" />
+               </effect>
+            </VBox>
+            <VBox fx:id="addEdgeField" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="125.0" maxWidth="200.0" prefHeight="125.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Add Edge">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets top="2.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Separator prefWidth="50.0" />
+                  <Label fx:id="addEdgeWarning" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="182.0" text="Edge already exists." textFill="RED" visible="false">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="edgeIdPreview" editable="false" focusColor="#ababab" layoutX="20.0" layoutY="53.0" promptText="Edge ID" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton onAction="#addEdge" prefWidth="180.0" text="Add" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="PLUS_CIRCLE_OUTLINE" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </JFXButton>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" height="34.35" radius="20.5875" width="50.0" />
+               </effect>
+            </VBox>
+            <VBox fx:id="editNode" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Edit Node">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Separator prefWidth="50.0" />
+                  <JFXTextField fx:id="editNodeBuilding" focusColor="#ababab" layoutX="20.0" layoutY="53.0" promptText="Building" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="editNodeType" focusColor="#ababab" layoutX="10.0" layoutY="93.0" promptText="Node Type" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="editNodeShortName" focusColor="#ababab" layoutX="20.0" layoutY="103.0" promptText="Short Name" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="editNodeLongName" focusColor="#ababab" layoutX="10.0" layoutY="128.0" promptText="Long Name" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="8.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton alignment="BASELINE_LEFT" onAction="#editNodeSave" prefWidth="180.0" text="Save" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="26" wrappingWidth="26.0" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="2.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator prefWidth="200.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="20.0" layoutY="253.0" onAction="#deleteNode" prefWidth="180.0" text="Delete" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DELETE" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                  </JFXButton>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+            </VBox>
+            <VBox fx:id="deleteEdge" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="125.0" maxWidth="200.0" prefHeight="125.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Delete Edge">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets top="2.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Separator prefWidth="50.0" />
+                  <JFXTextField fx:id="deleteEdgeId" editable="false" focusColor="#ababab" layoutX="20.0" layoutY="53.0" promptText="Edge ID" style="-fx-prompt-text-fill: #9e9e9e;" unFocusColor="#c3c3c3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton onAction="#confirmDeleteEdge" prefWidth="180.0" text="Delete" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DELETE" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </JFXButton>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+            </VBox>
+            <VBox fx:id="rightClick" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <JFXButton alignment="BASELINE_LEFT" onAction="#loadNodesCsv" prefWidth="180.0" text="Load Nodes" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="UPLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="20.0" layoutY="95.0" onAction="#saveNodesCsv" prefWidth="180.0" text="Save Nodes" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="15.0" layoutY="15.0" onAction="#loadEdgesCsv" prefWidth="180.0" text="Load Edges" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="UPLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+                  <Separator layoutX="10.0" layoutY="64.0" prefWidth="50.0" />
+                  <JFXButton alignment="BASELINE_LEFT" layoutX="15.0" layoutY="72.0" onAction="#saveEdgesCsv" prefWidth="180.0" text="Save Edges" textFill="#9e9e9e">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="DOWNLOAD" size="24" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                     </padding>
+                  </JFXButton>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+            </VBox>
+         </children>
+      </StackPane>
+      <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="304.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/bwh-logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="30.0" top="30.0" />
+               </VBox.margin>
+            </ImageView>
+            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
+               <children>
+                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="36" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="CheckIn" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="31.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
+                                 <VBox.margin>
+                                    <Insets left="12.0" />
+                                 </VBox.margin>
+                              </MaterialDesignIconView>
+                           </children>
+                           <padding>
+                              <Insets right="6.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="Requests" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="8.0" left="40.0" top="8.0" />
+                     </padding>
+                     <graphic>
+                        <VBox>
+                           <children>
+                              <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </VBox>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <VBox fx:id="adminPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+                  <VBox fx:id="registrationPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox fx:id="requestPop" layoutX="35.0" layoutY="298.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+                  <VBox fx:id="employeePop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+               </children>
+            </VBox>
+         </children></VBox>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#exitApplication" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="exit" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="52" />
+               </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton fx:id="adminButton" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" onAction="#openLogin" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="admin" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="250.0" />
+               </HBox.margin>
+               <graphic>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="52" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <VBox pickOnBounds="false" style="-fx-background-color: white; -fx-background-radius: 10px;" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="+" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView fill="#9e9e9e" glyphName="PLUS" size="24" />
+               </graphic>
+            </JFXButton>
+            <Separator prefWidth="50.0" />
+            <JFXButton contentDisplay="GRAPHIC_ONLY" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="-" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView fill="#9e9e9e" glyphName="MINUS" size="24" />
+               </graphic>
+            </JFXButton>
+         </children>
+         <effect>
+            <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+         </effect>
+      </VBox>
+      <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <JFXButton fx:id="floor3Bttn" onAction="#setFloor5" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="3" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <Separator prefWidth="50.0" />
+            <JFXButton fx:id="floor2Bttn" onAction="#setFloor4" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="2" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="61.0" prefWidth="50.0" />
+            <JFXButton fx:id="floor1Bttn" onAction="#setFloor3" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="1" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="115.0" prefWidth="50.0" />
+            <JFXButton fx:id="groundBttn" onAction="#setFloor2" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="G" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="169.0" prefWidth="50.0" />
+            <JFXButton fx:id="L1Bttn" onAction="#setFloor1" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="L1" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <Separator layoutX="10.0" layoutY="223.0" prefWidth="50.0" />
+            <JFXButton fx:id="L2Bttn" onAction="#setFloor0" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="L2" textFill="#9e9e9e">
+               <effect>
+                  <DropShadow color="#a4a4a4" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <effect>
+            <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+         </effect>
+      </VBox>
+      <VBox layoutX="1640.0" layoutY="888.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#openHelp" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <graphic>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="48" />
+               </graphic>
+            </JFXButton>
+         </children>
+         <effect>
+            <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+         </effect>
+      </VBox>
+   </children>
 </AnchorPane>

@@ -32,7 +32,7 @@ public class CSVOperator {
         return allElements;
     }
 
-    public static void writeNodeCSV(ArrayList<Node> nodes, String nodeCSVName) {
+    public static void writeNodeCSV(ArrayList<Node> nodes, String filePath) {
         StringBuilder nodeBuilder = new StringBuilder();
 
         nodeBuilder.append("nodeId,xcoord,ycoord,level,building,nodetype,type,longname,shortname\n");
@@ -52,7 +52,7 @@ public class CSVOperator {
 
         try {
             File node = new File(System.getProperty("user.dir") + "\\newNodes.csv");
-            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + nodeCSVName)) {
+            try (FileWriter fr = new FileWriter(filePath)) {
                 fr.write(nodeBuilder.toString());
             }
         } catch (IOException e) {
@@ -60,7 +60,7 @@ public class CSVOperator {
         }
     }
 
-    public static void writeEdgeCSV(ArrayList<Edge> edges, String edgeCSVName) {
+    public static void writeEdgeCSV(ArrayList<Edge> edges, String filePath) {
         StringBuilder edgeBuilder = new StringBuilder();
 
         edgeBuilder.append("edgeId,startNode,endNode\n");
@@ -75,7 +75,7 @@ public class CSVOperator {
 
         try {
             File edge = new File(System.getProperty("user.dir") + "\\newEdges.csv");
-            try (FileWriter fr = new FileWriter(System.getProperty("user.dir") + "\\" + edgeCSVName)) {
+            try (FileWriter fr = new FileWriter(filePath)) {
                 fr.write(edgeBuilder.toString());
             }
         } catch (IOException e) {

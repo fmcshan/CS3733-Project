@@ -1,7 +1,6 @@
 package edu.wpi.teamname.Database;
 
-import edu.wpi.teamname.Algo.Edge;
-import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -28,43 +27,89 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake data) {
-        System.out.println("Non authenticated socket opened.");
+        System.out.println("Authenticated socket opened.");
+        SocketManager.getInstance().resetReconnectTimeout("auth");
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("closed with exit code " + code + " error: " + reason);
+        if (code != 1000) {
+            SocketManager.getInstance().reconnectAuthSocket();
+        } else {
+            System.out.println("Auth socket closed");
+        }
     }
 
     @Override
     public void onMessage(String message) {
-        System.out.println(message);
         JSONObject payload = new JSONObject(message);
         String payloadId = payload.getString("event");
 
-//        if (payloadId.equals("init")) {
-//            ArrayList<Node> nodes = Parser.parseNodes(payload);
-//            ArrayList<Edge> edges = Parser.parseEdges(payload.getJSONArray("edges"));
-//
-//            LocalStorage.getInstance().setNodes(nodes);
-//            LocalStorage.getInstance().setEdges(edges);
-//            return;
-//        }
+        if (payloadId.equals("init")) {
+            ArrayList<UserRegistration> registrationsPayload = Parser.parseUserRegistrations(payload.getJSONArray("registrations"));
+            LocalStorage.getInstance().setRegistrations(registrationsPayload);
 
-//        if (payloadId.equals("add_node")) {
-//            System.out.println("Node added");
-//            return;
-//        }
+            ArrayList<MasterServiceRequestStorage> giftDeliveries = Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries"));
+            LocalStorage.getInstance().setMasterStorages(giftDeliveries);
+
+            ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
+            LocalStorage.getInstance().setUsers(users);
+
+            return;
+        }
+
+        if (payloadId.equals("submit_check_in")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("submit_check_in");
+            change.setUserRegistration(Parser.parseUserRegistration(payload));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+        if (payloadId.equals("submit_gift_delivery")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("submit_gift_delivery");
+            change.setGiftDelivery(Parser.parseGiftDeliveryStorage(payload));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+        if (payloadId.equals("gift_delivery_updated")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("gift_delivery_updated");
+            change.setGiftDeliveries(Parser.parseGiftDeliveryStorages(payload.getJSONArray("giftDeliveries")));
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+        if (payloadId.equals("reload_employee")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("reload_employee");
+            change.setUsers(Parser.parseUsers(payload.getJSONArray("users")));
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
+        if (payloadId.equals("update_employee")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("update_employee");
+            change.setUsers(Parser.parseUsers(payload.getJSONArray("users")));
+            change.setUser(Parser.parseUser(payload.getJSONObject("user")));
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
 
     }
 
     @Override
     public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
     }
 
     @Override
     public void onError(Exception e) {
-        System.err.println("error:" + e);
+        System.out.println("Auth socket error");
     }
 }

@@ -9,7 +9,9 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.simplify.Config;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,30 +27,13 @@ import java.util.stream.Stream;
 public class PathFindingDatabaseManager {
     private static final PathFindingDatabaseManager instance = new PathFindingDatabaseManager();
     private Firestore db;
+    private String SERVER_URL = Config.getInstance().getServerUrl();
 
     private PathFindingDatabaseManager() {
     }
 
     public static synchronized PathFindingDatabaseManager getInstance() {
         return instance;
-    }
-
-    /**
-     * Splits a list into a list of lists with a maximum size of length
-     *
-     * @param source Source list
-     * @param length Maximum list length/batch size
-     * @return List of lists with a maximum size of length
-     */
-    private static <T> Stream<List<T>> batches(List<T> source, int length) {
-        if (length <= 0)
-            throw new IllegalArgumentException("length = " + length);
-        int size = source.size();
-        if (size <= 0)
-            return Stream.empty();
-        int fullChunks = (size - 1) / length;
-        return IntStream.range(0, fullChunks + 1).mapToObj(
-                n -> source.subList(n * length, n == fullChunks ? size : (n + 1) * length));
     }
 
     private static ArrayList<Node> parseNodes(JSONArray nodesData, JSONArray edgeData) {
@@ -83,164 +68,99 @@ public class PathFindingDatabaseManager {
         return nodesList;
     }
 
-    public void startDb() {
-        initDb();
-    }
+    public void insertNodeListIntoDatabase(ArrayList<Node> _nodes) {
+        JSONObject data = new JSONObject();
+        JSONArray nodes = new JSONArray();
+        _nodes.forEach(n -> {
+            JSONObject node = new JSONObject();
+            node.put("id", n.getNodeID());
+            node.put("x", String.valueOf(n.getX()));
+            node.put("y", String.valueOf(n.getY()));
+            node.put("level", n.getFloor());
+            node.put("building", n.getBuilding());
+            node.put("type", n.getNodeType());
+            node.put("longName", n.getLongName());
+            node.put("shortName", n.getShortName());
+            nodes.put(node);
+        });
 
-    /**
-     * Initializes the firestore database
-     */
-    private void initDb() {
-        try {
-            InputStream serviceAccount = new FileInputStream(System.getProperty("user.dir") + "/3733-firebase-service-account.json");
-            GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(credentials)
-                    .build();
-            FirebaseApp.initializeApp(options);
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("nodes", nodes.toString());
 
-            db = FirestoreClient.getFirestore();
+        Change change = new Change("load_nodes", data.getString("CHANGE_ID"));
+        change.setNodes(_nodes);
+        change.setEdges(LocalStorage.getInstance().getEdges());
+        ChangeManager.getInstance().processChange(change);
 
-        } catch (Exception e) {
-            System.out.println("error initializing firebase.");
-        }
+        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-nodes", data, "POST");
+        AsynchronousQueue.getInstance().add(task);
     }
 
     /**
      * Read the provided CSV and insert nodes into the database
      */
-    private void insertNodesIntoDatabase() {
-        List<List<String>> allNodesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Nodes.csv");
+    public void insertNodeCsvIntoDatabase(String file) {
+        List<List<String>> allNodesData = CSVOperator.readFile(file);
         Set<List<String>> nodesDataAsSet = new HashSet<>(allNodesData); // to avoid duplicate elements
         allNodesData.clear();
         allNodesData.addAll(nodesDataAsSet);
 
-        WriteBatch batch = db.batch();
-
-        batches(allNodesData, 400).forEach(batchedNodeData -> {
-            for (List<String> singleNodeData : batchedNodeData) {
-                try {
-                    DocumentReference nodeRef = db.collection("nodes").document(singleNodeData.get(0));
-                    Map<String, Object> node = new HashMap<>();
-                    node.put("x", singleNodeData.get(1));
-                    node.put("y", singleNodeData.get(2));
-                    node.put("level", singleNodeData.get(3));
-                    node.put("building", singleNodeData.get(4));
-                    node.put("type", singleNodeData.get(5));
-                    node.put("longName", singleNodeData.get(6));
-                    node.put("shortName", singleNodeData.get(7));
-
-                    batch.set(nodeRef, node);
-
-                } catch (Exception e) {
-                    System.out.println("error inserting node into the batch");
-                    e.printStackTrace();
-                }
-            }
-
-            ApiFuture<List<WriteResult>> future = batch.commit();
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        ArrayList<Node> nodeList = new ArrayList<Node>();
+        allNodesData.forEach(n -> {
+            nodeList.add(new Node(
+                    n.get(0),
+                    Integer.parseInt(n.get(1)),
+                    Integer.parseInt(n.get(2)),
+                    n.get(3),
+                    n.get(4),
+                    n.get(5),
+                    n.get(6),
+                    n.get(7)
+            ));
         });
+        insertNodeListIntoDatabase(nodeList);
+    }
+
+    public void insertEdgeListIntoDatabase(ArrayList<Edge> _edges) {
+        JSONObject data = new JSONObject();
+        JSONArray edges = new JSONArray();
+        _edges.forEach(e -> {
+            JSONObject edge = new JSONObject();
+            edge.put("id", e.getEdgeID());
+            edge.put("startNode", e.getStartNode());
+            edge.put("endNode", e.getEndNode());
+            edges.put(edge);
+        });
+
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("edges", edges.toString());
+
+        Change change = new Change("load_edges", data.getString("CHANGE_ID"));
+        change.setNodes(LocalStorage.getInstance().getNodes());
+        change.setEdges(_edges);
+        ChangeManager.getInstance().processChange(change);
+
+        AsynchronousTask task = new AsynchronousTask(SERVER_URL + "/api/load-edges", data, "POST");
+        AsynchronousQueue.getInstance().add(task);
     }
 
     /**
      * Read the provided CSV and insert edges into the database
      */
-    public void insertEdgesIntoDatabase() {
-        List<List<String>> allEdgesData = CSVOperator.readFile(System.getProperty("user.dir") + "/L1Edges.csv");
+    public void insertEdgeCsvIntoDatabase(String file) {
+        List<List<String>> allEdgesData = CSVOperator.readFile(file);
         Set<List<String>> edgesDataAsSet = new HashSet<>(allEdgesData); // to avoid duplicate elements
         allEdgesData.clear();
         allEdgesData.addAll(edgesDataAsSet);
 
-        WriteBatch batch = db.batch();
-        batches(allEdgesData, 400).forEach(batchedEdgeData -> {
-            for (List<String> singleNodeData : batchedEdgeData) {
-                try {
-                    DocumentReference edgeRef = db.collection("edges").document(singleNodeData.get(0));
-                    Map<String, Object> edge = new HashMap<>();
-                    edge.put("start", singleNodeData.get(1));
-                    edge.put("end", singleNodeData.get(2));
-
-                    batch.set(edgeRef, edge);
-
-                } catch (Exception e) {
-                    System.out.println("error inserting edge into the batch");
-                    e.printStackTrace();
-                }
-            }
-
-            ApiFuture<List<WriteResult>> future = batch.commit();
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        ArrayList<Edge> edgeList = new ArrayList<Edge>();
+        allEdgesData.forEach(n -> {
+            edgeList.add(new Edge(
+                    n.get(0),
+                    n.get(1),
+                    n.get(2)
+            ));
         });
-    }
-
-    /**
-     * Performs a get request and returns the response as a json object
-     * @param _url The URL to get
-     * @return A json object
-     * @throws IOException
-     */
-    public JSONObject getRequestJson(String _url) throws IOException {
-        URL url = new URL(_url);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        return new JSONObject(response.toString());
-    }
-
-    /**
-     * Nodes are handled internally as a json object
-     * @return A json array of nodes.
-     */
-    private JSONArray getNodesInteral() {
-        ArrayList<List<String>> nodes = new ArrayList<>();
-        try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-nodes");
-            return nodeList.getJSONArray("data");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new JSONArray();
-    }
-
-    /**
-     * Edges are handled internally as a json object
-     * @return A json array of edges.
-     */
-    private JSONArray getEdgesInternal() {
-        try {
-            JSONObject nodeList = getRequestJson("https://us-central1-software-engineering-3733.cloudfunctions.net/get-edges");
-            return nodeList.getJSONArray("data");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new JSONArray();
-    }
-
-    /**
-     * Return an arraylist of node classes
-     * @return An arraylist of node classes
-     */
-    public ArrayList<Node> getNodes() {
-        JSONArray nodes = getNodesInteral();
-        JSONArray edges = getEdgesInternal();
-        return parseNodes(nodes, edges);
+        insertEdgeListIntoDatabase(edgeList);
     }
 }

@@ -1,8 +1,9 @@
 package edu.wpi.teamname;
 import java.util.ArrayList;
-import edu.wpi.teamname.Algo.AStar;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Parser;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
  * @author emmanuelola
  */
 public class AlgoTests {
-    ArrayList<Node> nodes = PathFindingDatabaseManager.getInstance().getNodes();
+    ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
     Node s1 = nodes.get(Parser.indexOfNode(nodes, "lPARK022GG"));
     Node g1 = nodes.get(Parser.indexOfNode(nodes, "lEXIT001GG"));
     Node s2 = nodes.get(Parser.indexOfNode(nodes, "lPARK022GG"));
@@ -32,11 +33,11 @@ public class AlgoTests {
     @BeforeEach
     void setUp() {
         AStar a = new AStar(nodes, s1, g1);
-        path1 = a.returnPath();
+        path1 = a.getPath();
         AStar b = new AStar(nodes, s2, g2);
-        path2 = b.returnPath();
+        path2 = b.getPath();
         AStar c = new AStar(nodes, s3, g3);
-        path3 = c.returnPath();
+        path3 = c.getPath();
     }
 
     @Test

@@ -23,10 +23,9 @@ public class AsynchronousQueue extends Thread {
                     Thread.sleep(100);
                 } else {
                     AsynchronousTask newTask = tasks.removeFirst();
-                    System.out.println(newTask.get_url());
-                    if (newTask.getRequestType().equals("get")) {
+                    if (newTask.getRequestType().equals("GET")) {
                         Requests.get(newTask.get_url());
-                    } else if (newTask.getRequestType().equals("post")) {
+                    } else if (newTask.getRequestType().equals("POST")) {
                         if (newTask.getHeaders() == null) {
                             Requests.post(newTask.get_url());
                         } else {

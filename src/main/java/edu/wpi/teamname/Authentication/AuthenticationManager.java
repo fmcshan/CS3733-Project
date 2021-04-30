@@ -1,5 +1,6 @@
 package edu.wpi.teamname.Authentication;
 
+import com.google.api.client.json.Json;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Requests;
 import edu.wpi.teamname.simplify.Response;
@@ -24,6 +25,14 @@ public class AuthenticationManager {
         return (user != null);
     }
 
+    public Boolean isAdmin() {
+        return user.isAdmin();
+    }
+
+    public Boolean isEmployee() {
+        return user.isEmployee();
+    }
+
     public void addListener(AuthListener _add) {
         listeners.add(_add);
     }
@@ -39,16 +48,39 @@ public class AuthenticationManager {
             Response res = Requests.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDmVqldcnj6B21Ah339Zj_aJgC7p5Jq1zE", data);
 
             JSONObject payload = res.json();
+
+            java.util.Base64.Decoder decoder = java.util.Base64.getUrlDecoder();
+            String[] split_string = payload.getString("idToken").split("\\.");
+            String base64EncodedBody = split_string[1];
+
+            JSONObject body = new JSONObject(new String(decoder.decode(base64EncodedBody)));
+            boolean isAdmin;
+            if (body.has("admin")) {
+                isAdmin = body.getBoolean("admin");
+            } else { isAdmin = false; }
+
+            boolean isEmployee;
+            if (body.has("employee")) {
+                isEmployee = body.getBoolean("employee");
+            } else { isEmployee = false; }
+
             user = new User(
                     payload.getString("idToken"),
                     payload.getString("displayName"),
                     payload.getString("email"),
-                    payload.getString("localId")
+                    payload.getString("localId"),
+                    null,
+                    isAdmin,
+                    isEmployee
             );
 
             for (AuthListener ull : listeners) {
-                ull.userLogin();
+                try {
+                    ull.userLogin();
+                } catch (Exception e) {e.printStackTrace();}
             }
+
+            SocketManager.getInstance().startAuthDataSocket();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +89,10 @@ public class AuthenticationManager {
 
     public void signOut() {
         user = null;
-        SocketManager.getInstance().startAuthDataSocket();
+        for (AuthListener ull : listeners) {
+            ull.userLogout();
+        }
+        SocketManager.getInstance().stopAuthDataSocket();
     }
 
     public String userId() {
