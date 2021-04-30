@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleNode;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
@@ -64,7 +65,8 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private ScrollPane scrollBar;
     @FXML
-    private JFXButton handicapButton;
+    private JFXToggleNode handicapButton;
+    boolean handicap = false;
 
 
     /**
@@ -111,7 +113,7 @@ public class Navigation implements LevelChangeListener {
         directionGuiWrapper.setMaxWidth(300);
 
         VBox navIconWrapper = new VBox();
-        navIconWrapper.setStyle("-fx-background-color: #37d461; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
+        navIconWrapper.setStyle("-fx-background-color: #0067b1; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
         navIconWrapper.setPrefSize(64, 64);
         navIconWrapper.setMinSize(64, 64);
         MaterialDesignIconView navigationIcon;
@@ -167,13 +169,13 @@ public class Navigation implements LevelChangeListener {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
-            if(handicapButton.getText().equals("Handicap On") && !n.getNodeType().equals("STAI")){
+            if(handicap && !n.getNodeType().equals("STAI")){ //handicapButton.getText().equals("Handicap On")
                 nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
                 listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
                 //Collections.sort(listOfNodeNames);
                 nodeNameNodes.add(n);
             }
-            if(handicapButton.getText().equals("Handicap Off")){
+            else {
                 nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
                 listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
                 //Collections.sort(listOfNodeNames);
@@ -230,11 +232,10 @@ public class Navigation implements LevelChangeListener {
         pathCanceled = false;
         Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
         Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
-        boolean handicap = true;
-        if(handicapButton.getText().equals("Handicap On")){
+        if(handicap){
             handicap = true;
         }
-        if(handicapButton.getText().equals("Handicap Off")){
+        else {
             handicap = false;
         }
         AStar AStar = new AStar(listOfNodes, startNode, endNode, handicap); // perform AStar
@@ -302,13 +303,14 @@ public class Navigation implements LevelChangeListener {
 
     @FXML
     void toggleHandicap(ActionEvent event) {
-        boolean flag = true;
-        if(handicapButton.getText().equals("Handicap Off")){
-            handicapButton.setText("Handicap On");
-            flag = false;
+        if(handicap){ handicap = false;
+        handicapButton.setSelected(true);
+        handicapButton.setSelectedColor(Color.valueOf("0067b1"));
+        handicapButton.setTextFill(Color.WHITE);
         }
-        if(handicapButton.getText().equals("Handicap On") && flag){
-            handicapButton.setText("Handicap Off");
+        else {
+            handicapButton.setUnSelectedColor(Color.WHITE);
+            handicap = true;
         }
         refreshNodes();
     }
