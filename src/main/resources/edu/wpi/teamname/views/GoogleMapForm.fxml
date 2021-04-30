@@ -32,6 +32,14 @@
             <Insets left="25.0" />
          </VBox.margin>
       </Text>
+      <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please submit a valid address before printing." wrappingWidth="315.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" top="10.0" />
+         </VBox.margin>
+      </Text>
       <Label fx:id="fromLabel" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="House Number" textFill="#868686">
          <font>
             <Font size="16.0" />
@@ -113,9 +121,18 @@
          <VBox.margin>
             <Insets left="25.0" />
          </VBox.margin></JFXComboBox>
-      <JFXButton fx:id="submitButton" onAction="#submit" text="Submit">
+      <VBox prefHeight="62.0" prefWidth="73.0">
          <VBox.margin>
             <Insets left="176.0" top="300.0" />
-         </VBox.margin></JFXButton>
+         </VBox.margin>
+         <children>
+            <JFXButton fx:id="submitButton" onAction="#submit" text="Submit" />
+            <JFXButton fx:id="printButton" onAction="#print" text="Print Directions">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
    </children>
 </VBox>
