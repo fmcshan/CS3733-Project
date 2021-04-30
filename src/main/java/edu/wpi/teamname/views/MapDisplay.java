@@ -2,6 +2,9 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import javafx.animation.PathTransition;
+import javafx.scene.shape.*;
+import javafx.animation.Transition;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -31,6 +34,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -189,7 +193,7 @@ public class MapDisplay implements LevelChangeListener {
             This allows us to have an invisible border
             around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.OLIVE); // Set node color to olive
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
@@ -999,7 +1003,25 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
+        PathTransition pathTransition = new PathTransition();
+        Polygon triangle = new Polygon();
+        triangle.getPoints().setAll(
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
+        );
+        triangle.setFill(Color.RED); //RED
+        triangle.setStroke(Color.RED); //RED
+        triangle.setStrokeWidth(1.0);
+        onTopOfTopElements.getChildren().add(triangle);
+        pathTransition.setDuration(Duration.seconds(4));
+        pathTransition.setPath(tonysPath);
+        pathTransition.setNode(triangle);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(PathTransition.INDEFINITE);
 
+        pathTransition.play();
     }
 
     /**
