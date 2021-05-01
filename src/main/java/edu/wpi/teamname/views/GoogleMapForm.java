@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.slf4j.Marker;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -206,15 +207,31 @@ public class GoogleMapForm {
         request.scale(2);
         request.format(StaticMapsRequest.ImageFormat.png32);
         request.maptype(StaticMapsRequest.StaticMapType.terrain);
+        List<LatLng> decodedPath = results.routes[0].overviewPolyline.decodePath();
         StaticMapsRequest.Path path = new StaticMapsRequest.Path();
-        path.color("blue");
-        path.addPoint(origin);
-        path.addPoint(chosenPark);
-        path.fillcolor("red");
+        //path.color("blue");
+        decodedPath.forEach(p -> {
+           path.addPoint(p);
+        });
+        //path.addPoint(origin);
+       // path.addPoint(chosenPark);
+        //path.fillcolor("red");
         request.path(path);
+       // request.
+        StaticMapsRequest.Markers depMarker = new StaticMapsRequest.Markers();
+        StaticMapsRequest.Markers destMarker = new StaticMapsRequest.Markers();
+        destMarker.color("green");
+
+        depMarker.addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng));
+        destMarker.addLocation(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng));
+       // request.markers( new StaticMapsRequest.Markers().addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)));
+        request.markers(depMarker);
+        request.markers(destMarker);
+
         ByteArrayInputStream bais = new ByteArrayInputStream(request.await().imageData);
         Image img = new Image(bais);
         imageBox.setImage(img);
+
 
 
     }

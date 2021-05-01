@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.slf4j.Marker;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -143,7 +144,7 @@ public class GoogleMapHome {
 //        String origin = numInput.getText() + " " + streetInput.getText() + " " + streetEnding.getValue()
 //                + ", " + townInput.getText() + " " + stateInput.getText();
         String origin = addressFill.getValue();
-        DirectionsResult results =  DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).await();
+        DirectionsResult results =  DirectionsApi.getDirections(context, origin, "75 Francis Street, Boston MA").await();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         DirectionsLeg[] feet = results.routes[0].legs;
 
@@ -157,7 +158,7 @@ public class GoogleMapHome {
 //            }
             durationFran = foot.duration;
         }
-        DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).await();
+        DirectionsResult results2 = DirectionsApi.getDirections(context, origin, "15 New Whitney St, Boston MA").await();
         Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
         DirectionsLeg[] feet2 = results2.routes[0].legs;
 
@@ -206,15 +207,31 @@ public class GoogleMapHome {
         request.scale(2);
         request.format(StaticMapsRequest.ImageFormat.png32);
         request.maptype(StaticMapsRequest.StaticMapType.terrain);
+        List<LatLng> decodedPath = results.routes[0].overviewPolyline.decodePath();
         StaticMapsRequest.Path path = new StaticMapsRequest.Path();
-        path.color("blue");
-        path.addPoint(origin);
-        path.addPoint(chosenPark);
-        path.fillcolor("red");
+        //path.color("blue");
+        decodedPath.forEach(p -> {
+            path.addPoint(p);
+        });
+        //path.addPoint(origin);
+        // path.addPoint(chosenPark);
+        //path.fillcolor("red");
         request.path(path);
+        // request.
+        StaticMapsRequest.Markers depMarker = new StaticMapsRequest.Markers();
+        StaticMapsRequest.Markers destMarker = new StaticMapsRequest.Markers();
+        destMarker.color("green");
+
+        depMarker.addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng));
+        destMarker.addLocation(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng));
+        // request.markers( new StaticMapsRequest.Markers().addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)));
+        request.markers(depMarker);
+        request.markers(destMarker);
+
         ByteArrayInputStream bais = new ByteArrayInputStream(request.await().imageData);
         Image img = new Image(bais);
         imageBox.setImage(img);
+
 
 
     }
