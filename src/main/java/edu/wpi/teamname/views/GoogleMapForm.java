@@ -135,9 +135,8 @@ public class GoogleMapForm {
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
         Stage stage = new Stage();
-        String durationFran = "";
-        String durationWhit = "";
-
+         Duration durationFran = new Duration();
+        Duration durationWhit = new Duration();
        // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
             //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
        // URI link = new URI(URL);
@@ -156,7 +155,7 @@ public class GoogleMapForm {
 //                allDirFran = allDirFran + newStep + "\n";
 //
 //            }
-            durationFran = foot.duration.toString();
+            durationFran = foot.duration;
         }
         DirectionsResult results2 = DirectionsApi.getDirections(context, origin, "15 New Whitney St, Boston MA").await();
         Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
@@ -170,12 +169,9 @@ public class GoogleMapForm {
 //                allDirWhit = allDirWhit + newStep + "\n";
 //
 //            }
-             durationWhit = foot.duration.toString();
+             durationWhit = foot.duration;
         }
-        durationFran = durationFran.replaceAll(" mins", "");
-        durationWhit = durationWhit.replaceAll(" mins", "");
-        System.out.println("duration Francis: " + durationFran + " durantion Whitney " + durationWhit);
-        if (Integer.parseInt(durationFran) < Integer.parseInt(durationWhit)) {
+        if (durationFran.inSeconds < durationWhit.inSeconds) {
             System.out.println("Francis shorter");
             for (DirectionsLeg foot : feet) {
                 for (DirectionsStep step : foot.steps) {

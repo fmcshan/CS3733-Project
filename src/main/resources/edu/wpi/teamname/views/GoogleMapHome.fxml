@@ -2,21 +2,23 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="930.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GoogleMapHome">
+<VBox minHeight="-Infinity" prefHeight="915.0" prefWidth="440.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GoogleMapHome">
    <effect>
       <DropShadow color="#a4a4a4" />
    </effect>
    <children>
-      <Label fx:id="title" text="Travel Home">
+      <Label fx:id="title" text="Travel to Hospital">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
@@ -32,15 +34,23 @@
             <Insets left="25.0" />
          </VBox.margin>
       </Text>
-      <Label fx:id="fromLabel" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="House Number" textFill="#868686">
+      <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please submit a valid address before printing." wrappingWidth="315.0">
          <font>
             <Font size="16.0" />
          </font>
          <VBox.margin>
-            <Insets left="25.0" right="275.0" top="50.0" />
+            <Insets left="25.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Label fx:id="fromLabel" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="Search Address" textFill="#868686">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" right="275.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <JFXTextField fx:id="numInput">
+      <JFXTextField fx:id="numInput" onKeyReleased="#lookUp">
          <VBox.margin>
             <Insets left="25.0" right="150.0" />
          </VBox.margin></JFXTextField>
@@ -49,11 +59,6 @@
             <Insets left="25.0" top="10.0" />
          </VBox.margin>
          <children>
-            <Label fx:id="fromLabel1" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="Street Name" textFill="#868686">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
             <Label fx:id="fromLabel12" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" textFill="#868686">
                <font>
                   <Font size="16.0" />
@@ -69,38 +74,23 @@
             <Insets left="25.0" />
          </VBox.margin>
          <children>
-            <JFXTextField fx:id="streetInput" prefHeight="31.0" prefWidth="267.0" />
-            <JFXComboBox fx:id="streetEnding" promptText="Street Ending">
-               <HBox.margin>
-                  <Insets left="15.0" />
-               </HBox.margin>
-            </JFXComboBox>
+            <HBox>
+               <children>
+                  <JFXComboBox fx:id="addressFill" onAction="#submit" prefHeight="24.0" prefWidth="154.0" promptText="Select Address" />
+                  <JFXComboBox fx:id="selectParking" prefHeight="24.0" prefWidth="154.0" promptText="Select Parking Lot">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </JFXComboBox>
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <Label fx:id="fromLabel2" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="Town" textFill="#868686">
-         <font>
-            <Font size="16.0" />
-         </font>
+      <ImageView fx:id="imageBox" fitHeight="323.0" fitWidth="386.0" pickOnBounds="true" preserveRatio="true">
          <VBox.margin>
-            <Insets left="25.0" top="10.0" />
+            <Insets left="25.0" />
          </VBox.margin>
-      </Label>
-      <JFXTextField fx:id="townInput">
-         <VBox.margin>
-            <Insets left="25.0" right="150.0" />
-         </VBox.margin></JFXTextField>
-      <Label fx:id="fromLabel11" minWidth="140.0" prefHeight="25.0" prefWidth="94.0" text="State" textFill="#868686">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="25.0" top="19.0" />
-         </VBox.margin>
-      </Label>
-      <JFXTextField fx:id="stateInput">
-         <VBox.margin>
-            <Insets left="25.0" right="150.0" />
-         </VBox.margin></JFXTextField>
+      </ImageView>
       <Label fx:id="toLabel" textFill="#868686">
          <font>
             <Font size="16.0" />
@@ -109,13 +99,20 @@
             <Insets left="25.0" right="285.0" top="25.0" />
          </VBox.margin>
       </Label>
-      <JFXComboBox fx:id="travelMode" promptText="Mode of Travel">
+      <JFXTextArea fx:id="directionSpace" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="420.0">
          <VBox.margin>
-            <Insets left="25.0" />
-         </VBox.margin></JFXComboBox>
-      <JFXButton fx:id="submitButton" onAction="#submit" text="Submit">
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </JFXTextArea>
+      <JFXButton fx:id="printButton" onAction="#print" text="Print Directions">
+         <VBox.margin>
+            <Insets left="25.0" top="15.0" />
+         </VBox.margin>
+      </JFXButton>
+      <VBox prefHeight="62.0" prefWidth="73.0">
          <VBox.margin>
             <Insets left="176.0" top="300.0" />
-         </VBox.margin></JFXButton>
+         </VBox.margin>
+      </VBox>
    </children>
 </VBox>
