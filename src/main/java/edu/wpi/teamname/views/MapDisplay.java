@@ -2,8 +2,6 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.teamname.Algo.Algorithms.AStar;
-import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -14,14 +12,12 @@ import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
-import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -35,12 +31,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -62,6 +55,7 @@ public class MapDisplay implements LevelChangeListener {
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
     ArrayList<Edge> edges;
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
+    ArrayList<Node> startAndEnd = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
@@ -79,10 +73,8 @@ public class MapDisplay implements LevelChangeListener {
     Edge selectedEdge;
     Circle draggedCircle;
     Node draggedNode;
-
     Node startNode;
     Node endNode;
-
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
@@ -169,12 +161,24 @@ public class MapDisplay implements LevelChangeListener {
 
     }
 
-    public void setScaledX(double scaledX) {
-        this.scaledX = scaledX;
+    public Node getStartNode() {
+        return startNode;
     }
 
-    public void setScaledY(double scaledY) {
-        this.scaledY = scaledY;
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    public void addStartAndEnd(Node addedNode) {
+        startAndEnd.add(addedNode);
+    }
+
+    public void clearStartAndEnd() {
+        startAndEnd.clear();
+    }
+
+    public ArrayList<Node> getStartAndEnd() {
+        return startAndEnd;
     }
 
     /**
@@ -199,7 +203,19 @@ public class MapDisplay implements LevelChangeListener {
     public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
         resizingInfo(); // Set resizing info
 
-        _nodes.forEach(n -> { // For each node in localNodes
+        ArrayList<Node> nodes = _nodes;
+
+        if (startNode != null && endNode != null) {
+            nodes.clear();
+            if (LevelManager.getInstance().getFloor().equals(startNode.getFloor())) {
+                nodes.add(startNode);
+            }
+            if (LevelManager.getInstance().getFloor().equals(endNode.getFloor())) {
+                nodes.add(endNode);
+            }
+        }
+
+        nodes.forEach(n -> { // For each node in localNodes
 
             if (n.getNodeType().equals("HALL") && !showHall) {
                 return;
@@ -219,7 +235,11 @@ public class MapDisplay implements LevelChangeListener {
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
-                anchor.setOnMouseEntered(e -> { // Show a hover effect
+                if (n == startNode || n == endNode) {
+                    circle.setFill(Color.RED);
+                }
+
+                circle.setOnMouseEntered(e -> { // Show a hover effect
                     circle.setRadius(12); // Increase radius
                     circle.setOpacity(0.6); // Decrease opacity
                 });
@@ -542,15 +562,9 @@ public class MapDisplay implements LevelChangeListener {
             if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
                 Circle newCircle = new Circle(); //new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()),12);
                 edgeCircles.put(n, newCircle);
-
                 Text text = new Text();
-                // text.setTextFill(Color.web("#ff0000", 0.8));
-
-                //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-
                 textToNodeMap.put(text, n);
                 portalNodeMap.put(n.getNodeID(), n);
-                // edgeTextList.add(text);
                 textLevels.put(n, new ArrayList<>());
             }
         });
@@ -565,24 +579,14 @@ public class MapDisplay implements LevelChangeListener {
         edges.forEach(e -> { // For edge in edges
             int toNodeIndex = nodes.indexOf(new Node(e.getEndNode(), 0, 0));
             int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(), 0, 0));
-            // Label label = edgeLabel.get(labelCounter.getAndIncrement());
-
             if (toNodeIndex != -1 && fromNodeIndex != -1 && !(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
                 if (!nodeToTextMap.containsKey(e.getEndNode())) {
                     nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
                 }
-//                          textLevels.put(nodeToTextMap.get(nodes.get(toNodeIndex)), new ArrayList<>());
-//                      }
                 if (!nodeToTextMap.containsKey(e.getStartNode())) {
                     nodeToTextMap.put(e.getStartNode(), new ArrayList<Text>());
                 }
-//                if(textLevels.get(nodeToTextMap.get(nodes.get(fromNodeIndex)))== null){
-//                    textLevels.put(nodeToTextMap.get(nodes.get(fromNodeIndex)), new ArrayList<>());
-//                }
-//                      if(nodeToTextMap.containsKey(nodes.get(toNodeIndex)) && nodeToTextMap.containsKey(nodes.get(fromNodeIndex))){
-
                 textLevels.get(portalNodeMap.get(e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
-
                 Text newText = new Text(e.getStartNode().substring(e.getStartNode().length() - 2));
                 nodeToTextMap.get(e.getEndNode()).add(newText);//.add(newText);
                 allText.add(newText);
@@ -600,7 +604,6 @@ public class MapDisplay implements LevelChangeListener {
                 localEdges.add(e); // Add edge to local edges
             }
         });
-
         edgesMap.clear(); // Clear edge map
         localEdges.forEach(e -> { // For edge in localEdges
             edgesMap.put(e.getEdgeID(), e); // Add edge to edgesMap
@@ -630,6 +633,10 @@ public class MapDisplay implements LevelChangeListener {
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             if (t.getTarget() instanceof Circle) {
+                if (endNode != null) {
+                    navigation.cancelNavigation();
+                    return;
+                }
                 if (startNode == null) {
                     ((Circle) t.getTarget()).setFill(Color.RED);
                     ((Circle) t.getTarget()).setRadius(12);
@@ -640,8 +647,6 @@ public class MapDisplay implements LevelChangeListener {
                     endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
                     ((Circle) t.getTarget()).setRadius(12);
                     navigation.setToCombo(endNode);
-                    startNode = null;
-                    endNode = null;
                 }
                 return;
             }
@@ -789,12 +794,10 @@ public class MapDisplay implements LevelChangeListener {
     private void hideEditNodePopup() {
         editNode.setVisible(false); // Hide the popup
         editNode.setPickOnBounds(false); // Set clickable to false
-
         editNodeBuilding.setText(""); // Reset the node building field
         editNodeType.setText(""); // Reset the node type field
         editNodeShortName.setText(""); // Reset the node short name field
         editNodeLongName.setText(""); // Reset the node long name field
-
         selectedNode = null; // Reset the selected node
     }
 
@@ -1304,15 +1307,15 @@ public class MapDisplay implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
-        System.out.println("in levelChanged");
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
                 renderMap(); // Render/refresh map (with updated data)
                 break;
             case "navBar":
+                System.out.println("ello mate");
                 clearMap();
-                displayHotspots(0.8);
+                displayNodes(listOfNodes, .8, false);
                 break;
         }
     }
@@ -1323,7 +1326,6 @@ public class MapDisplay implements LevelChangeListener {
                 case "G":
                     groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-
                 case "1":
                     floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
@@ -1339,7 +1341,6 @@ public class MapDisplay implements LevelChangeListener {
                 case "L1":
                     L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
-
             }
 
         }
