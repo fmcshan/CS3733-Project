@@ -264,7 +264,7 @@ public class Navigation implements LevelChangeListener {
         }
         AStar AStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap); // perform AStar
         residentAStar = AStar;
-        ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
+        ArrayList<Node> path = residentAStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
@@ -283,6 +283,7 @@ public class Navigation implements LevelChangeListener {
         });
         LevelManager.getInstance().setFloor(SceneManager.getInstance().getDefaultPage().getStartNode().getFloor());
         SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
     }
 
     void clearDirections() {
@@ -300,7 +301,7 @@ public class Navigation implements LevelChangeListener {
             }
             mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         }
-        //refreshNodes();
+//        refreshNodes();
     }
 
     public void cancelNavigation() {
@@ -313,9 +314,7 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("3");
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
-        SceneManager.getInstance().getDefaultPage().onTopOfTopElements.getChildren().clear();
-        SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
-        SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        SceneManager.getInstance().getDefaultPage().clearMap();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);

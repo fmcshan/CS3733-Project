@@ -215,6 +215,14 @@ public class MapDisplay implements LevelChangeListener {
             }
         }
 
+        ArrayList<Node> listOfNode = new ArrayList<>();
+        currentPath.forEach(n -> {
+            n.forEach(h -> {
+                listOfNode.add(h);
+                nodes.add(h);
+            });
+        });
+
         nodes.forEach(n -> { // For each node in localNodes
 
             if (n.getNodeType().equals("HALL") && !showHall) {
@@ -235,16 +243,30 @@ public class MapDisplay implements LevelChangeListener {
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
-                if (n == startNode || n == endNode) {
+                if (n.equals(startNode) || n.equals(endNode)) {
                     circle.setFill(Color.RED);
+                    circle.setRadius(10);
+                }
+
+                if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                    circle.setFill(Color.RED);
+                    circle.setRadius(6);
                 }
 
                 circle.setOnMouseEntered(e -> { // Show a hover effect
-                    circle.setRadius(12); // Increase radius
-                    circle.setOpacity(0.6); // Decrease opacity
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(8);
+                    } else {
+                        circle.setRadius(12); // Increase radius
+                    }
+                    circle.setOpacity(0.6);
                 });
                 circle.setOnMouseExited(e -> { // Hide hover effect
-                    circle.setRadius(8); // Reset/set radius
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(6);
+                    } else {
+                        circle.setRadius(8); // Reset/set radius
+                    }
                     circle.setOpacity(0.8); // Reset/set opacity
                     tooltip.hide();
                 });
@@ -1313,9 +1335,9 @@ public class MapDisplay implements LevelChangeListener {
                 renderMap(); // Render/refresh map (with updated data)
                 break;
             case "navBar":
-                System.out.println("ello mate");
                 clearMap();
-                displayNodes(listOfNodes, .8, false);
+                refreshData();
+                displayHotspots(.8);
                 break;
         }
     }
