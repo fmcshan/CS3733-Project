@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a node, select an empty location on the map and fill out the required fields. Then select &quot;Add.&quot;" wrappingWidth="295.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a node, mouse click anywhere on the map and fill out the required fields. Then select &quot;Add.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a node, select the node you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="274.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a node, select the node you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -73,7 +73,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To edit a node, left mouse click and drag the node to your desired location." wrappingWidth="288.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To edit a node, left mouse click and drag the node to your desired location." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -90,7 +90,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add an edge, select the two nodes you would like to create the edge between and then select &quot;Add.&quot;" wrappingWidth="293.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add an edge, select the two nodes you would like to create the edge between and then select &quot;Add.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -113,7 +113,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove an edge, select the edge you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="288.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove an edge, select the edge you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the service request form you would like to fill out." wrappingWidth="236.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the service request form you would like to fill out." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -50,7 +50,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Upon selecting a service request, the form will open and can be filled out." wrappingWidth="282.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Upon selecting a service request, the form will open and can be filled out." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

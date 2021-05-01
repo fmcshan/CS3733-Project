@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location into the first dropdown and your destination into the second dropdown." wrappingWidth="291.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location into the first dropdown and your destination into the second dropdown." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="A red path will then display on the map from your current location to your destination. " wrappingWidth="293.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="A red path will then display on the map from your current location to your destination. " wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -73,7 +73,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you have trouble seeing the map in it's current state, use the scroll wheel on your mouse to zoom in and out or left mouse click and drag to pan the screen. " wrappingWidth="290.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you have trouble seeing the map in it's current state, use the scroll wheel on your mouse to zoom in and out or left mouse click and drag to pan the screen. " wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

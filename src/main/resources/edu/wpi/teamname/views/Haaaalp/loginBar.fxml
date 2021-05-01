@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a username in the form of an email address and a password that is at least 6 characters in length." wrappingWidth="287.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a username in the form of an email address and a password that is at least 6 characters in length." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -50,7 +50,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Press &quot;Login&quot; to log into the system." wrappingWidth="269.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Press &quot;Login&quot; to log into the system." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

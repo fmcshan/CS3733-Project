@@ -28,12 +28,12 @@
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets top="5.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
             </Text>
             <HBox>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets top="40.0" />
                </VBox.margin>
                <children>
                   <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
@@ -41,7 +41,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to navigate to a location in the hospital, select the Navigation button." wrappingWidth="293.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to navigate to a location in the hospital, select the Navigation button." wrappingWidth="210.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -49,6 +49,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="50">
+                     <HBox.margin>
+                        <Insets left="2.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
                </children>
             </HBox>
             <HBox>
@@ -61,7 +66,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to check in, select the Check-In button. " wrappingWidth="300.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to check in, select the Check-In button. " wrappingWidth="210.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -69,6 +74,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="50">
+                     <HBox.margin>
+                        <Insets left="9.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
                </children>
             </HBox>
             <HBox>
@@ -81,7 +91,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to place a service request, select the Requests button." wrappingWidth="272.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to place a service request, select the Requests button." wrappingWidth="210.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -89,6 +99,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="45">
+                     <HBox.margin>
+                        <Insets left="6.0" top="9.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
                </children>
             </HBox>
             <HBox>
@@ -101,7 +116,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign in, press the 'profile' icon in the bottom left." wrappingWidth="282.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign in, press the &quot;Admin&quot; icon in the bottom left." wrappingWidth="206.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -109,6 +124,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="50">
+                     <HBox.margin>
+                        <Insets left="8.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
                </children>
             </HBox>
          </children>
