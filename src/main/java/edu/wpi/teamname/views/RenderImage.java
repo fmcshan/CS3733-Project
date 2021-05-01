@@ -11,10 +11,10 @@ public class RenderImage {
         try {
             FileInputStream input = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\edu\\wpi\\teamname\\Icons\\" + fileName + ".png");
             Image image = new Image(input);
-            ImageView lab = new ImageView(image);
-            lab.setFitWidth(imageWidth);
-            lab.setFitHeight(imageHeight);
-            topElements.getChildren().add(lab);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(imageWidth);
+            imageView.setFitHeight(imageHeight);
+            topElements.getChildren().add(imageView);
         } catch (Exception e) {
             System.out.println("Wrong file path you absolute clown");
         }
