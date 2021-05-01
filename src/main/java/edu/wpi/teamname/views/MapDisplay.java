@@ -36,7 +36,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
-import javax.sound.sampled.Clip;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +64,7 @@ public class MapDisplay implements LevelChangeListener {
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
-    HashMap<ImageView, Node> renderedNodeMap = new HashMap<>();
+    HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
@@ -203,35 +202,25 @@ public class MapDisplay implements LevelChangeListener {
             }
             if (onScreen(n)) {
                 Tooltip tooltip = new Tooltip(n.getLongName());
-                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 10); // New node/cicle
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
-            /* Set the stroke color to transparent.
-            This allows us to have an invisible border
-            around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("0067b1")); // Set node color to olive
-//                circle.setOpacity(_opacity); // Set node opacity (input param)
+                circle.setFill(Color.OLIVE); // Set node color to olive
+                circle.setOpacity(_opacity); // Set node opacity (input param)
 
-                File file = new File("/edu/wpi/teamname/Icons/lab.png");
-                Image image = new Image(file.toURI().toString());
-                ImageView lab = new ImageView();
-                lab.setImage(image);
-                lab.setX(20);
-                lab.setY(20);
+                renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
+                onTopOfTopElements.getChildren().add(circle); // Render the node
 
-                renderedNodeMap.put(lab, n); // Link the rendered circle to the node in renderedNodeMap
-                onTopOfTopElements.getChildren().add(lab); // Render the node
-
-                lab.setOnMouseEntered(e -> { // Show a hover effect
+                anchor.setOnMouseEntered(e -> { // Show a hover effect
                     circle.setRadius(12); // Increase radius
                     circle.setOpacity(0.6); // Decrease opacity
                 });
-                lab.setOnMouseExited(e -> { // Hide hover effect
+                circle.setOnMouseExited(e -> { // Hide hover effect
                     circle.setRadius(8); // Reset/set radius
                     circle.setOpacity(0.8); // Reset/set opacity
                     tooltip.hide();
                 });
-                lab.setOnMouseMoved(
+                circle.setOnMouseMoved(
                         new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
@@ -244,7 +233,7 @@ public class MapDisplay implements LevelChangeListener {
                     return; // Don't process drags outside of the map editor.
                 }
 
-                lab.setOnMouseDragged(e -> {
+                circle.setOnMouseDragged(e -> {
                     nodeBeingDragged = true;
                     draggedCircle = (Circle) e.getTarget();
                     draggedCircle.setCenterX(e.getX());
@@ -253,7 +242,7 @@ public class MapDisplay implements LevelChangeListener {
                     refreshDraggedEdges();
                 });
 
-                lab.setOnMouseReleased(e -> {
+                circle.setOnMouseReleased(e -> {
                     if (!nodeBeingDragged) {
                         return;
                     }
