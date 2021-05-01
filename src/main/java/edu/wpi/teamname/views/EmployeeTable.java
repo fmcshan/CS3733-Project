@@ -57,7 +57,7 @@ public class EmployeeTable implements UserListener {
             Label roleCell = new Label();
             roleCell.setAlignment(Pos.CENTER_LEFT);
             roleCell.setStyle("-fx-font-size: 14; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: white; -fx-background-color: #00c455; -fx-background-radius: 4px");
-            roleCell.setPrefWidth(62);
+            roleCell.setPrefWidth(66);
             roleCell.setPadding(new Insets(0, 17, 0, 17));
 
             roleCell.setText(r.isAdmin() ? "True" : "False");

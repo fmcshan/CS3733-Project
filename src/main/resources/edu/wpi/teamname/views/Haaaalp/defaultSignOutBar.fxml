@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.defaultBar">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.defaultSignOutBar">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -116,7 +116,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign in, press the Admin button in the bottom right of the sidebar." wrappingWidth="206.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign out, press the Sign Out button in the bottom right of the sidebar." wrappingWidth="206.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -124,7 +124,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Text>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="50">
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="EXIT_TO_APP" size="50">
                      <HBox.margin>
                         <Insets left="8.0" top="16.0" />
                      </HBox.margin>

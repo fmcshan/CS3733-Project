@@ -81,6 +81,7 @@ public class Login {
             return;
         }
         SceneManager.getInstance().getDefaultPage().closeWindows();
+        LoadFXML.setCurrentWindow("");
     }
 
 

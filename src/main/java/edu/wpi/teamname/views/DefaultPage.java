@@ -130,7 +130,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @Override
     public void userLogin() {
         displayAuthPages();
-        helpButton.setVisible(false);
+        helpButton.setVisible(true);
     }
 
     /**
@@ -208,8 +208,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
-        System.out.println(LoadFXML.getCurrentWindow());
-        if (LoadFXML.getCurrentWindow().equals("")) {
+        if (!AuthenticationManager.getInstance().isAuthenticated() && LoadFXML.getCurrentWindow().equals("")) {
             popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
             return;
@@ -217,6 +216,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
+            return;
+        }
+        if (AuthenticationManager.getInstance().isAuthenticated() && LoadFXML.getCurrentWindow().equals("")) {
+            LoadFXML.getInstance().loadHelp("defaultSignOutBar", "help_defaultSignOutBar", popPop);
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
