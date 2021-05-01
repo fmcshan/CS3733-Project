@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -35,6 +36,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
+import javax.sound.sampled.Clip;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +65,7 @@ public class MapDisplay implements LevelChangeListener {
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
-    HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
+    HashMap<ImageView, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
@@ -148,6 +150,8 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+    @FXML
+    public Navigation navigation;
 
     public Path getTonysPath() {
         return tonysPath;
@@ -185,36 +189,49 @@ public class MapDisplay implements LevelChangeListener {
      * @param _nodes   List of nodes to display
      * @param _opacity Node opacity
      */
-    public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
+    public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
         resizingInfo(); // Set resizing info
 
         _nodes.forEach(n -> { // For each node in localNodes
+
+            if (n.getNodeType().equals("HALL") && !showHall) {
+                return;
+            }
+
             if (n.equals(draggedNode)) {
                 return;
             }
             if (onScreen(n)) {
                 Tooltip tooltip = new Tooltip(n.getLongName());
-                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 10); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
             /* Set the stroke color to transparent.
             This allows us to have an invisible border
             around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
-                circle.setOpacity(_opacity); // Set node opacity (input param)
-                renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
-                onTopOfTopElements.getChildren().add(circle); // Render the node
+                circle.setFill(Color.valueOf("0067b1")); // Set node color to olive
+//                circle.setOpacity(_opacity); // Set node opacity (input param)
 
-                circle.setOnMouseEntered(e -> { // Show a hover effect
+                File file = new File("/edu/wpi/teamname/Icons/lab.png");
+                Image image = new Image(file.toURI().toString());
+                ImageView lab = new ImageView();
+                lab.setImage(image);
+                lab.setX(20);
+                lab.setY(20);
+
+                renderedNodeMap.put(lab, n); // Link the rendered circle to the node in renderedNodeMap
+                onTopOfTopElements.getChildren().add(lab); // Render the node
+
+                lab.setOnMouseEntered(e -> { // Show a hover effect
                     circle.setRadius(12); // Increase radius
                     circle.setOpacity(0.6); // Decrease opacity
                 });
-                circle.setOnMouseExited(e -> { // Hide hover effect
+                lab.setOnMouseExited(e -> { // Hide hover effect
                     circle.setRadius(8); // Reset/set radius
                     circle.setOpacity(0.8); // Reset/set opacity
                     tooltip.hide();
                 });
-                circle.setOnMouseMoved(
+                lab.setOnMouseMoved(
                         new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
@@ -227,7 +244,7 @@ public class MapDisplay implements LevelChangeListener {
                     return; // Don't process drags outside of the map editor.
                 }
 
-                circle.setOnMouseDragged(e -> {
+                lab.setOnMouseDragged(e -> {
                     nodeBeingDragged = true;
                     draggedCircle = (Circle) e.getTarget();
                     draggedCircle.setCenterX(e.getX());
@@ -236,7 +253,7 @@ public class MapDisplay implements LevelChangeListener {
                     refreshDraggedEdges();
                 });
 
-                circle.setOnMouseReleased(e -> {
+                lab.setOnMouseReleased(e -> {
                     if (!nodeBeingDragged) {
                         return;
                     }
@@ -266,18 +283,12 @@ public class MapDisplay implements LevelChangeListener {
      * @param _opacity Node opacity
      */
     public void displayNodes(double _opacity) {
-        displayNodes(localNodes, _opacity);
+        displayNodes(localNodes, _opacity, true);
     }
 
     public void displayHotspots(double _opacity) {
         ArrayList<Node> toDisplay = (ArrayList<Node>) localNodes.clone();
-        for (int i = 0; i < toDisplay.size(); i++) {
-            Node n = toDisplay.get(i);
-            if (n.getNodeType().equals("HALL")) {
-                toDisplay.remove(n);
-            }
-        }
-        displayNodes(toDisplay, _opacity);
+        displayNodes(toDisplay, _opacity, false);
     }
 
     /**
@@ -622,13 +633,12 @@ public class MapDisplay implements LevelChangeListener {
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             if (t.getTarget() instanceof Circle) {
-                Navigation navigation = new Navigation(this);
                 if (startNode == null) {
                     startNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential start node for pathfinding
-                    navigation.setFromCombo(startNode.getLongName());
+                    navigation.setFromCombo(startNode);
                 } else {
                     endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
-                    navigation.setToCombo(endNode.getLongName());
+                    navigation.setToCombo(endNode);
                     startNode = null;
                     endNode = null;
                 }
@@ -1035,7 +1045,7 @@ public class MapDisplay implements LevelChangeListener {
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        Navigation navigation = new Navigation(this); // Load controller
+        navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected

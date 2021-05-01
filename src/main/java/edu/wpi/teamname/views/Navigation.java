@@ -69,14 +69,14 @@ public class Navigation implements LevelChangeListener {
 
     ArrayList<String> allFloors = new ArrayList<>();
 
-    public void setToCombo(String nodeName) {
+    public void setToCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
-        box.setValue("Emergency Department Entrance[1]");
+        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
     }
 
-    public void setFromCombo(String nodeName) {
+    public void setFromCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(fromCombo);
-        box.setValue("Emergency Department Entrance[1]");
+        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
     }
 
     /**
@@ -90,10 +90,6 @@ public class Navigation implements LevelChangeListener {
 
     public ArrayList<Node> getListOfNodes() {
         return listOfNodes;
-    }
-
-    public VBox getNavBox() {
-        return navBox;
     }
 
     /**
