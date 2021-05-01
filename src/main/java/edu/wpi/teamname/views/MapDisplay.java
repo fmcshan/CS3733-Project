@@ -1062,7 +1062,6 @@ public class MapDisplay implements LevelChangeListener {
     public void openRequests() {
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
-
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350

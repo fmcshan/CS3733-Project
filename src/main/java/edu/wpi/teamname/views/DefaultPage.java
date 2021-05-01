@@ -148,6 +148,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         adminButton.setGraphic(signOut);
         popPop.getChildren().clear();
         helpButton.setVisible(true);
+        LoadFXML.setCurrentWindow("");
     }
 
     /**
@@ -249,7 +250,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         VBox sentVBox = new VBox(sentMessage);
         sentVBox.setMaxWidth(275);
         sentVBox.setAlignment(Pos.BOTTOM_RIGHT);
-        VBox.setMargin(sentVBox, new Insets(0, -50, 10, 0));
+        VBox.setMargin(sentVBox, new Insets(0, -70, 10, 0));
 
         sentMessage.setText(message);
         chatBox.getChildren().add(sentVBox);

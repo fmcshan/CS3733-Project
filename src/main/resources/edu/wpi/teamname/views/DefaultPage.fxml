@@ -737,7 +737,7 @@
                            <children>
                               <VBox alignment="BOTTOM_LEFT" maxWidth="275.0" styleClass="message">
                                  <VBox.margin>
-                                    <Insets bottom="10.0" left="-50.0" top="10.0" />
+                                    <Insets bottom="10.0" left="-70.0" top="10.0" />
                                  </VBox.margin>
                                  <children>
                                     <Label minHeight="50.0" minWidth="50.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 20 20 20 0;" text="hi" wrapText="true" VBox.vgrow="ALWAYS">
