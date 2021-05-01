@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.PathTransition;
 import javafx.scene.shape.*;
 import javafx.animation.Transition;
@@ -1029,6 +1030,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1058,6 +1060,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
 
         clearMap(); // Clear map
@@ -1071,6 +1074,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(340);
         clearMap(); // Clear map
         // currentPath= new ArrayList();
@@ -1086,6 +1090,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the check in window
      */
     public void openCheckIn() {
+        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657

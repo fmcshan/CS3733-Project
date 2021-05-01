@@ -61,6 +61,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private JFXTextField enteredMessage;
     @FXML
     private ScrollPane chatScrollPane;
+    @FXML
+    private JFXButton helpButton;
 
     boolean opened = false;
 
@@ -128,6 +130,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @Override
     public void userLogin() {
         displayAuthPages();
+        helpButton.setVisible(false);
     }
 
     /**
@@ -144,12 +147,14 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
         popPop.getChildren().clear();
+        helpButton.setVisible(true);
     }
 
     /**
      * toggle the map editor window
      */
     public void toggleMapEditor() {
+        helpButton.setVisible(true);
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -174,6 +179,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin registration window
      */
     public void toggleRegistration() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
@@ -183,6 +189,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleRequest() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdmin", "reqAdminBar", popPop);
@@ -192,6 +199,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleEmployee() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
@@ -288,5 +296,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void setHospitalMap(Image _image) {
         hospitalMap.setImage(_image);
     }
+
+    public void setHelpButton(boolean value) { helpButton.setVisible(value); }
 
 }

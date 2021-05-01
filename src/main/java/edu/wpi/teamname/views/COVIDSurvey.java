@@ -53,6 +53,7 @@ public class COVIDSurvey {
 
     public void submitScreening() {
         if (!hasCovid()) {
+            SceneManager.getInstance().getDefaultPage().setHelpButton(true);
             LoadFXML.getInstance().loadWindow("UserRegistration", "checkBar", SceneManager.getInstance().getDefaultPage().getPopPop());
         } else {
             LoadFXML.getInstance().loadWindow("COVIDMessage", "covidMessage", SceneManager.getInstance().getDefaultPage().getPopPop());
