@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 
 public class RenderImage {
 
-    public void renderImage(String fileName, AnchorPane topElements, int imageWidth, int imageHeight) throws Exception {
+    public void renderImage(String fileName, int imageWidth, int imageHeight, AnchorPane topElements) throws Exception {
         try {
             FileInputStream input = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\edu\\wpi\\teamname\\Icons\\" + fileName + ".png");
             Image image = new Image(input);
