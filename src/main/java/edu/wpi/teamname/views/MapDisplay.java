@@ -631,10 +631,14 @@ public class MapDisplay implements LevelChangeListener {
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             if (t.getTarget() instanceof Circle) {
                 if (startNode == null) {
+                    ((Circle) t.getTarget()).setFill(Color.RED);
+                    ((Circle) t.getTarget()).setRadius(12);
                     startNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential start node for pathfinding
                     navigation.setFromCombo(startNode);
                 } else {
+                    ((Circle) t.getTarget()).setFill(Color.RED);
                     endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
+                    ((Circle) t.getTarget()).setRadius(12);
                     navigation.setToCombo(endNode);
                     startNode = null;
                     endNode = null;
@@ -1123,10 +1127,8 @@ public class MapDisplay implements LevelChangeListener {
 
     /**
      * Triggered by Add Edge button
-     *
-     * @param event Action event
      */
-    public void addEdge(ActionEvent event) {
+    public void addEdge() {
         String edgeId = addEdgeStart.getNodeID() + "_" + addEdgeEnd.getNodeID(); // Create edgeId
         // If the edge (or the reverse edge) already exists
         if (edgesMap.containsKey(edgeId) || edgesMap.containsKey(addEdgeEnd.getNodeID() + "_" + addEdgeStart.getNodeID()) || addEdgeStart.getNodeID().equals(addEdgeEnd.getNodeID())) {
@@ -1302,6 +1304,7 @@ public class MapDisplay implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
+        System.out.println("in levelChanged");
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
