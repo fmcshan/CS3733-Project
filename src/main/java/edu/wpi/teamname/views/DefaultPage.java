@@ -208,6 +208,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
+        System.out.println(LoadFXML.getCurrentWindow());
         if (LoadFXML.getCurrentWindow().equals("")) {
             popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);

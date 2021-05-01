@@ -11,9 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.serviceRequestBar">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.serviceRequestBar">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow color="#a4a4a4" />
+         </effect>
          <children>
             <Label text="Help">
                <font>
@@ -33,7 +36,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill out this form to send a gift to a patient." wrappingWidth="300.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill out this form to place a sanitation request." wrappingWidth="260.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -53,7 +56,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please include your name, what gift you would like to send, your phone number, and the hospital room the gift will be sent to." wrappingWidth="290.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please include your name, a request urgency level, a reason, and the location of the desrired request." wrappingWidth="275.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -73,7 +76,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Once you are finished filling out the form, please press the &quot;Submit&quot; button to submit the form." wrappingWidth="290.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Once you are finished filling out the form, please press the &quot;Submit&quot; button to submit the form." wrappingWidth="278.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -98,7 +101,4 @@
          </children>
       </HBox>
    </children>
-   <effect>
-      <DropShadow color="#a4a4a4" />
-   </effect>
 </AnchorPane>

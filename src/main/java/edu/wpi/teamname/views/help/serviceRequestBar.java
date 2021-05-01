@@ -3,7 +3,7 @@ package edu.wpi.teamname.views.help;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.manager.SceneManager;
 
-public class giftDeliveryBar {
+public class serviceRequestBar {
 
     public void closeWindow() {
         SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
