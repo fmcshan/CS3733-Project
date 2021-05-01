@@ -156,6 +156,14 @@ public class MapDisplay implements LevelChangeListener {
         return tonysPath;
     }
 
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
+    }
+
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
 

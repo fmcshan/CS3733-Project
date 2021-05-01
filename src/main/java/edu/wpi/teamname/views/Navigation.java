@@ -308,6 +308,8 @@ public class Navigation implements LevelChangeListener {
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        SceneManager.getInstance().getDefaultPage().setStartNode(null);
+        SceneManager.getInstance().getDefaultPage().setEndNode(null);
     }
 
     @FXML
