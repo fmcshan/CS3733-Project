@@ -161,7 +161,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="askLocation" prefHeight="20.0" prefWidth="438.0" text="Please enter the location of the computer that requires service:" textFill="#868686">
+                  <Label fx:id="askLocation" prefHeight="20.0" prefWidth="478.0" text="Please enter the location of the computer that requires service:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
