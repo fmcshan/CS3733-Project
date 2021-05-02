@@ -44,7 +44,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     // used to save the current list of nodes after AStar
 
     @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -210,7 +210,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if (floors.contains("L1"))
             L1Bttn.setDisable(true);
         if (floors.contains("G"))
-            GBttn.setDisable(true);
+            groundBttn.setDisable(true);
         if (floors.contains("1"))
             floor1Bttn.setDisable(true);
         if (floors.contains("2"))
@@ -225,7 +225,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if (floors.contains("L1"))
             L1Bttn.setDisable(false);
         if (floors.contains("G"))
-            GBttn.setDisable(false);
+            groundBttn.setDisable(false);
         if (floors.contains("1"))
             floor1Bttn.setDisable(false);
         if (floors.contains("2"))
