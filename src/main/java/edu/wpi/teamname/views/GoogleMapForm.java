@@ -63,6 +63,9 @@ public class GoogleMapForm {
     private JFXTextField numInput;
 
     @FXML
+    private JFXTextField emailInput;
+
+    @FXML
     private Label fromLabel1;
 
     @FXML
@@ -137,7 +140,7 @@ public class GoogleMapForm {
      errorMes.setVisible(false);
      addressFill.setDisable(true);
         context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyCZVPvXk5oKKZvJKEEe6uaBmA8FuzzgbJg")
+                .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
 //        mapDisplay = new MapDisplay();
@@ -191,7 +194,7 @@ public class GoogleMapForm {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(newStep);
+                    System.out.println(step.htmlInstructions);
                     lowDir = lowDir + newStep + "\n";
 
                 }
@@ -204,8 +207,8 @@ public class GoogleMapForm {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(newStep);
-                    lowDir = lowDir + newStep + "\n";
+                    System.out.println(step.htmlInstructions);
+                    lowDir = lowDir + "\n" + newStep;
 
                 }
                 String durationFWhit = foot.duration.toString();
@@ -248,7 +251,13 @@ public class GoogleMapForm {
 
 
     }
-
+    @FXML
+    void arrived(){
+        defaultPage.getPopPop().setPrefWidth(657);
+        defaultPage.clearMap(); // Clear map
+        defaultPage.getPopPop().setPrefWidth(657.0); // Set preferable width to 657
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", defaultPage.getPopPop()); // Load registration window
+    }
     @FXML
     void print() throws PrinterException {
         if (lowDir.equals("")) {
@@ -261,6 +270,8 @@ public class GoogleMapForm {
             YourTextArea.print();
         }
     }
+
+
 
 
     //aDesktop.browse(link);
@@ -277,6 +288,8 @@ public class GoogleMapForm {
     public String cleanTags(String s) {
 
         s = s.replaceAll("<[^>]*>", "");
+        s = s.replaceAll("Destination", "\nDestination");
+        lowDir = lowDir.replaceAll("&nbsp;","");
         return s;
     }
 

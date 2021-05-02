@@ -18,7 +18,7 @@
       <DropShadow color="#a4a4a4" />
    </effect>
    <children>
-      <Label fx:id="title" text="Travel to Hospital">
+      <Label fx:id="title" text="Travel Home">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
@@ -77,7 +77,7 @@
             <HBox>
                <children>
                   <JFXComboBox fx:id="addressFill" onAction="#submit" prefHeight="24.0" prefWidth="154.0" promptText="Select Address" />
-                  <JFXComboBox fx:id="selectParking" prefHeight="24.0" prefWidth="154.0" promptText="Select Parking Lot">
+                  <JFXComboBox fx:id="selectParking" onAction="#enableSearch" prefHeight="24.0" prefWidth="154.0" promptText="Select Parking Lot">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>

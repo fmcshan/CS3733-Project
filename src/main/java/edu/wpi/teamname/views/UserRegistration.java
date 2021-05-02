@@ -1,9 +1,8 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,10 +14,13 @@ import java.util.ArrayList;
 
 /**
  * Controller for UserRegistration.fxml
+ *
  * @author Frank McShan, Lauren Sowerbutts
  */
 public class UserRegistration {
 
+    @FXML
+    private JFXComboBox<String> parkingSpot;
 
     @FXML
     private Label registrationForm;
@@ -89,8 +91,23 @@ public class UserRegistration {
     @FXML
     private VBox successPop;
 
+    @FXML
+    void initialize() {
+        ArrayList<Node> listOfNodes = new ArrayList<>();
+        listOfNodes = LocalStorage.getInstance().getNodes();
+        for (Node n : listOfNodes
+        ) {
+            if (n.getLongName().contains("Parking Spot")) {
+                parkingSpot.getItems().add(n.getLongName());
+            }
+
+        }
+    }
+
+
     /**
      * Check if name input contains a space for first and last name
+     *
      * @return true if there is a space
      */
     public boolean nameInputValid() {
@@ -99,6 +116,7 @@ public class UserRegistration {
 
     /**
      * Check if there is a valid date selected
+     *
      * @return true if there is a valid value in the DatePicker
      */
     public boolean dateSelected() {
@@ -116,6 +134,7 @@ public class UserRegistration {
 
     /**
      * Check is there is a checkbox selected
+     *
      * @return true if there is a checkbox selected
      */
     public boolean aCheckboxSelected() {
@@ -124,6 +143,7 @@ public class UserRegistration {
 
     /**
      * If the "Other" checkbox was selected, check if there was an input in the text field
+     *
      * @return true if there is an input in the text field
      */
     public boolean otherCheckboxValid() {
@@ -132,6 +152,7 @@ public class UserRegistration {
 
     /**
      * Check if the phone number entered is valid
+     *
      * @return true if the phone number is valid
      */
     public boolean phoneNumberValid() {
@@ -200,7 +221,7 @@ public class UserRegistration {
             }
 
             LoadFXML.setCurrentWindow("");
-
+            //submit Parking Spot Taken
             //submit
             edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText());
             Submit.getInstance().submitUserRegistration(formData);

@@ -45,6 +45,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
+
+    @Override
+    public VBox getPopPop() {
+        return popPop;
+    }
+
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -60,6 +66,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
 //    @FXML
 //    private AnchorPane topElements; // anchor pane where displayed nodes reside
+
 
     /**
      * run on startup

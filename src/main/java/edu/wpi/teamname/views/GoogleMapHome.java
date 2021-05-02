@@ -85,6 +85,9 @@ public class GoogleMapHome {
     private JFXButton submitButton;
 
     @FXML
+    private JFXComboBox<String> selectParking;
+
+    @FXML
     private JFXTextArea directionSpace;
 
     String allDirFran = "";
@@ -113,7 +116,9 @@ public class GoogleMapHome {
     }
     @FXML
     public void initialize() {
-//        travelMode.getItems().add("driving");
+         selectParking.getItems().add("75 Francis Street, Boston MA");
+        selectParking.getItems().add("15 New Whitney St, Boston MA");
+//        travelMode.getItems().add("driving");e
 //        travelMode.getItems().add("bicycling");
 //        travelMode.getItems().add("walking");
 //        streetEnding.getItems().add("St");
@@ -124,11 +129,12 @@ public class GoogleMapHome {
 //        streetEnding.getItems().add("Blvd");
 //        streetEnding.getItems().add("Cir");
 //        streetEnding.getItems().add("Ln");
+        numInput.setDisable(true);
         directionSpace.setVisible(false);
         errorMes.setVisible(false);
         addressFill.setDisable(true);
         context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyCZVPvXk5oKKZvJKEEe6uaBmA8FuzzgbJg")
+                .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
     }
@@ -144,7 +150,7 @@ public class GoogleMapHome {
 //        String origin = numInput.getText() + " " + streetInput.getText() + " " + streetEnding.getValue()
 //                + ", " + townInput.getText() + " " + stateInput.getText();
         String origin = addressFill.getValue();
-        DirectionsResult results =  DirectionsApi.getDirections(context, origin, "75 Francis Street, Boston MA").await();
+        DirectionsResult results =  DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).await();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         DirectionsLeg[] feet = results.routes[0].legs;
 
@@ -158,7 +164,7 @@ public class GoogleMapHome {
 //            }
             durationFran = foot.duration;
         }
-        DirectionsResult results2 = DirectionsApi.getDirections(context, origin, "15 New Whitney St, Boston MA").await();
+        DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).await();
         Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
         DirectionsLeg[] feet2 = results2.routes[0].legs;
 
@@ -172,33 +178,32 @@ public class GoogleMapHome {
 //            }
             durationWhit = foot.duration;
         }
-        if (durationFran.inSeconds < durationWhit.inSeconds) {
-            System.out.println("Francis shorter");
+        if (selectParking.getValue().equals("75 Francis Street, Boston MA")) {
+            System.out.println("Francis");
             for (DirectionsLeg foot : feet) {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
                     System.out.println(newStep);
                     lowDir = lowDir + newStep + "\n";
-
                 }
 
             }
             chosenPark = "75 Francis Street, Boston MA";
         } else {
-            System.out.println("Whitney shorter");
+            System.out.println("Whitney");
             for (DirectionsLeg foot : feet2) {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
                     System.out.println(newStep);
                     lowDir = lowDir + newStep + "\n";
-
                 }
                 String durationFWhit = foot.duration.toString();
             }
             chosenPark = "15 New Whitney St, Boston MA";
         }
+        lowDir = lowDir.replaceAll("&nbsp;","");
         directionSpace.setVisible(true);
         directionSpace.setText(lowDir);
         Size size = new Size(500,400);
@@ -234,6 +239,11 @@ public class GoogleMapHome {
 
 
 
+    }
+
+    @FXML
+    void enableSearch(){
+        numInput.setDisable(false);
     }
 
     @FXML
