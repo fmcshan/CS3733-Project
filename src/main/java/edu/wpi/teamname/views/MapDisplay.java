@@ -31,9 +31,12 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -55,7 +58,6 @@ public class MapDisplay implements LevelChangeListener {
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
     ArrayList<Edge> edges;
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
-    ArrayList<Node> startAndEnd = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
@@ -73,8 +75,6 @@ public class MapDisplay implements LevelChangeListener {
     Edge selectedEdge;
     Circle draggedCircle;
     Node draggedNode;
-    Node startNode;
-    Node endNode;
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
@@ -141,44 +141,18 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
-    @FXML
-    public Navigation navigation;
-
-    public Path getTonysPath() {
-        return tonysPath;
-    }
-
-    public void setStartNode(Node startNode) {
-        this.startNode = startNode;
-    }
-
-    public void setEndNode(Node endNode) {
-        this.endNode = endNode;
-    }
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
 
     }
 
-    public Node getStartNode() {
-        return startNode;
+    public void setScaledX(double scaledX) {
+        this.scaledX = scaledX;
     }
 
-    public Node getEndNode() {
-        return endNode;
-    }
-
-    public void addStartAndEnd(Node addedNode) {
-        startAndEnd.add(addedNode);
-    }
-
-    public void clearStartAndEnd() {
-        startAndEnd.clear();
-    }
-
-    public ArrayList<Node> getStartAndEnd() {
-        return startAndEnd;
+    public void setScaledY(double scaledY) {
+        this.scaledY = scaledY;
     }
 
     /**
@@ -200,35 +174,10 @@ public class MapDisplay implements LevelChangeListener {
      * @param _nodes   List of nodes to display
      * @param _opacity Node opacity
      */
-    public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
+    public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
         resizingInfo(); // Set resizing info
 
-        ArrayList<Node> nodes = _nodes;
-
-        if (startNode != null && endNode != null) {
-            nodes.clear();
-            if (LevelManager.getInstance().getFloor().equals(startNode.getFloor())) {
-                nodes.add(startNode);
-            }
-            if (LevelManager.getInstance().getFloor().equals(endNode.getFloor())) {
-                nodes.add(endNode);
-            }
-        }
-
-        ArrayList<Node> listOfNode = new ArrayList<>();
-        currentPath.forEach(n -> {
-            n.forEach(h -> {
-                listOfNode.add(h);
-                nodes.add(h);
-            });
-        });
-
-        nodes.forEach(n -> { // For each node in localNodes
-
-            if (n.getNodeType().equals("HALL") && !showHall) {
-                return;
-            }
-
+        _nodes.forEach(n -> { // For each node in localNodes
             if (n.equals(draggedNode)) {
                 return;
             }
@@ -236,37 +185,21 @@ public class MapDisplay implements LevelChangeListener {
                 Tooltip tooltip = new Tooltip(n.getLongName());
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
+            /* Set the stroke color to transparent.
+            This allows us to have an invisible border
+            around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.OLIVE); // Set node color to olive
+                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
-
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
-                if (n.equals(startNode) || n.equals(endNode)) {
-                    circle.setFill(Color.RED);
-                    circle.setRadius(10);
-                }
-
-                if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                    circle.setFill(Color.RED);
-                    circle.setRadius(6);
-                }
-
                 circle.setOnMouseEntered(e -> { // Show a hover effect
-                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                        circle.setRadius(8);
-                    } else {
-                        circle.setRadius(12); // Increase radius
-                    }
-                    circle.setOpacity(0.6);
+                    circle.setRadius(12); // Increase radius
+                    circle.setOpacity(0.6); // Decrease opacity
                 });
                 circle.setOnMouseExited(e -> { // Hide hover effect
-                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                        circle.setRadius(6);
-                    } else {
-                        circle.setRadius(8); // Reset/set radius
-                    }
+                    circle.setRadius(8); // Reset/set radius
                     circle.setOpacity(0.8); // Reset/set opacity
                     tooltip.hide();
                 });
@@ -322,12 +255,18 @@ public class MapDisplay implements LevelChangeListener {
      * @param _opacity Node opacity
      */
     public void displayNodes(double _opacity) {
-        displayNodes(localNodes, _opacity, true);
+        displayNodes(localNodes, _opacity);
     }
 
     public void displayHotspots(double _opacity) {
         ArrayList<Node> toDisplay = (ArrayList<Node>) localNodes.clone();
-        displayNodes(toDisplay, _opacity, false);
+        for (int i = 0; i < toDisplay.size(); i++) {
+            Node n = toDisplay.get(i);
+            if (n.getNodeType().equals("HALL")) {
+                toDisplay.remove(n);
+            }
+        }
+        displayNodes(toDisplay, _opacity);
     }
 
     /**
@@ -584,9 +523,15 @@ public class MapDisplay implements LevelChangeListener {
             if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
                 Circle newCircle = new Circle(); //new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()),12);
                 edgeCircles.put(n, newCircle);
+
                 Text text = new Text();
+                // text.setTextFill(Color.web("#ff0000", 0.8));
+
+                //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+
                 textToNodeMap.put(text, n);
                 portalNodeMap.put(n.getNodeID(), n);
+                // edgeTextList.add(text);
                 textLevels.put(n, new ArrayList<>());
             }
         });
@@ -601,14 +546,24 @@ public class MapDisplay implements LevelChangeListener {
         edges.forEach(e -> { // For edge in edges
             int toNodeIndex = nodes.indexOf(new Node(e.getEndNode(), 0, 0));
             int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(), 0, 0));
+            // Label label = edgeLabel.get(labelCounter.getAndIncrement());
+
             if (toNodeIndex != -1 && fromNodeIndex != -1 && !(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
                 if (!nodeToTextMap.containsKey(e.getEndNode())) {
                     nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
                 }
+//                          textLevels.put(nodeToTextMap.get(nodes.get(toNodeIndex)), new ArrayList<>());
+//                      }
                 if (!nodeToTextMap.containsKey(e.getStartNode())) {
                     nodeToTextMap.put(e.getStartNode(), new ArrayList<Text>());
                 }
+//                if(textLevels.get(nodeToTextMap.get(nodes.get(fromNodeIndex)))== null){
+//                    textLevels.put(nodeToTextMap.get(nodes.get(fromNodeIndex)), new ArrayList<>());
+//                }
+//                      if(nodeToTextMap.containsKey(nodes.get(toNodeIndex)) && nodeToTextMap.containsKey(nodes.get(fromNodeIndex))){
+
                 textLevels.get(portalNodeMap.get(e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
+
                 Text newText = new Text(e.getStartNode().substring(e.getStartNode().length() - 2));
                 nodeToTextMap.get(e.getEndNode()).add(newText);//.add(newText);
                 allText.add(newText);
@@ -626,6 +581,7 @@ public class MapDisplay implements LevelChangeListener {
                 localEdges.add(e); // Add edge to local edges
             }
         });
+
         edgesMap.clear(); // Clear edge map
         localEdges.forEach(e -> { // For edge in localEdges
             edgesMap.put(e.getEdgeID(), e); // Add edge to edgesMap
@@ -650,32 +606,11 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse Event
      */
     public void processClick(MouseEvent t, boolean dragged) {
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            return; // Don't process clicks outside of the map editor.
+        }
         if (dragged) {
             return;
-        }
-        if (LoadFXML.getCurrentWindow().equals("navBar")) {
-            if (t.getTarget() instanceof Circle) {
-                if (endNode != null) {
-                    navigation.cancelNavigation();
-                    return;
-                }
-                if (startNode == null) {
-                    ((Circle) t.getTarget()).setFill(Color.RED);
-                    ((Circle) t.getTarget()).setRadius(12);
-                    startNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential start node for pathfinding
-                    navigation.setFromCombo(startNode);
-                } else {
-                    ((Circle) t.getTarget()).setFill(Color.RED);
-                    endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
-                    ((Circle) t.getTarget()).setRadius(12);
-                    navigation.setToCombo(endNode);
-                }
-                return;
-            }
-        }
-        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            System.out.println("i got in here though");
-            return; // Don't process clicks outside of the map editor.
         }
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
@@ -816,10 +751,12 @@ public class MapDisplay implements LevelChangeListener {
     private void hideEditNodePopup() {
         editNode.setVisible(false); // Hide the popup
         editNode.setPickOnBounds(false); // Set clickable to false
+
         editNodeBuilding.setText(""); // Reset the node building field
         editNodeType.setText(""); // Reset the node type field
         editNodeShortName.setText(""); // Reset the node short name field
         editNodeLongName.setText(""); // Reset the node long name field
+
         selectedNode = null; // Reset the selected node
     }
 
@@ -1062,6 +999,7 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
+
     }
 
     /**
@@ -1071,7 +1009,7 @@ public class MapDisplay implements LevelChangeListener {
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        navigation = new Navigation(this); // Load controller
+        Navigation navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
@@ -1152,8 +1090,10 @@ public class MapDisplay implements LevelChangeListener {
 
     /**
      * Triggered by Add Edge button
+     *
+     * @param event Action event
      */
-    public void addEdge() {
+    public void addEdge(ActionEvent event) {
         String edgeId = addEdgeStart.getNodeID() + "_" + addEdgeEnd.getNodeID(); // Create edgeId
         // If the edge (or the reverse edge) already exists
         if (edgesMap.containsKey(edgeId) || edgesMap.containsKey(addEdgeEnd.getNodeID() + "_" + addEdgeStart.getNodeID()) || addEdgeStart.getNodeID().equals(addEdgeEnd.getNodeID())) {
@@ -1336,8 +1276,7 @@ public class MapDisplay implements LevelChangeListener {
                 break;
             case "navBar":
                 clearMap();
-                refreshData();
-                displayHotspots(.8);
+                displayHotspots(0.8);
                 break;
         }
     }
@@ -1348,6 +1287,7 @@ public class MapDisplay implements LevelChangeListener {
                 case "G":
                     groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
+
                 case "1":
                     floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
@@ -1363,6 +1303,7 @@ public class MapDisplay implements LevelChangeListener {
                 case "L1":
                     L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
                     break;
+
             }
 
         }
