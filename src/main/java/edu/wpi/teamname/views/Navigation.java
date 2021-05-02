@@ -169,39 +169,34 @@ public class Navigation implements LevelChangeListener {
         return directionGuiWrapper;
     }
 
-    private void refreshNodes() {
+    private void refreshNodes(boolean clear) {
         listOfNodeNames.clear();
         nodeNameNodes.clear();
         listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
         nodesMap.clear();
-        toCombo.getItems().clear();
-        fromCombo.getItems().clear();
+        if (clear) {
+            toCombo.getItems().clear();
+            fromCombo.getItems().clear();
+        }
         Collections.sort(listOfNodes, new NodeSortComparator());
         listOfNodes.forEach(n -> {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
-            if(handicap && !n.getNodeType().equals("STAI")){ //handicapButton.getText().equals("Handicap On")
-                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
-                //Collections.sort(listOfNodeNames);
-                nodeNameNodes.add(n);
-            }
-            else {
-                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
-                //Collections.sort(listOfNodeNames);
-                nodeNameNodes.add(n);
-            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
-
-            }*/
-            }
+            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+            //Collections.sort(listOfNodeNames);
+            nodeNameNodes.add(n);
 
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
             fromCombo.getItems().add(n); // make the nodes appear in the combobox 2 electric bugaloo
         });
+    }
+
+    private void refreshNodes() {
+        refreshNodes(true);
     }
 
     /**
@@ -315,16 +310,12 @@ public class Navigation implements LevelChangeListener {
 
     @FXML
     void toggleHandicap(ActionEvent event) {
-        if(handicap){ handicap = false;
-        handicapButton.setSelected(true);
-        handicapButton.setSelectedColor(Color.valueOf("0067b1"));
-        handicapButton.setTextFill(Color.WHITE);
+        if (handicap) {
+            handicapButton.setSelected(true);
         }
-        else {
-            handicapButton.setUnSelectedColor(Color.WHITE);
-            handicap = true;
-        }
-        refreshNodes();
+        handicap ^= true;
+        refreshNodes(false);
+        calcPath();
     }
 
 

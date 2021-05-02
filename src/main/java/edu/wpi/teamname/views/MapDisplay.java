@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.PathTransition;
+import javafx.scene.Scene;
 import javafx.scene.shape.*;
 import javafx.animation.Transition;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
@@ -1120,6 +1121,7 @@ public class MapDisplay implements LevelChangeListener {
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button
         } else { // Else (if user is authenticated)
             AuthenticationManager.getInstance().signOut(); // Display sign out button
+            SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
     }
 
