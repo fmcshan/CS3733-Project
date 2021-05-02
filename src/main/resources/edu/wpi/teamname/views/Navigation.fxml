@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -14,7 +15,7 @@
       <DropShadow color="#a4a4a4" />
    </effect>
    <children>
-      <Label fx:id="title" text="Navigation">
+      <Label text="Navigation">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
@@ -22,7 +23,7 @@
             <Insets left="25.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to recieve a path." wrappingWidth="315.0">
+      <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your current location and destination to receive a path." wrappingWidth="315.0">
          <font>
             <Font size="16.0" />
          </font>
@@ -30,7 +31,7 @@
             <Insets left="25.0" />
          </VBox.margin>
       </Text>
-      <Label fx:id="fromLabel" text="From" textFill="#868686">
+      <Label text="From" textFill="#868686">
          <font>
             <Font size="16.0" />
          </font>
@@ -46,7 +47,7 @@
             <Insets left="25.0" top="5.0" />
          </VBox.margin>
       </JFXComboBox>
-      <Label fx:id="toLabel" text="To" textFill="#868686">
+      <Label text="To" textFill="#868686">
          <font>
             <Font size="16.0" />
          </font>
@@ -62,28 +63,43 @@
             <Insets left="25.0" top="5.0" />
          </VBox.margin>
       </JFXComboBox>
-      <VBox alignment="TOP_CENTER">
-         <children>
-            <Label fx:id="directions" text="Directions">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="textDirections" layoutX="170.0" layoutY="10.0" textFill="#9e9e9e" />
-         </children>
-      </VBox>
+      <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#cancelNavigation" prefHeight="47.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Cancel" textFill="#bbbbbb">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" top="40.0" />
+         </VBox.margin>
+      </JFXButton>
+      <JFXButton fx:id="handicapButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#toggleHandicap" prefHeight="47.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Handicap Off" textFill="#bbbbbb">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" top="25.0" />
+         </VBox.margin>
+      </JFXButton>
       <JFXButton fx:id="mapsButton" onAction="#googleMaps" text="Travel to Hospital">
          <VBox.margin>
-            <Insets left="100.0" top="200.0" />
+            <Insets left="100.0" top="50.0" />
          </VBox.margin>
       </JFXButton>
       <JFXButton fx:id="mapsButtonHome" onAction="#googleMapsHome" text="Travel Home">
          <VBox.margin>
-            <Insets left="110.0" top="25.0" />
+            <Insets left="100.0" top="20.0" />
          </VBox.margin>
       </JFXButton>
+      <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="552.0" prefWidth="350.0" style="-fx-background-color: white;" vbarPolicy="NEVER">
+         <content>
+            <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="413.0" prefWidth="329.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="textDirections" layoutX="170.0" layoutY="10.0" textFill="#9e9e9e" />
+               </children>
+            </VBox>
+         </content>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="40.0" />
+         </VBox.margin>
+      </ScrollPane>
    </children>
 </VBox>
