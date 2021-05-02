@@ -1,7 +1,7 @@
 package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.NodeComparator;
+import edu.wpi.teamname.Algo.NodeAStarComparator;
 import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Algo.Stopwatch;
 import edu.wpi.teamname.Database.LocalStorage;
@@ -35,7 +35,7 @@ public class AStar implements IAlgorithm {
 
     private boolean isHandicap;
     /**
-     * Priority queue of open nodes. Instantiated with our NodeComparator class
+     * Priority queue of open nodes. Instantiated with our NodeAStarComparator class
      */
     private PriorityQueue<Node> openNodes;
 
@@ -52,7 +52,7 @@ public class AStar implements IAlgorithm {
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
         this.goal = goal;
         this.isHandicap = isHandicap;
-        openNodes = new PriorityQueue<>(new NodeComparator()); //Instantiates the priority queue with our overwrited comparator
+        openNodes = new PriorityQueue<>(new NodeAStarComparator()); //Instantiates the priority queue with our overwrited comparator
         this.process();
     }
 
@@ -260,7 +260,7 @@ public class AStar implements IAlgorithm {
      * @param b the ending node
      * @return the euclidean distance between two nodes
      */
-    public double distance(Node a, Node b) {
+    public static double distance(Node a, Node b) {
         //TODO MAKE THIS A SWITCH STATEMENT/MAKE DISTANCE FORMULA 3D
         int x1 = a.getCoords().get("x");
         int x2 = b.getCoords().get("x");
@@ -297,16 +297,10 @@ public class AStar implements IAlgorithm {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        Node start = nodes.get(Parser.indexOfNode(nodes, "ALABS001L2"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "GLABS014L2"));
         Stopwatch timer = new Stopwatch();
-        AStar example = new AStar(nodes, start, goal, false);
+        AStar example = new AStar(nodes, nodes.get(10), nodes.get(76), false);
         ArrayList<String> nodeTypes = new ArrayList<>();
-        for (Node node : nodes) {
-            if (!nodeTypes.contains(node.getNodeType()))
-                nodeTypes.add(node.getNodeType());
-        }
-        System.out.println(nodeTypes);
+        System.out.println(example.getPath().size());
         /*for (ArrayList<Node> floorPath : example.getFloorPaths()) {
             System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
             for (Node node : floorPath) {

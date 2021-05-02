@@ -1,8 +1,7 @@
 package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.NodeComparator;
-import edu.wpi.teamname.Algo.Parser;
+import edu.wpi.teamname.Algo.NodeAStarComparator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
@@ -25,7 +24,7 @@ public class BFS implements IAlgorithm {
         this.start = start;
         this.goal = goal;
         this.path = new ArrayList<>();
-        this.openNodes = new PriorityQueue<>(new NodeComparator());
+        this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
         this.process();
     }
 
