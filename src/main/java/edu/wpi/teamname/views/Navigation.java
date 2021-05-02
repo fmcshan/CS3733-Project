@@ -314,6 +314,7 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("3");
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
+        SceneManager.getInstance().getDefaultPage().listOfNode.clear();
         SceneManager.getInstance().getDefaultPage().clearMap();
         clearDirections();
         pathCanceled = true;

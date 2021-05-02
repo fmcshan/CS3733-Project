@@ -149,6 +149,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.getChildren().clear();
         popPop2.getChildren().clear();
+        currentPath.clear();
+        listOfNode.clear();
+        startAndEnd.clear();
+        startNode = null;
+        endNode = null;
         zooM.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();

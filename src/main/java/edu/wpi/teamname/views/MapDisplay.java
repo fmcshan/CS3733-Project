@@ -43,6 +43,7 @@ public class MapDisplay implements LevelChangeListener {
     double scaledHeight = 3400.0;
     double scaledX = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
+    ArrayList<Node> listOfNode = new ArrayList<>();
     double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
@@ -215,7 +216,6 @@ public class MapDisplay implements LevelChangeListener {
             }
         }
 
-        ArrayList<Node> listOfNode = new ArrayList<>();
         currentPath.forEach(n -> {
             n.forEach(h -> {
                 listOfNode.add(h);
