@@ -53,8 +53,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private ImageView hospitalMap; // the map
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
-    @FXML
-    private AnchorPane topElements; // anchor pane where displayed nodes reside
+
+//    public AnchorPane getTopElements() {
+//        return topElements;
+//    }
+
+//    @FXML
+//    private AnchorPane topElements; // anchor pane where displayed nodes reside
 
     /**
      * run on startup
@@ -190,6 +195,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMaps() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = 5000;
+        scaledHeight = 3400.0;
         clearMap();
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
@@ -201,6 +210,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
+        zooM.zoomAndPan();
     }
     @FXML
     private void openHelp() {
@@ -215,6 +225,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
+    }
+    public void initGoogleForm(){
+        System.out.println("called");
+        zooM.zoomAndPan();
     }
     
     void disableButtons(ArrayList<String> floors){

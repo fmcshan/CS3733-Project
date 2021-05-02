@@ -13,7 +13,6 @@ import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

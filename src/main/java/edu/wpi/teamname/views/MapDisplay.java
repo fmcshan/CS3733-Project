@@ -144,7 +144,6 @@ public class MapDisplay implements LevelChangeListener {
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
-
     }
 
     public void setScaledX(double scaledX) {

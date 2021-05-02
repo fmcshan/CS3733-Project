@@ -11,8 +11,13 @@ import com.google.maps.model.*;
 import com.google.maps.*;
 import com.google.maps.GeoApiContext;
 import com.jfoenix.controls.JFXTextArea;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.json.*;
 import com.google.maps.errors.ApiException;
@@ -100,17 +105,21 @@ public class GoogleMapForm {
     private Text errorMes;
     @FXML
     private ImageView imageBox;
-
+    //DefaultPage;
 
     String chosenPark = "";
 
     @FXML
     private JFXButton printButton;
+  static  DefaultPage defaultPage =SceneManager.getInstance().getDefaultPage();
+   static ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
 
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception {}
+//    public GoogleMapForm(MapDisplay mapDisplay){
+//
+//        this.mapDisplay =mapDisplay;
+//    }
 
-
-    }
  @FXML
     public void initialize() {
 //        travelMode.getItems().add("driving");
@@ -131,6 +140,10 @@ public class GoogleMapForm {
                 .apiKey("AIzaSyCZVPvXk5oKKZvJKEEe6uaBmA8FuzzgbJg")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
+//        mapDisplay = new MapDisplay();
+     displayParkingSpots();
+     defaultPage.initGoogleForm();
+
     }
 
     @FXML
@@ -289,4 +302,17 @@ public class GoogleMapForm {
         return results;
     }
 
+
+     public static void displayParkingSpots(){
+         System.out.println(LoadFXML.getCurrentWindow());
+        nodes.forEach(n ->{
+            if (n.getNodeType().equals("PARK")){
+                Circle circle = new Circle(defaultPage.xCoordOnTopElement(n.getX()), defaultPage.yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                circle.setStrokeWidth(4);
+                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
+               defaultPage.topElements.getChildren().add(circle);
+             //   System.out.println(defaultPage.xCoordOnTopElement(n.getX()));
+            }
+        });
+     }
 }
