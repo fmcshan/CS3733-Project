@@ -15,11 +15,13 @@ import java.util.ArrayList;
  * Class designed to help reduce the complexity of navigation, in terms of floor switching, as well as text directions
  */
 public class NavigationHelper {
-    final double SCALE = 3.2;
+    final double SCALE = 3.25;
     private AStar pathfinder;
+    private double totalStraightDistance;
+    private int lastStraightIndex;
 
     public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
-        pathfinder = new AStar(nodes, start, goal);
+        pathfinder = new AStar(nodes, start, goal, false);
     }
 
     public NavigationHelper(AStar AStar){
@@ -35,9 +37,10 @@ public class NavigationHelper {
             if (i == path.size() - 1)
                 result.add("You have arrived at your destination");
             else {
+                Node next = path.get(i + 1);
                 if (i > 0) {
                     Node prev = path.get(i - 1);
-                    Node next = path.get(i + 1);
+                    Node beginStraight;
                     if (node.getNodeType().equals("ELEV") && next.getNodeType().equals("ELEV")){
                         result.add("Take the Elevator to Floor " + next.getFloor());
                     }
@@ -46,23 +49,32 @@ public class NavigationHelper {
                     }
                     else if (next.getNodeType().equals("EXIT"))
                         result.add("Head for " + next.getLongName());
-                    else
-                    {
-                        if (getDirection(getAngle(prev, node), getAngle(node, next)).equals("Go straight towards ") && i <= path.size() - 3 && (getDirection(getAngle(node, next), getAngle(next, path.get(i + 2))).equals("Go straight towards "))){
-                            total+= pathfinder.distance(node, next)/SCALE;
-                        }
-                        else if(i >= path.size() - 3 && total > 0) {
-                            result.add("Go straight for " + (int) total + " feet");
-                            total = 0;
-                        }
-                        else if (!getDirection(getAngle(node, next), getAngle(next, path.get(i + 2))).equals("Go straight towards ")){
-                            result.add("Go straight for " + (int) total + " feet");
-                            total = 0;
-                        }
-                        else
+                    else {
+                        if (i > 2 && (i < path.size() - 3)){
+                            boolean isPrevStraight = getDirection(getAngle(path.get(i-2), prev), getAngle(prev, node)).equals("Straight ");
+                            boolean isNextStraight = getDirection(getAngle(node, next), getAngle(next, path.get(i+2))).equals("Straight ");
+                            boolean goStraight = getDirection(getAngle(prev, node), getAngle(node, next)).equals("Straight ");
+                            if (!isPrevStraight && goStraight && isNextStraight){
+                                total = 0;
+                                total += pathfinder.distance(node, next)/SCALE;
+                            } else if (isPrevStraight && goStraight && isNextStraight){
+                                total += pathfinder.distance(node,next)/SCALE;
+                            } else if (isPrevStraight && goStraight && !isNextStraight){
+                                if (node.getNodeType().equals("HALL"))
+                                    result.add("Head down the hall for " + (int) Math.ceil(total) + " feet");
+                                else
+                                    result.add("Go straight for " + (int) Math.ceil(total) + " feet to get to " + next.getLongName());
+                            } else if (!isPrevStraight && goStraight && !isNextStraight){
+                                result.add("Go straight towards " + next.getLongName());
+                            } else
+                                if (getDirection(getAngle(prev, node), getAngle(node, next)).equals("Turn "))
+                                    result.add("Turn towards " + next.getLongName());
+                                else
+                                    result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
+                        } else
                             result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
                     }
-                }
+                } else result.add("Head for " + next.getLongName());
             }
         }
         return result;
@@ -71,14 +83,18 @@ public class NavigationHelper {
     public String getDirection (double a, double b){
         double angle = this.NormalizeAngle(b - a);
 
-        if (angle >= 315 || angle <= 45)
-            return "Go straight towards ";
-        else if (angle >= 135 && angle <= 215)
-            return "Turn " + (int) angle + " degrees towards " ;
-        else if (angle <= 135 && angle >= 45 )
+        if (angle >= 315 || angle <= 45) {
+            return "Straight ";
+        }
+        else if (angle >= 135 && angle <= 215) {
+            return "Turn ";
+        }
+        else if (angle <= 135 && angle >= 45 ) {
             return "Turn left towards ";
-        else if (angle <= 315 && angle >= 215)
+        }
+        else if (angle <= 315 && angle >= 215) {
             return "Turn right towards ";
+        }
         else
             return "bob";
     }

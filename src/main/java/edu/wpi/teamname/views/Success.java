@@ -1,7 +1,6 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.*;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,19 +14,17 @@ import java.io.IOException;
  * Controller for Success.fxml
  * @author Lauren Sowerbutts
  */
-public class Success implements LanguageListener {
+public class Success {
 
     @FXML public Label successText;
     @FXML private Label title;
 
-    @FXML
     private UserRegistration userRegistration;
 
     private GiftDelivery giftDelivery;
 
     private LaundryService laundryService;
 
-    @FXML
     private ComputerService computerService;
 
     private FacilitiesRequest facilitiesRequest;
@@ -113,19 +110,5 @@ public class Success implements LanguageListener {
     public void closeSuccess() {
         pop.getChildren().clear(); // clear the successPop vbox
         SceneManager.getInstance().getDefaultPage().closeWindows();
-    }
-    public void initialize(){
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
-    }
-
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("Success_title"));
-        successText.setText(Translator.getInstance().get("Success_successText"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
     }
 }

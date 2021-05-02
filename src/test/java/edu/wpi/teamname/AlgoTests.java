@@ -32,11 +32,11 @@ public class AlgoTests {
 
     @BeforeEach
     void setUp() {
-        AStar a = new AStar(nodes, s1, g1);
+        AStar a = new AStar(nodes, s1, g1, false);
         path1 = a.getPath();
-        AStar b = new AStar(nodes, s2, g2);
+        AStar b = new AStar(nodes, s2, g2, false);
         path2 = b.getPath();
-        AStar c = new AStar(nodes, s3, g3);
+        AStar c = new AStar(nodes, s3, g3, false);
         path3 = c.getPath();
     }
 

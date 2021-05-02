@@ -1,105 +1,63 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.socketListeners.Initiator;
-import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
-import edu.wpi.teamname.views.manager.SceneManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.StringConverter;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 
-import java.util.ArrayList;
+public class RegistrationAdminView {
 
-/**
- * Controller for RegistrationAdminView.fxml
- * @author Lauren Sowerbutts, Frank McShan
- */
-public class RegistrationAdminView implements RegistrationListener {
     @FXML
-    public TableView table;
-    @FXML
-    public TableColumn nameColumn;
-    @FXML
-    public TableColumn dateOfBirthColumn;
-    @FXML
-    public TableColumn reasonsForVisitColumn;
-    @FXML
-    public TableColumn phoneNumberColumn;
+    private VBox cellHolder;
 
-    private edu.wpi.teamname.Database.UserRegistration currentlySelected = null;
-
-    /**
-     * Run on startup
-     */
     public void initialize() {
-
-        Initiator.getInstance().addRegistrationListener(this);
-
-        // set cell to text field
-        reasonsForVisitColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<ArrayList<String>>() {
-            @Override
-            public String toString(ArrayList<String> object) {
-                String ans = "";
-                for (String s : object) {
-                    ans += s + " ";
-                }
-                return ans.replace("\"", "");
-            }
-
-            @Override
-            public ArrayList<String> fromString(String string) {
-                return null;
-            }
-        }));
-        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
-        dateOfBirthColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
-        phoneNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // set cell to text field
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        dateOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        reasonsForVisitColumn.setCellValueFactory(new PropertyValueFactory<>("reasonsForVisit"));
-        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-
-        loadData(); // Load file to table
-
-        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            currentlySelected = (edu.wpi.teamname.Database.UserRegistration) newSelection; // Listen for row selection events
+        LocalStorage.getInstance().getRegistrations().forEach(r -> {
+            String reasonsForVisit = String.join(", ", r.getReasonsForVisit()).replace("\"", "");
+            generateRow(r.getName(), r.getDate(), reasonsForVisit, r.getPhoneNumber());
         });
     }
 
-    /**
-     * Load data into table
-     */
-    public void loadData() {
-        ArrayList<edu.wpi.teamname.Database.UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+    private void generateRow(String patientName, String patientDOB, String patientReason, String patientPhone) {
 
-        if (registrations == null) {
-            return;
-        }
+        Label nameCell = new Label(patientName);
+        nameCell.setAlignment(Pos.CENTER_LEFT);
+        nameCell.setStyle("-fx-font-size: 14");
+        nameCell.setPadding(new Insets(0, 0, 0, 20));
+        nameCell.setPrefWidth(254);
 
-        registrations.forEach(e -> {
-            table.getItems().add(0, e);
-        }); // Populate table
-    }
+        Label dateCell = new Label(patientDOB);
+        dateCell.setAlignment(Pos.CENTER_LEFT);
+        dateCell.setStyle("-fx-font-size: 14");
+        dateCell.setPadding(new Insets(0, 0, 0, 20));
+        dateCell.setPrefWidth(204);
 
-    /**
-     * When a form is submitted, add to table
-     * @param _obj
-     */
-    @Override
-    public void registrationAdded(edu.wpi.teamname.Database.UserRegistration _obj) {
-        table.getItems().add(0, _obj);
-    }
+        Label reasonCell = new Label(patientReason);
+        reasonCell.setAlignment(Pos.CENTER_LEFT);
+        reasonCell.setStyle("-fx-font-size: 14");
+        reasonCell.setPadding(new Insets(0, 0, 0, 20));
+        reasonCell.setPrefWidth(584);
 
-    /**
-     * Close form once exit button is pressed
-     * @param actionEvent
-     */
-    public void exitView(ActionEvent actionEvent) {
-        LoadFXML.setCurrentWindow("");
-        SceneManager.getInstance().getDefaultPage().closeWindows();
+        Label phoneCell = new Label(patientPhone);
+        phoneCell.setAlignment(Pos.CENTER_LEFT);
+        phoneCell.setStyle("-fx-font-size: 14");
+        phoneCell.setPadding(new Insets(0, 0, 0, 20));
+        phoneCell.setPrefWidth(232);
+
+        HBox row = new HBox(nameCell, dateCell, reasonCell, phoneCell);
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setStyle("-fx-background-color: white");
+        row.setMaxWidth(1270);
+        row.setMinHeight(38);
+        cellHolder.getChildren().add(row);
+
+        row.setOnMouseEntered(e -> {
+            row.setStyle("-fx-background-color: #F7F7F8; -fx-background-radius: 8px;");
+        });
+
+        row.setOnMouseExited(e -> {
+            row.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px;");
+        });
     }
 }

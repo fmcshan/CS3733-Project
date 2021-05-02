@@ -265,7 +265,7 @@ public class Submit {
         data.put("CHANGE_ID", changeId);
         data.put("uid", _form.getLocalId());
 
-        String url = SERVER_URL + "/api/delete-admin";
+        String url = SERVER_URL + "/api/delete-user";
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);

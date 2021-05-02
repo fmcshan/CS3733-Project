@@ -15,6 +15,10 @@ public class LoadFXML {
     private LoadFXML() {
     }
 
+    public static String getCurrentHelp() {
+        return currentHelp;
+    }
+
     public static synchronized LoadFXML getInstance() { return instance; }
 
     private static final LoadFXML instance = new LoadFXML();
@@ -46,7 +50,7 @@ public class LoadFXML {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/views/" + fileName + ".fxml"));
             openWindow(windowName, root, vbox);
         } catch (IOException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 

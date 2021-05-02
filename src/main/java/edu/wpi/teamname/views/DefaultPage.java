@@ -16,6 +16,7 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -45,63 +46,26 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, GBttn, L1Bttn, L2Bttn;
     @FXML
-    private VBox popPop, adminPop, requestPop, registrationPop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
     private ImageView hospitalMap; // the map
     @FXML
-    private StackPane stackPane; // the pane the map is housed in
-    @FXML
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
     private AnchorPane topElements; // anchor pane where displayed nodes reside
-    @FXML
-    private JFXComboBox<String> languageBox; //selects language you want
-    @FXML
-    private JFXButton Navigation;
-    @FXML
-    private JFXButton CheckIn;
-    @FXML
-    private JFXButton Requests;
 
-
-    public String languageHelper(String getText){ //simplifies the language in helper 2, gets the value for given language
-        return Translator.getInstance().languageHashmap.get(Translator.getInstance().getCurrentLanguage()).get(getText);
-    }
-
-    public void languageHelper2(){ //can call this for each language
-        Navigation.setText(languageHelper("Navigation"));
-        CheckIn.setText(languageHelper("CheckIn"));
-        Requests.setText(languageHelper("Requests"));
-    }
-
-
-    public void languageSwitch() { //picks a language and checks current language
-        if(languageBox.getValue().equals("English")){
-            Translator.getInstance().setCurrentLanguage("language_english");
-            languageHelper2();
-        }
-        if(languageBox.getValue().equals("Spanish")){
-            Translator.getInstance().setCurrentLanguage("language_spanish");
-            languageHelper2();
-        }
-        if(languageBox.getValue().equals("Chinese - Simplified")){
-            Translator.getInstance().setCurrentLanguage("language_chineseSimplified");
-            languageHelper2();
-        }
-    }
     /**
      * run on startup
      */
     public void initialize() {
-        languageBox.setVisible(false);
         hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
-        languageBox.getItems().add("English");
-        languageBox.getItems().add("Spanish");
+        LoadFXML.setCurrentHelp("");
+        LoadFXML.setCurrentWindow("");
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -204,7 +168,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRegistration() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RegistrationAdminViewNew", "registrationBar", popPop);
+        LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
     }
 
     /**
@@ -213,7 +177,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleRequest() {
         clearMap();
         popPop.setPrefWidth(1000);
-        LoadFXML.getInstance().loadWindow("RequestAdminNew", "reqAdminBar", popPop);
+        LoadFXML.getInstance().loadWindow("RequestAdmin", "reqAdminBar", popPop);
     }
 
     /**
@@ -240,42 +204,46 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
     @FXML
     private void openHelp() {
-        popPop.setPrefWidth(340);
         if (LoadFXML.getCurrentWindow().equals("")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
             return;
         }
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("mapEditorBar", "help_mapBar", popPop);
             return;
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
     
-    void toggleButtons(ArrayList<String> floors){
+    void disableButtons(ArrayList<String> floors){
         if (floors.contains("L2"))
             L2Bttn.setDisable(true);
-        else
-            L2Bttn.setDisable(false);
         if (floors.contains("L1"))
             L1Bttn.setDisable(true);
-        else
-            L1Bttn.setDisable(false);
         if (floors.contains("G"))
             GBttn.setDisable(true);
-        else
-            GBttn.setDisable(false);
         if (floors.contains("1"))
             floor1Bttn.setDisable(true);
-        else
-            floor1Bttn.setDisable(false);
         if (floors.contains("2"))
             floor2Bttn.setDisable(true);
-        else
-            floor2Bttn.setDisable(false);
         if (floors.contains("3"))
             floor3Bttn.setDisable(true);
-        else
+    }
+
+    void enableButtons(ArrayList<String> floors){
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(false);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(false);
+        if (floors.contains("G"))
+            GBttn.setDisable(false);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(false);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(false);
+        if (floors.contains("3"))
             floor3Bttn.setDisable(false);
     }
 

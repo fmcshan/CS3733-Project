@@ -12,8 +12,6 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
-import edu.wpi.teamname.views.Translator;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +32,7 @@ import java.util.List;
  * Controller for the Gift Delivery Request Page
  * @author Emmanuel Ola, Frank McShan
  */
-public class GiftDelivery implements LanguageListener {
+public class GiftDelivery {
 
     /**
      * Label indicating if a name has been filled in incorrectly
@@ -173,32 +171,6 @@ public class GiftDelivery implements LanguageListener {
     @FXML
     private VBox successPop;
 
-
-    private void setLanguages(){
-        title.setText(Translator.getInstance().get("GiftDelivers_title"));
-        desc.setText(Translator.getInstance().get("GiftDelivers_desc"));
-        askName.setText(Translator.getInstance().get("GiftDelivers_askName"));
-        nameInput.setPromptText(Translator.getInstance().get("GiftDelivers_nameInput"));
-        askGifts.setText(Translator.getInstance().get("GiftDelivers_askGifts"));
-        teddyBearBox.setText(Translator.getInstance().get("GiftDelivers_teddyBearBox"));
-        flowerCheckbox.setText(Translator.getInstance().get("GiftDelivers_flowerCheckbox"));
-        flowerType.setPromptText(Translator.getInstance().get("GiftDelivers_flowerType"));
-        chocolateBox.setText(Translator.getInstance().get("GiftDelivers_chocolateBox"));
-        balloonsBox.setText(Translator.getInstance().get("GiftDelivers_balloonsBox"));
-        giftBasketBox.setText(Translator.getInstance().get("GiftDelivers_giftBasketBox"));
-        otherCheckbox.setText(Translator.getInstance().get("GiftDelivers_otherCheckbox"));
-        askNumber.setText(Translator.getInstance().get("GiftDelivers_askNumber"));
-        phoneInput.setPromptText(Translator.getInstance().get("GiftDelivers_phoneInput"));
-        askLocation.setText(Translator.getInstance().get("GiftDelivers_askLocation"));
-        requestLocation.setPromptText(Translator.getInstance().get("GiftDelivers_requestLocation"));
-        submitButton.setText(Translator.getInstance().get("GiftDelivers_submitButton"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
-
     /**
      * Constructor used to create a pop up window for GiftDelivery Request
      * @param request an instance of Requests.java
@@ -208,8 +180,6 @@ public class GiftDelivery implements LanguageListener {
     }
 
     public void initialize() {
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
         ArrayList<String> listOfNodeNames = new ArrayList<>();
         HashMap<String, Node> nodesMap = new HashMap<>();
         for (Node node : LocalStorage.getInstance().getNodes()) {
@@ -305,16 +275,16 @@ public class GiftDelivery implements LanguageListener {
 
         //Checks if all the inputs are valid
         if (!nameInputValid())
-            failedName.setText("Invalid Name Entry.");
+            failedName.setText("Invalid Name Entry");
         else
             failedName.setText("");
 
         if (!checkBoxSelected())
-            failedGiftSelection.setText("Please select a gift to be delivered.");
+            failedGiftSelection.setText("Select a Gift to Be Delivered");
         else if (flowerCheckbox.isSelected() && !flowerSelectionValid())
-            failedGiftSelection.setText("Please select a flower type.");
+            failedGiftSelection.setText("Select a Flower Type");
         else if (!otherInputValid())
-            failedGiftSelection.setText("Please ensure you have selected the \"Other\" box and have correctly filled in the text field.");
+            failedGiftSelection.setText("Invalid Other Reason");
         else
             failedGiftSelection.setText("");
 
@@ -324,7 +294,7 @@ public class GiftDelivery implements LanguageListener {
             failedPhoneNumber.setText("");
 
         if (!locationValid())
-            failedLocationEntry.setText("Please select a location");
+            failedLocationEntry.setText("Invalid Location Selection");
 
         if (requests == null) {
             requests = new ArrayList<ServiceRequest>();
@@ -356,7 +326,7 @@ public class GiftDelivery implements LanguageListener {
             // load Success page in successPop VBox
             giftPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Requests_success"), giftPop);
+            success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", giftPop);
         }
     }
 
@@ -383,5 +353,9 @@ public class GiftDelivery implements LanguageListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void backToRequests(ActionEvent actionEvent) {
+        LoadFXML.getInstance().loadWindow("Requests", "reqBar", SceneManager.getInstance().getDefaultPage().getPopPop());
     }
 }

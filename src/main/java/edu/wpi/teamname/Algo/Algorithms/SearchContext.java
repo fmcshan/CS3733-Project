@@ -46,7 +46,7 @@ public class SearchContext {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(0), nodes.get(60)));
+        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(0), nodes.get(60), false));
         ArrayList<Node> aStarPath = searchAlgorithms.getPath();
         searchAlgorithms.setContext(new DFS(nodes, nodes.get(0), nodes.get(60)));
         ArrayList<Node> DFSPath = searchAlgorithms.getPath();

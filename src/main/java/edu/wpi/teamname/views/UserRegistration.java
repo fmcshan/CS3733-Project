@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Database.Submit;
-import edu.wpi.teamname.views.manager.LanguageListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
  * Controller for UserRegistration.fxml
  * @author Frank McShan, Lauren Sowerbutts
  */
-public class UserRegistration implements LanguageListener {
+public class UserRegistration {
 
 
     @FXML
@@ -114,34 +113,7 @@ public class UserRegistration implements LanguageListener {
 
         return ans;
     }
-    public void initialize(){
-        Translator.getInstance().addLanguageListener(this);
-        setLanguages();
-    }
 
-    private void setLanguages(){
-        submitButton.setText(Translator.getInstance().get("Registration_submitButton"));
-        phoneInput.setPromptText(Translator.getInstance().get("Registration_phoneInput"));
-        enterPhoneDesc.setText(Translator.getInstance().get("Registration_enterPhoneDesc"));
-        otherCheckbox.setText(Translator.getInstance().get("Registration_otherCheckbox"));
-        physicalTherapyCheckbox.setText(Translator.getInstance().get("Registration_physicalTherapyCheckbox"));
-        labWorkCheckbox.setText(Translator.getInstance().get("Registration_labWorkCheckbox"));
-        eyeExamCheckbox.setText(Translator.getInstance().get("Registration_eyeExamCheckbox"));
-        mriCheckbox.setText(Translator.getInstance().get("Registration_mriCheckbox"));
-        xrayCheckbox.setText(Translator.getInstance().get("Registration_xrayCheckbox"));
-        emergencyRoomCheckbox.setText(Translator.getInstance().get("Registration_emergencyRoomCheckbox"));
-        reasonsLabel.setText(Translator.getInstance().get("Registration_reasonsLabel"));
-        birthdayDesc.setText(Translator.getInstance().get("Registration_birthdayDesc"));
-        fullName.setPromptText(Translator.getInstance().get("Registration_fullName"));
-        fullNameDesc.setText(Translator.getInstance().get("Registration_fullNameDesc"));
-        fillfieldsDesc.setText(Translator.getInstance().get("Registration_fillfieldsDesc"));
-        registrationForm.setText(Translator.getInstance().get("Registration_registrationForm"));
-    }
-
-    @Override
-    public void updateLanguage() {
-        setLanguages();
-    }
     /**
      * Check is there is a checkbox selected
      * @return true if there is a checkbox selected
@@ -236,7 +208,7 @@ public class UserRegistration implements LanguageListener {
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
-            success.loadSuccess(Translator.getInstance().get("Success_successText"), successPop);
+            success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
         }
     }
 }
