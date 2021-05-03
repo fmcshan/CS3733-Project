@@ -127,11 +127,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     @Override
     public void userLogout() {
+        LoadFXML.setCurrentWindow("");
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
         registrationPop.getChildren().clear();
         employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
+        navigation.cancelNavigation();
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
