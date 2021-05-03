@@ -67,6 +67,8 @@ public class Navigation implements LevelChangeListener {
     @FXML
     public JFXButton handicapButton;
 
+
+    ArrayList<Node> path = new ArrayList<>();
     ArrayList<String> allFloors = new ArrayList<>();
 
     public void setToCombo(Node node) {
@@ -264,7 +266,7 @@ public class Navigation implements LevelChangeListener {
         }
         AStar AStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap); // perform AStar
         residentAStar = AStar;
-        ArrayList<Node> path = residentAStar.getPath(); // list the nodes found using AStar to create a path
+        path = residentAStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
@@ -299,7 +301,7 @@ public class Navigation implements LevelChangeListener {
             }
             mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
         }
-//        refreshNodes();
+        SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
     }
 
     public void cancelNavigation() {

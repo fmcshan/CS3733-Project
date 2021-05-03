@@ -142,6 +142,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
+        navigation.cancelNavigation();
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;

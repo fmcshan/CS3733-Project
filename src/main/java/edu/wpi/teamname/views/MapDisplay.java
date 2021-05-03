@@ -1376,7 +1376,6 @@ public class MapDisplay implements LevelChangeListener {
                 break;
             case "navBar":
                 clearMap();
-                refreshData();
                 displayHotspots(.8);
                 break;
         }
