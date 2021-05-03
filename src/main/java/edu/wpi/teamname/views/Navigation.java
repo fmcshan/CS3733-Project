@@ -292,9 +292,7 @@ public class Navigation implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
-        if (pathCanceled) {
-            mapDisplay.clearMap();
-        } else {
+        if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
             if (residentAStar == null) {
                 return;
