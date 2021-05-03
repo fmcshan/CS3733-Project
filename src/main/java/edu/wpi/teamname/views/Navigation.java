@@ -7,6 +7,7 @@ import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
@@ -23,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -50,7 +52,7 @@ public class Navigation implements LevelChangeListener {
     AStar residentAStar;
     boolean pathCanceled;
     @FXML
-    private ComboBox<String> toCombo; // destination drop down
+    private ComboBox<String> toCombo, algoCombo; // destination drop down
     @FXML
     private ComboBox<String> fromCombo; // start location drop down
     @FXML
@@ -60,7 +62,7 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private MapDisplay mapDisplay; // MapDisplay.fxml controller
     @FXML
-    private VBox navBox;
+    private VBox navBox, algoBox;
     @FXML
     private ScrollPane scrollBar;
     @FXML
@@ -84,6 +86,15 @@ public class Navigation implements LevelChangeListener {
      * run on startup
      */
     public void initialize() {
+
+        if (AuthenticationManager.getInstance().isAuthenticated()) {
+            algoBox.setVisible(true);
+            algoCombo.setStyle("-fx-font-size: 24");
+        } else {
+            algoBox.setVisible(false);
+            algoCombo.setStyle("-fx-font-size: .1");
+        }
+
         if (COVIDMessage.covid) {
             AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener(toCombo);
             listener.setValue("Emergency Department Entrance[1]");
@@ -314,4 +325,6 @@ public class Navigation implements LevelChangeListener {
     }
 
 
+    public void changeSearch() {
+    }
 }
