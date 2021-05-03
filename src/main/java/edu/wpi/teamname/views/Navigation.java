@@ -66,7 +66,7 @@ public class Navigation implements LevelChangeListener {
     @FXML
     private ScrollPane scrollBar;
     @FXML
-    private JFXToggleNode handicapButton;
+    private JFXButton handicapButton;
     boolean handicap = false;
 
     ArrayList<String> allFloors = new ArrayList<>();
@@ -310,11 +310,19 @@ public class Navigation implements LevelChangeListener {
 
     @FXML
     void toggleHandicap(ActionEvent event) {
-        if (handicap) {
-            handicapButton.setSelected(true);
+        if (!handicap) {
+            handicapButton.setStyle("-fx-background-color: #dedede; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
+        } else {
+            handicapButton.setStyle("-fx-background-color: #ffffff; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
         }
         handicap ^= true;
+        String fromSelected = fromCombo.getValue();
+        String toSelected = toCombo.getValue();
+        fromCombo.getItems().clear();
+        toCombo.getItems().clear();
         refreshNodes(false);
+        fromCombo.setValue(fromSelected);
+        toCombo.setValue(toSelected);
         calcPath();
     }
 
