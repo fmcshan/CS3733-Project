@@ -87,6 +87,13 @@ public class Navigation implements LevelChangeListener, LanguageListener {
      * run on startup
      */
     public void initialize() {
+
+
+        try {
+            Translator.translate("en", "es", "Hello");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Translator.getInstance().addLanguageListener(this);
         setLanguages();
         if (COVIDMessage.covid) {
@@ -129,6 +136,8 @@ public class Navigation implements LevelChangeListener, LanguageListener {
             fromCombo.getItems().add(n); // make the nodes appear in the combobox 2 electric bugaloo
         });
     }
+
+
 
     /**
      * load Navigation bar in the Default Page when button is pressed/ make it disappear

@@ -2,6 +2,12 @@ package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.views.manager.LanguageListener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -519,6 +525,25 @@ public class Translator {
 
     public void addLanguageListener(LanguageListener listener) {
         languageListeners.add(listener);
+    }
+
+    public static String translate(String from, String to, String words) throws IOException {
+        String urlStr = "https://script.google.com/macros/s/AKfycbwm2k79oNRaHO0_oUauPPxLJbYRJZroIiL5Jrhw2vjXCtIyU3d8xaDd-ZtxaQl3eo1yeQ/exec" +
+                "?q=" + URLEncoder.encode(words, "UTF-8") +
+                "&target=" + to +
+                "&source=" + from;
+        URL url = new URL(urlStr);
+        StringBuilder response = new StringBuilder();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        System.out.println(response.toString());
+        return response.toString();
     }
 
     public void updateLanguage() {
