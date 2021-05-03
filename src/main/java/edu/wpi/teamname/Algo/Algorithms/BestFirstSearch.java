@@ -10,19 +10,22 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-public class BestFirstSearch {
+public class BestFirstSearch extends Algorithm{
     private ArrayList<Node> nodes;
     private Node start;
     private Node goal;
     private PriorityQueue<Node> openNodes;
 
     public BestFirstSearch(ArrayList<Node> nodes, Node start, Node goal) {
+        super(nodes, start, goal);
         this.resetNodes(nodes);
         this.start = start;
         this.goal = goal;
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
         this.process();
     }
+
+    public BestFirstSearch(){}
 
     public ArrayList<Node> getPath() {
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
@@ -39,44 +42,7 @@ public class BestFirstSearch {
         return path;
     }
 
-    public ArrayList<ArrayList<Node>> getAllFloorPaths() {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        String currentfloor = start.getFloor();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(currentfloor))
-                nodes.add(node);
-            else {
-                currentfloor = node.getFloor();
-                paths.add(nodes);
-                nodes = new ArrayList<>();
-                nodes.add(node);
-            }
-        }
-        paths.add(nodes);
-        return paths;
-    }
-
-    public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        for (ArrayList<Node> floorPath : getAllFloorPaths()) {
-            if (floorPath.get(0).getFloor().equals(floor))
-                paths.add(floorPath);
-        }
-        return paths;
-    }
-
-    public ArrayList<Node> getFloorNodes(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(floor))
-                nodes.add(node);
-        }
-        return nodes;
-    }
-
-    private void resetNodes(ArrayList<Node> nodes) {
+    public void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             if (node.getParent() != null) {
                 node.setParent(null);

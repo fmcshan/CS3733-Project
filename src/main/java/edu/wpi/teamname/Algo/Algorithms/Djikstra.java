@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-public class Djikstra {
+public class Djikstra extends Algorithm{
     private ArrayList<Node> nodes;
     private Node start;
     private Node goal;
     private PriorityQueue<Node> openNodes;
 
     public Djikstra(ArrayList<Node> nodes, Node start, Node goal) {
+        super(nodes, start, goal);
         this.resetNodes(nodes);
         this.start = start;
         start.setCostSoFar(0);
@@ -26,7 +27,9 @@ public class Djikstra {
         this.process();
     }
 
-    private void resetNodes(ArrayList<Node> nodes){
+    public Djikstra(){}
+
+    public void resetNodes(ArrayList<Node> nodes){
         for (Node node : nodes) {
             if (node.getParent() != null) {
                 node.setParent(null);
@@ -48,43 +51,6 @@ public class Djikstra {
         while (!finalPath.isEmpty())
             path.add(finalPath.pop());
         return path;
-    }
-
-    public ArrayList<ArrayList<Node>> getAllFloorPaths() {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        String currentfloor = start.getFloor();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(currentfloor))
-                nodes.add(node);
-            else {
-                currentfloor = node.getFloor();
-                paths.add(nodes);
-                nodes = new ArrayList<>();
-                nodes.add(node);
-            }
-        }
-        paths.add(nodes);
-        return paths;
-    }
-
-    public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        for (ArrayList<Node> floorPath : getAllFloorPaths()) {
-            if (floorPath.get(0).getFloor().equals(floor))
-                paths.add(floorPath);
-        }
-        return paths;
-    }
-
-    public ArrayList<Node> getFloorNodes(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(floor))
-                nodes.add(node);
-        }
-        return nodes;
     }
 
     public void process(){

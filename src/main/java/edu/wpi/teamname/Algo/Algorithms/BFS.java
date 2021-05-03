@@ -13,13 +13,14 @@ import java.util.PriorityQueue;
  * <h1>Breadth-First Search Algorithm</h1>
  * Uses breadth-first search for pathfinding
  */
-public class BFS implements IAlgorithm {
+public class BFS extends Algorithm {
     private Node start;
     private Node goal;
     private ArrayList<Node> path;
     private PriorityQueue<Node> openNodes;
 
     public BFS(ArrayList<Node> nodes, Node start, Node goal) {
+        super(nodes, start, goal);
         this.resetNodes(nodes);
         this.start = start;
         this.goal = goal;
@@ -28,12 +29,14 @@ public class BFS implements IAlgorithm {
         this.process();
     }
 
+    public BFS(){}
+
     @Override
     public ArrayList<Node> getPath(){
         return path;
     }
 
-    private void resetNodes(ArrayList<Node> nodes) {
+    public void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             node.visitedFlag = false;
         }
