@@ -1,40 +1,31 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
-import edu.wpi.teamname.Algo.Edge;
-import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.App;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.simplify.Shutdown;
+import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Path;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Level;
 
 /**
  * Controller for DefaultPage.fxml
@@ -45,6 +36,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     // used to save the current list of nodes after AStar
 
+    boolean opened = false;
     @FXML
     private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn;
     @FXML
@@ -63,15 +55,18 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private ScrollPane chatScrollPane;
     @FXML
     private JFXButton helpButton;
-
-    boolean opened = false;
+    @FXML
+    private JFXButton chatButton;
 
     /**
      * run on startup
      */
     public void initialize() {
-        hideAddNodePopup();
         SceneManager.getInstance().setDefaultPage(this);
+       Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/proximanova-regular.ttf"), 16);
+        Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Graphik-Regular_1.ttf"), 16);
+        System.out.println(test.getFamily());
+        hideAddNodePopup();
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
         LoadFXML.setCurrentHelp("");
@@ -88,8 +83,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            if(!LoadFXML.getCurrentWindow().equals("navBar")){
-                currentPath= new ArrayList();
+            if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+                currentPath = new ArrayList();
             }
             topElements.getChildren().clear();
             resizingInfo();
@@ -100,8 +95,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath);
             }
-            if(!LoadFXML.getCurrentWindow().equals("navBar")){
-                currentPath= new ArrayList();
+            if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+                currentPath = new ArrayList();
             }
 
             topElements.getChildren().clear();
@@ -228,16 +223,23 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private void openChatBot() {
         if (!opened) {
-            System.out.println("chat bot not opened");
             chatBot.setVisible(true);
             chatBot.setPickOnBounds(true);
             opened = true;
+            MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.CHEVRON_DOWN);
+            messageIcon.setFill(Color.WHITE);
+            messageIcon.setGlyphSize(40);
+            chatButton.setGraphic(messageIcon);
             return;
         }
-        System.out.println("chat bot opened");
         chatBot.setVisible(false);
         chatBot.setPickOnBounds(false);
         opened = false;
+
+        MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.MESSAGE_REPLY);
+        messageIcon.setFill(Color.WHITE);
+        messageIcon.setGlyphSize(40);
+        chatButton.setGraphic(messageIcon);
     }
 
     @FXML
@@ -260,11 +262,37 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatBox.getChildren().add(sentVBox);
         enteredMessage.clear();
 
-        chatScrollPane.setVvalue(1);
         chatScrollPane.setFitToHeight(false);
+        chatScrollPane.setVvalue(1);
+
+        ChatBot.getInstance().sendMessage(message);
     }
-    
-    void disableButtons(ArrayList<String> floors){
+
+    public void receiveMessage(String _msg) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Label sentMessage = new Label();
+                sentMessage.setStyle("-fx-font-size: 16; -fx-text-fill: black; -fx-background-color: #eeeeee; " +
+                        "-fx-background-radius: 20 20 20 0; -fx-border-radius: 20 20 20 0; -fx-border-width: 1.5; -fx-wrap-text: true; -fx-min-height: 50; " +
+                        "-fx-min-width: 50; -fx-padding: 10 10 10 15");
+
+                VBox sentVBox = new VBox(sentMessage);
+                sentVBox.setMaxWidth(275);
+                sentVBox.setAlignment(Pos.BOTTOM_LEFT);
+                VBox.setMargin(sentVBox, new Insets(0, 0, 10, -70));
+
+                sentMessage.setText(_msg);
+                chatBox.getChildren().add(sentVBox);
+                enteredMessage.clear();
+
+                chatScrollPane.setFitToHeight(false);
+                chatScrollPane.setVvalue(1);
+            }
+        });
+    }
+
+    void disableButtons(ArrayList<String> floors) {
         if (floors.contains("L2"))
             L2Bttn.setDisable(true);
         if (floors.contains("L1"))
@@ -279,7 +307,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             floor3Bttn.setDisable(true);
     }
 
-    void enableButtons(ArrayList<String> floors){
+    void enableButtons(ArrayList<String> floors) {
         if (floors.contains("L2"))
             L2Bttn.setDisable(false);
         if (floors.contains("L1"))
@@ -302,6 +330,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         hospitalMap.setImage(_image);
     }
 
-    public void setHelpButton(boolean value) { helpButton.setVisible(value); }
+    public void setHelpButton(boolean value) {
+        helpButton.setVisible(value);
+    }
 
 }
