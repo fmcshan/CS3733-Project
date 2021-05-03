@@ -99,13 +99,13 @@ public class Navigation implements LevelChangeListener {
      */
     public void initialize() {
 
-        if (AuthenticationManager.getInstance().isAuthenticated()) {
-            algoBox.setVisible(true);
-            algoCombo.setStyle("-fx-font-size: 24");
-        } else {
-            algoBox.setVisible(false);
-            algoCombo.setStyle("-fx-font-size: .1");
-        }
+//        if (AuthenticationManager.getInstance().isAuthenticated()) {
+//            algoBox.setVisible(true);
+//            algoCombo.setStyle("-fx-font-size: 24");
+//        } else {
+//            algoBox.setVisible(false);
+//            algoCombo.setStyle("-fx-font-size: .1");
+//        }
 
         if (COVIDMessage.covid) {
             AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener(toCombo);
