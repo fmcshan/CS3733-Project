@@ -12,16 +12,19 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -63,8 +66,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void initialize() {
         SceneManager.getInstance().setDefaultPage(this);
-       Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/proximanova-regular.ttf"), 16);
-        Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Graphik-Regular_1.ttf"), 16);
+        Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
+        Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
+        Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
         System.out.println(test.getFamily());
         hideAddNodePopup();
         LevelManager.getInstance().setFloor(3);
@@ -252,26 +256,36 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     @FXML
-    void sendMessage() {
+    void sendMessage() { //317fb8
         String message = enteredMessage.getText();
         if (message.isEmpty()) {
             return;
         }
-        Label sentMessage = new Label();
-        sentMessage.setStyle("-fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 16; -fx-text-fill: white; -fx-background-color: #317fb8; " +
-                "-fx-background-radius: 20 20 0 20; -fx-border-radius: 20 20 0 20; -fx-border-width: 1.5; -fx-wrap-text: true; -fx-min-height: 50; " +
-                "-fx-min-width: 50; -fx-padding: 10 10 10 15");
+        Text sentMessage = new Text();
+        sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito'");
+        sentMessage.setFill(Color.WHITE);
+        //System.out.println(message.length());
+        if (message.length() >= 30) {
+            sentMessage.setWrappingWidth(255);
+        }
 
-        VBox sentVBox = new VBox(sentMessage);
-        sentVBox.setMaxWidth(275);
-        sentVBox.setAlignment(Pos.BOTTOM_RIGHT);
-        VBox.setMargin(sentVBox, new Insets(0, -70, 10, 0));
+        HBox sentBox = new HBox(sentMessage);
+        sentBox.setStyle("-fx-background-color: #317fb8; " + "-fx-background-radius: 20 20 0 20;" +
+                "-fx-min-width: 50; -fx-padding: 10 10 10 10");
+        sentBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        AnchorPane sentPane = new AnchorPane(sentBox);
+        AnchorPane.setRightAnchor(sentBox, 0.0);
+        sentPane.setMaxWidth(275);
+        sentPane.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        VBox.setMargin(sentPane, new Insets(0, 0, 10, 50));
 
         sentMessage.setText(message);
-        chatBox.getChildren().add(sentVBox);
+        chatBox.getChildren().add(sentPane);
         enteredMessage.clear();
 
         chatScrollPane.setFitToHeight(false);
+
         chatScrollPane.setVvalue(1);
 
         ChatBot.getInstance().sendMessage(message);
@@ -281,22 +295,29 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Label sentMessage = new Label();
-                sentMessage.setStyle("-fx-font-size: 16; -fx-text-fill: black; -fx-background-color: #eeeeee; " +
-                        "-fx-background-radius: 20 20 20 0; -fx-border-radius: 20 20 20 0; -fx-border-width: 1.5; -fx-wrap-text: true; -fx-min-height: 50; " +
-                        "-fx-min-width: 50; -fx-padding: 10 10 10 15");
+                Text sentMessage = new Text();
+                sentMessage.setStyle("-fx-font-size: 16");
+                //System.out.println(_msg.length());
+                if (_msg.length() >= 30) {
+                    sentMessage.setWrappingWidth(255);
+                }
 
-                VBox sentVBox = new VBox(sentMessage);
-                sentVBox.setMaxWidth(275);
-                sentVBox.setAlignment(Pos.BOTTOM_LEFT);
-                VBox.setMargin(sentVBox, new Insets(0, 0, 10, -70));
+                HBox sentBox = new HBox(sentMessage);
+                sentBox.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 20 0;" +
+                        "-fx-min-width: 50; -fx-padding: 10 10 10 10");
+                sentBox.setAlignment(Pos.BOTTOM_LEFT);
+
+                AnchorPane sentPane = new AnchorPane(sentBox);
+                sentPane.setMaxWidth(275);
+                VBox.setMargin(sentPane, new Insets(0, 0, 10, -50));
 
                 sentMessage.setText(_msg);
-                chatBox.getChildren().add(sentVBox);
+                chatBox.getChildren().add(sentPane);
                 enteredMessage.clear();
 
                 chatScrollPane.setFitToHeight(false);
                 chatScrollPane.setVvalue(1);
+                //chatScrollPane.vvalueProperty().bind(chatBox.heightProperty());
             }
         });
     }
@@ -341,6 +362,15 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     public void setHelpButton(boolean value) {
         helpButton.setVisible(value);
+    }
+
+    public void clearPathAnimation() {
+        for (int i = 0; i < onTopOfTopElements.getChildren().size(); i++) {
+            if (onTopOfTopElements.getChildren().get(i) instanceof Polygon) {
+                onTopOfTopElements.getChildren().remove(i);
+                return;
+            }
+        }
     }
 
 }

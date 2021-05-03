@@ -19,6 +19,7 @@
 <?import javafx.scene.shape.MoveTo?>
 <?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
@@ -461,12 +462,9 @@
                   <Insets bottom="20.0" left="30.0" top="30.0" />
                </VBox.margin>
             </ImageView>
-            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
+            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0" styleClass="size24" stylesheets="@../images/text.css">
                <children>
-                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" styleClass="navigation" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
+                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
                         <Insets bottom="8.0" left="40.0" top="8.0" />
                      </padding>
@@ -489,9 +487,6 @@
                      </stylesheets>
                   </JFXButton>
                   <JFXButton fx:id="CheckIn" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
                      <padding>
                         <Insets bottom="8.0" left="31.0" top="8.0" />
                      </padding>
@@ -514,9 +509,6 @@
                      </VBox.margin>
                   </JFXButton>
                   <JFXButton fx:id="Requests" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
                      <padding>
                         <Insets bottom="8.0" left="40.0" top="8.0" />
                      </padding>
@@ -718,38 +710,34 @@
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
          </effect>
       </VBox>
-      <AnchorPane fx:id="chatBot" layoutX="1362.0" layoutY="333.0" pickOnBounds="false" prefHeight="617.0" prefWidth="350.0" stylesheets="@../images/text.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="1362.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="333.0">
+      <AnchorPane fx:id="chatBot" layoutX="1362.0" layoutY="333.0" pickOnBounds="false" prefHeight="617.0" prefWidth="350.0" stylesheets="@../images/text.css" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="1362.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="333.0">
          <children>
             <VBox prefHeight="617.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="70.0" prefWidth="377.0" style="-fx-background-color: #317fb8; -fx-background-radius: 10 10 0 0;">
+                  <VBox alignment="CENTER" prefHeight="70.0" prefWidth="377.0" style="-fx-background-color: #317fb8; -fx-background-radius: 10 10 0 0;" styleClass="size25">
                      <children>
-                        <Label text="Live Support Chat" textFill="WHITE">
-                           <font>
-                              <Font name="Corbel" size="25.0" />
-                           </font>
-                        </Label>
+                        <Label text="Live Support Chat" textFill="WHITE" />
                      </children>
                   </VBox>
                   <ScrollPane fx:id="chatScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="398.0" prefWidth="362.0" style="-fx-background-color: white; -fx-border-color: white;" vbarPolicy="NEVER" vvalue="1.0" VBox.vgrow="ALWAYS">
                      <content>
-                        <VBox fx:id="chatBox" alignment="BOTTOM_CENTER" prefHeight="483.0" prefWidth="373.0" style="-fx-background-color: white;">
+                        <VBox fx:id="chatBox" alignment="BOTTOM_CENTER" prefHeight="483.0" prefWidth="373.0" style="-fx-background-color: white;" styleClass="size16">
                            <children>
-                              <VBox alignment="BOTTOM_LEFT" maxWidth="275.0" styleClass="message">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="-70.0" top="10.0" />
-                                 </VBox.margin>
+                              <AnchorPane maxWidth="275.0">
                                  <children>
-                                    <Label minHeight="50.0" minWidth="50.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 20 20 20 0;" text="Hi, how can I help you?" wrapText="true" VBox.vgrow="ALWAYS">
-                                       <font>
-                                          <Font name="Segoe UI" size="16.0" />
-                                       </font>
+                                    <HBox alignment="BOTTOM_LEFT" maxWidth="275.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 20 20 20 0;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hi, how can I help you?" />
+                                       </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
-                                    </Label>
+                                    </HBox>
                                  </children>
-                              </VBox>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="-50.0" top="10.0" />
+                                 </VBox.margin>
+                              </AnchorPane>
                            </children>
                         </VBox>
                      </content>

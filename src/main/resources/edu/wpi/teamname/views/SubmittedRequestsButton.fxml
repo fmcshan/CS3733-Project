@@ -2,11 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXButton fx:id="SubmittedRequests" alignment="BASELINE_LEFT" onAction="#openSubmittedRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Submitted Requests" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRequestsButton">
+<JFXButton fx:id="SubmittedRequests" alignment="BASELINE_LEFT" onAction="#openSubmittedRequests" prefHeight="52.0" prefWidth="325.0" styleClass="size24" text="Submitted Requests" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRequestsButton">
     <font>
         <Font size="24.0" />
     </font>
@@ -24,4 +25,8 @@
             </children>
         </VBox>
     </graphic>
+   <stylesheets>
+      <URL value="@../images/buttonHover.css" />
+      <URL value="@../images/text.css" />
+   </stylesheets>
 </JFXButton>

@@ -1,15 +1,25 @@
-.header {
-    -fx-font-family: "Graphik Regular";
-    -fx-font-size: 25;
+.size14 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 14;
 }
 
-.message {
-    -fx-font-family: "Proximanova";
+.size16 {
+    -fx-font-family: "Nunito";
     -fx-font-size: 16;
 }
 
-.navigation {
-    -fx-font-family: "Proximanova";
+.size24 {
+    -fx-font-family: "Nunito";
     -fx-font-size: 24;
+}
+
+.size25 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 25;
+}
+
+.bold-header {
+    -fx-font-family: "Nunito Bold";
+    -fx-font-size: 45;
 }
 

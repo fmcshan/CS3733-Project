@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -301,6 +302,7 @@ public class Navigation implements LevelChangeListener {
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
         SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        SceneManager.getInstance().getDefaultPage().clearPathAnimation();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);

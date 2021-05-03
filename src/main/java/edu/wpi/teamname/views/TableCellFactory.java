@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -29,7 +30,7 @@ public class TableCellFactory {
         VBox.setMargin(status, new Insets(0,0,0,15));
         statusWrapper.getChildren().add(status);
 
-        String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px;";
+        String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px; -fx-font-family: 'Nunito';";
         if (_req.isCompleted()) {
             status.setText("Completed");
             status.setTextFill(Color.WHITE);
@@ -67,17 +68,17 @@ public class TableCellFactory {
     private static Label generate_label(String _value, double _width) {
         Label genLabel = new Label(_value.replace("\"", ""));
         genLabel.setPrefWidth(_width);
-        genLabel.setStyle("-fx-font-size: 14px; -fx-padding: 0 0 0 20px;");
+        genLabel.setStyle("-fx-font-size: 14px; -fx-padding: 0 0 0 20px;  -fx-font-family: 'Nunito'");
         return genLabel;
     }
 
     private static JFXComboBox<String> generate_employee_dropdown(MasterServiceRequestStorage _req) {
         JFXComboBox<String> newEmployeeSelection = new JFXComboBox<>();
-        newEmployeeSelection.setStyle(" -fx-margin: 10px 0 0 0;");
+        newEmployeeSelection.setStyle(" -fx-padding: 0 0 0 20;");
         newEmployeeSelection.setPrefSize(163, 30);
         newEmployeeSelection.setFocusColor(Color.valueOf("#ababab"));
         newEmployeeSelection.setUnFocusColor(Color.valueOf("#c3c3c3"));
-        newEmployeeSelection.setStyle("-fx-font-size: 14px; -fx-prompt-text-fill: #9e9e9e;");
+        newEmployeeSelection.setStyle("-fx-font-size: 14px; -fx-prompt-text-fill: #9e9e9e; -fx-font-family: 'Nunito';");
         HBox.setMargin(newEmployeeSelection, new Insets(0,0,0,10));
         newEmployeeSelection.setPromptText("Employee");
         LocalStorage.getInstance().getUsers().forEach(u -> {
