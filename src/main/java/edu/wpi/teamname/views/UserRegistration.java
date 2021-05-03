@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -11,6 +12,7 @@ import javafx.scene.text.Text;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller for UserRegistration.fxml
@@ -90,20 +92,26 @@ public class UserRegistration {
 
     @FXML
     private VBox successPop;
+    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    HashMap<String, String> theNodes = new HashMap<String, String>();
 
     @FXML
     void initialize() {
         ArrayList<Node> listOfNodes = new ArrayList<>();
+        ArrayList<String> listOfSpaces = new ArrayList<>();
         listOfNodes = LocalStorage.getInstance().getNodes();
+        listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
         for (Node n : listOfNodes
         ) {
-            if (n.getLongName().contains("Parking Spot")) {
-                parkingSpot.getItems().add(n.getLongName());
-            }
+
+                if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
+                    theNodes.put(n.getLongName(), n.getNodeID());
+                    parkingSpot.getItems().add(n.getLongName());
+                }
 
         }
+        parkingSpot.getItems().add("Other Parking");
     }
-
 
     /**
      * Check if name input contains a space for first and last name
@@ -230,6 +238,11 @@ public class UserRegistration {
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
             success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+            if(theNodes.containsKey(parkingSpot.getValue())){
+                Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
+            }
+            defaultPage.toggleCheckIn();
+
         }
     }
 }

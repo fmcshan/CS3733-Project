@@ -25,6 +25,20 @@ public class Parser {
         );
     };
 
+    public static String parseSpace(JSONObject _space) {
+        _space = _space.getJSONObject("fields");
+        String answer = _space.getString("nodeId");
+        return answer;
+    }
+
+    public static ArrayList<String> parseSpaces(JSONArray _space) {
+        ArrayList<String> spaces = new ArrayList<String>();
+        _space.forEach(s -> {
+            spaces.add(parseSpace((JSONObject) s));
+        });
+        return spaces;
+    };
+
     public static ArrayList<Node> parseNodes(JSONArray _nodes) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         _nodes.forEach(n -> {
