@@ -109,10 +109,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     private void displayAuthPages() {
+        if (AuthenticationManager.getInstance().isAdmin()) {
         LoadFXML.getInstance().loadWindow("MapEditorButton", "mapButton", adminPop);
         LoadFXML.getInstance().loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
         LoadFXML.getInstance().loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
         LoadFXML.getInstance().loadWindow("EmployeeTableButton", "employeeButton", employeePop);
+        MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
+        signOut.setFill(Paint.valueOf("#c3c3c3"));
+        signOut.setGlyphSize(52);
+        adminButton.setGraphic(signOut);
+        return;
+        }
+        LoadFXML.getInstance().loadWindow("SubmittedRequestsButton", "reqButton", requestPop);
+        LoadFXML.getInstance().loadWindow("SubmittedRegistrationsButton", "regButton", registrationPop);
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.EXIT_TO_APP);
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
