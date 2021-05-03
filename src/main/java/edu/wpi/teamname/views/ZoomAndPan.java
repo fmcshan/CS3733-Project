@@ -17,6 +17,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+import static java.lang.System.currentTimeMillis;
+
 public class ZoomAndPan {
     public int panVel = 0;
     public int zoomVel = 0;
@@ -29,6 +31,22 @@ public class ZoomAndPan {
     boolean velDecay = false;
     private double currentMouseX;
     private double currentMouseY;
+    double changeInX;
+    double changeInY;
+    double absOfX;
+    double absOfY;
+    double euclDist;
+    double panScale;
+    Point2D pointToDragFrom;
+    Point2D mouseClickDownEvent;
+    int lowerBound = 1;
+    int higherBound = 1000;
+    int measuredLowerBound = 1;
+    int measuredUpperBound = 200;
+    double startTime;
+    double endTime;
+    double startToEndTime;
+
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
@@ -74,11 +92,27 @@ public class ZoomAndPan {
                 return;
             }
 
-            Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
-            Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
+
+            pointToDragFrom = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
+            mouseClickDownEvent = mouseClickDown.get();
+            Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
+            startTime = currentTimeMillis();
+            System.out.println("X valueOfShift: " + valueOfShift.getX());
+            System.out.println("Y valueOfShift: " + valueOfShift.getY());
+            changeInX = Math.pow(valueOfShift.getX(), 2);
+            changeInY = Math.pow(valueOfShift.getY(), 2);
+            absOfX = Math.abs(valueOfShift.getX());
+            absOfY = Math.abs(valueOfShift.getY());
+            System.out.println("X absOfX: " + absOfX);
+            System.out.println("Y absOfY: " + absOfY);
+            euclDist = Math.sqrt(changeInX + changeInY);
+            panVel = (int) ((higherBound - lowerBound) * ((euclDist - measuredLowerBound)/ (measuredUpperBound - measuredLowerBound))) + lowerBound;
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
+
             mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
+            startTime = currentTimeMillis();
         });
+
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
             updateVars();
             double mouseDeltaY = mouseEvent.getDeltaY();
@@ -93,6 +127,8 @@ public class ZoomAndPan {
         page.onTopOfTopElements.setOnMouseReleased(e -> {
             page.processClick(e, dragged);
             dragged = false;
+            endTime = System.currentTimeMillis();
+
         });
 
         if (!velDecay) {
@@ -102,21 +138,29 @@ public class ZoomAndPan {
                                     new Duration(16.7),
                                     (EventHandler<ActionEvent>) t -> {
                                         if (panVel > 0) {
-                                            panVel -= 4;
-                                        } else if (panVel < 0) {
-                                            panVel += 4;
+                                            panVel -= 2;
                                         }
 
                                         if (zoomVel > 0) {
-                                            zoomVel -= 4;
+                                            zoomVel -= 20;
                                         } else if (zoomVel < 0) {
-                                            zoomVel += 4;
+                                            zoomVel += 20;
                                         }
 
                                         if (zoomVel != 0) {
                                             double lclVel = ((double) zoomVel / 500);
-                                            double viewVel = Math.pow((lclVel/6), 2) * (-zoomVel/Math.abs(zoomVel));
+                                            double viewVel = Math.pow((lclVel/2), 2) * (-zoomVel/Math.abs(zoomVel));
                                             updateViewport(1 + viewVel);
+                                        }
+                                        if (panVel > 1 ){
+                                            panScale = ensureRange(((double) panVel / 50), 1, 3);
+                                            System.out.println("pointToDragFrom: " + pointToDragFrom);
+                                            System.out.println("mouseClickDown.get(): "+ mouseClickDownEvent);
+                                            Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
+                                            startToEndTime = ensureRange((Math.abs(endTime - startTime)), 1, 10);
+                                            System.out.println("startToEndTime: " + startToEndTime);
+                                            System.out.println("startToEndTime without abs: " + (endTime - startTime));
+                                            updateViewportForPan(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
                                         }
                                     }
                             )
@@ -159,6 +203,31 @@ public class ZoomAndPan {
             page.currentPath = new ArrayList();
         }
         page.hospitalMap.setViewport(newViewPort);
+    }
+
+    public void updateViewportForPan(ImageView inputMap, Point2D changeInShift, AnchorPane topElements){
+        Rectangle2D theViewPort = inputMap.getViewport();
+
+        double viewPortWidth = theViewPort.getWidth();
+        double viewPortHeight = theViewPort.getHeight();
+
+        double unalteredX = theViewPort.getMinX() - changeInShift.getX();
+        double unalteredY = theViewPort.getMinY() - changeInShift.getY();
+
+        page.scaledX = theViewPort.getMinX() - (panScale * changeInShift.getX());
+        page.scaledY = theViewPort.getMinY() - (panScale * changeInShift.getY());
+
+        System.out.println("scaledX After Pan: " + page.scaledX);
+        System.out.println("scaledY After Pan: " + page.scaledY);
+
+        System.out.println("scaledX without Pan: " + unalteredX);
+        System.out.println("scaledY without Pan: " + unalteredY);
+
+        inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
+
+        page.scaledWidth = viewPortWidth;
+        page.scaledHeight = viewPortHeight;
+        render();
     }
 
     private void render() {
