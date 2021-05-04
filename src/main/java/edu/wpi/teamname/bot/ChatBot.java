@@ -2,7 +2,6 @@ package edu.wpi.teamname.bot;
 
 import com.google.api.client.util.Maps;
 import com.google.api.gax.rpc.ApiException;
-import com.google.cloud.dialogflow.v2.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.Submit;

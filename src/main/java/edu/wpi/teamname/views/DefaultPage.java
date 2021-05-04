@@ -60,7 +60,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
     @FXML
-    private AnchorPane topElements, chatBot; // anchor pane where displayed nodes reside
+    AnchorPane topElements, chatBot; // anchor pane where displayed nodes reside
     @FXML
     private JFXTextField enteredMessage;
     @FXML
@@ -272,169 +272,168 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         zooM.zoomAndPan();
     }
 
-    void disableButtons(ArrayList<String> floors) {
-
-        @FXML
-        private void openChatBot () {
-            if (!opened) {
-                chatBot.setVisible(true);
-                chatBot.setPickOnBounds(true);
-                opened = true;
-                MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.CHEVRON_DOWN);
-                messageIcon.setFill(Color.WHITE);
-                messageIcon.setGlyphSize(40);
-                chatButton.setGraphic(messageIcon);
-                return;
-            }
-            chatBot.setVisible(false);
-            chatBot.setPickOnBounds(false);
-            opened = false;
-
-            MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.MESSAGE_REPLY);
+    @FXML
+    private void openChatBot() {
+        if (!opened) {
+            chatBot.setVisible(true);
+            chatBot.setPickOnBounds(true);
+            opened = true;
+            MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.CHEVRON_DOWN);
             messageIcon.setFill(Color.WHITE);
             messageIcon.setGlyphSize(40);
             chatButton.setGraphic(messageIcon);
+            return;
+        }
+        chatBot.setVisible(false);
+        chatBot.setPickOnBounds(false);
+        opened = false;
+
+        MaterialDesignIconView messageIcon = new MaterialDesignIconView(MaterialDesignIcon.MESSAGE_REPLY);
+        messageIcon.setFill(Color.WHITE);
+        messageIcon.setGlyphSize(40);
+        chatButton.setGraphic(messageIcon);
+    }
+
+    @FXML
+    void sendMessage() { //317fb8
+        String message = enteredMessage.getText();
+        if (message.isEmpty()) {
+            return;
+        }
+        Text sentMessage = new Text();
+        sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito'");
+        sentMessage.setFill(Color.WHITE);
+        //System.out.println(message.length());
+        if (message.length() >= 30) {
+            sentMessage.setWrappingWidth(255);
         }
 
-        @FXML
-        void sendMessage () { //317fb8
-            String message = enteredMessage.getText();
-            if (message.isEmpty()) {
+        HBox sentBox = new HBox(sentMessage);
+        sentBox.setStyle("-fx-background-color: #317fb8; " + "-fx-background-radius: 20 20 0 20;" +
+                "-fx-min-width: 50; -fx-padding: 10 10 10 10");
+        sentBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        AnchorPane sentPane = new AnchorPane(sentBox);
+        AnchorPane.setRightAnchor(sentBox, 0.0);
+        sentPane.setMaxWidth(275);
+        sentPane.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        VBox.setMargin(sentPane, new Insets(0, 0, 10, 50));
+
+        sentMessage.setText(message);
+        chatBox.getChildren().add(sentPane);
+        enteredMessage.clear();
+
+        chatScrollPane.setFitToHeight(false);
+
+        chatScrollPane.setVvalue(1);
+
+        ChatBot.getInstance().sendMessage(message);
+    }
+
+    public void receiveMessage(String _msg) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Text sentMessage = new Text();
+                sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
+                //System.out.println(_msg.length());
+                if (_msg.length() >= 30) {
+                    sentMessage.setWrappingWidth(255);
+                }
+
+                HBox sentBox = new HBox(sentMessage);
+                sentBox.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 20 0;" +
+                        "-fx-min-width: 50; -fx-padding: 10 10 10 10");
+                sentBox.setAlignment(Pos.BOTTOM_LEFT);
+
+                AnchorPane sentPane = new AnchorPane(sentBox);
+                sentPane.setMaxWidth(275);
+                VBox.setMargin(sentPane, new Insets(0, 0, 10, -50));
+
+                sentMessage.setText(_msg);
+                chatBox.getChildren().add(sentPane);
+                enteredMessage.clear();
+
+                chatScrollPane.setFitToHeight(false);
+                chatScrollPane.setVvalue(1);
+                //chatScrollPane.vvalueProperty().bind(chatBox.heightProperty());
+            }
+        });
+    }
+
+    void disableButtons(ArrayList<String> floors) {
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(true);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(true);
+        if (floors.contains("G"))
+            groundBttn.setDisable(true);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(true);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(true);
+        if (floors.contains("3"))
+            floor3Bttn.setDisable(true);
+    }
+
+    void enableButtons(ArrayList<String> floors) {
+        if (floors.contains("L2"))
+            L2Bttn.setDisable(false);
+        if (floors.contains("L1"))
+            L1Bttn.setDisable(false);
+        if (floors.contains("G"))
+            groundBttn.setDisable(false);
+        if (floors.contains("1"))
+            floor1Bttn.setDisable(false);
+        if (floors.contains("2"))
+            floor2Bttn.setDisable(false);
+        if (floors.contains("3"))
+            floor3Bttn.setDisable(false);
+    }
+
+    public void closeWindows() {
+        popPop.getChildren().clear();
+    }
+
+    public void setHospitalMap(Image _image) {
+        hospitalMap.setImage(_image);
+    }
+
+    public void toggleCheckIn() {
+        if (CheckIn.getText().equals("Check-In")) {
+            CheckIn.setText("Check-Out");
+        } else {
+            CheckIn.setText("Check-In");
+        }
+    }
+
+//    @FXML
+//    public void openCheckIn() {
+//        popPop.setPrefWidth(657);
+//        clearMap(); // Clear map
+//        popPop.setPrefWidth(657.0); // Set preferable width to 657
+//        if (CheckIn.getText().equals("Check-In")) {
+//            LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+//        } else {
+//            LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
+//        }
+//
+//    }
+
+    public void setHelpButton(boolean value) {
+        helpButton.setVisible(value);
+    }
+
+    public void clearPathAnimation() {
+        for (int i = 0; i < onTopOfTopElements.getChildren().size(); i++) {
+            if (onTopOfTopElements.getChildren().get(i) instanceof Polygon) {
+                onTopOfTopElements.getChildren().remove(i);
                 return;
-            }
-            Text sentMessage = new Text();
-            sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito'");
-            sentMessage.setFill(Color.WHITE);
-            //System.out.println(message.length());
-            if (message.length() >= 30) {
-                sentMessage.setWrappingWidth(255);
-            }
-
-            HBox sentBox = new HBox(sentMessage);
-            sentBox.setStyle("-fx-background-color: #317fb8; " + "-fx-background-radius: 20 20 0 20;" +
-                    "-fx-min-width: 50; -fx-padding: 10 10 10 10");
-            sentBox.setAlignment(Pos.BOTTOM_LEFT);
-
-            AnchorPane sentPane = new AnchorPane(sentBox);
-            AnchorPane.setRightAnchor(sentBox, 0.0);
-            sentPane.setMaxWidth(275);
-            sentPane.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-            VBox.setMargin(sentPane, new Insets(0, 0, 10, 50));
-
-            sentMessage.setText(message);
-            chatBox.getChildren().add(sentPane);
-            enteredMessage.clear();
-
-            chatScrollPane.setFitToHeight(false);
-
-            chatScrollPane.setVvalue(1);
-
-            ChatBot.getInstance().sendMessage(message);
-        }
-
-        public void receiveMessage (String _msg){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Text sentMessage = new Text();
-                    sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
-                    //System.out.println(_msg.length());
-                    if (_msg.length() >= 30) {
-                        sentMessage.setWrappingWidth(255);
-                    }
-
-                    HBox sentBox = new HBox(sentMessage);
-                    sentBox.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 20 0;" +
-                            "-fx-min-width: 50; -fx-padding: 10 10 10 10");
-                    sentBox.setAlignment(Pos.BOTTOM_LEFT);
-
-                    AnchorPane sentPane = new AnchorPane(sentBox);
-                    sentPane.setMaxWidth(275);
-                    VBox.setMargin(sentPane, new Insets(0, 0, 10, -50));
-
-                    sentMessage.setText(_msg);
-                    chatBox.getChildren().add(sentPane);
-                    enteredMessage.clear();
-
-                    chatScrollPane.setFitToHeight(false);
-                    chatScrollPane.setVvalue(1);
-                    //chatScrollPane.vvalueProperty().bind(chatBox.heightProperty());
-                }
-            });
-        }
-
-        void disableButtons (ArrayList < String > floors) {
-            if (floors.contains("L2"))
-                L2Bttn.setDisable(true);
-            if (floors.contains("L1"))
-                L1Bttn.setDisable(true);
-            if (floors.contains("G"))
-                groundBttn.setDisable(true);
-            if (floors.contains("1"))
-                floor1Bttn.setDisable(true);
-            if (floors.contains("2"))
-                floor2Bttn.setDisable(true);
-            if (floors.contains("3"))
-                floor3Bttn.setDisable(true);
-        }
-
-        void enableButtons (ArrayList < String > floors) {
-            if (floors.contains("L2"))
-                L2Bttn.setDisable(false);
-            if (floors.contains("L1"))
-                L1Bttn.setDisable(false);
-            if (floors.contains("G"))
-                groundBttn.setDisable(false);
-            if (floors.contains("1"))
-                floor1Bttn.setDisable(false);
-            if (floors.contains("2"))
-                floor2Bttn.setDisable(false);
-            if (floors.contains("3"))
-                floor3Bttn.setDisable(false);
-        }
-
-        public void closeWindows () {
-            popPop.getChildren().clear();
-        }
-
-        public void setHospitalMap(Image _image){
-            hospitalMap.setImage(_image);
-        }
-
-        public void toggleCheckIn() {
-            if (CheckIn.getText().equals("Check-In")) {
-                CheckIn.setText("Check-Out");
-            } else {
-                CheckIn.setText("Check-In");
-            }
-        }
-        @FXML
-        public void openCheckIn() {
-            popPop.setPrefWidth(657);
-            clearMap(); // Clear map
-            popPop.setPrefWidth(657.0); // Set preferable width to 657
-            if (CheckIn.getText().equals("Check-In")) {
-                LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-            } else {
-                LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
-            }
-
-        }
-
-        public void setHelpButton(boolean value){
-            helpButton.setVisible(value);
-        }
-
-        public void clearPathAnimation() {
-            for (int i = 0; i < onTopOfTopElements.getChildren().size(); i++) {
-                if (onTopOfTopElements.getChildren().get(i) instanceof Polygon) {
-                    onTopOfTopElements.getChildren().remove(i);
-                    return;
-                }
             }
         }
     }
 }
+
 
 
 

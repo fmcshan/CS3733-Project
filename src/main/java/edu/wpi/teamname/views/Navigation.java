@@ -75,7 +75,6 @@ public class Navigation implements LevelChangeListener {
     private JFXButton mapsButton;
     @FXML
     private JFXButton mapsButtonHome;
-    private JFXButton handicapButton;
     boolean handicap = false;
 
 
@@ -327,7 +326,7 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         SceneManager.getInstance().getDefaultPage().listOfNode.clear();
         SceneManager.getInstance().getDefaultPage().clearMap();
-        SceneManager.getInstance().getDefaultPage().clearPathAnimation();
+        //SceneManager.getInstance().getDefaultPage().clearPathAnimation();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
