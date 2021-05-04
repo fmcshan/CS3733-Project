@@ -291,12 +291,14 @@ public class Navigation implements LevelChangeListener {
         navBox.getChildren().clear();
     }
     @FXML
-    void googleMaps(ActionEvent event) {
+    void googleMaps() {
+        SceneManager.getInstance().getDefaultPage().getPopPop().setPrefWidth(440);
         SceneManager.getInstance().getDefaultPage().toggleGoogleMaps();
     }
 
     @FXML
-    void googleMapsHome(ActionEvent event) {
+    void googleMapsHome() {
+        SceneManager.getInstance().getDefaultPage().getPopPop().setPrefWidth(440);
         SceneManager.getInstance().getDefaultPage().toggleGoogleMapsHome();
     }
 
