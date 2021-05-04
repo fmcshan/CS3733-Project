@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox minHeight="-Infinity" prefHeight="930.0" prefWidth="440.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GoogleMapHome">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="440.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.GoogleMapHome">
    <effect>
       <DropShadow color="#a4a4a4" />
    </effect>
@@ -22,45 +22,45 @@
             <Font name="System Bold" size="48.0" />
          </font>
          <VBox.margin>
-            <Insets left="25.0" top="20.0" />
+            <Insets top="20.0" />
          </VBox.margin>
       </Label>
-      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your address." wrappingWidth="315.0">
+      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your address." wrappingWidth="187.0">
          <font>
             <Font size="16.0" />
          </font>
          <VBox.margin>
-            <Insets left="25.0" />
+            <Insets />
          </VBox.margin>
       </Text>
-      <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please submit a valid address before printing." wrappingWidth="340.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="25.0" top="30.0" />
-         </VBox.margin>
-      </Text>
-      <HBox prefHeight="31.0" prefWidth="394.0">
-         <VBox.margin>
-            <Insets left="25.0" />
-         </VBox.margin>
+      <VBox prefHeight="113.0" prefWidth="332.0">
          <children>
-            <JFXComboBox fx:id="addressFill" focusColor="#ababab" onHidden="#submit" onKeyReleased="#lookUp" prefHeight="51.0" prefWidth="223.0" promptText="Search Address" style="-fx-font-size: 24;" unFocusColor="#c3c3c3">
-               <HBox.margin>
+            <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please submit a valid address before printing." wrappingWidth="340.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Text>
+            <JFXComboBox fx:id="addressFill" focusColor="#ababab" onHidden="#submit" onKeyReleased="#lookUp" prefHeight="51.0" prefWidth="391.0" promptText="Search Address" style="-fx-font-size: 24;" unFocusColor="#c3c3c3">
+               <VBox.margin>
                   <Insets top="10.0" />
-               </HBox.margin>
+               </VBox.margin>
             </JFXComboBox>
          </children>
-      </HBox>
+         <VBox.margin>
+            <Insets left="25.0" />
+         </VBox.margin>
+      </VBox>
       <ImageView fx:id="imageBox" fitHeight="323.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
          <VBox.margin>
-            <Insets left="20.0" top="30.0" />
+            <Insets top="30.0" />
          </VBox.margin>
       </ImageView>
       <JFXTextArea fx:id="directionSpace" focusColor="#ababab" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" unFocusColor="#c3c3c3">
          <VBox.margin>
-            <Insets left="20.0" top="25.0" />
+            <Insets top="25.0" />
          </VBox.margin>
          <font>
             <Font size="14.0" />

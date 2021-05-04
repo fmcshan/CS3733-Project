@@ -171,6 +171,8 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private VBox rightClick;
     PathTransition pathTransition = new PathTransition();
+    @FXML
+    private JFXButton navButton;
 
     static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
@@ -1160,6 +1162,7 @@ public class MapDisplay implements LevelChangeListener {
         if (navigation != null) {
             navigation.cancelNavigation();
         }
+
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map

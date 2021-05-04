@@ -1,0 +1,10 @@
+.button {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 24;
+    -fx-font-weight: 800;
+    -fx-background-radius: 8px;
+    -jfx-disable-visual-focus: true;
+}
+
