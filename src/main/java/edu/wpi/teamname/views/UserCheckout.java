@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.views.manager.SceneManager;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class UserCheckout {
@@ -68,11 +70,18 @@ public class UserCheckout {
 
         @FXML
         void initialize(){
+            ArrayList<Node> listOfNodes = new ArrayList<>();
+            HashMap<String, Node> mapNodes = new HashMap<>();
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+                 ) {
+                mapNodes.put(n.getNodeID(), n);
+            }
             ArrayList<String> listOfSpaces = new ArrayList<>();
             listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
             for (String s: listOfSpaces
-                 ) {parkingBox.getItems().add(s);
-
+                 ) {
+                parkingBox.getItems().add(mapNodes.get(s).getLongName());
             }
         }
 

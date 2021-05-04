@@ -1228,20 +1228,19 @@ public class MapDisplay implements LevelChangeListener {
         }
     }
 
-    /**
-     * toggle the check in window
-     */
-    public void openCheckIn() {
-        LoadFXML.setCurrentHelp("");
-        if (navigation != null) {
-            navigation.cancelNavigation();
-        }
-        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
-        popPop.setPrefWidth(657);
-        clearMap(); // Clear map
-        popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-    }
+//    /**
+//     * toggle the check in window
+//     */
+//    public void openCheckIn() {
+//        if (navigation != null) {
+//            navigation.cancelNavigation();
+//        }
+//        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+//        popPop.setPrefWidth(657);
+//        clearMap(); // Clear map
+//        popPop.setPrefWidth(657.0); // Set preferable width to 657
+//        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+//    }
 
     /**
      * Triggered by Add Node button

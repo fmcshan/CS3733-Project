@@ -84,7 +84,7 @@ public class GoogleMapForm {
                 .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
-        displayParkingSpots();
+        //displayParkingSpots();
         defaultPage.initGoogleForm();
         addressFill.setEditable(true);
     }

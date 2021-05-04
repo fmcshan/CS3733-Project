@@ -135,7 +135,7 @@ public class Navigation implements LevelChangeListener {
         directionGuiWrapper.setMaxWidth(300);
 
         VBox navIconWrapper = new VBox();
-        navIconWrapper.setStyle("-fx-background-color: #0067b1; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
+        navIconWrapper.setStyle("-fx-background-color: #317fb8; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
         navIconWrapper.setPrefSize(64, 64);
         navIconWrapper.setMinSize(64, 64);
         MaterialDesignIconView navigationIcon;
