@@ -40,23 +40,7 @@
                </children>
             </AnchorPane>
             <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
-            <AnchorPane fx:id="onTopOfTopElements" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" layoutX="-3.0" layoutY="-221.0" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox fx:id="popPop" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children></AnchorPane>
+            <AnchorPane fx:id="onTopOfTopElements" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
             <VBox fx:id="helpPop" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false" StackPane.alignment="TOP_RIGHT">
                <children>
                   <JFXButton alignment="BASELINE_LEFT" onAction="#loadNodesCsv" prefWidth="180.0" text="Load Nodes" textFill="#9e9e9e">
@@ -126,6 +110,20 @@
                   <Insets right="100.0" top="25.0" />
                </StackPane.margin>
             </VBox>
+            <HBox alignment="CENTER_LEFT" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="popPop" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
             <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
                <children>
                   <Label text="Add Node">
@@ -543,43 +541,6 @@
                   <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
                </effect>
             </VBox>
-            <VBox fx:id="addBtwn" alignment="TOP_CENTER" maxHeight="100.0" maxWidth="200.0" minHeight="-Infinity" prefHeight="131.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
-               <children>
-                  <Label text="Select Node">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <JFXComboBox fx:id="btwnEdge" onAction="#addBetween" prefHeight="31.0" prefWidth="117.0" promptText="Node">
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                  </JFXComboBox>
-               </children>
-               <effect>
-                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
-               </effect>
-            </VBox>
-            <VBox fx:id="removeBtwn" alignment="TOP_CENTER" maxHeight="100.0" maxWidth="200.0" minHeight="-Infinity" prefHeight="131.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
-               <children>
-                  <Label text="Select Edge">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <JFXComboBox fx:id="comboRemoveBtwn" onAction="#removeBetween" prefHeight="31.0" prefWidth="117.0" promptText="Node">
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                  </JFXComboBox>
-               </children>
-               <effect>
-                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
-               </effect>
-               <StackPane.margin>
-                  <Insets left="300.0" />
-               </StackPane.margin>
-            </VBox>
          </children>
       </StackPane>
       <VBox prefHeight="1000.0" prefWidth="375.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -594,17 +555,14 @@
             </ImageView>
             <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
                <children>
-                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
+                  <JFXButton fx:id="navButton" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
                         <Insets bottom="8.0" left="40.0" top="8.0" />
                      </padding>
                      <graphic>
                         <VBox alignment="CENTER">
                            <children>
-                              <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="36" />
+                              <MaterialDesignIconView fx:id="navIcon" fill="#c3c3c3" glyphName="MAP_MARKER" size="36" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -614,18 +572,18 @@
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
-                  </JFXButton>
-                  <JFXButton fx:id="CheckIn" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font size="24.0" />
                      </font>
+                  </JFXButton>
+                  <JFXButton fx:id="checkButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
                         <Insets bottom="8.0" left="31.0" top="8.0" />
                      </padding>
                      <graphic>
                         <VBox alignment="CENTER">
                            <children>
-                              <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
+                              <MaterialDesignIconView fx:id="checkIcon" fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
                                  <VBox.margin>
                                     <Insets left="12.0" />
                                  </VBox.margin>
@@ -639,18 +597,18 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
-                  </JFXButton>
-                  <JFXButton fx:id="Requests" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font size="24.0" />
                      </font>
+                  </JFXButton>
+                  <JFXButton fx:id="reqButton" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
                         <Insets bottom="8.0" left="40.0" top="8.0" />
                      </padding>
                      <graphic>
                         <VBox>
                            <children>
-                              <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
+                              <MaterialDesignIconView fx:id="reqIcon" fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -660,17 +618,20 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
                   </JFXButton>
-                  <VBox fx:id="adminPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin></VBox>
                   <VBox fx:id="registrationPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
                   </VBox>
                   <VBox fx:id="requestPop" layoutX="35.0" layoutY="298.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></VBox>
+                  <VBox fx:id="adminPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin></VBox>
@@ -749,7 +710,7 @@
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
          </effect>
       </VBox>
-      <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
          <children>
             <JFXButton fx:id="floor3Bttn" onAction="#setFloor5" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="3" textFill="#9e9e9e">
                <effect>
@@ -811,7 +772,7 @@
       </VBox>
       <VBox layoutX="1640.0" layoutY="888.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#openHelp" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
+            <JFXButton fx:id="helpButton" contentDisplay="GRAPHIC_ONLY" onAction="#openHelp" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
                <font>
                   <Font size="18.0" />
                </font>
@@ -822,6 +783,39 @@
                   <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="48" />
                </graphic>
             </JFXButton>
+         </children>
+         <effect>
+            <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+         </effect>
+      </VBox>
+      <VBox fx:id="removeBtwn" layoutX="1650.0" layoutY="898.0" prefHeight="71.0" prefWidth="248.0" style="-fx-background-color: white; -fx-background-radius: 10px;" visible="false" AnchorPane.bottomAnchor="400.0" AnchorPane.rightAnchor="320.0">
+         <children>
+            <Label text="Select edge to delete.">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <JFXComboBox fx:id="comboRemoveBtwn" onAction="#removeBetween" prefHeight="31.0" prefWidth="216.0" promptText="Edge">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></JFXComboBox>
+         </children>
+         <effect>
+            <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+         </effect>
+      </VBox>
+      <VBox fx:id="addBtwn" layoutX="1660.0" layoutY="908.0" prefHeight="71.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 10px;" visible="false" AnchorPane.bottomAnchor="400.0" AnchorPane.rightAnchor="120.0">
+         <children>
+            <Label text="Select node to connect">
+               <VBox.margin>
+                  <Insets left="20.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <JFXComboBox fx:id="btwnEdge" onAction="#addBetween" prefHeight="31.0" prefWidth="87.0" promptText="Node">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </JFXComboBox>
          </children>
          <effect>
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />

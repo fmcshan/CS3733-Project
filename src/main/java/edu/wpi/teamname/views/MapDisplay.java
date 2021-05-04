@@ -1698,6 +1698,7 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private void setFloor5(ActionEvent e) {
         LevelManager.getInstance().setFloor(5);
+
     }
 
     @Override
