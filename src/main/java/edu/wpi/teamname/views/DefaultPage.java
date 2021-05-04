@@ -9,6 +9,7 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -27,6 +28,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton CheckIn;
     @FXML
-    private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
+    private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox, closedChatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
     @FXML
@@ -69,6 +71,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private JFXButton helpButton;
     @FXML
     private JFXButton chatButton;
+    @FXML
+    private JFXButton testingButton;
+    @FXML
+    private AnchorPane closedChatBot;
 
     /**
      * run on startup
@@ -78,7 +84,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
-        System.out.println(test.getFamily());
+        //System.out.println(test.getFamily());
         hideAddNodePopup();
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
@@ -276,6 +282,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openChatBot() {
+        closedChatBox.getChildren().clear();
+        closedChatBox.setPickOnBounds(false);
         if (!opened) {
             chatBot.setVisible(true);
             chatBot.setPickOnBounds(true);
@@ -284,6 +292,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             messageIcon.setFill(Color.WHITE);
             messageIcon.setGlyphSize(40);
             chatButton.setGraphic(messageIcon);
+            LoadFXML.setCurrentWindow("chatBot");
             return;
         }
         chatBot.setVisible(false);
@@ -294,6 +303,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         messageIcon.setFill(Color.WHITE);
         messageIcon.setGlyphSize(40);
         chatButton.setGraphic(messageIcon);
+        LoadFXML.setCurrentWindow("");
     }
 
     @FXML
@@ -338,27 +348,70 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             public void run() {
                 Text sentMessage = new Text();
                 sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
-                //System.out.println(_msg.length());
+                HBox sentBox = new HBox(sentMessage);
+                sentMessage.setText(_msg);
+
                 if (_msg.length() >= 30) {
                     sentMessage.setWrappingWidth(255);
                 }
 
-                HBox sentBox = new HBox(sentMessage);
+                System.out.println(LoadFXML.getCurrentWindow());
+                //if chat bot is not open, only show response message and write a reply
+                if (!(LoadFXML.getCurrentWindow().equals("chatBot"))) {
+                    Text sentMessage2 = new Text();
+                    sentMessage2.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
+                    HBox sentBox2 = new HBox(sentMessage2);
+                    sentMessage2.setText(_msg);
+
+                    if (_msg.length() >= 30) {
+                        sentMessage2.setWrappingWidth(255);
+                    }
+                    closedChatBox.setVisible(true);
+                    closedChatBox.setPickOnBounds(true);
+                    sentBox2.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 0 20;" +
+                            "-fx-min-width: 50; -fx-padding: 10 10 10 10;");
+                    sentBox2.setAlignment(Pos.BOTTOM_LEFT);
+                    closedChatBox.getChildren().add(sentBox2);
+
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.2), sentBox2);
+                    translateTransition.setFromX(10);
+                    translateTransition.setToX(0);
+
+                    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), sentBox2);
+                    fadeIn.setFromValue(0.4);
+                    fadeIn.setToValue(1.0);
+
+                    ParallelTransition pt = new ParallelTransition(translateTransition, fadeIn);
+                    pt.play();
+
+                    PauseTransition pause = new PauseTransition(Duration.seconds(7));
+                    pause.setOnFinished(event -> {
+                                FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), sentBox2);
+                                fadeOut.setFromValue(1.0);
+                                fadeOut.setToValue(0);
+                                fadeOut.play();
+                                fadeOut.setOnFinished(s -> {
+                                    closedChatBox.getChildren().remove(sentBox2);
+                                });
+                            }
+                    );
+                    pause.play();
+
+                }  // if chat bot is open
                 sentBox.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 20 0;" +
                         "-fx-min-width: 50; -fx-padding: 10 10 10 10");
                 sentBox.setAlignment(Pos.BOTTOM_LEFT);
 
-                AnchorPane sentPane = new AnchorPane(sentBox);
-                sentPane.setMaxWidth(275);
-                VBox.setMargin(sentPane, new Insets(0, 0, 10, -50));
+                AnchorPane openChat = new AnchorPane(sentBox);
+                openChat.setMaxWidth(275);
+                VBox.setMargin(openChat, new Insets(0, 0, 10, -50));
 
                 sentMessage.setText(_msg);
-                chatBox.getChildren().add(sentPane);
+                chatBox.getChildren().add(openChat);
                 enteredMessage.clear();
 
                 chatScrollPane.setFitToHeight(false);
                 chatScrollPane.setVvalue(1);
-                //chatScrollPane.vvalueProperty().bind(chatBox.heightProperty());
             }
         });
     }

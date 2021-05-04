@@ -556,7 +556,7 @@ public class MapDisplay implements LevelChangeListener {
     /**
      * for the scaling the displayed nodes on the map
      *
-     * @param y the y coordinate of the anchor pane, top element
+     * @param _y the y coordinate of the anchor pane, top element
      * @return the scaled y coordinate
      */
     public double yCoordOnTopElement(int _y) {
@@ -1133,23 +1133,23 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-        Polygon triangle = new Polygon();
-        triangle.getPoints().setAll(
-                0.0,0.0,
-                20.0,7.5,
-                0.0,15.0,
-                5.0,7.5
-        );
-        triangle.setFill(Color.RED); //RED
-        triangle.setStroke(Color.RED); //RED
-        triangle.setStrokeWidth(1.0);
-        triangle.setOpacity(0);
-        onTopOfTopElements.getChildren().add(triangle);
-        pathTransition.setDuration(Duration.seconds(4));
-        pathTransition.setPath(tonysPath);
-        pathTransition.setNode(triangle);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(PathTransition.INDEFINITE);
+//        Polygon triangle = new Polygon();
+//        triangle.getPoints().setAll(
+//                0.0,0.0,
+//                20.0,7.5,
+//                0.0,15.0,
+//                5.0,7.5
+//        );
+//        triangle.setFill(Color.RED); //RED
+//        triangle.setStroke(Color.RED); //RED
+//        triangle.setStrokeWidth(1.0);
+//        triangle.setOpacity(0);
+//        onTopOfTopElements.getChildren().add(triangle);
+//        pathTransition.setDuration(Duration.seconds(4));
+//        pathTransition.setPath(tonysPath);
+//        pathTransition.setNode(triangle);
+//        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        pathTransition.setCycleCount(PathTransition.INDEFINITE);
         //pathTransition.play();
     }
 
