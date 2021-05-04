@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Node;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TimelineBuilder;
@@ -29,6 +30,7 @@ public class ZoomAndPan {
     boolean velDecay = false;
     private double currentMouseX;
     private double currentMouseY;
+    boolean isAnimating = false;
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
@@ -87,7 +89,7 @@ public class ZoomAndPan {
 
             if (mouseDeltaY > 0 && zoomVel < 900) { // <0 for zoom out, >0 for zoom in
                 zoomVel += 100;
-            } else if (zoomVel > -900){
+            } else if (zoomVel > -900) {
                 zoomVel -= 100;
             }
         });
@@ -103,6 +105,7 @@ public class ZoomAndPan {
                             new KeyFrame(
                                     new Duration(16.7),
                                     (EventHandler<ActionEvent>) t -> {
+                                        //page.pathTransition.play();
                                         if (panVel > 0) {
                                             panVel -= 4;
                                         } else if (panVel < 0) {
@@ -116,106 +119,128 @@ public class ZoomAndPan {
                                         }
 
                                         if (zoomVel != 0) {
+                                            if (page.pathTransition.getStatus() == Animation.Status.RUNNING) {
+//                                                //System.out.println(page.pathTransition.getNode().getLayoutX());
+//                                                //System.out.println("is animating: " + page.pathTransition.getStatus());
+                                                page.pathTransition.stop();
+                                                isAnimating = false;
+                                            }
                                             double lclVel = ((double) zoomVel / 500);
-                                            double viewVel = Math.pow((lclVel/6), 2) * (-zoomVel/Math.abs(zoomVel));
+                                            double viewVel = Math.pow((lclVel / 6), 2) * (-zoomVel / Math.abs(zoomVel));
                                             updateViewport(1 + viewVel);
+                                        } else {
+                                            if (page.pathTransition.getStatus() == Animation.Status.STOPPED || page.pathTransition.getStatus() == Animation.Status.PAUSED) {
+                                                //System.out.println("isn't animating: " + page.pathTransition.getStatus());
+                                                page.pathTransition.play();
+                                                isAnimating = true;
+                                            }
+                                        }
+                                        if (page.pathTransition != null) {
+                                            System.out.println("translate x: " + page.pathTransition.getNode().getTranslateX());
+                                            System.out.println("translate y: " + page.pathTransition.getNode().getTranslateY());
+                                            if (page.pathTransition.getNode().getTranslateX() == 0 && page.pathTransition.getNode().getTranslateY() == 0) {
+                                                //page.pathTransition.getNode().setStyle("-fx-fill: blue");
+                                                page.pathTransition.getNode().setOpacity(0);
+                                            } else {
+                                                page.pathTransition.getNode().setOpacity(1);
+                                            }
                                         }
                                     }
                             )
                     )
                     .cycleCount(Timeline.INDEFINITE)
-                    .build();
-            tick.play();
-        }
-        velDecay = true;
-    }
+                                                    .build();
+                                            tick.play();
+                                        }
+                                        velDecay = true;
+                                    }
 
-    private void updateViewport(double _boundariesOfViewPort) {
-        Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
+            private void updateViewport ( double _boundariesOfViewPort){
+                Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
 
-        double viewportWidth = viewportOfImage.getWidth();
-        double viewportHeight = viewportOfImage.getHeight();
+                double viewportWidth = viewportOfImage.getWidth();
+                double viewportHeight = viewportOfImage.getHeight();
 
-        if (viewportWidth < 700 && zoomVel > 0) { // prevent from zooming in too much
-            zoomVel = 0;
-            return;
-        }
-        if (viewportWidth > 5000 && zoomVel < 0) { // prevent from zooming out too much
-            zoomVel = 0;
-            return;
-        }
+                if (viewportWidth < 700 && zoomVel > 0) { // prevent from zooming in too much
+                    zoomVel = 0;
+                    return;
+                }
+                if (viewportWidth > 5000 && zoomVel < 0) { // prevent from zooming out too much
+                    zoomVel = 0;
+                    return;
+                }
 
-        Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, currentMouseX, currentMouseY);
+                Point2D mouseCursorLocationOnMap = viewportToImageView(page.hospitalMap, currentMouseX, currentMouseY);
 
-        page.scaledWidth = viewportWidth * _boundariesOfViewPort;
-        page.scaledHeight = viewportHeight * _boundariesOfViewPort;
+                page.scaledWidth = viewportWidth * _boundariesOfViewPort;
+                page.scaledHeight = viewportHeight * _boundariesOfViewPort;
 
-        double mouseCursorX = mouseCursorLocationOnMap.getX();
-        double mouseCursorY = mouseCursorLocationOnMap.getY();
+                double mouseCursorX = mouseCursorLocationOnMap.getX();
+                double mouseCursorY = mouseCursorLocationOnMap.getY();
 
-        page.scaledX = mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * _boundariesOfViewPort);
-        page.scaledY = mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * _boundariesOfViewPort);
-        Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
-        render();
-        if (!LoadFXML.getCurrentWindow().equals("navBar")) {
-            page.currentPath = new ArrayList();
-        }
-        page.hospitalMap.setViewport(newViewPort);
-    }
+                page.scaledX = mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * _boundariesOfViewPort);
+                page.scaledY = mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * _boundariesOfViewPort);
+                Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
+                render();
+                if (!LoadFXML.getCurrentWindow().equals("navBar")) {
+                    page.currentPath = new ArrayList();
+                }
+                page.hospitalMap.setViewport(newViewPort);
+            }
 
-    private void render() {
-        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            page.renderMap();
-        }
-       if (LoadFXML.getCurrentWindow().equals("navBar")) {
-           page.onTopOfTopElements.getChildren().clear();
-            page.topElements.getChildren().clear(); // Clear top elements
-            page.tonysPath.getElements().clear(); // Clear Tony's path
-            page.hidePopups();
-            page.drawPath(page.currentPath);
-            page.displayHotspots(0.8);
+            private void render () {
+                if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                    page.renderMap();
+                }
+                if (LoadFXML.getCurrentWindow().equals("navBar")) {
+                    page.onTopOfTopElements.getChildren().clear();
+                    page.topElements.getChildren().clear(); // Clear top elements
+                    page.tonysPath.getElements().clear(); // Clear Tony's path
+                    page.hidePopups();
+                    page.drawPath(page.currentPath);
+                    page.displayHotspots(0.8);
 
-       }
-        if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
-            page.topElements.getChildren().clear(); // Clear top elements
-            page.tonysPath.getElements().clear(); // Clear Tony's path
-            page.hidePopups();
+                }
+                if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
+                    page.topElements.getChildren().clear(); // Clear top elements
+                    page.tonysPath.getElements().clear(); // Clear Tony's path
+                    page.hidePopups();
 //            page.drawPath(page.currentPath);
-           // page.displayHotspots(0.8);
-            GoogleMapForm.displayParkingSpots();
+                    // page.displayHotspots(0.8);
+                    GoogleMapForm.displayParkingSpots();
 
+                }
+                if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
+                    page.topElements.getChildren().clear(); // Clear top elements
+                    page.tonysPath.getElements().clear(); // Clear Tony's path
+                    page.hidePopups();
+
+                }
+            }
+
+            private void updateVars () {
+                windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
+                windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
+                windowSmallestScale = ensureRange(windowHeight, 0, windowWidth);
+
+                page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
+                page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
+                page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
+            }
+
+            public void shiftedImage (ImageView inputMap, Point2D changeInShift, AnchorPane topElements){
+                Rectangle2D theViewPort = inputMap.getViewport();
+
+                double viewPortWidth = theViewPort.getWidth();
+                double viewPortHeight = theViewPort.getHeight();
+
+                page.scaledX = theViewPort.getMinX() - changeInShift.getX();
+                page.scaledY = theViewPort.getMinY() - changeInShift.getY();
+
+                inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
+
+                page.scaledWidth = viewPortWidth;
+                page.scaledHeight = viewPortHeight;
+                render();
+            }
         }
-        if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
-            page.topElements.getChildren().clear(); // Clear top elements
-            page.tonysPath.getElements().clear(); // Clear Tony's path
-            page.hidePopups();
-
-        }
-    }
-
-    private void updateVars() {
-        windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
-        windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
-        windowSmallestScale = ensureRange(windowHeight, 0, windowWidth);
-
-        page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
-        page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
-        page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
-    }
-
-    public void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
-        Rectangle2D theViewPort = inputMap.getViewport();
-
-        double viewPortWidth = theViewPort.getWidth();
-        double viewPortHeight = theViewPort.getHeight();
-
-        page.scaledX = theViewPort.getMinX() - changeInShift.getX();
-        page.scaledY = theViewPort.getMinY() - changeInShift.getY();
-
-        inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
-
-        page.scaledWidth = viewPortWidth;
-        page.scaledHeight = viewPortHeight;
-        render();
-    }
-}
