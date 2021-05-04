@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.defaultSignOutBar">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Help">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Label>
+            <Text fill="#868686" layoutX="43.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Brigham and Women's Hospital." textAlignment="CENTER" wrappingWidth="327.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Text>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to navigate to a location in the hospital, select the Navigation button." wrappingWidth="210.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="MAP_MARKER" size="50">
+                     <HBox.margin>
+                        <Insets left="2.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+               </children>
+            </HBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to check in, select the Check-In button. " wrappingWidth="210.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="50">
+                     <HBox.margin>
+                        <Insets left="9.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+               </children>
+            </HBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to place a service request, select the Requests button." wrappingWidth="210.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HELP_CIRCLE" size="45">
+                     <HBox.margin>
+                        <Insets left="6.0" top="9.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+               </children>
+            </HBox>
+            <HBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like to sign out, press the Sign Out button in the bottom right of the sidebar." wrappingWidth="206.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="EXIT_TO_APP" size="50">
+                     <HBox.margin>
+                        <Insets left="8.0" top="16.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="250.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
+</AnchorPane>

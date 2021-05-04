@@ -25,6 +25,14 @@ public class AuthenticationManager {
         return (user != null);
     }
 
+    public Boolean isAdmin() {
+        return user.isAdmin();
+    }
+
+    public Boolean isEmployee() {
+        return user.isEmployee();
+    }
+
     public void addListener(AuthListener _add) {
         listeners.add(_add);
     }
@@ -72,7 +80,9 @@ public class AuthenticationManager {
                 } catch (Exception e) {e.printStackTrace();}
             }
 
-            SocketManager.getInstance().startAuthDataSocket();
+            if (isAdmin || isEmployee) {
+                SocketManager.getInstance().startAuthDataSocket();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

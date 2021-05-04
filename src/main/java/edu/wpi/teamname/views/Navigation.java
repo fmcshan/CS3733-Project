@@ -1,7 +1,9 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
@@ -10,17 +12,20 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,6 +33,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,7 +52,7 @@ public class Navigation implements LevelChangeListener {
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
     AStar residentAStar;
-    boolean pathCanceled;
+    boolean pathCanceled = false;
     @FXML
     private ComboBox<String> toCombo; // destination drop down
     @FXML
@@ -61,7 +67,29 @@ public class Navigation implements LevelChangeListener {
     private VBox navBox;
     @FXML
     private ScrollPane scrollBar;
+    @FXML
+    public JFXButton handicapButton;
+    @FXML
+    private Label directions;
+    @FXML
+    private JFXButton mapsButton;
+    @FXML
+    private JFXButton mapsButtonHome;
+    boolean handicap = false;
 
+
+    ArrayList<Node> path = new ArrayList<>();
+    ArrayList<String> allFloors = new ArrayList<>();
+
+    public void setToCombo(Node node) {
+        AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
+        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+    }
+
+    public void setFromCombo(Node node) {
+        AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(fromCombo);
+        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+    }
 
     /**
      * constructor for Navigation
@@ -95,7 +123,7 @@ public class Navigation implements LevelChangeListener {
         scrollBar.setFitToHeight(true);
     }
 
-    private HBox generateNavElem(String _direction) {
+    public HBox generateNavElem(String _direction) {
         String directionText = _direction.toLowerCase();
         HBox directionGuiWrapper = new HBox();
         directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 0 0 0 0;");
@@ -107,7 +135,7 @@ public class Navigation implements LevelChangeListener {
         directionGuiWrapper.setMaxWidth(300);
 
         VBox navIconWrapper = new VBox();
-        navIconWrapper.setStyle("-fx-background-color: #37d461; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
+        navIconWrapper.setStyle("-fx-background-color: #0067b1; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
         navIconWrapper.setPrefSize(64, 64);
         navIconWrapper.setMinSize(64, 64);
         MaterialDesignIconView navigationIcon;
@@ -151,13 +179,15 @@ public class Navigation implements LevelChangeListener {
         return directionGuiWrapper;
     }
 
-    private void refreshNodes() {
+    private void refreshNodes(boolean clear) {
         listOfNodeNames.clear();
         nodeNameNodes.clear();
         listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
         nodesMap.clear();
-        toCombo.getItems().clear();
-        fromCombo.getItems().clear();
+        if (clear) {
+            toCombo.getItems().clear();
+            fromCombo.getItems().clear();
+        }
         Collections.sort(listOfNodes, new NodeSortComparator());
         listOfNodes.forEach(n -> {
             if (n.getNodeType().equals("HALL")) {
@@ -167,14 +197,16 @@ public class Navigation implements LevelChangeListener {
             listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
             //Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
-            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
 
-            }*/
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
             fromCombo.getItems().add(n); // make the nodes appear in the combobox 2 electric bugaloo
         });
+    }
+
+    private void refreshNodes() {
+        refreshNodes(true);
     }
 
     /**
@@ -210,28 +242,32 @@ public class Navigation implements LevelChangeListener {
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
+        SceneManager.getInstance().getDefaultPage().setStartNode(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue()))); // get starting location
+        SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getStartNode());
+        SceneManager.getInstance().getDefaultPage().displayNodes(SceneManager.getInstance().getDefaultPage().getStartAndEnd(), .8, false);
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         navBox.getChildren().clear();
-        pathCanceled = false;
-        Node startNode = nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())); // get starting location
-        Node endNode = nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue())); // get ending location
-        AStar AStar = new AStar(listOfNodes, startNode, endNode); // perform AStar
-        residentAStar = AStar;
-        ArrayList<Node> path = AStar.getPath(); // list the nodes found using AStar to create a path
-        String currentFloor = LevelManager.getInstance().getFloor();
-        for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-            mapDisplay.drawPath(floorPath); // draw the path on the map
-        }
-
-        ArrayList<String> allFloors = new ArrayList<>();
+        SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         allFloors.add("L2");
         allFloors.add("L1");
         allFloors.add("G");
         allFloors.add("1");
         allFloors.add("2");
         allFloors.add("3");
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        pathCanceled = false;
+
+        SceneManager.getInstance().getDefaultPage().setEndNode(nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue()))); // get ending location
+        SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getEndNode());
+
+        AStar AStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap); // perform AStar
+        residentAStar = AStar;
+        path = residentAStar.getPath(); // list the nodes found using AStar to create a path
+        String currentFloor = LevelManager.getInstance().getFloor();
+        mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+        //mapDisplay.drawPathAnimation();
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -246,29 +282,40 @@ public class Navigation implements LevelChangeListener {
             spacer.setMinSize(1, 10);
             navBox.getChildren().add(spacer);
         });
-        LevelManager.getInstance().setFloor(startNode.getFloor());
-        //SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        LevelManager.getInstance().setFloor(SceneManager.getInstance().getDefaultPage().getStartNode().getFloor());
+        SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);
+        SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
     }
 
     void clearDirections() {
         navBox.getChildren().clear();
     }
+    @FXML
+    void googleMaps(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMaps();
+    }
+
+    @FXML
+    void googleMapsHome(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMapsHome();
+    }
+
 
     @Override
     public void levelChanged(int _level) {
-        if (pathCanceled) {
-            mapDisplay.clearMap();
-        } else {
+        if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
-            for (ArrayList<Node> floorPath : residentAStar.getFloorPaths(currentFloor)) {
-                mapDisplay.drawPath(floorPath); // draw the path on the map
+            if (residentAStar == null) {
+                return;
             }
+            mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+            //mapDisplay.drawPathAnimation();
+            SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
-        //refreshNodes();
     }
 
-    public void cancelNavigation(ActionEvent actionEvent) {
-        ArrayList<String> allFloors = new ArrayList<>();
+    public void cancelNavigation() {
+        allFloors.clear();
         allFloors.add("L2");
         allFloors.add("L1");
         allFloors.add("G");
@@ -276,10 +323,35 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("2");
         allFloors.add("3");
         refreshNodes();
-        //SceneManager.getInstance().getDefaultPage().getTonysPath().getElements().clear();
-        SceneManager.getInstance().getDefaultPage().currentPath.clear();
+        SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
+        SceneManager.getInstance().getDefaultPage().listOfNode.clear();
+        SceneManager.getInstance().getDefaultPage().clearMap();
+        //SceneManager.getInstance().getDefaultPage().clearPathAnimation();
         clearDirections();
         pathCanceled = true;
-        //SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
+        SceneManager.getInstance().getDefaultPage().setStartNode(null);
+        SceneManager.getInstance().getDefaultPage().setEndNode(null);
+        SceneManager.getInstance().getDefaultPage().displayHotspots(.8);
     }
+
+    @FXML
+    void toggleHandicap(ActionEvent event) {
+        if (!handicap) {
+            handicapButton.setStyle("-fx-background-color: #dedede; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
+        } else {
+            handicapButton.setStyle("-fx-background-color: #ffffff; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
+        }
+        handicap ^= true;
+        String fromSelected = fromCombo.getValue();
+        String toSelected = toCombo.getValue();
+        fromCombo.getItems().clear();
+        toCombo.getItems().clear();
+        refreshNodes(false);
+        fromCombo.setValue(fromSelected);
+        toCombo.setValue(toSelected);
+        calcPath();
+    }
+
+
 }

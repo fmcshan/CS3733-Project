@@ -162,3 +162,4 @@ gradle-app.setting
 
 # Service accounts
 3733-firebase-service-account.json
+3733-chat-bot-auth.json

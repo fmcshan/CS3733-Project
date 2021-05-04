@@ -166,7 +166,16 @@ public class FoodDelivery {
      * @return true if any checkbox has been selected, and false otherwise
      */
     public boolean checkBoxSelected() {
-        return hamburgerBox.isSelected() || hotdogBox.isSelected() || impossibleBurgerBox.isSelected();
+        return hamburgerBox.isSelected() || hotdogBox.isSelected() || impossibleBurgerBox.isSelected() || otherCheckbox.isSelected();
+    }
+
+    /**
+     * Checks if the "Other" text box for gift delivery options has been filled correctly
+     *
+     * @return true if the box was filled correctly, and false otherwise
+     */
+    public boolean otherInputValid() {
+        return !otherCheckbox.isSelected() || (otherCheckbox.isSelected() && !otherInput.getText().isEmpty());
     }
 
     /**
@@ -215,6 +224,8 @@ public class FoodDelivery {
 
         if (!checkBoxSelected())
             failedFoodSelection.setText("Select at Least One Menu Item");
+        else if (!otherInputValid())
+            failedFoodSelection.setText("Invalid Other Reason");
         else
             failedFoodSelection.setText("");
 
@@ -230,7 +241,7 @@ public class FoodDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && phoneNumberValid()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && otherInputValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (hamburgerBox.isSelected())
@@ -239,6 +250,9 @@ public class FoodDelivery {
                 selected.add("Hot Dog");
             if (impossibleBurgerBox.isSelected())
                 selected.add("Impossible Burger");
+            if (otherCheckbox.isSelected()) {
+                selected.add(otherInput.getText());
+            }
 
             LoadFXML.setCurrentWindow("");
 

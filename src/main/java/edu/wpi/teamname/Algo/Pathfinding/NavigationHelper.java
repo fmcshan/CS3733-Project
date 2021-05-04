@@ -21,7 +21,7 @@ public class NavigationHelper {
     private int lastStraightIndex;
 
     public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
-        pathfinder = new AStar(nodes, start, goal);
+        pathfinder = new AStar(nodes, start, goal, false);
     }
 
     public NavigationHelper(AStar AStar){

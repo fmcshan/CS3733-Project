@@ -103,9 +103,9 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </VBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="cellHolder" prefHeight="681.0" prefWidth="1275.0" style="-fx-background-color: white; -fx-border-color: white;" />
+                  <VBox fx:id="cellHolder" prefHeight="712.0" prefWidth="1292.0" style="-fx-background-color: white; -fx-border-color: white;" />
                </content>
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />

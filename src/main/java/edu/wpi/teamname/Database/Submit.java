@@ -265,7 +265,42 @@ public class Submit {
         data.put("CHANGE_ID", changeId);
         data.put("uid", _form.getLocalId());
 
-        String url = SERVER_URL + "/api/delete-admin";
+        String url = SERVER_URL + "/api/delete-user";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void reserveParking(String toReserve) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("nodeId", toReserve);
+
+        String url = SERVER_URL + "/api/reserve-parking";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void removeParking(String toReserve) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("nodeId", toReserve);
+
+        String url = SERVER_URL + "/api/remove-parking";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void sendChatMessage(String _id, String _msg) {
+        JSONObject data = new JSONObject();
+        data.put("CLIENT_ID", _id);
+        data.put("message", _msg);
+
+        String url = SERVER_URL + "/api/send-message";
 
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);

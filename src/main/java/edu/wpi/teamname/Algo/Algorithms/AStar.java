@@ -16,6 +16,7 @@ import java.util.Stack;
 /**
  * <h1>AStar Pathfinding</h1>
  * AStar Pathfinding Algorithm that navigates a map of provided nodes
+ *
  * @author Emmanuel Ola
  */
 public class AStar implements IAlgorithm {
@@ -31,27 +32,33 @@ public class AStar implements IAlgorithm {
      * The ending node
      */
     private Node goal;
+
+    private boolean isHandicap;
     /**
      * Priority queue of open nodes. Instantiated with our NodeComparator class
      */
     private PriorityQueue<Node> openNodes;
 
-    /** Loads the relevant information for the AStar algorithm and prints the result of the pathfinding operation
+    /**
+     * Loads the relevant information for the AStar algorithm and prints the result of the pathfinding operation
+     *
      * @param nodes the list of nodes
      * @param start the starting node
-     * @param goal the ending node
+     * @param goal  the ending node
      */
-    public AStar(ArrayList nodes, Node start, Node goal) {
+    public AStar(ArrayList nodes, Node start, Node goal, boolean isHandicap) {
         this.resetNodes(nodes); //reset all provided nodes before pathfinding
         this.start = start;
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
         this.goal = goal;
+        this.isHandicap = isHandicap;
         openNodes = new PriorityQueue<>(new NodeComparator()); //Instantiates the priority queue with our overwrited comparator
         this.process();
     }
 
     /**
      * Resets the parents and costs of all nodes in the provided arraylist of nodes
+     *
      * @param nodes an ArrayList of Nodes to be reset
      */
     private void resetNodes(ArrayList<Node> nodes) {
@@ -65,6 +72,7 @@ public class AStar implements IAlgorithm {
 
     /**
      * Returns all the floors we reach on our path
+     *
      * @return List of floors we reach on our path
      */
     public ArrayList<String> getRelevantFloors() {
@@ -78,6 +86,7 @@ public class AStar implements IAlgorithm {
 
     /**
      * Returns a list of nodes representing the path specific to the floor provided
+     *
      * @param floor the floor we want to get a path for
      * @return list of nodes representing a path specific to the floor
      */
@@ -101,9 +110,10 @@ public class AStar implements IAlgorithm {
 
     /**
      * Returns a nested list of nodes representing the different sections of paths by floors
+     *
      * @return nested list of nodes representing the different sections of paths by floors
      */
-    public ArrayList<ArrayList<Node>> getAllFloorPaths(){
+    public ArrayList<ArrayList<Node>> getAllFloorPaths() {
         ArrayList<Node> nodes = new ArrayList<>();
         ArrayList<ArrayList<Node>> paths = new ArrayList<>();
         String currentfloor = start.getFloor();
@@ -121,7 +131,7 @@ public class AStar implements IAlgorithm {
         return paths;
     }
 
-    public ArrayList<ArrayList<Node>> getFloorPaths(String floor){
+    public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {
         ArrayList<Node> nodes = new ArrayList<>();
         ArrayList<ArrayList<Node>> paths = new ArrayList<>();
         for (ArrayList<Node> floorPath : getAllFloorPaths()) {
@@ -130,11 +140,11 @@ public class AStar implements IAlgorithm {
         }
         return paths;
     }
-    
+
     /**
      * Prints the path from the start node to the goal node
      */
-    public void displayPath(){
+    public void displayPath() {
         Stack<Node> finalPath = this.returnPath(); //
         while (!finalPath.isEmpty())
             System.out.println(finalPath.pop().getNodeInfo().get("longName"));
@@ -142,12 +152,13 @@ public class AStar implements IAlgorithm {
 
     /**
      * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
+     *
      * @return Stack containing the solution path for algorithm
      */
     private Stack<Node> returnPath() {
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
-        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())){
+        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
             finalPath.push(current);
             current = current.getParent();
         }
@@ -157,12 +168,13 @@ public class AStar implements IAlgorithm {
 
     /**
      * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
+     *
      * @return Stack containing the solution path for algorithm
      */
     private Stack<Hashtable<String, Integer>> getXYPath() {
         Stack<Hashtable<String, Integer>> finalXYPath = new Stack<Hashtable<String, Integer>>(); //Stack containing the final path of our algorithm
         Node current = goal;
-        while (current.getParent() != null){
+        while (current.getParent() != null) {
             finalXYPath.push(current.getCoords());
             current = current.getParent();
         }
@@ -174,10 +186,11 @@ public class AStar implements IAlgorithm {
     /**
      * <b>*For JUnit Testing*</b> This method returns a list of nodes from start to finish that represents
      * the path of the AStar algorithm
+     *
      * @return a List of nodes representing the path of the algorithm
      */
     @Override
-    public ArrayList<Node> getPath(){
+    public ArrayList<Node> getPath() {
         Stack<Node> finalPath = this.returnPath();
         ArrayList<Node> path = new ArrayList<Node>();
         while (!finalPath.isEmpty())
@@ -188,33 +201,51 @@ public class AStar implements IAlgorithm {
     /**
      * Navigates the map by processing the priority queue
      */
-    public void process(){
+    public void process() {
         openNodes.add(start); //Adds our starting node to the priority queue
         Node current = start; //Sets the current node to the starting node
         double tentativeScore = 0;
-
-        while (!openNodes.isEmpty()){
+        while (!openNodes.isEmpty()) {
             if (current.getNodeID().equals(goal.getNodeID()))
                 return; //Ends pathfinding when we reach our goal
             current = openNodes.poll();
-
-            //Iterates through the neighbors of each node popped from the Priority Queue
-            for (Node neighbor : current.getEdges()) {
-                tentativeScore = (current.getCostSoFar() + distance(current, neighbor)); //Sets tentative score to the cost of taking this path to the neighbor
-                if (tentativeScore < neighbor.getCostSoFar()){ //Checks if the current path to neighbor is cheaper than any other we've encountered
-                    neighbor.setParent(current);
-                    neighbor.setCostSoFar(tentativeScore);
-                    neighbor.setHeuristic(calculateHeuristic(neighbor));
-                    neighbor.updateAStarScore();
-                    if (!openNodes.contains(neighbor))
-                        openNodes.add(neighbor); //Adds neighbor to the priority queue if it isn't already in there
+            if (this.isHandicap) {
+                //Iterates through the neighbors of each node popped from the Priority Queue
+                for (Node neighbor : current.getEdges()) {
+                    if (!(!(current.getFloor().equals(neighbor.getFloor())) && current.getNodeType().equals("STAI"))) {
+                        tentativeScore = (current.getCostSoFar() + distance(current, neighbor)); //Sets tentative score to the cost of taking this path to the neighbor
+                        if (tentativeScore < neighbor.getCostSoFar()) { //Checks if the current path to neighbor is cheaper than any other we've encountered
+                            neighbor.setParent(current);
+                            neighbor.setCostSoFar(tentativeScore);
+                            neighbor.setHeuristic(calculateHeuristic(neighbor));
+                            neighbor.updateAStarScore();
+                            if (!openNodes.contains(neighbor))
+                                openNodes.add(neighbor); //Adds neighbor to the priority queue if it isn't already in there
+                        }
+                    }
                 }
+            } else {
+               // System.out.println(current.getNodeID().equals(goal.getNodeID()));
+                for (Node neighbor : current.getEdges()) {
+                    tentativeScore = (current.getCostSoFar() + distance(current, neighbor)); //Sets tentative score to the cost of taking this path to the neighbor
+                    if (tentativeScore < neighbor.getCostSoFar()) { //Checks if the current path to neighbor is cheaper than any other we've encountered
+                        neighbor.setParent(current);
+                        neighbor.setCostSoFar(tentativeScore);
+                        neighbor.setHeuristic(calculateHeuristic(neighbor));
+                        neighbor.updateAStarScore();
+                        if (!openNodes.contains(neighbor))
+                            openNodes.add(neighbor); //Adds neighbor to the priority queue if it isn't already in there
+
+                    }
+                }
+
             }
         }
     }
 
     /**
      * Calculates the heuristic for a provided node
+     *
      * @param node the node to calculate a heuristic for
      * @return the heuristic for the provide node
      */
@@ -224,6 +255,7 @@ public class AStar implements IAlgorithm {
 
     /**
      * Calculates the distance from one node to another
+     *
      * @param a the starting node
      * @param b the ending node
      * @return the euclidean distance between two nodes
@@ -234,7 +266,7 @@ public class AStar implements IAlgorithm {
         int x2 = b.getCoords().get("x");
         int y1 = a.getCoords().get("y");
         int y2 = b.getCoords().get("y");
-        double flatDistance = Math.sqrt((Math.pow((x2-x1),2)) + (Math.pow((y2-y1),2)));
+        double flatDistance = Math.sqrt((Math.pow((x2 - x1), 2)) + (Math.pow((y2 - y1), 2)));
         String afloor = a.getNodeInfo().get("floor");
         String bfloor = b.getNodeInfo().get("floor");
         if (afloor.equals("G")) {
@@ -243,12 +275,12 @@ public class AStar implements IAlgorithm {
         if (bfloor.equals("G")) {
             bfloor = "0";
         }
-        if (afloor.equals("L1")||afloor.equals("L2"))
+        if (afloor.equals("L1") || afloor.equals("L2"))
             if (afloor.equals("L1"))
                 afloor = "0";
             else
                 afloor = "-1";
-        if (bfloor.equals("L1")||bfloor.equals("L2"))
+        if (bfloor.equals("L1") || bfloor.equals("L2"))
             if (bfloor.equals("L1"))
                 bfloor = "0";
             else
@@ -268,7 +300,7 @@ public class AStar implements IAlgorithm {
         Node start = nodes.get(Parser.indexOfNode(nodes, "ALABS001L2"));
         Node goal = nodes.get(Parser.indexOfNode(nodes, "GLABS014L2"));
         Stopwatch timer = new Stopwatch();
-        AStar example = new AStar(nodes, start, goal);
+        AStar example = new AStar(nodes, start, goal, false);
         ArrayList<String> nodeTypes = new ArrayList<>();
         for (Node node : nodes) {
             if (!nodeTypes.contains(node.getNodeType()))
