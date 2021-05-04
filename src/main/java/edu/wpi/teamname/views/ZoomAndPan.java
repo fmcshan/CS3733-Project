@@ -85,9 +85,9 @@ public class ZoomAndPan {
             updateVars();
             double mouseDeltaY = mouseEvent.getDeltaY();
 
-            if (mouseDeltaY > 0 && zoomVel < 500) { // <0 for zoom out, >0 for zoom in
+            if (mouseDeltaY > 0 && zoomVel < 900) { // <0 for zoom out, >0 for zoom in
                 zoomVel += 100;
-            } else if (zoomVel > -500){
+            } else if (zoomVel > -900){
                 zoomVel -= 100;
             }
         });
@@ -110,9 +110,9 @@ public class ZoomAndPan {
                                         }
 
                                         if (zoomVel > 0) {
-                                            zoomVel -= 4;
+                                            zoomVel -= 18;
                                         } else if (zoomVel < 0) {
-                                            zoomVel += 4;
+                                            zoomVel += 18;
                                         }
 
                                         if (zoomVel != 0) {
