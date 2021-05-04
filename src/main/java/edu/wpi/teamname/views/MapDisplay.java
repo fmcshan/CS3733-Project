@@ -1159,6 +1159,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1193,6 +1194,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1209,6 +1211,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1225,19 +1228,19 @@ public class MapDisplay implements LevelChangeListener {
         }
     }
 
-    /**
-     * toggle the check in window
-     */
-    public void openCheckIn() {
-        if (navigation != null) {
-            navigation.cancelNavigation();
-        }
-        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
-        popPop.setPrefWidth(657);
-        clearMap(); // Clear map
-        popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-    }
+//    /**
+//     * toggle the check in window
+//     */
+//    public void openCheckIn() {
+//        if (navigation != null) {
+//            navigation.cancelNavigation();
+//        }
+//        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+//        popPop.setPrefWidth(657);
+//        clearMap(); // Clear map
+//        popPop.setPrefWidth(657.0); // Set preferable width to 657
+//        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+//    }
 
     /**
      * Triggered by Add Node button

@@ -52,7 +52,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     @FXML
-    private JFXButton CheckIn;
+    private JFXButton checkButton;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox, closedChatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -455,25 +455,25 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleCheckIn() {
-        if (CheckIn.getText().equals("Check-In")) {
-            CheckIn.setText("Check-Out");
+        if (checkButton.getText().equals("Check-In")) {
+            checkButton.setText("Check-Out");
         } else {
-            CheckIn.setText("Check-In");
+            checkButton.setText("Check-In");
         }
     }
 
-//    @FXML
-//    public void openCheckIn() {
-//        popPop.setPrefWidth(657);
-//        clearMap(); // Clear map
-//        popPop.setPrefWidth(657.0); // Set preferable width to 657
-//        if (CheckIn.getText().equals("Check-In")) {
-//            LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-//        } else {
-//            LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
-//        }
-//
-//    }
+    @FXML
+    public void openCheckIn() {
+        popPop.setPrefWidth(657);
+        clearMap(); // Clear map
+        popPop.setPrefWidth(657.0); // Set preferable width to 657
+        if (checkButton.getText().equals("Check-In")) {
+            LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+        } else {
+            LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
+        }
+
+    }
 
     public void setHelpButton(boolean value) {
         helpButton.setVisible(value);

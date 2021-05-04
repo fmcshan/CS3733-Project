@@ -81,7 +81,7 @@ public class GoogleMapHome {
                 .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
-        displayParkingSpots();
+       // displayParkingSpots();
         defaultPage.initGoogleForm();
         addressFill.setEditable(true);
 
@@ -216,7 +216,7 @@ public class GoogleMapHome {
         System.out.println(LoadFXML.getCurrentWindow());
         nodes.forEach(n ->{
             if (n.getNodeType().equals("PARK")){
-                Circle circle = new Circle(defaultPage.xCoordOnTopElement(n.getX()), defaultPage.yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                Circle circle = new Circle(defaultPage.xCoordOnTopElement(n.getX()), defaultPage.yCoordOnTopElement(n.getY()), 8); // New node/circle
                 circle.setStrokeWidth(4);
                 circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
                 defaultPage.topElements.getChildren().add(circle);
