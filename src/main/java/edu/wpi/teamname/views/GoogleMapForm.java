@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -116,6 +118,7 @@ public class GoogleMapForm {
     private JFXButton printButton;
   static  DefaultPage defaultPage =SceneManager.getInstance().getDefaultPage();
    static ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
+   private HashMap<String, String> items = new HashMap<>();
 
     public void start(Stage stage) throws Exception {}
 //    public GoogleMapForm(MapDisplay mapDisplay){
@@ -136,9 +139,10 @@ public class GoogleMapForm {
 //        streetEnding.getItems().add("Blvd");
 //        streetEnding.getItems().add("Cir");
 //        streetEnding.getItems().add("Ln");
+     System.out.println("heeeeeeere");
      directionSpace.setVisible(false);
      errorMes.setVisible(false);
-     addressFill.setDisable(true);
+   //  addressFill.setDisable(true);
         context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
@@ -146,29 +150,34 @@ public class GoogleMapForm {
 //        mapDisplay = new MapDisplay();
      displayParkingSpots();
      defaultPage.initGoogleForm();
+//      new AutoCompleteComboBoxListener<>(addressFill);
+     addressFill.setEditable(true);
 
     }
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
-        directionSpace.setText("");
-        lowDir = "";
-        allDirFran = "";
-        allDirWhit = "";
-        Stage stage = new Stage();
-         Duration durationFran = new Duration();
-        Duration durationWhit = new Duration();
-       // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
+
+        if ( (items.containsKey(addressFill.getSelectionModel().getSelectedItem()))) {
+            System.out.println();
+            directionSpace.setText("");
+            lowDir = "";
+            allDirFran = "";
+            allDirWhit = "";
+            Stage stage = new Stage();
+            Duration durationFran = new Duration();
+            Duration durationWhit = new Duration();
+            // String URL = "https://www.google.com/maps/dir/?api=1&origin=" + numInput.getText() + "+" + streetInput.getText() +
             //    "+" + streetEnding.getValue() + "+" + townInput.getText() + "+" + stateInput.getText() + "&destination=75+Francis+St+Boston+MA&key=" ;
-       // URI link = new URI(URL);
+            // URI link = new URI(URL);
 //        String origin = numInput.getText() + " " + streetInput.getText() + " " + streetEnding.getValue()
 //                + ", " + townInput.getText() + " " + stateInput.getText();
-        String origin = addressFill.getValue();
-        DirectionsResult results =  DirectionsApi.getDirections(context, origin, "75 Francis Street, Boston MA").await();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        DirectionsLeg[] feet = results.routes[0].legs;
+            String origin = addressFill.getValue();
+            DirectionsResult results = DirectionsApi.getDirections(context, origin, "75 Francis Street, Boston MA").awaitIgnoreError();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            DirectionsLeg[] feet = results.routes[0].legs;
 
-        for (DirectionsLeg foot : feet) {
+            for (DirectionsLeg foot : feet) {
 //            for (DirectionsStep step : foot.steps) {
 //
 //                String newStep = cleanTags(step.htmlInstructions);
@@ -176,13 +185,13 @@ public class GoogleMapForm {
 //                allDirFran = allDirFran + newStep + "\n";
 //
 //            }
-            durationFran = foot.duration;
-        }
-        DirectionsResult results2 = DirectionsApi.getDirections(context, origin, "15 New Whitney St, Boston MA").await();
-        Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
-        DirectionsLeg[] feet2 = results2.routes[0].legs;
+                durationFran = foot.duration;
+            }
+            DirectionsResult results2 = DirectionsApi.getDirections(context, origin, "15 New Whitney St, Boston MA").await();
+            Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
+            DirectionsLeg[] feet2 = results2.routes[0].legs;
 
-        for (DirectionsLeg foot : feet2) {
+            for (DirectionsLeg foot : feet2) {
 //            for (DirectionsStep step : foot.steps) {
 //
 //                String newStep = cleanTags(step.htmlInstructions);
@@ -190,68 +199,68 @@ public class GoogleMapForm {
 //                allDirWhit = allDirWhit + newStep + "\n";
 //
 //            }
-             durationWhit = foot.duration;
-        }
-        if (durationFran.inSeconds < durationWhit.inSeconds) {
-            System.out.println("Francis shorter");
-            for (DirectionsLeg foot : feet) {
-                for (DirectionsStep step : foot.steps) {
+                durationWhit = foot.duration;
+            }
+            if (durationFran.inSeconds < durationWhit.inSeconds) {
+                System.out.println("Francis shorter");
+                for (DirectionsLeg foot : feet) {
+                    for (DirectionsStep step : foot.steps) {
 
-                    String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(step.htmlInstructions);
-                    lowDir = lowDir + newStep + "\n";
+                        String newStep = cleanTags(step.htmlInstructions);
+                        //   System.out.println(step.htmlInstructions);
+                        lowDir = lowDir + newStep + "\n";
+
+                    }
 
                 }
+                chosenPark = "75 Francis Street, Boston MA";
+            } else {
+                System.out.println("Whitney shorter");
+                for (DirectionsLeg foot : feet2) {
+                    for (DirectionsStep step : foot.steps) {
 
-            }
-            chosenPark = "75 Francis Street, Boston MA";
-        } else {
-            System.out.println("Whitney shorter");
-            for (DirectionsLeg foot : feet2) {
-                for (DirectionsStep step : foot.steps) {
+                        String newStep = cleanTags(step.htmlInstructions);
+                        System.out.println(step.htmlInstructions);
+                        lowDir = lowDir + "\n" + newStep;
 
-                    String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(step.htmlInstructions);
-                    lowDir = lowDir + "\n" + newStep;
-
+                    }
+                    String durationFWhit = foot.duration.toString();
                 }
-                String durationFWhit = foot.duration.toString();
+                chosenPark = "15 New Whitney St, Boston MA";
             }
-            chosenPark = "15 New Whitney St, Boston MA";
+            directionSpace.setVisible(true);
+            directionSpace.setText(lowDir);
+            Size size = new Size(500, 400);
+            StaticMapsRequest request = StaticMapsApi.newRequest(context, size);
+            request.center(origin);
+            request.scale(2);
+            request.format(StaticMapsRequest.ImageFormat.png32);
+            request.maptype(StaticMapsRequest.StaticMapType.terrain);
+            List<LatLng> decodedPath = results.routes[0].overviewPolyline.decodePath();
+            StaticMapsRequest.Path path = new StaticMapsRequest.Path();
+            //path.color("blue");
+            decodedPath.forEach(p -> {
+                path.addPoint(p);
+            });
+            //path.addPoint(origin);
+            // path.addPoint(chosenPark);
+            //path.fillcolor("red");
+            request.path(path);
+            // request.
+            StaticMapsRequest.Markers depMarker = new StaticMapsRequest.Markers();
+            StaticMapsRequest.Markers destMarker = new StaticMapsRequest.Markers();
+            destMarker.color("green");
+
+            depMarker.addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat, results.routes[0].legs[0].startLocation.lng));
+            destMarker.addLocation(new LatLng(results.routes[0].legs[0].endLocation.lat, results.routes[0].legs[0].endLocation.lng));
+            // request.markers( new StaticMapsRequest.Markers().addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)));
+            request.markers(depMarker);
+            request.markers(destMarker);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(request.await().imageData);
+            Image img = new Image(bais);
+            imageBox.setImage(img);
         }
-        directionSpace.setVisible(true);
-        directionSpace.setText(lowDir);
-        Size size = new Size(500,400);
-        StaticMapsRequest request = StaticMapsApi.newRequest(context, size);
-        request.center(origin);
-        request.scale(2);
-        request.format(StaticMapsRequest.ImageFormat.png32);
-        request.maptype(StaticMapsRequest.StaticMapType.terrain);
-        List<LatLng> decodedPath = results.routes[0].overviewPolyline.decodePath();
-        StaticMapsRequest.Path path = new StaticMapsRequest.Path();
-        //path.color("blue");
-        decodedPath.forEach(p -> {
-           path.addPoint(p);
-        });
-        //path.addPoint(origin);
-       // path.addPoint(chosenPark);
-        //path.fillcolor("red");
-        request.path(path);
-       // request.
-        StaticMapsRequest.Markers depMarker = new StaticMapsRequest.Markers();
-        StaticMapsRequest.Markers destMarker = new StaticMapsRequest.Markers();
-        destMarker.color("green");
-
-        depMarker.addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng));
-        destMarker.addLocation(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng));
-       // request.markers( new StaticMapsRequest.Markers().addLocation(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)));
-        request.markers(depMarker);
-        request.markers(destMarker);
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(request.await().imageData);
-        Image img = new Image(bais);
-        imageBox.setImage(img);
-
 
 
     }
@@ -297,22 +306,33 @@ public class GoogleMapForm {
         return s;
     }
 
-    public void lookUp(){
-        addressFill.setDisable(false);
-        String input = numInput.getText();
+    public void lookUp() throws InterruptedException, IOException, ApiException, PrinterException, URISyntaxException {
+        //addressFill.setDisable(false);
+        String input = addressFill.getEditor().getText();
        // System.out.println(input);
         List<String> results = getAddresses(input) ;
         results.forEach(n->{
             if(addressFill.getItems().contains(n)){
                 return;}
             addressFill.getItems().add(n);
+            items.put(n,n);
+            addressFill.show();
+
             if( addressFill.getItems().size()>3){
                 addressFill.getItems().remove(0);
             }
 
 
         });
+
+//        if(addressFill.getSelectionModel().getSelectedItem()!=null){
+//            submit();
+//        }
+
     }
+
+          // public void handleSpace(){
+
 
 
     public List <String> getAddresses(String lookup){
