@@ -78,7 +78,6 @@ public class GoogleMapForm {
 
     @FXML
     public void initialize() {
-        System.out.println("heeeeeeere");
         directionSpace.setVisible(false);
         errorMes.setVisible(false);
         context = new GeoApiContext.Builder()
@@ -88,14 +87,12 @@ public class GoogleMapForm {
         displayParkingSpots();
         defaultPage.initGoogleForm();
         addressFill.setEditable(true);
-
     }
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
 
         if ((items.containsKey(addressFill.getSelectionModel().getSelectedItem()))) {
-            System.out.println();
             directionSpace.setText("");
             lowDir = "";
             allDirFran = "";
