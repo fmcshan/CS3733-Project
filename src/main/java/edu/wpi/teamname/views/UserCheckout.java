@@ -1,9 +1,6 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
@@ -19,52 +16,19 @@ import java.util.HashMap;
 
 public class UserCheckout {
         static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
-        @FXML
-        private Label registrationForm;
 
-        @FXML
-        private Text fillfieldsDesc;
         @FXML
         private JFXComboBox<String> parkingBox;
         @FXML
-        private Label failedName;
-
+        private Label failedParking;
         @FXML
-        private Label failedDate;
-
+        private Label failedRating;
         @FXML
-        private Label failedReason;
-
+        private JFXSlider experienceSlider;
         @FXML
-        private Label reasonsLabel;
-
-        @FXML
-        private JFXCheckBox emergencyRoomCheckbox;
-
-        @FXML
-        private JFXCheckBox xrayCheckbox;
-
-        @FXML
-        private JFXCheckBox mriCheckbox;
-
-        @FXML
-        private JFXCheckBox eyeExamCheckbox;
-
-        @FXML
-        private JFXCheckBox physicalTherapyCheckbox;
-
-        @FXML
-        private Label failedPhoneNumber;
-
-        @FXML
-        private JFXTextField phoneInput;
-
-        @FXML
-        private JFXTextField phoneInput1;
-
+        private JFXTextField additionalComments;
         @FXML
         private JFXButton submitButton;
-
         @FXML
         private VBox successPop;
 
