@@ -300,8 +300,8 @@ public class Navigation implements LevelChangeListener {
                 return;
             }
             mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+            SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
-        SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
     }
 
     public void cancelNavigation() {
