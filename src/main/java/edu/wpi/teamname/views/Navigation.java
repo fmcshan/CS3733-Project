@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -74,6 +75,8 @@ public class Navigation implements LevelChangeListener {
     private JFXButton mapsButton;
     @FXML
     private JFXButton mapsButtonHome;
+    private JFXButton handicapButton;
+    boolean handicap = false;
 
 
     ArrayList<Node> path = new ArrayList<>();
@@ -133,7 +136,7 @@ public class Navigation implements LevelChangeListener {
         directionGuiWrapper.setMaxWidth(300);
 
         VBox navIconWrapper = new VBox();
-        navIconWrapper.setStyle("-fx-background-color: #37d461; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
+        navIconWrapper.setStyle("-fx-background-color: #0067b1; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
         navIconWrapper.setPrefSize(64, 64);
         navIconWrapper.setMinSize(64, 64);
         MaterialDesignIconView navigationIcon;
@@ -177,39 +180,34 @@ public class Navigation implements LevelChangeListener {
         return directionGuiWrapper;
     }
 
-    private void refreshNodes() {
+    private void refreshNodes(boolean clear) {
         listOfNodeNames.clear();
         nodeNameNodes.clear();
         listOfNodes = LocalStorage.getInstance().getNodes(); // get nodes from database
         nodesMap.clear();
-        toCombo.getItems().clear();
-        fromCombo.getItems().clear();
+        if (clear) {
+            toCombo.getItems().clear();
+            fromCombo.getItems().clear();
+        }
         Collections.sort(listOfNodes, new NodeSortComparator());
         listOfNodes.forEach(n -> {
             if (n.getNodeType().equals("HALL")) {
                 return;
             }
-            if(handicapButton.getText().equals("Handicap On") && !n.getNodeType().equals("STAI")){
-                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
-                //Collections.sort(listOfNodeNames);
-                nodeNameNodes.add(n);
-            }
-            if(handicapButton.getText().equals("Handicap Off")){
-                nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-                listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
-                //Collections.sort(listOfNodeNames);
-                nodeNameNodes.add(n);
-            /*if (n.getFloor().equals(LevelManager.getInstance().getFloor())) {
-
-            }*/
-            }
+            nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
+            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+            //Collections.sort(listOfNodeNames);
+            nodeNameNodes.add(n);
 
         });
         listOfNodeNames.forEach(n -> {
             toCombo.getItems().add(n); // make the nodes appear in the combobox
             fromCombo.getItems().add(n); // make the nodes appear in the combobox 2 electric bugaloo
         });
+    }
+
+    private void refreshNodes() {
+        refreshNodes(true);
     }
 
     /**
@@ -265,18 +263,12 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().setEndNode(nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue()))); // get ending location
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getEndNode());
 
-        boolean handicap = true;
-        if(handicapButton.getText().equals("Handicap On")){
-            handicap = true;
-        }
-        if(handicapButton.getText().equals("Handicap Off")){
-            handicap = false;
-        }
         AStar AStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap); // perform AStar
         residentAStar = AStar;
         path = residentAStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+        //mapDisplay.drawPathAnimation();
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -318,6 +310,7 @@ public class Navigation implements LevelChangeListener {
                 return;
             }
             mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+            //mapDisplay.drawPathAnimation();
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
     }
@@ -334,6 +327,7 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         SceneManager.getInstance().getDefaultPage().listOfNode.clear();
         SceneManager.getInstance().getDefaultPage().clearMap();
+        SceneManager.getInstance().getDefaultPage().clearPathAnimation();
         clearDirections();
         pathCanceled = true;
         SceneManager.getInstance().getDefaultPage().enableButtons(allFloors);
@@ -344,15 +338,20 @@ public class Navigation implements LevelChangeListener {
 
     @FXML
     void toggleHandicap(ActionEvent event) {
-        boolean flag = true;
-        if(handicapButton.getText().equals("Handicap Off")){
-            handicapButton.setText("Handicap On");
-            flag = false;
+        if (!handicap) {
+            handicapButton.setStyle("-fx-background-color: #dedede; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
+        } else {
+            handicapButton.setStyle("-fx-background-color: #ffffff; " + "-fx-border-color:  #c3c3c3; " + "-fx-border-radius: 8px; " + "-fx-background-radius: 8px");
         }
-        if(handicapButton.getText().equals("Handicap On") && flag){
-            handicapButton.setText("Handicap Off");
-        }
-        refreshNodes();
+        handicap ^= true;
+        String fromSelected = fromCombo.getValue();
+        String toSelected = toCombo.getValue();
+        fromCombo.getItems().clear();
+        toCombo.getItems().clear();
+        refreshNodes(false);
+        fromCombo.setValue(fromSelected);
+        toCombo.setValue(toSelected);
+        calcPath();
     }
 
 

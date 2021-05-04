@@ -1,7 +1,15 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.animation.PathTransition;
+import javafx.scene.Scene;
+import javafx.scene.shape.*;
+import javafx.animation.Transition;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -30,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,6 +96,7 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
     boolean start = false;
     boolean end = false;
+    boolean animationFlag = false;
     Node sNode;
     Node fNode;
     @FXML
@@ -158,6 +168,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+    PathTransition pathTransition = new PathTransition();
 
     static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
@@ -253,7 +264,7 @@ public class MapDisplay implements LevelChangeListener {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.OLIVE); // Set node color to olive
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
 
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
@@ -1110,12 +1121,33 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
+//        Polygon triangle = new Polygon();
+//        triangle.getPoints().setAll(
+//                0.0,0.0,
+//                20.0,7.5,
+//                0.0,15.0,
+//                5.0,7.5
+//        );
+//        triangle.setFill(Color.RED); //RED
+//        triangle.setStroke(Color.RED); //RED
+//        triangle.setStrokeWidth(1.0);
+//        triangle.setOpacity(0);
+//        onTopOfTopElements.getChildren().add(triangle);
+//        pathTransition.setDuration(Duration.seconds(4));
+//        pathTransition.setPath(tonysPath);
+//        pathTransition.setNode(triangle);
+//        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        pathTransition.setCycleCount(PathTransition.INDEFINITE);
     }
 
     /**
      * toggles the navigation window
      */
     public void toggleNav() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1145,8 +1177,11 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
-
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1158,6 +1193,10 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(340);
         clearMap(); // Clear map
         // currentPath= new ArrayList();
@@ -1166,13 +1205,23 @@ public class MapDisplay implements LevelChangeListener {
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button
         } else { // Else (if user is authenticated)
             AuthenticationManager.getInstance().signOut(); // Display sign out button
+            SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
     }
 
     /**
      * toggle the check in window
      */
-
+    public void openCheckIn() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+        popPop.setPrefWidth(657);
+        clearMap(); // Clear map
+        popPop.setPrefWidth(657.0); // Set preferable width to 657
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+    }
 
     /**
      * Triggered by Add Node button

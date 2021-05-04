@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill out this form to send a gift to a patient." wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill out this form to request laundry services." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please include your name, what gift you would like to send, your phone number, and the hospital room the gift will be sent to." wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your name, select a load type or enter in a custom option along with a desired wash temperature, your phone number, and the location for delivery." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

@@ -185,6 +185,12 @@ public class ZoomAndPan {
             GoogleMapForm.displayParkingSpots();
 
         }
+        if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
+            page.topElements.getChildren().clear(); // Clear top elements
+            page.tonysPath.getElements().clear(); // Clear Tony's path
+            page.hidePopups();
+
+        }
     }
 
     private void updateVars() {
