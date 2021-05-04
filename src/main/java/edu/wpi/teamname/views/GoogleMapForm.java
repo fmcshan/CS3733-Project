@@ -303,7 +303,14 @@ public class GoogleMapForm {
        // System.out.println(input);
         List<String> results = getAddresses(input) ;
         results.forEach(n->{
+            if(addressFill.getItems().contains(n)){
+                return;}
             addressFill.getItems().add(n);
+            if( addressFill.getItems().size()>3){
+                addressFill.getItems().remove(0);
+            }
+
+
         });
     }
 
