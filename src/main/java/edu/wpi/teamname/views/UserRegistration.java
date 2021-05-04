@@ -1,10 +1,10 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -12,13 +12,17 @@ import javafx.scene.text.Text;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller for UserRegistration.fxml
+ *
  * @author Frank McShan, Lauren Sowerbutts
  */
 public class UserRegistration {
 
+    @FXML
+    private JFXComboBox<String> parkingSpot;
 
     @FXML
     private Label registrationForm;
@@ -88,9 +92,30 @@ public class UserRegistration {
 
     @FXML
     private VBox successPop;
+    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    HashMap<String, String> theNodes = new HashMap<String, String>();
+
+    @FXML
+    void initialize() {
+        ArrayList<Node> listOfNodes = new ArrayList<>();
+        ArrayList<String> listOfSpaces = new ArrayList<>();
+        listOfNodes = LocalStorage.getInstance().getNodes();
+        listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
+        for (Node n : listOfNodes
+        ) {
+
+                if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
+                    theNodes.put(n.getLongName(), n.getNodeID());
+                    parkingSpot.getItems().add(n.getLongName());
+                }
+
+        }
+        parkingSpot.getItems().add("Other Parking");
+    }
 
     /**
      * Check if name input contains a space for first and last name
+     *
      * @return true if there is a space
      */
     public boolean nameInputValid() {
@@ -99,6 +124,7 @@ public class UserRegistration {
 
     /**
      * Check if there is a valid date selected
+     *
      * @return true if there is a valid value in the DatePicker
      */
     public boolean dateSelected() {
@@ -116,6 +142,7 @@ public class UserRegistration {
 
     /**
      * Check is there is a checkbox selected
+     *
      * @return true if there is a checkbox selected
      */
     public boolean aCheckboxSelected() {
@@ -124,6 +151,7 @@ public class UserRegistration {
 
     /**
      * If the "Other" checkbox was selected, check if there was an input in the text field
+     *
      * @return true if there is an input in the text field
      */
     public boolean otherCheckboxValid() {
@@ -132,6 +160,7 @@ public class UserRegistration {
 
     /**
      * Check if the phone number entered is valid
+     *
      * @return true if the phone number is valid
      */
     public boolean phoneNumberValid() {
@@ -200,7 +229,7 @@ public class UserRegistration {
             }
 
             LoadFXML.setCurrentWindow("");
-
+            //submit Parking Spot Taken
             //submit
             edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText());
             Submit.getInstance().submitUserRegistration(formData);
@@ -209,6 +238,11 @@ public class UserRegistration {
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
             success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
+            if(theNodes.containsKey(parkingSpot.getValue())){
+                Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
+            }
+            defaultPage.toggleCheckIn();
+
         }
     }
 }

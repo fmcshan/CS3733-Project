@@ -270,4 +270,28 @@ public class Submit {
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
     }
+
+    public void reserveParking(String toReserve) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("nodeId", toReserve);
+
+        String url = SERVER_URL + "/api/reserve-parking";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
+    public void removeParking(String toReserve) {
+        JSONObject data = new JSONObject();
+        String changeId = UUID.randomUUID().toString();
+        data.put("CHANGE_ID", changeId);
+        data.put("nodeId", toReserve);
+
+        String url = SERVER_URL + "/api/remove-parking";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
 }

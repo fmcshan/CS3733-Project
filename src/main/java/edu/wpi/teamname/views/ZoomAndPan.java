@@ -52,6 +52,7 @@ public class ZoomAndPan {
     }
 
     public void zoomAndPan() {
+
         updateVars();
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
         reset(page.hospitalMap, page.mapWidth, page.mapHeight);
@@ -80,6 +81,7 @@ public class ZoomAndPan {
             mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
         });
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
+
             updateVars();
             double mouseDeltaY = mouseEvent.getDeltaY();
 
@@ -165,13 +167,22 @@ public class ZoomAndPan {
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             page.renderMap();
         }
-        if (LoadFXML.getCurrentWindow().equals("navBar")) {
-            page.onTopOfTopElements.getChildren().clear();
+       if (LoadFXML.getCurrentWindow().equals("navBar")) {
+           page.onTopOfTopElements.getChildren().clear();
             page.topElements.getChildren().clear(); // Clear top elements
             page.tonysPath.getElements().clear(); // Clear Tony's path
             page.hidePopups();
             page.drawPath(page.currentPath);
             page.displayHotspots(0.8);
+
+       }
+        if (LoadFXML.getCurrentWindow().equals("googleMapBar")) {
+            page.topElements.getChildren().clear(); // Clear top elements
+            page.tonysPath.getElements().clear(); // Clear Tony's path
+            page.hidePopups();
+//            page.drawPath(page.currentPath);
+           // page.displayHotspots(0.8);
+            GoogleMapForm.displayParkingSpots();
 
         }
     }

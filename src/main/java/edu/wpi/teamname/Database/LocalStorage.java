@@ -5,6 +5,7 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,32 @@ public class LocalStorage {
     private ArrayList<UserRegistration> registrations;
     private ArrayList<MasterServiceRequestStorage> masterStorages;
     private ArrayList<User> users;
+    private ArrayList<String> reservedParkingSpaces;
+
+    public void setReservedParkingSpaces(ArrayList<String> spaces){
+        this.reservedParkingSpaces = spaces;
+    }
+    public ArrayList<String> getReservedParkingSpaces() {
+        if (this.reservedParkingSpaces == null) {
+            for (int i = 0; i < 100; i++) {
+                if (this.reservedParkingSpaces != null) {
+                    break;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep((long) 200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (this.reservedParkingSpaces == null) {
+            return null;
+        } else {
+            return (ArrayList<String>) this.reservedParkingSpaces.clone();
+        }
+    }
+
+
 
     public static synchronized LocalStorage getInstance() {
         return instance;
