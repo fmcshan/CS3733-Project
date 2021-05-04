@@ -44,7 +44,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     // used to save the current list of nodes after AStar
 
     @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn;
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, GBttn, L2Bttn;
+
+
+    @Override
+    public VBox getPopPop() {
+        return popPop;
+    }
+
+    @FXML
+    private JFXButton CheckIn;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -53,8 +62,14 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private ImageView hospitalMap; // the map
     @FXML
     private JFXButton adminButton; // button that allows you to sign in
-    @FXML
-    private AnchorPane topElements; // anchor pane where displayed nodes reside
+
+//    public AnchorPane getTopElements() {
+//        return topElements;
+//    }
+
+//    @FXML
+//    private AnchorPane topElements; // anchor pane where displayed nodes reside
+
 
     /**
      * run on startup
@@ -195,6 +210,24 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
     }
 
+    public void toggleGoogleMaps() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = 5000;
+        scaledHeight = 3400.0;
+        clearMap();
+        popPop.setPrefWidth(400);
+        popPop.getChildren().clear();
+        LoadFXML.getInstance().loadWindow("GoogleMapForm", "googleMapBar", popPop);
+    }
+
+    public void toggleGoogleMapsHome() {
+        clearMap();
+        popPop.setPrefWidth(400);
+        popPop.getChildren().clear();
+        LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
+        zooM.zoomAndPan();
+    }
     @FXML
     private void openHelp() {
         if (LoadFXML.getCurrentWindow().equals("")) {
@@ -209,7 +242,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         }
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
-    
+    public void initGoogleForm(){
+        System.out.println("called");
+        zooM.zoomAndPan();
+    }
+
     void disableButtons(ArrayList<String> floors){
         if (floors.contains("L2"))
             L2Bttn.setDisable(true);
@@ -246,6 +283,26 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     public void setHospitalMap(Image _image) {
         hospitalMap.setImage(_image);
+    }
+
+    public void toggleCheckIn(){
+        if(CheckIn.getText().equals("Check-In")){
+            CheckIn.setText("Check-Out");
+        } else{
+            CheckIn.setText("Check-In");
+        }
+    }
+    @FXML
+    public void openCheckIn() {
+        popPop.setPrefWidth(657);
+        clearMap(); // Clear map
+        popPop.setPrefWidth(657.0); // Set preferable width to 657
+        if(CheckIn.getText().equals("Check-In")){
+            LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+        } else {
+            LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
+        }
+
     }
 
 }

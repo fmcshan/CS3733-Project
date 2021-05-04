@@ -11,6 +11,8 @@ public class Change {
     private String changeType;
     private String changeId;
 
+
+
     private String authorName;
     private String authorId;
     private String authorEmail;

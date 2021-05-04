@@ -12,6 +12,7 @@ import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -158,9 +159,10 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private VBox rightClick;
 
+    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
-
     }
 
     public Path getTonysPath() {
@@ -194,6 +196,7 @@ public class MapDisplay implements LevelChangeListener {
     public ArrayList<Node> getStartAndEnd() {
         return startAndEnd;
     }
+
 
     /**
      * getter for popPop Vbox
@@ -1169,12 +1172,7 @@ public class MapDisplay implements LevelChangeListener {
     /**
      * toggle the check in window
      */
-    public void openCheckIn() {
-        popPop.setPrefWidth(657);
-        clearMap(); // Clear map
-        popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-    }
+
 
     /**
      * Triggered by Add Node button

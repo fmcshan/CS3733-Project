@@ -3,6 +3,7 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
@@ -11,6 +12,7 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,6 +68,12 @@ public class Navigation implements LevelChangeListener {
     private ScrollPane scrollBar;
     @FXML
     public JFXButton handicapButton;
+    @FXML
+    private Label directions;
+    @FXML
+    private JFXButton mapsButton;
+    @FXML
+    private JFXButton mapsButtonHome;
 
 
     ArrayList<Node> path = new ArrayList<>();
@@ -291,6 +299,16 @@ public class Navigation implements LevelChangeListener {
     void clearDirections() {
         navBox.getChildren().clear();
     }
+    @FXML
+    void googleMaps(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMaps();
+    }
+
+    @FXML
+    void googleMapsHome(ActionEvent event) {
+        SceneManager.getInstance().getDefaultPage().toggleGoogleMapsHome();
+    }
+
 
     @Override
     public void levelChanged(int _level) {
