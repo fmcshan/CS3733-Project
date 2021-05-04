@@ -207,7 +207,7 @@ public class LocalStorage {
     }
 
     public ArrayList<User> getUsers() {
-        if (!AuthenticationManager.getInstance().isAdmin()) {
+        if (!AuthenticationManager.getInstance().isAuthenticated()) {
             return null;
         }
 

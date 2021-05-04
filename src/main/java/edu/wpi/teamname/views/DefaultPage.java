@@ -173,7 +173,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void toggleMapEditor() {
         helpButton.setVisible(true);
-        navigation.cancelNavigation();
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
