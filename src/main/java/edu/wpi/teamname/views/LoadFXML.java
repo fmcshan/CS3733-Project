@@ -63,6 +63,7 @@ public class LoadFXML {
     public static void openWindow(String windowName, Parent root, VBox vbox) {
         vbox.getChildren().clear();
         SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
+        currentHelp = "";
         if (!windowName.equals(currentWindow)) {
             vbox.getChildren().add(root);
             SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
