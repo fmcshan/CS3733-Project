@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Algo.Node;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TimelineBuilder;
@@ -46,6 +47,7 @@ public class ZoomAndPan {
     double startTime;
     double endTime;
     double startToEndTime;
+    boolean isAnimating = false;
 
 
     public ZoomAndPan(MapDisplay page) {
@@ -97,16 +99,12 @@ public class ZoomAndPan {
             mouseClickDownEvent = mouseClickDown.get();
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
             startTime = currentTimeMillis();
-            System.out.println("X valueOfShift: " + valueOfShift.getX());
-            System.out.println("Y valueOfShift: " + valueOfShift.getY());
             changeInX = Math.pow(valueOfShift.getX(), 2);
             changeInY = Math.pow(valueOfShift.getY(), 2);
             absOfX = Math.abs(valueOfShift.getX());
             absOfY = Math.abs(valueOfShift.getY());
-            System.out.println("X absOfX: " + absOfX);
-            System.out.println("Y absOfY: " + absOfY);
             euclDist = Math.sqrt(changeInX + changeInY);
-            panVel = (int) ((higherBound - lowerBound) * ((euclDist - measuredLowerBound)/ (measuredUpperBound - measuredLowerBound))) + lowerBound;
+            panVel = (int) ((higherBound - lowerBound) * ((euclDist - measuredLowerBound) / (measuredUpperBound - measuredLowerBound))) + lowerBound;
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
 
             mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
@@ -119,7 +117,7 @@ public class ZoomAndPan {
 
             if (mouseDeltaY > 0 && zoomVel < 500) { // <0 for zoom out, >0 for zoom in
                 zoomVel += 100;
-            } else if (zoomVel > -500){
+            } else if (zoomVel > -500) {
                 zoomVel -= 100;
             }
         });
@@ -135,8 +133,9 @@ public class ZoomAndPan {
             Timeline tick = TimelineBuilder.create()
                     .keyFrames(
                             new KeyFrame(
-                                    new Duration(16.7),
+                                    new Duration(20),
                                     (EventHandler<ActionEvent>) t -> {
+                                        //page.pathTransition.play();
                                         if (panVel > 0) {
                                             panVel -= 1;
                                         }
@@ -146,13 +145,24 @@ public class ZoomAndPan {
                                         } else if (zoomVel < 0) {
                                             zoomVel += 20;
                                         }
-
                                         if (zoomVel != 0) {
+//                                            if (page.pathTransition.getStatus() == Animation.Status.RUNNING) {
+//                                                //System.out.println(page.pathTransition.getNode().getLayoutX());
+//                                                //System.out.println("is animating: " + page.pathTransition.getStatus());
+//                                                page.pathTransition.stop();
+//                                                isAnimating = false;
+//                                            }
                                             double lclVel = ((double) zoomVel / 500);
-                                            double viewVel = Math.pow((lclVel/2), 2) * (-zoomVel/Math.abs(zoomVel));
+                                            double viewVel = Math.pow((lclVel / 2), 2) * (-zoomVel / Math.abs(zoomVel));
                                             updateViewport(1 + viewVel);
+//                                        } else {
+//                                            if (page.pathTransition.getStatus() == Animation.Status.STOPPED || page.pathTransition.getStatus() == Animation.Status.PAUSED) {
+//                                                //System.out.println("isn't animating: " + page.pathTransition.getStatus());
+//                                                page.pathTransition.play();
+//                                                isAnimating = true;
+//                                            }
                                         }
-                                        if (panVel > 1 ){
+                                        if (panVel > 1) {
 //                                            panScale = ensureRange(((double) panVel / 50), 1, 3);
 //                                            System.out.println("pointToDragFrom: " + pointToDragFrom);
 //                                            System.out.println("mouseClickDown.get(): "+ mouseClickDownEvent);
@@ -162,6 +172,13 @@ public class ZoomAndPan {
 //                                            System.out.println("startToEndTime without abs: " + (endTime - startTime));
 //                                            updateViewportForPan(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
                                         }
+//                                        if (page.pathTransition != null) {
+//                                            if (page.pathTransition.getNode().getTranslateX() == 0 && page.pathTransition.getNode().getTranslateY() == 0) {
+//                                                page.pathTransition.getNode().setOpacity(0);
+//                                            } else {
+//                                                page.pathTransition.getNode().setOpacity(1);
+//                                            }
+//                                        }
                                     }
                             )
                     )
@@ -205,7 +222,7 @@ public class ZoomAndPan {
         page.hospitalMap.setViewport(newViewPort);
     }
 
-    public void updateViewportForPan(ImageView inputMap, Point2D changeInShift, AnchorPane topElements){
+    public void updateViewportForPan(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
         Rectangle2D theViewPort = inputMap.getViewport();
 
         double viewPortWidth = theViewPort.getWidth();
@@ -219,11 +236,6 @@ public class ZoomAndPan {
         page.scaledX = theViewPort.getMinX() - changeInShift.getX();
         page.scaledY = theViewPort.getMinY() - changeInShift.getY();
 
-        System.out.println("scaledX After Pan: " + page.scaledX);
-        System.out.println("scaledY After Pan: " + page.scaledY);
-
-        System.out.println("scaledX without Pan: " + unalteredX);
-        System.out.println("scaledY without Pan: " + unalteredY);
 
         inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
 
