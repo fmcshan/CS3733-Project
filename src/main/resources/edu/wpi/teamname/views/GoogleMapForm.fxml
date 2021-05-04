@@ -26,7 +26,7 @@
             <Insets left="25.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your location, desination, and way of traveling." wrappingWidth="315.0">
+      <Text fx:id="description" fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your address." wrappingWidth="315.0">
          <font>
             <Font size="16.0" />
          </font>
@@ -82,17 +82,9 @@
             <Insets left="25.0" />
          </VBox.margin>
       </ImageView>
-      <Label fx:id="toLabel" textFill="#868686">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="25.0" right="285.0" top="25.0" />
-         </VBox.margin>
-      </Label>
       <JFXTextArea fx:id="directionSpace" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="420.0">
          <VBox.margin>
-            <Insets left="10.0" right="10.0" />
+            <Insets left="10.0" right="10.0" top="25.0" />
          </VBox.margin>
       </JFXTextArea>
       <HBox>
@@ -108,6 +100,14 @@
             </JFXButton>
          </children>
       </HBox>
+      <Label fx:id="toLabel" textFill="#868686">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="25.0" right="285.0" top="25.0" />
+         </VBox.margin>
+      </Label>
       <VBox prefHeight="62.0" prefWidth="73.0">
          <VBox.margin>
             <Insets left="176.0" top="300.0" />

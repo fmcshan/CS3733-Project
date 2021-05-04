@@ -151,6 +151,10 @@ public class GoogleMapForm {
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
+        directionSpace.setText("");
+        lowDir = "";
+        allDirFran = "";
+        allDirWhit = "";
         Stage stage = new Stage();
          Duration durationFran = new Duration();
         Duration durationWhit = new Duration();

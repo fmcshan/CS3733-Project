@@ -11,8 +11,13 @@ import com.google.maps.model.*;
 import com.google.maps.*;
 import com.google.maps.GeoApiContext;
 import com.jfoenix.controls.JFXTextArea;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.json.*;
 import com.google.maps.errors.ApiException;
@@ -58,6 +63,9 @@ public class GoogleMapHome {
     private JFXTextField numInput;
 
     @FXML
+    private JFXTextField emailInput;
+
+    @FXML
     private Label fromLabel1;
 
     @FXML
@@ -85,9 +93,6 @@ public class GoogleMapHome {
     private JFXButton submitButton;
 
     @FXML
-    private JFXComboBox<String> selectParking;
-
-    @FXML
     private JFXTextArea directionSpace;
 
     String allDirFran = "";
@@ -103,22 +108,24 @@ public class GoogleMapHome {
     private Text errorMes;
     @FXML
     private ImageView imageBox;
-
+    //DefaultPage;
 
     String chosenPark = "";
 
     @FXML
     private JFXButton printButton;
+    static  DefaultPage defaultPage =SceneManager.getInstance().getDefaultPage();
+    static ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
 
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception {}
+//    public GoogleMapForm(MapDisplay mapDisplay){
+//
+//        this.mapDisplay =mapDisplay;
+//    }
 
-
-    }
     @FXML
     public void initialize() {
-         selectParking.getItems().add("75 Francis Street, Boston MA");
-        selectParking.getItems().add("15 New Whitney St, Boston MA");
-//        travelMode.getItems().add("driving");e
+//        travelMode.getItems().add("driving");
 //        travelMode.getItems().add("bicycling");
 //        travelMode.getItems().add("walking");
 //        streetEnding.getItems().add("St");
@@ -129,7 +136,6 @@ public class GoogleMapHome {
 //        streetEnding.getItems().add("Blvd");
 //        streetEnding.getItems().add("Cir");
 //        streetEnding.getItems().add("Ln");
-        numInput.setDisable(true);
         directionSpace.setVisible(false);
         errorMes.setVisible(false);
         addressFill.setDisable(true);
@@ -137,10 +143,18 @@ public class GoogleMapHome {
                 .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
+//        mapDisplay = new MapDisplay();
+        displayParkingSpots();
+        defaultPage.initGoogleForm();
+
     }
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
+        directionSpace.setText("");
+        lowDir = "";
+        allDirFran = "";
+        allDirWhit = "";
         Stage stage = new Stage();
         Duration durationFran = new Duration();
         Duration durationWhit = new Duration();
@@ -178,32 +192,33 @@ public class GoogleMapHome {
 //            }
             durationWhit = foot.duration;
         }
-        if (selectParking.getValue().equals("75 Francis Street, Boston MA")) {
-            System.out.println("Francis");
+        if (durationFran.inSeconds < durationWhit.inSeconds) {
+            System.out.println("Francis shorter");
             for (DirectionsLeg foot : feet) {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(newStep);
+                    System.out.println(step.htmlInstructions);
                     lowDir = lowDir + newStep + "\n";
+
                 }
 
             }
             chosenPark = "75 Francis Street, Boston MA";
         } else {
-            System.out.println("Whitney");
+            System.out.println("Whitney shorter");
             for (DirectionsLeg foot : feet2) {
                 for (DirectionsStep step : foot.steps) {
 
                     String newStep = cleanTags(step.htmlInstructions);
-                    System.out.println(newStep);
-                    lowDir = lowDir + newStep + "\n";
+                    System.out.println(step.htmlInstructions);
+                    lowDir = lowDir + "\n" + newStep;
+
                 }
                 String durationFWhit = foot.duration.toString();
             }
             chosenPark = "15 New Whitney St, Boston MA";
         }
-        lowDir = lowDir.replaceAll("&nbsp;","");
         directionSpace.setVisible(true);
         directionSpace.setText(lowDir);
         Size size = new Size(500,400);
@@ -240,12 +255,13 @@ public class GoogleMapHome {
 
 
     }
-
     @FXML
-    void enableSearch(){
-        numInput.setDisable(false);
+    void arrived(){
+        defaultPage.getPopPop().setPrefWidth(657);
+        defaultPage.clearMap(); // Clear map
+        defaultPage.getPopPop().setPrefWidth(657.0); // Set preferable width to 657
+        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", defaultPage.getPopPop()); // Load registration window
     }
-
     @FXML
     void print() throws PrinterException {
         if (lowDir.equals("")) {
@@ -258,6 +274,8 @@ public class GoogleMapHome {
             YourTextArea.print();
         }
     }
+
+
 
 
     //aDesktop.browse(link);
@@ -274,6 +292,8 @@ public class GoogleMapHome {
     public String cleanTags(String s) {
 
         s = s.replaceAll("<[^>]*>", "");
+        s = s.replaceAll("Destination", "\nDestination");
+        lowDir = lowDir.replaceAll("&nbsp;","");
         return s;
     }
 
@@ -299,4 +319,17 @@ public class GoogleMapHome {
         return results;
     }
 
+
+    public static void displayParkingSpots(){
+        System.out.println(LoadFXML.getCurrentWindow());
+        nodes.forEach(n ->{
+            if (n.getNodeType().equals("PARK")){
+                Circle circle = new Circle(defaultPage.xCoordOnTopElement(n.getX()), defaultPage.yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                circle.setStrokeWidth(4);
+                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
+                defaultPage.topElements.getChildren().add(circle);
+                //   System.out.println(defaultPage.xCoordOnTopElement(n.getX()));
+            }
+        });
+    }
 }
