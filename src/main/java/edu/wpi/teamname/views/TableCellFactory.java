@@ -30,7 +30,7 @@ public class TableCellFactory {
         VBox.setMargin(status, new Insets(0,0,0,15));
         statusWrapper.getChildren().add(status);
 
-        String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px; -fx-font-family: 'Nunito';";
+        String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px;";
         if (_req.isCompleted()) {
             status.setText("Completed");
             status.setTextFill(Color.WHITE);
@@ -68,7 +68,7 @@ public class TableCellFactory {
     private static Label generate_label(String _value, double _width) {
         Label genLabel = new Label(_value.replace("\"", ""));
         genLabel.setPrefWidth(_width);
-        genLabel.setStyle("-fx-font-size: 14px; -fx-padding: 0 0 0 20px;  -fx-font-family: 'Nunito'");
+        genLabel.setStyle("-fx-font-size: 14px; -fx-padding: 0 0 0 20px;");
         return genLabel;
     }
 
@@ -78,7 +78,7 @@ public class TableCellFactory {
         newEmployeeSelection.setPrefSize(163, 30);
         newEmployeeSelection.setFocusColor(Color.valueOf("#ababab"));
         newEmployeeSelection.setUnFocusColor(Color.valueOf("#c3c3c3"));
-        newEmployeeSelection.setStyle("-fx-font-size: 14px; -fx-prompt-text-fill: #9e9e9e; -fx-font-family: 'Nunito';");
+        newEmployeeSelection.setStyle("-fx-font-size: 14px; -fx-prompt-text-fill: #9e9e9e;");
         HBox.setMargin(newEmployeeSelection, new Insets(0,0,0,10));
         newEmployeeSelection.setPromptText("Employee");
         LocalStorage.getInstance().getUsers().forEach(u -> {

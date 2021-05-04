@@ -296,7 +296,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             @Override
             public void run() {
                 Text sentMessage = new Text();
-                sentMessage.setStyle("-fx-font-size: 16");
+                sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
                 //System.out.println(_msg.length());
                 if (_msg.length() >= 30) {
                     sentMessage.setWrappingWidth(255);

@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -462,9 +461,9 @@
                   <Insets bottom="20.0" left="30.0" top="30.0" />
                </VBox.margin>
             </ImageView>
-            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0" styleClass="size24" stylesheets="@../images/text.css">
+            <VBox alignment="TOP_CENTER" prefHeight="848.0" prefWidth="375.0">
                <children>
-                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="Navigation" alignment="BASELINE_LEFT" onAction="#toggleNav" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Navigation" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
                         <Insets bottom="8.0" left="40.0" top="8.0" />
                      </padding>
@@ -481,10 +480,9 @@
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
-                     <stylesheets>
-                        <URL value="@../images/buttonHover.css" />
-                        <URL value="@../images/text.css" />
-                     </stylesheets>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
                   </JFXButton>
                   <JFXButton fx:id="CheckIn" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="30.0" onAction="#openCheckIn" prefHeight="52.0" prefWidth="325.0" style="-jfx-disable-visual-focus: true;" stylesheets="@../images/buttonHover.css" text="Check-In" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
@@ -507,6 +505,9 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
                   </JFXButton>
                   <JFXButton fx:id="Requests" alignment="BASELINE_LEFT" onAction="#openRequests" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Requests" textAlignment="CENTER" textFill="#9e9e9e">
                      <padding>
@@ -525,6 +526,9 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
                   </JFXButton>
                   <VBox fx:id="registrationPop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0">
                      <VBox.margin>
@@ -710,24 +714,30 @@
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
          </effect>
       </VBox>
-      <AnchorPane fx:id="chatBot" layoutX="1362.0" layoutY="333.0" pickOnBounds="false" prefHeight="617.0" prefWidth="350.0" stylesheets="@../images/text.css" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="1362.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="333.0">
+      <AnchorPane fx:id="chatBot" layoutX="1362.0" layoutY="333.0" pickOnBounds="false" prefHeight="617.0" prefWidth="350.0" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="1362.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="333.0">
          <children>
             <VBox prefHeight="617.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="70.0" prefWidth="377.0" style="-fx-background-color: #317fb8; -fx-background-radius: 10 10 0 0;" styleClass="size25">
                      <children>
-                        <Label text="Live Support Chat" textFill="WHITE" />
+                        <Label text="Support Chat" textFill="WHITE">
+                           <font>
+                              <Font size="25.0" />
+                           </font></Label>
                      </children>
                   </VBox>
                   <ScrollPane fx:id="chatScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="398.0" prefWidth="362.0" style="-fx-background-color: white; -fx-border-color: white;" vbarPolicy="NEVER" vvalue="1.0" VBox.vgrow="ALWAYS">
                      <content>
-                        <VBox fx:id="chatBox" alignment="BOTTOM_CENTER" prefHeight="483.0" prefWidth="373.0" style="-fx-background-color: white;" styleClass="size16">
+                        <VBox fx:id="chatBox" alignment="BOTTOM_CENTER" prefHeight="483.0" prefWidth="373.0" style="-fx-background-color: white;">
                            <children>
                               <AnchorPane maxWidth="275.0">
                                  <children>
                                     <HBox alignment="BOTTOM_LEFT" maxWidth="275.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 20 20 20 0;">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hi, how can I help you?" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hi, how can I help you?">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font></Text>
                                        </children>
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
