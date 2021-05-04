@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
@@ -39,7 +40,23 @@
                </children>
             </AnchorPane>
             <AnchorPane fx:id="topElements" prefHeight="200.0" prefWidth="200.0" />
-            <AnchorPane fx:id="onTopOfTopElements" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane fx:id="onTopOfTopElements" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" layoutX="-3.0" layoutY="-221.0" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="popPop" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children></AnchorPane>
             <VBox fx:id="helpPop" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false" StackPane.alignment="TOP_RIGHT">
                <children>
                   <JFXButton alignment="BASELINE_LEFT" onAction="#loadNodesCsv" prefWidth="180.0" text="Load Nodes" textFill="#9e9e9e">
@@ -109,20 +126,6 @@
                   <Insets right="100.0" top="25.0" />
                </StackPane.margin>
             </VBox>
-            <HBox alignment="CENTER_LEFT" pickOnBounds="false" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox fx:id="popPop" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox fx:id="popPop2" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="930.0" prefWidth="350.0">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-            </HBox>
             <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
                <children>
                   <Label text="Add Node">
@@ -342,7 +345,7 @@
             </VBox>
             <VBox fx:id="edgeBetweenFloors" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" maxHeight="315.0" maxWidth="55.0" prefHeight="300.0" prefWidth="55.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
                <children>
-                  <JFXButton fx:id="edge_3" alignment="CENTER" contentDisplay="CENTER" disable="true" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="3" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_3" alignment="CENTER" contentDisplay="CENTER" disable="true" onAction="#press3" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="3" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -357,7 +360,7 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Separator>
-                  <JFXButton fx:id="edge_2" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="10.0" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="2" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_2" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="10.0" onAction="#press2" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="2" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -372,7 +375,7 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Separator>
-                  <JFXButton fx:id="edge_1" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="61.0" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="1" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_1" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="61.0" onAction="#press1" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="1" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -387,7 +390,7 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Separator>
-                  <JFXButton fx:id="edge_g" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="110.0" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="G" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_g" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="110.0" onAction="#pressG" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="G" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -402,7 +405,7 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Separator>
-                  <JFXButton fx:id="edge_l1" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="159.0" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="L1" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_l1" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="159.0" onAction="#pressL1" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="L1" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -417,7 +420,7 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Separator>
-                  <JFXButton fx:id="edge_l2" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="208.0" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="L2" textAlignment="CENTER" textFill="#9e9e9e">
+                  <JFXButton fx:id="edge_l2" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="10.0" layoutY="208.0" onAction="#pressL2" prefWidth="180.0" ripplerFill="#d3d3d3cc" style="-fx-background-radius: 12px;" text="L2" textAlignment="CENTER" textFill="#9e9e9e">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -539,6 +542,43 @@
                <effect>
                   <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
                </effect>
+            </VBox>
+            <VBox fx:id="addBtwn" alignment="TOP_CENTER" maxHeight="100.0" maxWidth="200.0" minHeight="-Infinity" prefHeight="131.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Select Node">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXComboBox fx:id="btwnEdge" onAction="#addBetween" prefHeight="31.0" prefWidth="117.0" promptText="Node">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+            </VBox>
+            <VBox fx:id="removeBtwn" alignment="TOP_CENTER" maxHeight="100.0" maxWidth="200.0" minHeight="-Infinity" prefHeight="131.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
+               <children>
+                  <Label text="Select Edge">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXComboBox fx:id="comboRemoveBtwn" onAction="#removeBetween" prefHeight="31.0" prefWidth="117.0" promptText="Node">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
+               </children>
+               <effect>
+                  <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
+               </effect>
+               <StackPane.margin>
+                  <Insets left="300.0" />
+               </StackPane.margin>
             </VBox>
          </children>
       </StackPane>
