@@ -22,15 +22,15 @@ public class AStar extends Algorithm {
     /**
      * ArrayList of provided nodes
      */
-    private ArrayList nodes;
+    //private ArrayList nodes;
     /**
      * The starting node
      */
-    private Node start;
+    //private Node start;
     /**
      * The ending node
      */
-    private Node goal;
+    //private Node goal;
 
     private boolean isHandicap;
     /**
@@ -47,9 +47,7 @@ public class AStar extends Algorithm {
     public AStar(ArrayList nodes, Node start, Node goal, boolean isHandicap) {
         super(nodes, start, goal);
         this.resetNodes(nodes); //reset all provided nodes before pathfinding
-        this.start = start;
         start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
-        this.goal = goal;
         this.isHandicap = isHandicap;
         openNodes = new PriorityQueue<>(new NodeAStarComparator()); //Instantiates the priority queue with our overwrited comparator
         this.process();

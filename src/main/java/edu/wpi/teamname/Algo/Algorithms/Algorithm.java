@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 public abstract class Algorithm {
 
-    private ArrayList nodes;
+    ArrayList nodes;
 
-    private Node start;
+    Node start;
 
-    private Node goal;
+    Node goal;
 
     public Algorithm(ArrayList<Node> nodes, Node start, Node goal) {
         this.resetNodes(nodes);

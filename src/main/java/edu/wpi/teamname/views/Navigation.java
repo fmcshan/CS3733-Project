@@ -4,10 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Algorithms.SearchContext;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
-import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
@@ -15,24 +15,19 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +45,7 @@ public class Navigation implements LevelChangeListener {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
-    AStar residentAStar;
+    SearchContext searchAlgorithm;
     boolean pathCanceled = false;
     @FXML
     private ComboBox<String> toCombo, algoCombo; // destination drop down
@@ -274,10 +269,10 @@ public class Navigation implements LevelChangeListener {
             handicap = false;
         }
         AStar AStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap); // perform AStar
-        residentAStar = AStar;
-        ArrayList<Node> path = residentAStar.getPath(); // list the nodes found using AStar to create a path
+        searchAlgorithm = new SearchContext(AStar);
+        ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
-        mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+        mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -305,10 +300,10 @@ public class Navigation implements LevelChangeListener {
     public void levelChanged(int _level) {
         if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
-            if (residentAStar == null) {
+            if (searchAlgorithm == null) {
                 return;
             }
-            mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
         }
 //        refreshNodes();
     }

@@ -1,6 +1,8 @@
 package edu.wpi.teamname.Algo.Pathfinding;
 
 import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Algorithms.Algorithm;
+import edu.wpi.teamname.Algo.Algorithms.SearchContext;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Algo.Stopwatch;
@@ -10,22 +12,24 @@ import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
 
+import static edu.wpi.teamname.Algo.Algorithms.AStar.distance;
+
 /**
  * <h1>Navigation Helper</h1>
  * Class designed to help reduce the complexity of navigation, in terms of floor switching, as well as text directions
  */
 public class NavigationHelper {
     final double SCALE = 3.25;
-    private AStar pathfinder;
+    private SearchContext pathfinder;
     private double totalStraightDistance;
     private int lastStraightIndex;
 
     public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
-        pathfinder = new AStar(nodes, start, goal, false);
+        pathfinder = new SearchContext(new AStar(nodes, start, goal, false));
     }
 
-    public NavigationHelper(AStar AStar){
-        pathfinder = AStar;
+    public NavigationHelper(Algorithm searchAlgorithm){
+        pathfinder = new SearchContext(searchAlgorithm);
     }
 
     public ArrayList<String> getTextDirections(){
@@ -56,9 +60,9 @@ public class NavigationHelper {
                             boolean goStraight = getDirection(getAngle(prev, node), getAngle(node, next)).equals("Straight ");
                             if (!isPrevStraight && goStraight && isNextStraight){
                                 total = 0;
-                                total += pathfinder.distance(node, next)/SCALE;
+                                total += distance(node, next)/SCALE;
                             } else if (isPrevStraight && goStraight && isNextStraight){
-                                total += pathfinder.distance(node,next)/SCALE;
+                                total += distance(node,next)/SCALE;
                             } else if (isPrevStraight && goStraight && !isNextStraight){
                                 if (node.getNodeType().equals("HALL"))
                                     result.add("Head down the hall for " + (int) Math.ceil(total) + " feet");
@@ -111,7 +115,7 @@ public class NavigationHelper {
         int y1 = node.getY();
         int x2 = node1.getX();
         int y2 = node1.getY();
-        double hyp = pathfinder.distance(node, node1);
+        double hyp = distance(node, node1);
 
         if (x2 > x1 && y2 > y1)
             return 270 + Math.toDegrees(Math.acos((y2-y1)/hyp));
