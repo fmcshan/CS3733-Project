@@ -41,7 +41,6 @@ public class ZoomAndPan {
         page.onTopOfTopElements.setOnMouseDragged(mouseEvent -> {
             dragged = true;
             if (mouseEvent.getTarget() instanceof Circle) {
-                dragged = false; //this should be here right?
                 return;
             }
 

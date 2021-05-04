@@ -60,6 +60,8 @@ public class MapDisplay implements LevelChangeListener {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
+    int xGridSize = 8;
+    int yGridSize = 8;
     ArrayList<Node> listOfNodes;
     ArrayList<Node> nodes;
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
@@ -508,7 +510,16 @@ public class MapDisplay implements LevelChangeListener {
         fileFxHeightRatio = mapHeight / fileHeight;
     }
 
-    public double xCoordOnTopElement(int x) {
+    private int xGridSnap(int _x) {
+        return (int) Math.round((double) _x / xGridSize) * xGridSize;
+    }
+
+    private int yGridSnap(int _y) {
+        return (int) Math.round((double) _y / yGridSize) * yGridSize;
+    }
+
+    public double xCoordOnTopElement(int _x) {
+        int x = xGridSnap(_x);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -548,7 +559,8 @@ public class MapDisplay implements LevelChangeListener {
      * @param y the y coordinate of the anchor pane, top element
      * @return the scaled y coordinate
      */
-    public double yCoordOnTopElement(int y) {
+    public double yCoordOnTopElement(int _y) {
+        int y = yGridSnap(_y);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
