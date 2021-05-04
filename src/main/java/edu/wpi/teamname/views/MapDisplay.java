@@ -1159,6 +1159,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1193,6 +1194,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1209,6 +1211,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1229,6 +1232,7 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the check in window
      */
     public void openCheckIn() {
+        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
