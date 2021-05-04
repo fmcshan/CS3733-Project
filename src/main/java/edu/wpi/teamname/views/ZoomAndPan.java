@@ -138,7 +138,7 @@ public class ZoomAndPan {
                                     new Duration(16.7),
                                     (EventHandler<ActionEvent>) t -> {
                                         if (panVel > 0) {
-                                            panVel -= 2;
+                                            panVel -= 1;
                                         }
 
                                         if (zoomVel > 0) {
@@ -153,14 +153,14 @@ public class ZoomAndPan {
                                             updateViewport(1 + viewVel);
                                         }
                                         if (panVel > 1 ){
-                                            panScale = ensureRange(((double) panVel / 50), 1, 3);
-                                            System.out.println("pointToDragFrom: " + pointToDragFrom);
-                                            System.out.println("mouseClickDown.get(): "+ mouseClickDownEvent);
-                                            Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
-                                            startToEndTime = ensureRange((Math.abs(endTime - startTime)), 1, 10);
-                                            System.out.println("startToEndTime: " + startToEndTime);
-                                            System.out.println("startToEndTime without abs: " + (endTime - startTime));
-                                            updateViewportForPan(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
+//                                            panScale = ensureRange(((double) panVel / 50), 1, 3);
+//                                            System.out.println("pointToDragFrom: " + pointToDragFrom);
+//                                            System.out.println("mouseClickDown.get(): "+ mouseClickDownEvent);
+//                                            Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
+//                                            startToEndTime = ensureRange((Math.abs(endTime - startTime)), 1, 10);
+//                                            System.out.println("startToEndTime: " + startToEndTime);
+//                                            System.out.println("startToEndTime without abs: " + (endTime - startTime));
+//                                            updateViewportForPan(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
                                         }
                                     }
                             )
@@ -214,8 +214,10 @@ public class ZoomAndPan {
         double unalteredX = theViewPort.getMinX() - changeInShift.getX();
         double unalteredY = theViewPort.getMinY() - changeInShift.getY();
 
-        page.scaledX = theViewPort.getMinX() - (panScale * changeInShift.getX());
-        page.scaledY = theViewPort.getMinY() - (panScale * changeInShift.getY());
+//        page.scaledX = theViewPort.getMinX() - (panScale * changeInShift.getX());
+//        page.scaledY = theViewPort.getMinY() - (panScale * changeInShift.getY());
+        page.scaledX = theViewPort.getMinX() - changeInShift.getX();
+        page.scaledY = theViewPort.getMinY() - changeInShift.getY();
 
         System.out.println("scaledX After Pan: " + page.scaledX);
         System.out.println("scaledY After Pan: " + page.scaledY);
