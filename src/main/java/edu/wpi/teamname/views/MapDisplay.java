@@ -1141,6 +1141,9 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
@@ -1171,6 +1174,9 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
@@ -1184,6 +1190,9 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(340);
         clearMap(); // Clear map
@@ -1201,6 +1210,9 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the check in window
      */
     public void openCheckIn() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         SceneManager.getInstance().getDefaultPage().setHelpButton(false);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map

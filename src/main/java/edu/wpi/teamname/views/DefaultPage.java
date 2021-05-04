@@ -164,7 +164,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void toggleMapEditor() {
         helpButton.setVisible(true);
-        navigation.cancelNavigation();
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -194,6 +196,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin registration window
      */
     public void toggleRegistration() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -204,6 +209,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleRequest() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -214,6 +222,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleEmployee() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -222,6 +233,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         if (!AuthenticationManager.getInstance().isAuthenticated() && LoadFXML.getCurrentWindow().equals("")) {
             popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
