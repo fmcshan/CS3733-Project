@@ -8,6 +8,7 @@ import edu.wpi.teamname.views.DefaultPage;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +26,12 @@ public class LevelManager {
 
     private LevelManager() {
         floorImageNames.forEach(fp -> {
-            String absoluteFilePath = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teamname/images/" + fp;
-            File file = new File(absoluteFilePath);
-            Image image = new Image(file.toURI().toString());
-            floorImages.add(image);
+            try {
+                Image image = new Image(getClass().getResource("/edu/wpi/teamname/images/" + fp).toURI().toString());
+                floorImages.add(image);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         });
     }
 

@@ -1,7 +1,25 @@
-.text {
-    -fx-font-family: 'Poppins-Regular';
-    -fx-font-size: 48;
-    -fx-font-weight: 400
-;
+.size14 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 14;
+}
+
+.size16 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 16;
+}
+
+.size24 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 24;
+}
+
+.size25 {
+    -fx-font-family: "Nunito";
+    -fx-font-size: 25;
+}
+
+.bold-header {
+    -fx-font-family: "Nunito Bold";
+    -fx-font-size: 45;
 }
 

@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -73,7 +74,7 @@ public class TableCellFactory {
 
     private static JFXComboBox<String> generate_employee_dropdown(MasterServiceRequestStorage _req) {
         JFXComboBox<String> newEmployeeSelection = new JFXComboBox<>();
-        newEmployeeSelection.setStyle(" -fx-margin: 10px 0 0 0;");
+        newEmployeeSelection.setStyle(" -fx-padding: 0 0 0 20;");
         newEmployeeSelection.setPrefSize(163, 30);
         newEmployeeSelection.setFocusColor(Color.valueOf("#ababab"));
         newEmployeeSelection.setUnFocusColor(Color.valueOf("#c3c3c3"));

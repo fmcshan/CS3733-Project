@@ -8,7 +8,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Controller for COVIDSurvey.fxml
+ *
+ * @author Lauren Sowerbutts, Frank McShan
+ */
 public class COVIDSurvey {
     @FXML
     private Label title;
@@ -49,7 +53,8 @@ public class COVIDSurvey {
 
     public void submitScreening() {
         if (!hasCovid()) {
-            LoadFXML.getInstance().loadWindow("UserRegistration", "userRegistration", SceneManager.getInstance().getDefaultPage().getPopPop());
+            SceneManager.getInstance().getDefaultPage().setHelpButton(true);
+            LoadFXML.getInstance().loadWindow("UserRegistration", "checkBar", SceneManager.getInstance().getDefaultPage().getPopPop());
         } else {
             LoadFXML.getInstance().loadWindow("COVIDMessage", "covidMessage", SceneManager.getInstance().getDefaultPage().getPopPop());
         }

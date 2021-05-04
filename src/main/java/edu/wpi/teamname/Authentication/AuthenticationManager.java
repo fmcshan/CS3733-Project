@@ -80,7 +80,9 @@ public class AuthenticationManager {
                 } catch (Exception e) {e.printStackTrace();}
             }
 
-            SocketManager.getInstance().startAuthDataSocket();
+            if (isAdmin || isEmployee) {
+                SocketManager.getInstance().startAuthDataSocket();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
