@@ -95,6 +95,7 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
     boolean start = false;
     boolean end = false;
+    boolean animationFlag = false;
     Node sNode;
     Node fNode;
     @FXML
@@ -166,6 +167,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+    PathTransition pathTransition = new PathTransition();
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
@@ -1116,7 +1118,6 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-        PathTransition pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
                 0.0,0.0,
@@ -1133,7 +1134,6 @@ public class MapDisplay implements LevelChangeListener {
         pathTransition.setNode(triangle);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(PathTransition.INDEFINITE);
-
         pathTransition.play();
     }
 

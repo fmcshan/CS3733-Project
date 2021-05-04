@@ -260,6 +260,7 @@ public class Navigation implements LevelChangeListener {
         path = residentAStar.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
         mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+        //mapDisplay.drawPathAnimation();
         ArrayList<String> relevantFloors = AStar.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -291,6 +292,7 @@ public class Navigation implements LevelChangeListener {
                 return;
             }
             mapDisplay.drawPath(residentAStar.getFloorPaths(currentFloor));
+            //mapDisplay.drawPathAnimation();
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
     }

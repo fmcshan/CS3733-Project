@@ -97,14 +97,10 @@ public class ZoomAndPan {
             mouseClickDownEvent = mouseClickDown.get();
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
             startTime = currentTimeMillis();
-            System.out.println("X valueOfShift: " + valueOfShift.getX());
-            System.out.println("Y valueOfShift: " + valueOfShift.getY());
             changeInX = Math.pow(valueOfShift.getX(), 2);
             changeInY = Math.pow(valueOfShift.getY(), 2);
             absOfX = Math.abs(valueOfShift.getX());
             absOfY = Math.abs(valueOfShift.getY());
-            System.out.println("X absOfX: " + absOfX);
-            System.out.println("Y absOfY: " + absOfY);
             euclDist = Math.sqrt(changeInX + changeInY);
             panVel = (int) ((higherBound - lowerBound) * ((euclDist - measuredLowerBound)/ (measuredUpperBound - measuredLowerBound))) + lowerBound;
             shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
@@ -154,12 +150,8 @@ public class ZoomAndPan {
                                         }
                                         if (panVel > 1 ){
                                             panScale = ensureRange(((double) panVel / 50), 1, 3);
-                                            System.out.println("pointToDragFrom: " + pointToDragFrom);
-                                            System.out.println("mouseClickDown.get(): "+ mouseClickDownEvent);
                                             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDownEvent);
                                             startToEndTime = ensureRange((Math.abs(endTime - startTime)), 1, 10);
-                                            System.out.println("startToEndTime: " + startToEndTime);
-                                            System.out.println("startToEndTime without abs: " + (endTime - startTime));
                                             updateViewportForPan(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
                                         }
                                     }
@@ -198,11 +190,11 @@ public class ZoomAndPan {
         page.scaledX = mouseCursorX - ((mouseCursorX - viewportOfImage.getMinX()) * _boundariesOfViewPort);
         page.scaledY = mouseCursorY - ((mouseCursorY - viewportOfImage.getMinY()) * _boundariesOfViewPort);
         Rectangle2D newViewPort = new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight);
-        render();
         if (!LoadFXML.getCurrentWindow().equals("navBar")) {
             page.currentPath = new ArrayList();
         }
         page.hospitalMap.setViewport(newViewPort);
+        render();
     }
 
     public void updateViewportForPan(ImageView inputMap, Point2D changeInShift, AnchorPane topElements){
@@ -216,12 +208,6 @@ public class ZoomAndPan {
 
         page.scaledX = theViewPort.getMinX() - (panScale * changeInShift.getX());
         page.scaledY = theViewPort.getMinY() - (panScale * changeInShift.getY());
-
-        System.out.println("scaledX After Pan: " + page.scaledX);
-        System.out.println("scaledY After Pan: " + page.scaledY);
-
-        System.out.println("scaledX without Pan: " + unalteredX);
-        System.out.println("scaledY without Pan: " + unalteredY);
 
         inputMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, viewPortWidth, viewPortHeight));
 
@@ -240,8 +226,8 @@ public class ZoomAndPan {
             page.tonysPath.getElements().clear(); // Clear Tony's path
             page.hidePopups();
             page.drawPath(page.currentPath);
+            //page.pathTransition.pause();
             page.displayHotspots(0.8);
-
         }
     }
 
