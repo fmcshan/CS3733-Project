@@ -51,6 +51,7 @@ public class UserCheckout {
             listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
             for (String s: listOfSpaces
             ) {
+                System.out.println(s);
                 parkingBox.getItems().add(mapNodes.get(s).getLongName());
             }
         }

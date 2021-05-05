@@ -49,16 +49,10 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     public Navigation navigation;
-    double scaledWidth = 5000;
-    double scaledHeight = 3400.0;
-    double scaledX = 0;
+    double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
-    double scaledY = 0;
-    double mapWidth; //= 1000.0;
-    double mapHeight;// = 680.0;
-    double fileWidth; //= 5000.0;
-    double fileHeight;// = 3400.0;
+    double mapWidth,mapHeight,fileWidth,fileHeight ;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
     int xGridSize = 8;
@@ -82,38 +76,29 @@ public class MapDisplay implements LevelChangeListener {
     Circle dragStart;
     Circle dragEnd;
     Line renderedEdgePreview;
-    Node addEdgeStart;
-    Node addEdgeEnd;
-    Node selectedNode;
+
     Edge selectedEdge;
     Circle draggedCircle;
-    Node draggedNode;
-    Node startNode;
-    Node endNode;
+    Node draggedNode, startNode, endNode, addEdgeStart,
+    addEdgeEnd,selectedNode;
+
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
-    HashMap<Text, Node> textToNodeMap = new HashMap<>();
+
     HashMap<String, Node> portalNodeMap = new HashMap<>();
     HashMap<Node, Circle> edgeCircles = new HashMap<>();
-    HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
-    boolean start = false;
-    boolean end = false;
-    boolean animationFlag = false;
-    Node sNode;
-    Node fNode;
+
+
     @FXML
     VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML
-    JFXButton adminButton; // button that allows you to sign in
+    JFXButton adminButton, navButton; // button that allows you to sign in
     @FXML
     ImageView hospitalMap;
-    @FXML
-    AnchorPane topElements;
-    @FXML
-    AnchorPane onTopOfTopElements;
+
     @FXML
     StackPane stackPane; // the pane the map is housed in
     @FXML
@@ -121,61 +106,20 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     VBox addEdgeField;
     @FXML
-    AnchorPane pathAnchor;
-    @FXML
-    AnchorPane anchor;
-    @FXML
-    JFXTextField edgeIdPreview;
+    AnchorPane pathAnchor, anchor, topElements,onTopOfTopElements;
+
     ZoomAndPan zooM;
     @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
+    private JFXButton edge_3,edge_2, edge_1, edge_g,  edge_l1, edge_l2;              //floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
-    private JFXButton edge_3;
-    @FXML
-    private JFXButton edge_2;
-    @FXML
-    private JFXButton edge_1;
-    @FXML
-    private JFXButton edge_g;
-    @FXML
-    private JFXButton edge_l1;
-    @FXML
-    private JFXButton edge_l2;
-    @FXML
-    private JFXTextField nodeId;
-    @FXML
-    private JFXTextField nodeBuilding;
-    @FXML
-    private JFXTextField nodeType;
-    @FXML
-    private JFXTextField nodeShortName;
-    @FXML
-    private JFXTextField nodeLongName;
+    private JFXTextField nodeId,nodeBuilding,nodeType,nodeShortName, nodeLongName, edgeIdPreview,
+            editNodeBuilding, editNodeType, editNodeShortName,editNodeLongName, deleteEdgeId ;
     @FXML
     private Label addEdgeWarning;
     @FXML
-    private VBox editNode; // Edit node menu
-    @FXML
-    private VBox edgeBetweenFloors;
-    @FXML
-    private JFXTextField editNodeBuilding;
-    @FXML
-    private JFXTextField editNodeType;
-    @FXML
-    private JFXTextField editNodeShortName;
-    @FXML
-    private JFXTextField editNodeLongName;
-    @FXML
-    private VBox deleteEdge;
-    @FXML
-    private JFXTextField deleteEdgeId;
-    @FXML
-    private VBox rightClick;
-    PathTransition pathTransition;
-    @FXML
-    private JFXButton navButton;
+    private VBox editNode,edgeBetweenFloors,deleteEdge, rightClick;
 
-    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    PathTransition pathTransition;
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
@@ -377,30 +321,6 @@ public class MapDisplay implements LevelChangeListener {
                 circle.setRadius(15);
                 circle.setFill(Color.YELLOW);
                 onTopOfTopElements.getChildren().add(circle);
-
-//                if (textLevels != null) {
-//                    final double[] rotation = {1}; // in radians
-//                    AtomicReference<Double> x = new AtomicReference<>((double) 0);
-//                    AtomicReference<Double> y = new AtomicReference<>((double) 0);
-//                    AtomicInteger ic = new AtomicInteger();
-//                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 16);
-//
-//                    if (nodeToTextMap.containsKey(Id)) {
-//
-//
-//                        nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
-//                            x.set(xCoordOnTopElement((int) (n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-//                            y.set(yCoordOnTopElement((int) (n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-//                            genuineText.setX(x.get());
-//                            genuineText.setY(y.get());
-//                            genuineText.setFill(Color.RED);
-//                            genuineText.setRotate(rotation[0]);
-//                            genuineText.setFont(font);
-//                            onTopOfTopElements.getChildren().add(genuineText);
-//                            rotation[0] += 1;
-//                        });
-//                    }
-//                }
             }
         });
         localEdges.forEach(e -> { // For edge in localEdges
@@ -716,32 +636,6 @@ public class MapDisplay implements LevelChangeListener {
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
 
-//            if (!start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-//                start = true;
-//                sNode = renderedNodeMap.get(((Circle) t.getTarget()));
-//                System.out.println("start " + start);
-//            } else if (!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-//                fNode = renderedNodeMap.get(((Circle) t.getTarget()));
-//                end = true;
-//                System.out.println("end " + end);
-//            }
-//            if (start && end) {
-//                Submit.getInstance().addEdge(new Edge(sNode.getNodeID() + "_" + fNode.getNodeID(), sNode.getNodeID(), fNode.getNodeID()));
-//                System.out.println("edge submitted");
-//                refreshData();
-//                renderMap();
-//                start = false;
-//                end = false;
-//                fNode = null;
-//                sNode = null;
-//                floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                floor2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                floor3Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-//                L1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                L2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-//                groundBttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                return;
-//            }
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
                 hidePopups(); // Hide all popups
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
@@ -1424,31 +1318,4 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-//    public void edgeBetweenFloors() {
-//        if (start) {
-//
-//            switch (sNode.getFloor()) {
-//                case "G":
-//                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "1":
-//                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "2":
-//                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "3":
-//                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L2":
-//                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L1":
-//                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//            }
-//
-//        }
-//
-//    }
 }
