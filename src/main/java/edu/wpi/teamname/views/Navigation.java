@@ -282,9 +282,13 @@ public class Navigation implements LevelChangeListener {
 
         SceneManager.getInstance().getDefaultPage().setEndNode(nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue()))); // get ending location
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getEndNode());
-
-        System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode());
-        System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode());
+        if (handicap)
+            searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
+        else if(!(algoCombo.getValue() == null))
+            searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
+        else
+            searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
+        System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
         String currentFloor = LevelManager.getInstance().getFloor();
