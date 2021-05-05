@@ -1849,72 +1849,55 @@ public class MapDisplay implements LevelChangeListener {
         hidePopups(); // Hide all popups
     }
 
-    @FXML
-    private void setFloor0(ActionEvent e) {
-        LevelManager.getInstance().setFloor(0);
-        L2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+    private void resetFloors() {
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
         L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
         groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
         floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
         floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
         floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+    }
 
+    @FXML
+    private void setFloor0(ActionEvent e) {
+        LevelManager.getInstance().setFloor(0);
+        resetFloors();
+        L2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
         LevelManager.getInstance().setFloor(1);
-        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        resetFloors();
         L1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
-        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
         LevelManager.getInstance().setFloor(2);
-        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        resetFloors();
         groundBttn.setTextFill(Paint.valueOf("ddd8d8"));
-        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
         LevelManager.getInstance().setFloor(3);
-        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        resetFloors();
         floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
-        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
         LevelManager.getInstance().setFloor(4);
-        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        resetFloors();
         floor2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
-        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
         LevelManager.getInstance().setFloor(5);
-        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
-        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        resetFloors();
         floor3Bttn.setTextFill(Paint.valueOf("ddd8d8"));
-
     }
 
     @Override
@@ -1931,31 +1914,4 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-//    public void edgeBetweenFloors() {
-//        if (start) {
-//
-//            switch (sNode.getFloor()) {
-//                case "G":
-//                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "1":
-//                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "2":
-//                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "3":
-//                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L2":
-//                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L1":
-//                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//            }
-//
-//        }
-//
-//    }
 }
