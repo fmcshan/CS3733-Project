@@ -390,36 +390,12 @@ public class MapDisplay implements LevelChangeListener {
         resizingInfo(); // Set sizing info
         portalNodeMap.forEach((Id, n) -> {
             if (localNodesMap.containsKey(Id)) {
-                Circle circle = edgeCircles.get(n);
+                Circle circle = new Circle();
                 circle.setCenterX(xCoordOnTopElement(n.getX()));
                 circle.setCenterY(yCoordOnTopElement(n.getY()));
                 circle.setRadius(15);
                 circle.setFill(Color.YELLOW);
                 onTopOfTopElements.getChildren().add(circle);
-
-//                if (textLevels != null) {
-//                    final double[] rotation = {1}; // in radians
-//                    AtomicReference<Double> x = new AtomicReference<>((double) 0);
-//                    AtomicReference<Double> y = new AtomicReference<>((double) 0);
-//                    AtomicInteger ic = new AtomicInteger();
-//                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 16);
-//
-//                    if (nodeToTextMap.containsKey(Id)) {
-//
-//
-//                        nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
-//                            x.set(xCoordOnTopElement((int) (n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-//                            y.set(yCoordOnTopElement((int) (n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-//                            genuineText.setX(x.get());
-//                            genuineText.setY(y.get());
-//                            genuineText.setFill(Color.RED);
-//                            genuineText.setRotate(rotation[0]);
-//                            genuineText.setFont(font);
-//                            onTopOfTopElements.getChildren().add(genuineText);
-//                            rotation[0] += 1;
-//                        });
-//                    }
-//                }
             }
         });
         localEdges.forEach(e -> { // For edge in localEdges
@@ -636,6 +612,7 @@ public class MapDisplay implements LevelChangeListener {
      */
     void refreshData() {
         doubleEdges.clear();
+        portalNodeMap.clear();
         edgesBetweenFloors.clear();
         nodeToTextMap = new HashMap<>();
         allText = new ArrayList<>();
@@ -670,11 +647,13 @@ public class MapDisplay implements LevelChangeListener {
                     if (edgesBetweenFloors.containsKey(startNode)) {
                         edgesBetweenFloors.get(startNode).add(e);
                         doubleEdges.put(e.getEdgeID(), e);
+                        portalNodeMap.put(startNode.getNodeID(), startNode);
                     } else {
                         ArrayList<Edge> edgeArray = new ArrayList<>();
                         edgeArray.add(e);
                         edgesBetweenFloors.put(startNode, edgeArray);
                         doubleEdges.put(e.getEdgeID(), e);
+                        //portalNodeMap.put(startNode.getNodeID(), nodesMap.get(startNode.getNodeID()));
                     }
                     if (edgesBetweenFloors.containsKey(endNode)) {
                         Edge newEdge = new Edge(endNode.getNodeID() + "_" + startNode.getNodeID(), endNode.getNodeID(), startNode.getNodeID());
@@ -1614,8 +1593,8 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-        Polygon triangle = new Polygon();
         pathTransition = new PathTransition();
+        Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
                 0.0,0.0,
                 20.0,7.5,

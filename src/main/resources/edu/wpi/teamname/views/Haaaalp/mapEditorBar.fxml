@@ -33,7 +33,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a node, mouse click anywhere on the map and fill out the required fields. Then select &quot;Add.&quot;" wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To add a node, left mouse click anywhere on the map and fill out the required fields. Then select &quot;Add.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a node, select the node you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a node, right mouse click the node you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -113,7 +113,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove an edge, select the edge you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To remove an edge, right mouse click the edge you would like to remove and then select &quot;Delete.&quot;" wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -122,6 +122,26 @@
                      </HBox.margin>
                   </Text>
                </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="423.0">
+               <children>
+                  <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                     <HBox.margin>
+                        <Insets left="25.0" top="7.0" />
+                     </HBox.margin>
+                  </MaterialDesignIconView>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="To load in or save a CSV, and access revision history, right click anywhere on the map." wrappingWidth="270.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>
