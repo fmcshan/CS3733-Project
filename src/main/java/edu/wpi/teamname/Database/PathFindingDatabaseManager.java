@@ -204,7 +204,7 @@ public class PathFindingDatabaseManager {
             });
             insertNodeListIntoDatabase(nodeList);
         } else {
-            System.out.println("not a proper csv");
+//            System.out.println("not a proper csv");
         }
     }
 }
