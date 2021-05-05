@@ -7,14 +7,17 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bot.ChatBot;
+import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -28,8 +31,10 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -80,6 +85,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
+
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
+//
+//        submittedRegistrationsButton = loader.getController();
+        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
         SceneManager.getInstance().setDefaultPage(this);
         Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
@@ -160,11 +170,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     @Override
     public void userLogout() {
+        LoadFXML.setCurrentWindow("");
         adminPop.getChildren().clear();
         requestPop.getChildren().clear();
         registrationPop.getChildren().clear();
         employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
+        navigation.cancelNavigation();
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
@@ -448,6 +460,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     public void closeWindows() {
         popPop.getChildren().clear();
+        exitButton.getStyleClass().add("nav-btn-selected");
     }
 
     public void setHospitalMap(Image _image) {
@@ -473,6 +486,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             LoadFXML.getInstance().loadWindow("UserCheckout", "checkoutBar", popPop); // Load registration window
         }
         SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+        checkButton.getStyleClass().add("nav-btn-selected");
+        ButtonManager.selectButton(checkButton);
     }
 
     public void setHelpButton(boolean value) {

@@ -12,6 +12,34 @@
     -fx-font-weight: 800;
 }
 
+.button:hover .nav-icon {
+    -fx-fill: white;
+}
+
+.nav-btn-selected {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 24;
+    -fx-font-weight: 800;
+}
+
+.req-btn-selected {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 24;
+    -fx-font-weight: 800;
+}
+
+.nav-btn-selected .nav-icon {
+    -fx-fill: white;
+}
+
+.req-btn-selected .req-icon {
+    -fx-fill: white;
+}
+
 .button:selected {
     -fx-background-color: #0067b1;
     -fx-opacity: 0.8;

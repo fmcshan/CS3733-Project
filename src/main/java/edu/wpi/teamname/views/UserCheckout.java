@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -36,7 +37,7 @@ public class UserCheckout {
         @FXML
         void initialize(){
            refreshSpaces();
-            System.out.println("ONCE");
+            //System.out.println("ONCE");
         }
 
         void refreshSpaces(){
@@ -64,6 +65,8 @@ public class UserCheckout {
             SceneManager.getInstance().getDefaultPage().closeWindows();
             if (!(parkingBox.getValue() == null)){
                 Submit.getInstance().removeParking(mapNodes2.get(parkingBox.getValue()).getNodeID());
+                Submit.getInstance().removeParking(parkingBox.getValue());
+                ButtonManager.remove_class();
             }
         }
 
