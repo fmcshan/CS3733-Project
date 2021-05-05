@@ -170,7 +170,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
-    PathTransition pathTransition = new PathTransition();
+    PathTransition pathTransition;
     @FXML
     private JFXButton navButton;
 
@@ -1135,24 +1135,25 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-//        Polygon triangle = new Polygon();
-//        triangle.getPoints().setAll(
-//                0.0,0.0,
-//                20.0,7.5,
-//                0.0,15.0,
-//                5.0,7.5
-//        );
-//        triangle.setFill(Color.RED); //RED
-//        triangle.setStroke(Color.RED); //RED
-//        triangle.setStrokeWidth(1.0);
-//        triangle.setOpacity(0);
-//        onTopOfTopElements.getChildren().add(triangle);
-//        pathTransition.setDuration(Duration.seconds(4));
-//        pathTransition.setPath(tonysPath);
-//        pathTransition.setNode(triangle);
-//        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        pathTransition.setCycleCount(PathTransition.INDEFINITE);
-        //pathTransition.play();
+        Polygon triangle = new Polygon();
+        pathTransition = new PathTransition();
+        triangle.getPoints().setAll(
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
+        );
+        triangle.setFill(Color.RED); //RED
+        triangle.setStroke(Color.RED); //RED
+        triangle.setStrokeWidth(1.0);
+        triangle.setOpacity(1.0);
+        onTopOfTopElements.getChildren().add(triangle);
+        pathTransition.setDuration(Duration.seconds(4));
+        pathTransition.setPath(tonysPath);
+        pathTransition.setNode(triangle);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(PathTransition.INDEFINITE);
+        pathTransition.play();
     }
 
     /**
