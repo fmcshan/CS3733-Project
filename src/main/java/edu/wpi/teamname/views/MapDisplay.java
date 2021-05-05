@@ -4,9 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.shape.*;
 import javafx.animation.Transition;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
@@ -19,8 +20,6 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
-import edu.wpi.teamname.views.manager.LevelChangeListener;
-import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -185,7 +184,15 @@ public class MapDisplay implements LevelChangeListener {
     private VBox rightClick;
     PathTransition pathTransition;
     @FXML
-    private JFXButton navButton;
+    JFXButton navButton, reqButton, checkButton, exitButton;
+    @FXML
+    SubmittedRequestsButton submittedRequestsButton;
+    @FXML
+    EmployeeTableButton employeeTableButton;
+    @FXML
+    SubmittedRegistrationsButton submittedRegistrationsButton;
+    @FXML
+    MapEditorButton mapEditorButton;
 
     static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
@@ -1636,7 +1643,6 @@ public class MapDisplay implements LevelChangeListener {
         if (navigation != null) {
             navigation.cancelNavigation();
         }
-
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
@@ -1644,18 +1650,28 @@ public class MapDisplay implements LevelChangeListener {
         navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
+        ButtonManager.selectButton(navButton);
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
             return;
         }
+        navButton.getStyleClass().add("nav-btn-selected");
         displayHotspots(0.8); // Display nodes at 0.8 (80%) opacity
     }
+
+    private void remove_class(String _class, javafx.scene.Node... _remove) {
+        for (javafx.scene.Node node : _remove) {
+            node.getStyleClass().remove(_class);
+        }
+    }
+
 
     /**
      * Clear the map
      */
     public void clearMap() {
+        remove_class("nav-btn-selected", navButton, reqButton, checkButton, adminButton, exitButton);
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         currentPath.clear();
@@ -1677,6 +1693,8 @@ public class MapDisplay implements LevelChangeListener {
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
+        reqButton.getStyleClass().add("nav-btn-selected");
+        ButtonManager.selectButton(reqButton);
     }
 
 
@@ -1699,6 +1717,7 @@ public class MapDisplay implements LevelChangeListener {
             AuthenticationManager.getInstance().signOut(); // Display sign out button
             SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
+        adminButton.getStyleClass().add("nav-btn-selected");
     }
 
 //    /**
