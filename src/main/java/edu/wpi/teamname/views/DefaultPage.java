@@ -287,6 +287,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
 
+    @FXML
+    private void openHistory() {
+        hidePopups();
+        LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
+    }
+
     public void initGoogleForm() {
         System.out.println("called");
         zooM.zoomAndPan();
