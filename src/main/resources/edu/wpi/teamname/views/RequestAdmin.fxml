@@ -27,7 +27,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed User Submissions" textAlignment="CENTER" wrappingWidth="375.2413330078125">
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="message" text="Completed User Submissions" textAlignment="CENTER" wrappingWidth="375.2413330078125">
                <font>
                   <Font size="16.0" />
                </font>

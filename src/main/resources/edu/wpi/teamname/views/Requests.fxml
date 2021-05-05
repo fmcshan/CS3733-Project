@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -32,126 +33,84 @@
             </VBox>
             <VBox alignment="TOP_CENTER" minWidth="657.0" prefHeight="660.0" prefWidth="657.0">
                <children>
-                  <JFXButton fx:id="GiftDelivery" buttonType="RAISED" onAction="#openGiftRequest" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Gift Delivery" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
+                  <VBox fx:id="patientRequestBox" alignment="CENTER" spacing="40.0">
+                     <children>
+                        <JFXButton fx:id="giftDelivery" buttonType="RAISED" onAction="#openGiftRequest" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Gift Delivery" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="GIFT" size="35" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="foodDelivery" buttonType="RAISED" onAction="#openFoodDelivery" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Food Delivery" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="FOOD" size="35" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="laundryServices" buttonType="RAISED" onAction="#openLaundryServices" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Laundry Services" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="TSHIRT_CREW" size="35" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="20.0" />
                      </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="GIFT" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label text="Lauren Sowerbutts and Anthony LoPresti">
+                  </VBox>
+                  <VBox fx:id="employeeRequestBox" alignment="CENTER" spacing="40.0">
+                     <children>
+                        <JFXButton fx:id="medicineDelivery" buttonType="RAISED" onAction="#openMedicineDelivery" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Medicine Delivery" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="PILL" size="35" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="computerService" buttonType="RAISED" onAction="#openComputerService" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Computer Service" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="LAPTOP" size="35" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="facilitiesMaintenance" buttonType="RAISED" onAction="#openFacilitiesMaintenance" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Facilities Maintenance" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="WRENCH" size="30" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="sanitationServices" buttonType="RAISED" onAction="#openSanitationServices" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Sanitation Services" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="WATER" size="35" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="patientTransportation" buttonType="RAISED" onAction="#openPatientTransportation" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Patient Transportation" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView fill="WHITE" glyphName="HOSPITAL" size="35" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
                      <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="FoodDelivery" buttonType="RAISED" layoutX="35.0" layoutY="110.0" onAction="#openFoodDelivery" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Food Delivery" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
+                        <Insets top="40.0" />
                      </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="FOOD" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="78.0" text="Justin Luce">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="MedicineDelivery" buttonType="RAISED" layoutX="10.0" layoutY="163.0" onAction="#openMedicineDelivery" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Medicine Delivery" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="PILL" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="676.0" text="Bryan Gass">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="LaundryServices" buttonType="RAISED" layoutX="35.0" layoutY="110.0" onAction="#openLaundryServices" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Laundry Services" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="TSHIRT_CREW" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="693.0" text="Frank McShan">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="ComputerService" buttonType="RAISED" layoutX="35.0" layoutY="110.0" onAction="#openComputerService" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Computer Service" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="LAPTOP" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="378.0" text="Emmanuel Ola">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="FacilitiesMaintenance" buttonType="RAISED" layoutX="10.0" layoutY="163.0" onAction="#openFacilitiesMaintenance" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Facilities Maintenance" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="WRENCH" size="30" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="378.0" text="Freud Oulon">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="SanitationServices" buttonType="RAISED" layoutX="10.0" layoutY="216.0" onAction="#openSanitationServices" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Sanitation Services" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="WATER" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="578.0" text="Conor McDonough">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
-                  <JFXButton fx:id="PatientTransportation" buttonType="RAISED" layoutX="10.0" layoutY="269.0" onAction="#openPatientTransportation" prefWidth="325.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8;" text="Patient Transportation" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="25.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <MaterialDesignIconView fill="WHITE" glyphName="HOSPITAL" size="35" />
-                     </graphic>
-                  </JFXButton>
-                  <Label layoutX="289.0" layoutY="678.0" text="Xianhan Jia">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
+                  </VBox>
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -161,4 +120,7 @@
       </VBox>
       <VBox fx:id="requestPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
 </AnchorPane>

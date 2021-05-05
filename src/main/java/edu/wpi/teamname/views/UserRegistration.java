@@ -92,7 +92,7 @@ public class UserRegistration {
 
     @FXML
     private VBox successPop;
-    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
     HashMap<String, String> theNodes = new HashMap<String, String>();
 
     @FXML
@@ -101,13 +101,24 @@ public class UserRegistration {
         ArrayList<String> listOfSpaces = new ArrayList<>();
         listOfNodes = LocalStorage.getInstance().getNodes();
         listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
+        System.out.println(listOfSpaces);
         for (Node n : listOfNodes
         ) {
 
-                if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
-                    theNodes.put(n.getLongName(), n.getNodeID());
+            if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
+                theNodes.put(n.getLongName(), n.getNodeID());
+                Boolean flag = true;
+                for (String s : parkingSpot.getItems()
+                ) {
+                    if (s.equals(n.getLongName())) {
+                        flag = false;
+                    }
+
+                }
+                if (flag) {
                     parkingSpot.getItems().add(n.getLongName());
                 }
+            }
 
         }
         parkingSpot.getItems().add("Other Parking");
@@ -168,10 +179,32 @@ public class UserRegistration {
         return phoneInput.getText().matches(regexPattern);
     }
 
+    void refreshNodes(){
+        parkingSpot.getItems().clear();
+        ArrayList<Node> listOfNodes = new ArrayList<>();
+        ArrayList<String> listOfSpaces = new ArrayList<>();
+        listOfNodes = LocalStorage.getInstance().getNodes();
+        listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
+        for (Node n : listOfNodes
+        ) {
+
+            if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
+                theNodes.put(n.getLongName(), n.getNodeID());
+                parkingSpot.getItems().add(n.getLongName());
+            }
+
+        }
+        parkingSpot.getItems().add("Other Parking");
+    }
+
     /**
      * If the submit button is pressed, check if inputs are valid and display Success page
      */
     public void submitRegistration() {
+        if (theNodes.containsKey(parkingSpot.getValue())) {
+            Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
+        }
+        refreshNodes();
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
         }
@@ -238,11 +271,7 @@ public class UserRegistration {
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
             success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
-            if(theNodes.containsKey(parkingSpot.getValue())){
-                Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
-            }
             defaultPage.toggleCheckIn();
-
         }
     }
 }

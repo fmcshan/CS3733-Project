@@ -1,24 +1,14 @@
 package edu.wpi.teamname.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
-import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.Database.socketListeners.GiftDeliveryListener;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
-import edu.wpi.teamname.ServiceRequests.FacilitiesRequest;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -103,7 +93,7 @@ public class RequestAdmin implements GiftDeliveryListener {
                     System.out.println("PANIK");
             }
         } catch (Exception ex) {
-//                ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

@@ -51,7 +51,6 @@ public class CSVOperator {
         }
 
         try {
-            File node = new File(System.getProperty("user.dir") + "\\newNodes.csv");
             try (FileWriter fr = new FileWriter(filePath)) {
                 fr.write(nodeBuilder.toString());
             }
@@ -74,7 +73,6 @@ public class CSVOperator {
         }
 
         try {
-            File edge = new File(System.getProperty("user.dir") + "\\newEdges.csv");
             try (FileWriter fr = new FileWriter(filePath)) {
                 fr.write(edgeBuilder.toString());
             }
@@ -83,4 +81,5 @@ public class CSVOperator {
         }
 
     }
+
 }

@@ -294,4 +294,15 @@ public class Submit {
         AsynchronousTask task = new AsynchronousTask(url, data, "POST");
         AsynchronousQueue.getInstance().add(task);
     }
+
+    public void sendChatMessage(String _id, String _msg) {
+        JSONObject data = new JSONObject();
+        data.put("CLIENT_ID", _id);
+        data.put("message", _msg);
+
+        String url = SERVER_URL + "/api/send-message";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
 }
