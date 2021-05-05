@@ -1,8 +1,7 @@
 package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.NodeComparator;
-import edu.wpi.teamname.Algo.Parser;
+import edu.wpi.teamname.Algo.NodeAStarComparator;
 import edu.wpi.teamname.Algo.Stopwatch;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
@@ -19,49 +18,48 @@ import java.util.Stack;
  *
  * @author Emmanuel Ola
  */
-public class AStar implements IAlgorithm {
+public class AStar extends Algorithm {
     /**
      * ArrayList of provided nodes
      */
-    private ArrayList nodes;
+    //private ArrayList nodes;
     /**
      * The starting node
      */
-    private Node start; //i hear you. You cant hear me tho
+    //private Node start;
     /**
      * The ending node
      */
-    private Node goal;
+    //private Node goal;
 
     private boolean isHandicap;
     /**
-     * Priority queue of open nodes. Instantiated with our NodeComparator class
+     * Priority queue of open nodes. Instantiated with our NodeAStarComparator class
      */
     private PriorityQueue<Node> openNodes;
 
     /**
      * Loads the relevant information for the AStar algorithm and prints the result of the pathfinding operation
-     *
-     * @param nodes the list of nodes
+     *  @param nodes the list of nodes
      * @param start the starting node
      * @param goal  the ending node
      */
     public AStar(ArrayList nodes, Node start, Node goal, boolean isHandicap) {
-        this.resetNodes(nodes); //reset all provided nodes before pathfinding
-        this.start = start;
-        start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
-        this.goal = goal;
+        super(nodes, start, goal);
+         //Initializes the cost so far of the starting node to 0
         this.isHandicap = isHandicap;
-        openNodes = new PriorityQueue<>(new NodeComparator()); //Instantiates the priority queue with our overwrited comparator
-        this.process();
+        openNodes = new PriorityQueue<>(new NodeAStarComparator()); //Instantiates the priority queue with our overwrited comparator
+    }
+
+    public AStar(){
+        openNodes = new PriorityQueue<>(new NodeAStarComparator());
     }
 
     /**
      * Resets the parents and costs of all nodes in the provided arraylist of nodes
-     *
      * @param nodes an ArrayList of Nodes to be reset
      */
-    private void resetNodes(ArrayList<Node> nodes) {
+    public void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             if (node.getParent() != null) {
                 node.setParent(null);
@@ -70,100 +68,19 @@ public class AStar implements IAlgorithm {
         }
     }
 
-    /**
-     * Returns all the floors we reach on our path
-     *
-     * @return List of floors we reach on our path
-     */
-    public ArrayList<String> getRelevantFloors() {
-        ArrayList<String> result = new ArrayList<>();
-        for (Node node : this.getPath()) {
-            if (!result.contains(node.getFloor()))
-                result.add(node.getFloor());
-        }
-        return result;
-    }
-
-    /**
-     * Returns a list of nodes representing the path specific to the floor provided
-     *
-     * @param floor the floor we want to get a path for
-     * @return list of nodes representing a path specific to the floor
-     */
-    public ArrayList<Node> getFloorNodes(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(floor))
-                nodes.add(node);
-        }
-        return nodes;
-    }
-
-    /*public ArrayList<ArrayList<Node>> getAllFloorPaths(){
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> allNodes = new ArrayList<>();
-        for (String relevantFloor : getRelevantFloors()) {
-            allNodes.add(getFloorNodes(relevantFloor));
-        }
-        return allNodes;
-    }*/
-
-    /**
-     * Returns a nested list of nodes representing the different sections of paths by floors
-     *
-     * @return nested list of nodes representing the different sections of paths by floors
-     */
-    public ArrayList<ArrayList<Node>> getAllFloorPaths() {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        String currentfloor = start.getFloor();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(currentfloor))
-                nodes.add(node);
-            else {
-                currentfloor = node.getFloor();
-                paths.add(nodes);
-                nodes = new ArrayList<>();
-                nodes.add(node);
-            }
-        }
-        paths.add(nodes);
-        return paths;
-    }
-
-    public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        ArrayList<ArrayList<Node>> paths = new ArrayList<>();
-        for (ArrayList<Node> floorPath : getAllFloorPaths()) {
-            if (floorPath.get(0).getFloor().equals(floor))
-                paths.add(floorPath);
-        }
-        return paths;
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
     }
 
     /**
      * Prints the path from the start node to the goal node
      */
     public void displayPath() {
-        Stack<Node> finalPath = this.returnPath(); //
-        while (!finalPath.isEmpty())
-            System.out.println(finalPath.pop().getNodeInfo().get("longName"));
-    }
-
-    /**
-     * Helper method for displayPath() and returnPath() that provides a stack containing the solution path
-     *
-     * @return Stack containing the solution path for algorithm
-     */
-    private Stack<Node> returnPath() {
-        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
-        Node current = goal;
-        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
-            finalPath.push(current);
-            current = current.getParent();
+        for (Node node : getPath()) {
+            System.out.println(node.getLongName());
         }
-        finalPath.push(start); //Pushes the starting node on to the stack
-        return finalPath;
     }
 
     /**
@@ -191,7 +108,15 @@ public class AStar implements IAlgorithm {
      */
     @Override
     public ArrayList<Node> getPath() {
-        Stack<Node> finalPath = this.returnPath();
+        this.process();
+        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
+        Node current = goal;
+        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
+            finalPath.push(current);
+            current = current.getParent();
+        }
+        finalPath.push(start); //Pushes the starting node on to the stack
+
         ArrayList<Node> path = new ArrayList<Node>();
         while (!finalPath.isEmpty())
             path.add(finalPath.pop());
@@ -202,6 +127,7 @@ public class AStar implements IAlgorithm {
      * Navigates the map by processing the priority queue
      */
     public void process() {
+        start.setCostSoFar(0);
         openNodes.add(start); //Adds our starting node to the priority queue
         Node current = start; //Sets the current node to the starting node
         double tentativeScore = 0;
@@ -260,7 +186,7 @@ public class AStar implements IAlgorithm {
      * @param b the ending node
      * @return the euclidean distance between two nodes
      */
-    public double distance(Node a, Node b) {
+    public static double distance(Node a, Node b) {
         //TODO MAKE THIS A SWITCH STATEMENT/MAKE DISTANCE FORMULA 3D
         int x1 = a.getCoords().get("x");
         int x2 = b.getCoords().get("x");
@@ -297,16 +223,10 @@ public class AStar implements IAlgorithm {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        Node start = nodes.get(Parser.indexOfNode(nodes, "ALABS001L2"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "GLABS014L2"));
         Stopwatch timer = new Stopwatch();
-        AStar example = new AStar(nodes, start, goal, false);
+        AStar example = new AStar(nodes, nodes.get(10), nodes.get(76), false);
         ArrayList<String> nodeTypes = new ArrayList<>();
-        for (Node node : nodes) {
-            if (!nodeTypes.contains(node.getNodeType()))
-                nodeTypes.add(node.getNodeType());
-        }
-        System.out.println(nodeTypes);
+        System.out.println(example.getAllFloorPaths().size());
         /*for (ArrayList<Node> floorPath : example.getFloorPaths()) {
             System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
             for (Node node : floorPath) {

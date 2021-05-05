@@ -1,8 +1,7 @@
 package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.NodeComparator;
-import edu.wpi.teamname.Algo.Parser;
+import edu.wpi.teamname.Algo.NodeAStarComparator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
@@ -14,30 +13,39 @@ import java.util.PriorityQueue;
  * <h1>Breadth-First Search Algorithm</h1>
  * Uses breadth-first search for pathfinding
  */
-public class BFS implements IAlgorithm {
+public class BFS extends Algorithm {
     private Node start;
     private Node goal;
     private ArrayList<Node> path;
     private PriorityQueue<Node> openNodes;
 
     public BFS(ArrayList<Node> nodes, Node start, Node goal) {
+        super(nodes, start, goal);
         this.resetNodes(nodes);
         this.start = start;
         this.goal = goal;
         this.path = new ArrayList<>();
-        this.openNodes = new PriorityQueue<>(new NodeComparator());
-        this.process();
+        this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
     }
+
+    public BFS(){}
 
     @Override
     public ArrayList<Node> getPath(){
+        this.process();
         return path;
     }
 
-    private void resetNodes(ArrayList<Node> nodes) {
+    public void resetNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             node.visitedFlag = false;
         }
+    }
+
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
     }
 
     public void process() {
