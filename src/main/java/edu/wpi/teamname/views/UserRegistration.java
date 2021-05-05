@@ -179,13 +179,7 @@ public class UserRegistration {
         return phoneInput.getText().matches(regexPattern);
     }
 
-    /**
-     * If the submit button is pressed, check if inputs are valid and display Success page
-     */
-    public void submitRegistration() {
-        if (theNodes.containsKey(parkingSpot.getValue())) {
-            Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
-        }
+    void refreshNodes(){
         parkingSpot.getItems().clear();
         ArrayList<Node> listOfNodes = new ArrayList<>();
         ArrayList<String> listOfSpaces = new ArrayList<>();
@@ -201,6 +195,16 @@ public class UserRegistration {
 
         }
         parkingSpot.getItems().add("Other Parking");
+    }
+
+    /**
+     * If the submit button is pressed, check if inputs are valid and display Success page
+     */
+    public void submitRegistration() {
+        if (theNodes.containsKey(parkingSpot.getValue())) {
+            Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
+        }
+        refreshNodes();
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
         }

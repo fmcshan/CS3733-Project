@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,23 +30,31 @@ public class UserCheckout {
         private JFXButton submitButton;
         @FXML
         private VBox successPop;
-
+        ArrayList<Node> listOfNodes = new ArrayList<>();
+        HashMap<String, Node> mapNodes = new HashMap<>();
+        HashMap<String, Node> mapNodes2 = new HashMap<>();
         @FXML
         void initialize(){
-            ArrayList<Node> listOfNodes = new ArrayList<>();
-            HashMap<String, Node> mapNodes = new HashMap<>();
+           refreshSpaces();
+            System.out.println("ONCE");
+        }
+
+        void refreshSpaces(){
+
             listOfNodes = LocalStorage.getInstance().getNodes();
             for (Node n: listOfNodes
-                 ) {
+            ) {
                 mapNodes.put(n.getNodeID(), n);
+                mapNodes2.put(n.getLongName(), n);
             }
             ArrayList<String> listOfSpaces = new ArrayList<>();
             listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
             for (String s: listOfSpaces
-                 ) {
+            ) {
                 parkingBox.getItems().add(mapNodes.get(s).getLongName());
             }
         }
+
 
         @FXML
         void userCheckout() {
@@ -55,7 +62,7 @@ public class UserCheckout {
             defaultPage.toggleCheckIn();
             SceneManager.getInstance().getDefaultPage().closeWindows();
             if (!(parkingBox.getValue() == null)){
-                Submit.getInstance().removeParking(parkingBox.getValue());
+                Submit.getInstance().removeParking(mapNodes2.get(parkingBox.getValue()).getNodeID());
             }
         }
 
