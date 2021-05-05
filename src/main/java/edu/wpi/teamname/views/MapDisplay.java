@@ -43,6 +43,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MapDisplay implements LevelChangeListener {
 
@@ -1324,12 +1325,15 @@ public class MapDisplay implements LevelChangeListener {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
+        List<File> files = fileChooser.showOpenMultipleDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (files == null) {
             return;
         }
         // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
+        files.forEach(f -> {
+            PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(f.getAbsolutePath());
+        });
+
         hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
