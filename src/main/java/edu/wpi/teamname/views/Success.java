@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.ServiceRequests.*;
+import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -110,5 +111,6 @@ public class Success {
     public void closeSuccess() {
         pop.getChildren().clear(); // clear the successPop vbox
         SceneManager.getInstance().getDefaultPage().closeWindows();
+        ButtonManager.remove_class();
     }
 }
