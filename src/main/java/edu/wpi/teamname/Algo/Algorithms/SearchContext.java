@@ -46,6 +46,10 @@ public class SearchContext {
 
     public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {return searchAlgorithm.getFloorPaths(floor);}
 
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal) {this.searchAlgorithm.loadNodes(nodes, start, goal);}
+
+    public ArrayList<String> getRelevantFloors(){return searchAlgorithm.getRelevantFloors();}
+
     public static void main(String[] args) {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();

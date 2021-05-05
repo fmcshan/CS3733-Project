@@ -22,11 +22,25 @@ public abstract class Algorithm {
         this.goal = goal;
     }
 
-    public Algorithm(){}
+    public Algorithm(){
+        this.nodes = new ArrayList<>();
+        this.start = new Node();
+        this.goal = new Node();
+    }
 
     public abstract void resetNodes(ArrayList<Node> nodes);
 
     public abstract ArrayList<Node> getPath();
+
+    public abstract void loadNodes(ArrayList<Node> nodes, Node start, Node goal);
+
+    /*
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
+    }
+     */
 
     /**
      * Returns a list of nodes representing the path specific to the floor provided

@@ -26,13 +26,13 @@ public class BFS extends Algorithm {
         this.goal = goal;
         this.path = new ArrayList<>();
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
-        this.process();
     }
 
     public BFS(){}
 
     @Override
     public ArrayList<Node> getPath(){
+        this.process();
         return path;
     }
 
@@ -40,6 +40,12 @@ public class BFS extends Algorithm {
         for (Node node : nodes) {
             node.visitedFlag = false;
         }
+    }
+
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
     }
 
     public void process() {

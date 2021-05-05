@@ -46,14 +46,14 @@ public class AStar extends Algorithm {
      */
     public AStar(ArrayList nodes, Node start, Node goal, boolean isHandicap) {
         super(nodes, start, goal);
-        this.resetNodes(nodes); //reset all provided nodes before pathfinding
-        start.setCostSoFar(0); //Initializes the cost so far of the starting node to 0
+         //Initializes the cost so far of the starting node to 0
         this.isHandicap = isHandicap;
         openNodes = new PriorityQueue<>(new NodeAStarComparator()); //Instantiates the priority queue with our overwrited comparator
-        this.process();
     }
 
-    public AStar(){}
+    public AStar(){
+        openNodes = new PriorityQueue<>(new NodeAStarComparator());
+    }
 
     /**
      * Resets the parents and costs of all nodes in the provided arraylist of nodes
@@ -66,6 +66,12 @@ public class AStar extends Algorithm {
             }
             node.setCostSoFar(Double.POSITIVE_INFINITY);
         }
+    }
+
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
     }
 
     /**
@@ -102,6 +108,7 @@ public class AStar extends Algorithm {
      */
     @Override
     public ArrayList<Node> getPath() {
+        this.process();
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
@@ -120,6 +127,7 @@ public class AStar extends Algorithm {
      * Navigates the map by processing the priority queue
      */
     public void process() {
+        start.setCostSoFar(0);
         openNodes.add(start); //Adds our starting node to the priority queue
         Node current = start; //Sets the current node to the starting node
         double tentativeScore = 0;

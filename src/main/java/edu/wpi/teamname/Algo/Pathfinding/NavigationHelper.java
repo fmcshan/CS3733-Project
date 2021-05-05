@@ -28,8 +28,8 @@ public class NavigationHelper {
         pathfinder = new SearchContext(new AStar(nodes, start, goal, false));
     }
 
-    public NavigationHelper(Algorithm searchAlgorithm){
-        pathfinder = new SearchContext(searchAlgorithm);
+    public NavigationHelper(SearchContext searchAlgorithm){
+        pathfinder = searchAlgorithm;
     }
 
     public ArrayList<String> getTextDirections(){
@@ -44,7 +44,6 @@ public class NavigationHelper {
                 Node next = path.get(i + 1);
                 if (i > 0) {
                     Node prev = path.get(i - 1);
-                    Node beginStraight;
                     if (node.getNodeType().equals("ELEV") && next.getNodeType().equals("ELEV")){
                         result.add("Take the Elevator to Floor " + next.getFloor());
                     }
@@ -128,7 +127,7 @@ public class NavigationHelper {
         else if (x2 < x1 && y2 == y1)
             return 180;
         else if (x2 < x1 && y2 < y1)
-            return 180 + Math.toDegrees(Math.acos((x1-x2)/hyp));
+            return 180 - Math.toDegrees(Math.acos((x1-x2)/hyp));
         else if (x2 == x1 && y2 < y1)
             return 90;
         else if (x2 > x1 && y2 < y1)

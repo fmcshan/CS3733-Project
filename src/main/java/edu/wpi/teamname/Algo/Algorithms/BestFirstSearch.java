@@ -22,12 +22,14 @@ public class BestFirstSearch extends Algorithm{
         this.start = start;
         this.goal = goal;
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
-        this.process();
     }
 
-    public BestFirstSearch(){}
+    public BestFirstSearch(){
+        openNodes = new PriorityQueue<>(new NodeAStarComparator());
+    }
 
     public ArrayList<Node> getPath() {
+        this.process();
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
@@ -51,7 +53,14 @@ public class BestFirstSearch extends Algorithm{
         }
     }
 
-    private void process() {
+
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
+    }
+
+    public void process() {
         openNodes.add(start);
         Node current = start;
         double tentativeScore = 0;

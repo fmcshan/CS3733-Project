@@ -46,12 +46,19 @@ public class DFS extends Algorithm {
         }
     }
 
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
+        this.nodes = nodes;
+        this.start = start;
+        this.goal = goal;
+    }
+
     /**
      * Returns a list of nodes
      * @return
      */
     @Override
     public ArrayList<Node> getPath(){
+        this.process(start);
         ArrayList<Node> newPath = new ArrayList<Node>(path.subList(0, path.indexOf(goal)));
         newPath.add(goal);
         return newPath;
