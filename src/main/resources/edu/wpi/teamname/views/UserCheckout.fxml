@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.UserCheckout">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="657.0" style="-fx-background-radius: 15px;">
+         <children>
+            <Label text="Check-Out">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Label>
+            <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for visiting! Please confirm your check-out by clicking the submit button below." textAlignment="CENTER" wrappingWidth="505.2413330078125">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Text>
+            <VBox prefHeight="800.0">
+               <children>
+                  <Label fx:id="failedParking" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Please select your parking spot." textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXComboBox fx:id="parkingBox" focusColor="WHITE" minWidth="-Infinity" prefHeight="39.0" prefWidth="296.0" promptText="Parking Spot" style="-fx-font-size: 18; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
+                  <Label fx:id="failedRating" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" top="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Please rate the quality of your experience." textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXSlider fx:id="experienceSlider" blockIncrement="0.5" majorTickUnit="1.0" max="7.0" maxWidth="450.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 18;" stylesheets="@../images/jfxSlider.css">
+                     <VBox.margin>
+                        <Insets left="45.0" top="20.0" />
+                     </VBox.margin>
+                  </JFXSlider>
+                  <Label text="Please provide any additonal comments below." textFill="#868686">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" top="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <JFXTextField fx:id="additionalComments" focusColor="#868686" maxWidth="-Infinity" prefHeight="51.0" prefWidth="300.0" promptText="Additional Comments" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+               </children>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="201.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#userCheckout" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Submit" textFill="#bbbbbb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>

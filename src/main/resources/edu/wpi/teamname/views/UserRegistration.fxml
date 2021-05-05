@@ -2,10 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -42,22 +44,43 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="fullNameDesc" text="Please enter your full name:" textFill="#868686">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                  <HBox>
                      <VBox.margin>
                         <Insets left="25.0" />
                      </VBox.margin>
-                  </Label>
-                  <JFXTextField fx:id="fullName" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Full Name" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                     <children>
+                        <Label fx:id="fullNameDesc" text="Please enter your full name:" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="fullNameDesc1" text="Please select the parking spot." textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="145.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox>
                      <VBox.margin>
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </JFXTextField>
+                     <children>
+                        <JFXTextField fx:id="fullName" focusColor="#868686" maxWidth="-Infinity" prefHeight="39.0" prefWidth="285.0" promptText="Full Name" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="parkingSpot" focusColor="WHITE" minWidth="-Infinity" prefHeight="39.0" prefWidth="230.0" promptText="Parking Spot" style="-fx-font-size: 18; -fx-border-radius: 6; -fx-border-color: #dddddd;" unFocusColor="WHITE">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </HBox>
                   <Label fx:id="failedDate" textFill="RED">
                      <font>
                         <Font size="14.0" />
@@ -208,4 +231,7 @@
       </VBox>
       <VBox fx:id="successPop" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
 </AnchorPane>

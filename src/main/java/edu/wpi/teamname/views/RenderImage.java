@@ -9,8 +9,7 @@ public class RenderImage {
 
     public void renderImage(String fileName, int imageWidth, int imageHeight, AnchorPane topElements) throws Exception {
         try {
-            FileInputStream input = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\edu\\wpi\\teamname\\Icons\\" + fileName + ".png");
-            Image image = new Image(input);
+            Image image = new Image(getClass().getResource("/edu/wpi/teamname/Icons/" + fileName + ".png").toURI().toString());
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(imageWidth);
             imageView.setFitHeight(imageHeight);

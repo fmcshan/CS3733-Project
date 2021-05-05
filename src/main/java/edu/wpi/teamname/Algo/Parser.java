@@ -1,8 +1,12 @@
 package edu.wpi.teamname.Algo;
 
+import javafx.scene.image.Image;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,8 +56,16 @@ public class Parser {
      * @return ArrayList of bidirectional nodes in the CSV file
      */
     public static ArrayList<Node> loadNodesandEdges() {
-        List<List<String>> nodesData = Parser.readFile(System.getProperty("user.dir") + "/nodes.csv");
-        List<List<String>> edgesData = Parser.readFile(System.getProperty("user.dir") + "/edges.csv");
+        File nodes = null;
+        File edges = null;
+        try {
+            nodes = new File(Parser.class.getResource("/edu/wpi/teamname/images/nodes.csv").toURI().toString());
+            edges = new File(Parser.class.getResource("/edu/wpi/teamname/images/nodes.csv").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        List<List<String>> nodesData = Parser.readFile(nodes.toString());
+        List<List<String>> edgesData = Parser.readFile(edges.toString());
         ArrayList<Node> nodesList = new ArrayList<>(); //Instantiate the Arraylist of nodes
         //Load all the nodes into nodesList
         for (List<String> edgesDatum : edgesData) {

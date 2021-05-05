@@ -2,7 +2,15 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.animation.PathTransition;
+import javafx.scene.Scene;
+import javafx.scene.shape.*;
+import javafx.animation.Transition;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -13,6 +21,7 @@ import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,11 +40,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MapDisplay implements LevelChangeListener {
     @FXML
@@ -58,6 +69,8 @@ public class MapDisplay implements LevelChangeListener {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
+    int xGridSize = 8;
+    int yGridSize = 8;
     ArrayList<Node> listOfNodes;
     ArrayList<Node> nodes;
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
@@ -98,6 +111,7 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
     boolean start = false;
     boolean end = false;
+    boolean animationFlag = false;
     Node sNode;
     Node fNode;
     @FXML
@@ -169,10 +183,14 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+    PathTransition pathTransition;
+    @FXML
+    private JFXButton navButton;
+
+    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
-
     }
 
     public Path getTonysPath() {
@@ -206,6 +224,7 @@ public class MapDisplay implements LevelChangeListener {
     public ArrayList<Node> getStartAndEnd() {
         return startAndEnd;
     }
+
 
     /**
      * getter for popPop Vbox
@@ -262,7 +281,7 @@ public class MapDisplay implements LevelChangeListener {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.OLIVE); // Set node color to olive
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
 
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
@@ -506,7 +525,16 @@ public class MapDisplay implements LevelChangeListener {
         fileFxHeightRatio = mapHeight / fileHeight;
     }
 
-    public double xCoordOnTopElement(int x) {
+    private int xGridSnap(int _x) {
+        return (int) Math.round((double) _x / xGridSize) * xGridSize;
+    }
+
+    private int yGridSnap(int _y) {
+        return (int) Math.round((double) _y / yGridSize) * yGridSize;
+    }
+
+    public double xCoordOnTopElement(int _x) {
+        int x = xGridSnap(_x);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -543,10 +571,11 @@ public class MapDisplay implements LevelChangeListener {
     /**
      * for the scaling the displayed nodes on the map
      *
-     * @param y the y coordinate of the anchor pane, top element
+     * @param _y the y coordinate of the anchor pane, top element
      * @return the scaled y coordinate
      */
-    public double yCoordOnTopElement(int y) {
+    public double yCoordOnTopElement(int _y) {
+        int y = yGridSnap(_y);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -630,9 +659,6 @@ public class MapDisplay implements LevelChangeListener {
             if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
                 Node startNode = nodesMap.get(e.getStartNode());
                 Node endNode = nodesMap.get(e.getEndNode());
-//                if(e.getStartNode().equals("WELEV00M01")){
-//                    System.out.println(endNode.getNodeID());
-//                }
                 if (!startNode.getFloor().equals(endNode.getFloor())) {
                     if (edgesBetweenFloors.containsKey(startNode)) {
                         edgesBetweenFloors.get(startNode).add(e);
@@ -823,7 +849,7 @@ public class MapDisplay implements LevelChangeListener {
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Text) {
             Edge toRemove = textToEdgeMap.get(t.getTarget());
-            // System.out.println("Gotcha");
+            //System.out.println("Gotcha");
             Submit.getInstance().removeEdge(toRemove);
             refreshData();
             renderMap();
@@ -1581,12 +1607,37 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
+        Polygon triangle = new Polygon();
+        pathTransition = new PathTransition();
+        triangle.getPoints().setAll(
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
+        );
+        triangle.setFill(Color.RED); //RED
+        triangle.setStroke(Color.RED); //RED
+        triangle.setStrokeWidth(1.0);
+        triangle.setOpacity(1.0);
+        onTopOfTopElements.getChildren().add(triangle);
+        pathTransition.setDuration(Duration.seconds(4));
+        pathTransition.setPath(tonysPath);
+        pathTransition.setNode(triangle);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(PathTransition.INDEFINITE);
+        pathTransition.play();
     }
 
     /**
      * toggles the navigation window
      */
     public void toggleNav() {
+        LoadFXML.setCurrentHelp("");
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1616,8 +1667,12 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        LoadFXML.setCurrentHelp("");
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
-
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
@@ -1629,6 +1684,11 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        LoadFXML.setCurrentHelp("");
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(340);
         clearMap(); // Clear map
         // currentPath= new ArrayList();
@@ -1637,18 +1697,23 @@ public class MapDisplay implements LevelChangeListener {
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button
         } else { // Else (if user is authenticated)
             AuthenticationManager.getInstance().signOut(); // Display sign out button
+            SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
     }
 
-    /**
-     * toggle the check in window
-     */
-    public void openCheckIn() {
-        popPop.setPrefWidth(657);
-        clearMap(); // Clear map
-        popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-    }
+//    /**
+//     * toggle the check in window
+//     */
+//    public void openCheckIn() {
+//        if (navigation != null) {
+//            navigation.cancelNavigation();
+//        }
+//        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+//        popPop.setPrefWidth(657);
+//        clearMap(); // Clear map
+//        popPop.setPrefWidth(657.0); // Set preferable width to 657
+//        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+//    }
 
     /**
      * Triggered by Add Node button
@@ -1726,45 +1791,21 @@ public class MapDisplay implements LevelChangeListener {
         dragEnd = null; // Reset dragEnd
     }
 
-    /**
-     * Load the specified nodes into the database
-     *
-     * @param e Action Event
-     */
     @FXML
-    private void loadNodesCsv(ActionEvent e) {
+    private void loadCSV() {
         FileChooser fileChooser = new FileChooser(); // New file chooser
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
+        List<File> files = fileChooser.showOpenMultipleDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (files == null) {
             return;
         }
         // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
-        hidePopups(); // Hide all popups
-        refreshData(); // Pull/update data from LocalStorage
-        renderMap(); // Render/refresh the map (with updated data)
-    }
+        files.forEach(f -> {
+            PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(f.getAbsolutePath());
+        });
 
-    /**
-     * Load the specified edges into the database
-     *
-     * @param e Action Event
-     */
-    @FXML
-    private void loadEdgesCsv(ActionEvent e) {
-        FileChooser fileChooser = new FileChooser(); // New file chooser
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
-        );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
-            return;
-        }
-        // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
         hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
@@ -1851,7 +1892,6 @@ public class MapDisplay implements LevelChangeListener {
                 break;
             case "navBar":
                 clearMap();
-                refreshData();
                 displayHotspots(.8);
                 break;
         }

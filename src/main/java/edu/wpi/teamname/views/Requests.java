@@ -1,8 +1,11 @@
 package edu.wpi.teamname.views;
 
+import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.ServiceRequests.*;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -14,6 +17,30 @@ public class Requests {
 
     @FXML
     private VBox requestPop;
+    @FXML
+    private JFXButton giftDelivery, foodDelivery, laundryServices, medicineDelivery, computerService, facilitiesMaintenance, sanitationServices, patientTransportation;
+    @FXML
+    private VBox patientRequestBox, employeeRequestBox;
+
+    public void initialize() {
+        if (AuthenticationManager.getInstance().isAuthenticated()) {
+            medicineDelivery.setVisible(true);
+            computerService.setVisible(true);
+            facilitiesMaintenance.setVisible(true);
+            sanitationServices.setVisible(true);
+            patientTransportation.setVisible(true);
+        } else {
+//            medicineDelivery.setVisible(false);
+//            computerService.setVisible(false);
+//            facilitiesMaintenance.setVisible(false);
+//            sanitationServices.setVisible(false);
+//            patientTransportation.setVisible(false);
+            employeeRequestBox.getChildren().clear();
+            patientRequestBox.setSpacing(100);
+            VBox.setMargin(patientRequestBox, new Insets(150, 0, 0, 0));
+        }
+
+    }
 
     /**
      * OnAction command for clicking the "Open Request Form" button

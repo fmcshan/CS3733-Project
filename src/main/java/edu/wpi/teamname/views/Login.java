@@ -8,6 +8,7 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.apache.commons.validator.EmailValidator;
 
@@ -51,6 +52,15 @@ public class Login {
         return validator.isValid(email);
     }
 
+    public void colorLoginButton() {
+        if (!emailField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+            loginButton.setStyle("-fx-background-color: #0067b1; -fx-text-fill: white; -fx-background-radius: 8");
+        }
+        else {
+            loginButton.setStyle("-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-radius: 8; -fx-text-fill: #c3c3c3");
+        }
+    }
+
     /**
      * Once the login button is pressed, check if the email and password are valid
      */
@@ -71,6 +81,7 @@ public class Login {
             return;
         }
         SceneManager.getInstance().getDefaultPage().closeWindows();
+        LoadFXML.setCurrentWindow("");
     }
 
 
