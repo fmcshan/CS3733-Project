@@ -1873,31 +1873,68 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private void setFloor0(ActionEvent e) {
         LevelManager.getInstance().setFloor(0);
+        L2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
         LevelManager.getInstance().setFloor(1);
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
         LevelManager.getInstance().setFloor(2);
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("ddd8d8"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
         LevelManager.getInstance().setFloor(3);
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
         LevelManager.getInstance().setFloor(4);
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
         LevelManager.getInstance().setFloor(5);
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("ddd8d8"));
 
     }
 
