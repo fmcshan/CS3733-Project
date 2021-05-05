@@ -19,7 +19,7 @@ public class Main {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         SocketManager.getInstance().startChatSocket();
-        AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
+       // AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
   //   DatabaseThread.getInstance().start();
 
