@@ -880,119 +880,191 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     void press1(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("1")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_1.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("1")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("1")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+                 ) {if(n.getFloor().equals("1")){
+                     double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                     if (temporary<distance){
+                         tempNode2 = n;
+                         distance = temporary;
+                     }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
-
-
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
     }
 
     @FXML
     void press2(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("2")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_2.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("2")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("2")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("2")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
-
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
 
     }
 
     @FXML
     void press3(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("3")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_3.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("3")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("3")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("3")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
 
 
     }
@@ -1001,40 +1073,64 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     void pressG(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("G")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_g.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("G")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("G")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("G")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
-
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
 
     }
 
@@ -1042,81 +1138,128 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     void pressL1(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("L1")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_l1.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L1")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("L1")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("L1")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
-
-
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
     }
 
 
     @FXML
     void pressL2(ActionEvent event) {
         tempNode = selectedNode;
-        comboRemoveBtwn.getItems().clear();
-        btwnEdge.getItems().clear();
-        removeBtwn.setVisible(true);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            for (Edge e : edgesBetweenFloors.get(tempNode)
-            ) {
-                System.out.println(e.getEdgeID());
-                if (nodesMap.get(e.getEndNode()).getFloor().equals("L2")) {
-                    Boolean flag = true;
-                    for (String s : comboRemoveBtwn.getItems()
-                    ) {
-                        flag = true;
-                        if (s.equals(e.getEdgeID())) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        comboRemoveBtwn.getItems().add(e.getEdgeID());
-                    }
+        if (edge_l2.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L2")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
 
-
+                    }
                 }
             }
-        }
 
-        addBtwn.setVisible(true);
-        for (Node n : nodes
-        ) {
-            if (n.getFloor().equals("L2")) {
-                btwnEdge.getItems().add(n.getNodeID());
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("L2")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
             }
 
         }
-
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
 
     }
 
@@ -1376,7 +1519,6 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     void removeBetween() {
-        removeBtwn.setVisible(true);
         if (!(comboRemoveBtwn.getValue() == null)) {
             String otherEdge = doubleEdges.get(comboRemoveBtwn.getValue()).getEndNode() + "_" + doubleEdges.get(comboRemoveBtwn.getValue()).getStartNode();
             edgesBetweenFloors.remove(tempNode, edgesMap.get(comboRemoveBtwn.getValue()));
@@ -1395,8 +1537,6 @@ public class MapDisplay implements LevelChangeListener {
     private void hideAddEdgePopup() {
         addEdgeField.setPickOnBounds(false); // Set clickable to false
         addEdgeField.setVisible(false); // Hide popup
-        addBtwn.setVisible(false);
-        removeBtwn.setVisible(false);
         dragStart = null; // Reset dragStart
         dragEnd = null; // Reset dragEnd
         addEdgeWarning.setVisible(false); // Hide warning message
