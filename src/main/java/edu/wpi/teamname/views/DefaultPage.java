@@ -85,10 +85,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
-//
-//        submittedRegistrationsButton = loader.getController();
         floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
         SceneManager.getInstance().setDefaultPage(this);
         Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
@@ -304,7 +300,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             messageIcon.setFill(Color.WHITE);
             messageIcon.setGlyphSize(40);
             chatButton.setGraphic(messageIcon);
-            LoadFXML.setCurrentWindow("chatBot");
             return;
         }
         chatBot.setVisible(false);
@@ -315,7 +310,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         messageIcon.setFill(Color.WHITE);
         messageIcon.setGlyphSize(40);
         chatButton.setGraphic(messageIcon);
-        LoadFXML.setCurrentWindow("");
     }
 
     @FXML
@@ -347,10 +341,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatBox.getChildren().add(sentPane);
         enteredMessage.clear();
 
-        chatScrollPane.setFitToHeight(false);
-
-        chatScrollPane.setVvalue(1);
-
+        chatBox.heightProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    chatBox.layout();
+                    chatScrollPane.setVvalue( 1.0d );
+                }
+        );
         ChatBot.getInstance().sendMessage(message);
     }
 
@@ -369,7 +365,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
                 System.out.println(LoadFXML.getCurrentWindow());
                 //if chat bot is not open, only show response message and write a reply
-                if (!(LoadFXML.getCurrentWindow().equals("chatBot"))) {
+                if (!opened) {
                     Text sentMessage2 = new Text();
                     sentMessage2.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
                     HBox sentBox2 = new HBox(sentMessage2);
@@ -423,7 +419,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 enteredMessage.clear();
 
                 chatScrollPane.setFitToHeight(false);
-                chatScrollPane.setVvalue(1);
             }
         });
     }
