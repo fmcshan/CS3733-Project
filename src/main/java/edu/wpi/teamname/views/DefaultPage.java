@@ -172,7 +172,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         registrationPop.getChildren().clear();
         employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
-        navigation.cancelNavigation();
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
@@ -207,6 +209,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
             zooM.zoomAndPan();
+            ButtonManager.remove_class();
             return;
         }
 
@@ -223,6 +226,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     /**
@@ -233,6 +239,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdmin", "reqAdminBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     /**
@@ -243,6 +252,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     public void toggleGoogleMaps() {

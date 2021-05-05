@@ -1639,7 +1639,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
-        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1671,7 +1670,7 @@ public class MapDisplay implements LevelChangeListener {
      * Clear the map
      */
     public void clearMap() {
-        remove_class("nav-btn-selected", navButton, reqButton, checkButton, adminButton, exitButton);
+        remove_class("nav-btn-selected", navButton, checkButton, reqButton);
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         currentPath.clear();
@@ -1683,17 +1682,16 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
-        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
+        System.out.println(LoadFXML.getCurrentWindow());
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
-        reqButton.getStyleClass().add("nav-btn-selected");
         ButtonManager.selectButton(reqButton);
     }
 
@@ -1717,7 +1715,6 @@ public class MapDisplay implements LevelChangeListener {
             AuthenticationManager.getInstance().signOut(); // Display sign out button
             SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
-        adminButton.getStyleClass().add("nav-btn-selected");
     }
 
 //    /**
