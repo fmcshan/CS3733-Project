@@ -910,7 +910,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("1")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
@@ -973,7 +973,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("2")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
@@ -1037,7 +1037,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("3")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
@@ -1103,7 +1103,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("G")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
@@ -1168,7 +1168,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("L1")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
@@ -1232,7 +1232,7 @@ public class MapDisplay implements LevelChangeListener {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
-                    System.out.println(e.getEdgeID());
+                    //System.out.println(e.getEdgeID());
                     if (nodesMap.get(e.getEndNode()).getFloor().equals("L2")) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());

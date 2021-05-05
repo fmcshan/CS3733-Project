@@ -36,7 +36,7 @@ public class UserCheckout {
         @FXML
         void initialize(){
            refreshSpaces();
-            System.out.println("ONCE");
+            //System.out.println("ONCE");
         }
 
         void refreshSpaces(){

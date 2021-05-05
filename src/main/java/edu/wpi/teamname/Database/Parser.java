@@ -27,13 +27,12 @@ public class Parser {
 
     public static String parseSpace(JSONObject _space) {
         _space = _space.getJSONObject("fields");
-        String answer = _space.getString("nodeId");
-        return answer;
+        return _space.getString("nodeId");
     }
 
-    public static ArrayList<String> parseSpaces(JSONArray _space) {
+    public static ArrayList<String> parseSpaces(JSONArray _spaces) {
         ArrayList<String> spaces = new ArrayList<String>();
-        _space.forEach(s -> {
+        _spaces.forEach(s -> {
             spaces.add(parseSpace((JSONObject) s));
         });
         return spaces;

@@ -50,9 +50,9 @@ public class Socket extends WebSocketClient {
             ArrayList<Node> nodes = Parser.parseNodes(payload); // Uses nodes and edges
             ArrayList<Edge> edges = Parser.parseEdges(payload.getJSONArray("edges"));
             ArrayList<String> spaces = Parser.parseSpaces(payload.getJSONArray("spaces"));
-            LocalStorage.getInstance().setReservedParkingSpaces(spaces);
             LocalStorage.getInstance().setNodes(nodes);
             LocalStorage.getInstance().setEdges(edges);
+            LocalStorage.getInstance().setReservedParkingSpaces(spaces);
             return;
         }
 
@@ -67,7 +67,9 @@ public class Socket extends WebSocketClient {
         }
 
         if(payloadId.equals("reserve_parking")){
-            System.out.println(payload);
+            payload = payload.getJSONObject("data");
+            ArrayList<String> spaces = Parser.parseSpaces(payload.getJSONArray("spaces"));
+            LocalStorage.getInstance().setReservedParkingSpaces(spaces);
         }
 
     }
