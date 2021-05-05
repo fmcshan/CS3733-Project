@@ -89,7 +89,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
 //
 //        submittedRegistrationsButton = loader.getController();
-
+        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
         SceneManager.getInstance().setDefaultPage(this);
         Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
