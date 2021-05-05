@@ -171,6 +171,8 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private VBox rightClick;
     PathTransition pathTransition = new PathTransition();
+    @FXML
+    private JFXButton navButton;
 
     static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
