@@ -470,9 +470,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         if (checkButton.getText().equals("Check-In")) {
             LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
         } else {
-            LoadFXML.getInstance().loadWindow("UserCheckout", "surveyBar", popPop); // Load registration window
+            LoadFXML.getInstance().loadWindow("UserCheckout", "checkoutBar", popPop); // Load registration window
         }
-
+        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
     }
 
     public void setHelpButton(boolean value) {
