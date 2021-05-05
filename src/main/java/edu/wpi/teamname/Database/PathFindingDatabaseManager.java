@@ -167,8 +167,8 @@ public class PathFindingDatabaseManager {
     public void insertNodeOrEdgeCsvIntoDatabase(String file) {
 
         List<List<String>> allData = CSVOperator.readFile(file);
-
-        if(allData.size() == 3) {
+        if (allData.size() == 0) { return; }
+        if(allData.get(0).size() == 3) {
             Set<List<String>> edgesDataAsSet = new HashSet<>(allData); // to avoid duplicate elements
             allData.clear();
             allData.addAll(edgesDataAsSet);
@@ -184,7 +184,7 @@ public class PathFindingDatabaseManager {
             insertEdgeListIntoDatabase(edgeList);
         }
 
-        if(allData.size() == 7) {
+        if(allData.get(0).size() == 8) {
             Set<List<String>> nodesDataAsSet = new HashSet<>(allData); // to avoid duplicate elements
             allData.clear();
             allData.addAll(nodesDataAsSet);
