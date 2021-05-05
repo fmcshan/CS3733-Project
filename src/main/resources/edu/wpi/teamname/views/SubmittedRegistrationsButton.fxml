@@ -16,7 +16,7 @@
     <graphic>
         <VBox prefHeight="37.0" prefWidth="33.0">
             <children>
-            <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36" />
+            <MaterialDesignIconView fill="#c3c3c3" glyphName="CLIPBOARD_ACCOUNT" size="36" />
             </children>
          <padding>
             <Insets right="10.0" />

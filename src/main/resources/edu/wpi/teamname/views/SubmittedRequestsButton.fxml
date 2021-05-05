@@ -11,14 +11,14 @@
         <Font size="24.0" />
     </font>
     <padding>
-        <Insets bottom="8.0" left="40.0" top="8.0" />
+        <Insets bottom="8.0" left="42.0" top="8.0" />
     </padding>
     <graphic>
         <VBox prefHeight="37.0" prefWidth="33.0">
             <children>
             <FontAwesomeIconView fill="#c3c3c3" glyphName="CHECK_SQUARE_ALT" size="36" translateY="3.0">
                <VBox.margin>
-                  <Insets right="10.0" />
+                  <Insets right="8.0" />
                </VBox.margin>
             </FontAwesomeIconView>
             </children>
