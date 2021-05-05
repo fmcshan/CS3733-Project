@@ -90,9 +90,8 @@ public class UserCheckout {
             LoadFXML.setCurrentWindow("");
             defaultPage.toggleCheckIn();
             SceneManager.getInstance().getDefaultPage().closeWindows();
-            if (!(parkingBox.getValue().equals(""))){
+            if (!(parkingBox.getValue() == null)){
                 Submit.getInstance().removeParking(parkingBox.getValue());
-                System.out.println("Here");
             }
         }
 
