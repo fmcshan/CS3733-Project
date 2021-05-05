@@ -146,6 +146,18 @@
                   <DropShadow color="#7c7c7c" />
                </effect>
             </JFXButton>
+            <VBox fx:id="algoBox" maxHeight="1.0">
+               <VBox.margin>
+                  <Insets left="25.0" top="25.0" />
+               </VBox.margin>
+               <children>
+                  <JFXComboBox fx:id="algoCombo" focusColor="WHITE" onAction="#changeSearch" prefWidth="300.0" promptText="Search Algorithm" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXComboBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>
