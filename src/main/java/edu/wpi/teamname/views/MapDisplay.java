@@ -43,6 +43,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MapDisplay implements LevelChangeListener {
 
@@ -170,7 +171,7 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
-    PathTransition pathTransition = new PathTransition();
+    PathTransition pathTransition;
     @FXML
     private JFXButton navButton;
 
@@ -1135,24 +1136,25 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-//        Polygon triangle = new Polygon();
-//        triangle.getPoints().setAll(
-//                0.0,0.0,
-//                20.0,7.5,
-//                0.0,15.0,
-//                5.0,7.5
-//        );
-//        triangle.setFill(Color.RED); //RED
-//        triangle.setStroke(Color.RED); //RED
-//        triangle.setStrokeWidth(1.0);
-//        triangle.setOpacity(0);
-//        onTopOfTopElements.getChildren().add(triangle);
-//        pathTransition.setDuration(Duration.seconds(4));
-//        pathTransition.setPath(tonysPath);
-//        pathTransition.setNode(triangle);
-//        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        pathTransition.setCycleCount(PathTransition.INDEFINITE);
-        //pathTransition.play();
+        Polygon triangle = new Polygon();
+        pathTransition = new PathTransition();
+        triangle.getPoints().setAll(
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
+        );
+        triangle.setFill(Color.RED); //RED
+        triangle.setStroke(Color.RED); //RED
+        triangle.setStrokeWidth(1.0);
+        triangle.setOpacity(1.0);
+        onTopOfTopElements.getChildren().add(triangle);
+        pathTransition.setDuration(Duration.seconds(4));
+        pathTransition.setPath(tonysPath);
+        pathTransition.setNode(triangle);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(PathTransition.INDEFINITE);
+        pathTransition.play();
     }
 
     /**
@@ -1324,12 +1326,15 @@ public class MapDisplay implements LevelChangeListener {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
+        List<File> files = fileChooser.showOpenMultipleDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (files == null) {
             return;
         }
         // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
+        files.forEach(f -> {
+            PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(f.getAbsolutePath());
+        });
+
         hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)

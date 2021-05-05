@@ -272,7 +272,6 @@ public class UserRegistration {
             Success success = new Success(this);
             success.loadSuccess("You have successfully submitted the form. A receptionist will be with you shortly.", successPop);
             defaultPage.toggleCheckIn();
-
         }
     }
 }
