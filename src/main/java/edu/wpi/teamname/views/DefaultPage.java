@@ -211,7 +211,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin registration window
      */
     public void toggleRegistration() {
-        LoadFXML.setCurrentHelp("");
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -222,7 +221,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleRequest() {
-        LoadFXML.setCurrentHelp("");
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -233,7 +231,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the admin request window
      */
     public void toggleEmployee() {
-        LoadFXML.setCurrentHelp("");
         helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(1000);
@@ -241,7 +238,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMaps() {
-        LoadFXML.setCurrentHelp("");
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -253,7 +249,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMapsHome() {
-        LoadFXML.setCurrentHelp("");
         clearMap();
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
@@ -263,7 +258,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHelp() {
-        LoadFXML.setCurrentHelp("");
         if (!AuthenticationManager.getInstance().isAuthenticated() && LoadFXML.getCurrentWindow().equals("")) {
             popPop.setPrefWidth(340);
             LoadFXML.getInstance().loadHelp("defaultBar", "help_defaultBar", popPop);
@@ -282,14 +276,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void initGoogleForm() {
-        LoadFXML.setCurrentHelp("");
         System.out.println("called");
         zooM.zoomAndPan();
     }
 
     @FXML
     private void openChatBot() {
-        LoadFXML.setCurrentHelp("");
         closedChatBox.getChildren().clear();
         closedChatBox.setPickOnBounds(false);
         if (!opened) {

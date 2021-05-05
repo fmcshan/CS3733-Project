@@ -59,7 +59,7 @@
                               <Font size="16.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="180.0" />
+                              <Insets left="145.0" />
                            </HBox.margin>
                         </Label>
                      </children>
@@ -69,12 +69,12 @@
                         <Insets left="50.0" top="10.0" />
                      </VBox.margin>
                      <children>
-                        <JFXTextField fx:id="fullName" focusColor="#868686" maxWidth="-Infinity" prefWidth="300.0" promptText="Full Name" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
+                        <JFXTextField fx:id="fullName" focusColor="#868686" maxWidth="-Infinity" prefHeight="39.0" prefWidth="285.0" promptText="Full Name" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </JFXTextField>
-                        <JFXComboBox fx:id="parkingSpot" minWidth="-Infinity" prefHeight="31.0" prefWidth="170.0" promptText="Parking Spot">
+                        <JFXComboBox fx:id="parkingSpot" focusColor="WHITE" minWidth="-Infinity" prefHeight="39.0" prefWidth="230.0" promptText="Parking Spot" style="-fx-font-size: 18; -fx-border-radius: 6; -fx-border-color: #dddddd;" unFocusColor="WHITE">
                            <HBox.margin>
                               <Insets left="50.0" />
                            </HBox.margin>

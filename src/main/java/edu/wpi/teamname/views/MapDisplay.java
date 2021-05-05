@@ -1318,13 +1318,8 @@ public class MapDisplay implements LevelChangeListener {
         dragEnd = null; // Reset dragEnd
     }
 
-    /**
-     * Load the specified nodes into the database
-     *
-     * @param e Action Event
-     */
     @FXML
-    private void loadNodesCsv(ActionEvent e) {
+    private void loadCSV() {
         FileChooser fileChooser = new FileChooser(); // New file chooser
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
@@ -1334,29 +1329,7 @@ public class MapDisplay implements LevelChangeListener {
             return;
         }
         // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
-        hidePopups(); // Hide all popups
-        refreshData(); // Pull/update data from LocalStorage
-        renderMap(); // Render/refresh the map (with updated data)
-    }
-
-    /**
-     * Load the specified edges into the database
-     *
-     * @param e Action Event
-     */
-    @FXML
-    private void loadEdgesCsv(ActionEvent e) {
-        FileChooser fileChooser = new FileChooser(); // New file chooser
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
-        );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
-            return;
-        }
-        // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
+        PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
         hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
