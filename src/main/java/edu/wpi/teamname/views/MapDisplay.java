@@ -1,7 +1,17 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.views.manager.*;
+import javafx.animation.PathTransition;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.shape.*;
+import javafx.animation.Transition;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -10,12 +20,10 @@ import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
-import edu.wpi.teamname.views.manager.LevelChangeListener;
-import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -23,29 +31,36 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MapDisplay implements LevelChangeListener {
-
+    @FXML
+    private VBox addBtwn;
+    @FXML
+    private VBox removeBtwn;
+    @FXML
+    private JFXComboBox<String> comboRemoveBtwn;
+    @FXML
+    public Navigation navigation;
     double scaledWidth = 5000;
     double scaledHeight = 3400.0;
     double scaledX = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
+    ArrayList<Node> listOfNode = new ArrayList<>();
     double scaledY = 0;
     double mapWidth; //= 1000.0;
     double mapHeight;// = 680.0;
@@ -53,15 +68,21 @@ public class MapDisplay implements LevelChangeListener {
     double fileHeight;// = 3400.0;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
+    int xGridSize = 8;
+    int yGridSize = 8;
     ArrayList<Node> listOfNodes;
     ArrayList<Node> nodes;
     ArrayList<Node> localNodes = new ArrayList<>(); // Nodes within current parameters (IE: floor)
     ArrayList<Edge> edges;
     ArrayList<Edge> localEdges = new ArrayList<>(); // Edges within current parameters (IE: floor)
+    ArrayList<Node> startAndEnd = new ArrayList<>();
     HashMap<String, Node> nodesMap = new HashMap<>();
+    HashMap<String, Node> localNodesMap = new HashMap<>();
     HashMap<String, Edge> edgesMap = new HashMap<>();
     HashMap<Circle, Node> renderedNodeMap = new HashMap<>();
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
+    HashMap<Node, ArrayList<Edge>> edgesBetweenFloors = new HashMap<>();
+    HashMap<String, Edge> doubleEdges = new HashMap<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
@@ -72,9 +93,14 @@ public class MapDisplay implements LevelChangeListener {
     Node addEdgeStart;
     Node addEdgeEnd;
     Node selectedNode;
+    Node tempNode;
+    @FXML
+    private JFXComboBox<String> btwnEdge;
     Edge selectedEdge;
     Circle draggedCircle;
     Node draggedNode;
+    Node startNode;
+    Node endNode;
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
@@ -84,10 +110,9 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
     boolean start = false;
     boolean end = false;
+    boolean animationFlag = false;
     Node sNode;
     Node fNode;
-    @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
     VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -114,6 +139,20 @@ public class MapDisplay implements LevelChangeListener {
     JFXTextField edgeIdPreview;
     ZoomAndPan zooM;
     @FXML
+    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
+    @FXML
+    private JFXButton edge_3;
+    @FXML
+    private JFXButton edge_2;
+    @FXML
+    private JFXButton edge_1;
+    @FXML
+    private JFXButton edge_g;
+    @FXML
+    private JFXButton edge_l1;
+    @FXML
+    private JFXButton edge_l2;
+    @FXML
     private JFXTextField nodeId;
     @FXML
     private JFXTextField nodeBuilding;
@@ -128,6 +167,8 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     private VBox editNode; // Edit node menu
     @FXML
+    private VBox edgeBetweenFloors;
+    @FXML
     private JFXTextField editNodeBuilding;
     @FXML
     private JFXTextField editNodeType;
@@ -141,19 +182,56 @@ public class MapDisplay implements LevelChangeListener {
     private JFXTextField deleteEdgeId;
     @FXML
     private VBox rightClick;
+    PathTransition pathTransition;
+    @FXML
+    JFXButton navButton, reqButton, checkButton, exitButton;
+    @FXML
+    SubmittedRequestsButton submittedRequestsButton;
+    @FXML
+    EmployeeTableButton employeeTableButton;
+    @FXML
+    SubmittedRegistrationsButton submittedRegistrationsButton;
+    @FXML
+    MapEditorButton mapEditorButton;
+
+    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
-
     }
 
-    public void setScaledX(double scaledX) {
-        this.scaledX = scaledX;
+    public Path getTonysPath() {
+        return tonysPath;
     }
 
-    public void setScaledY(double scaledY) {
-        this.scaledY = scaledY;
+    public Node getStartNode() {
+        return startNode;
     }
+
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
+    }
+
+    public void addStartAndEnd(Node addedNode) {
+        startAndEnd.add(addedNode);
+    }
+
+    public void clearStartAndEnd() {
+        startAndEnd.clear();
+    }
+
+    public ArrayList<Node> getStartAndEnd() {
+        return startAndEnd;
+    }
+
 
     /**
      * getter for popPop Vbox
@@ -174,10 +252,34 @@ public class MapDisplay implements LevelChangeListener {
      * @param _nodes   List of nodes to display
      * @param _opacity Node opacity
      */
-    public void displayNodes(ArrayList<Node> _nodes, double _opacity) {
+    public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
         resizingInfo(); // Set resizing info
 
-        _nodes.forEach(n -> { // For each node in localNodes
+        ArrayList<Node> nodes = _nodes;
+
+        if (startNode != null && endNode != null) {
+            nodes.clear();
+            if (LevelManager.getInstance().getFloor().equals(startNode.getFloor())) {
+                nodes.add(startNode);
+            }
+            if (LevelManager.getInstance().getFloor().equals(endNode.getFloor())) {
+                nodes.add(endNode);
+            }
+        }
+
+        currentPath.forEach(n -> {
+            n.forEach(h -> {
+                listOfNode.add(h);
+                nodes.add(h);
+            });
+        });
+
+        nodes.forEach(n -> { // For each node in localNodes
+
+            if (n.getNodeType().equals("HALL") && !showHall) {
+                return;
+            }
+
             if (n.equals(draggedNode)) {
                 return;
             }
@@ -185,21 +287,37 @@ public class MapDisplay implements LevelChangeListener {
                 Tooltip tooltip = new Tooltip(n.getLongName());
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
-            /* Set the stroke color to transparent.
-            This allows us to have an invisible border
-            around the node where it's still selectable. */
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
+
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
+                if (n.equals(startNode) || n.equals(endNode)) {
+                    circle.setFill(Color.RED);
+                    circle.setRadius(10);
+                }
+
+                if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                    circle.setFill(Color.RED);
+                    circle.setRadius(6);
+                }
+
                 circle.setOnMouseEntered(e -> { // Show a hover effect
-                    circle.setRadius(12); // Increase radius
-                    circle.setOpacity(0.6); // Decrease opacity
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(8);
+                    } else {
+                        circle.setRadius(12); // Increase radius
+                    }
+                    circle.setOpacity(0.6);
                 });
                 circle.setOnMouseExited(e -> { // Hide hover effect
-                    circle.setRadius(8); // Reset/set radius
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(6);
+                    } else {
+                        circle.setRadius(8); // Reset/set radius
+                    }
                     circle.setOpacity(0.8); // Reset/set opacity
                     tooltip.hide();
                 });
@@ -255,18 +373,12 @@ public class MapDisplay implements LevelChangeListener {
      * @param _opacity Node opacity
      */
     public void displayNodes(double _opacity) {
-        displayNodes(localNodes, _opacity);
+        displayNodes(localNodes, _opacity, true);
     }
 
     public void displayHotspots(double _opacity) {
         ArrayList<Node> toDisplay = (ArrayList<Node>) localNodes.clone();
-        for (int i = 0; i < toDisplay.size(); i++) {
-            Node n = toDisplay.get(i);
-            if (n.getNodeType().equals("HALL")) {
-                toDisplay.remove(n);
-            }
-        }
-        displayNodes(toDisplay, _opacity);
+        displayNodes(toDisplay, _opacity, false);
     }
 
     /**
@@ -277,46 +389,22 @@ public class MapDisplay implements LevelChangeListener {
     public void displayEdges(double _opacity) {
         resizingInfo(); // Set sizing info
         portalNodeMap.forEach((Id, n) -> {
-            if (nodesMap.containsKey(Id)) {
-                Circle circle = edgeCircles.get(n);
+            if (localNodesMap.containsKey(Id)) {
+                Circle circle = new Circle();
                 circle.setCenterX(xCoordOnTopElement(n.getX()));
                 circle.setCenterY(yCoordOnTopElement(n.getY()));
                 circle.setRadius(15);
                 circle.setFill(Color.YELLOW);
                 onTopOfTopElements.getChildren().add(circle);
-
-                if (textLevels != null) {
-                    final double[] rotation = {1}; // in radians
-                    AtomicReference<Double> x = new AtomicReference<>((double) 0);
-                    AtomicReference<Double> y = new AtomicReference<>((double) 0);
-                    AtomicInteger ic = new AtomicInteger();
-                    Font font = Font.font("Times New Roman", FontWeight.BOLD, FontPosture.REGULAR, 16);
-
-                    if (nodeToTextMap.containsKey(Id)) {
-
-
-                        nodeToTextMap.get(n.getNodeID()).forEach(genuineText -> {
-                            x.set(xCoordOnTopElement((int) (n.getX())) + Math.cos(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-                            y.set(yCoordOnTopElement((int) (n.getY())) + Math.sin(rotation[0]) * hospitalMap.boundsInParentProperty().get().getWidth() * 0.0125);
-                            genuineText.setX(x.get());
-                            genuineText.setY(y.get());
-                            genuineText.setFill(Color.RED);
-                            genuineText.setRotate(rotation[0]);
-                            genuineText.setFont(font);
-                            onTopOfTopElements.getChildren().add(genuineText);
-                            rotation[0] += 1;
-                        });
-                    }
-                }
             }
         });
         localEdges.forEach(e -> { // For edge in localEdges
-            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist
-                if (onScreen(nodesMap.get(e.getStartNode())) || onScreen(nodesMap.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
-                    double startX = xCoordOnTopElement(nodesMap.get(e.getStartNode()).getX());
-                    double startY = yCoordOnTopElement(nodesMap.get(e.getStartNode()).getY());
-                    double endX = xCoordOnTopElement(nodesMap.get(e.getEndNode()).getX());
-                    double endY = yCoordOnTopElement(nodesMap.get(e.getEndNode()).getY());
+            if (localNodesMap.containsKey(e.getStartNode()) && localNodesMap.containsKey(e.getEndNode())) { // If nodes exist
+                if (onScreen(localNodesMap.get(e.getStartNode())) || onScreen(localNodesMap.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
+                    double startX = xCoordOnTopElement(localNodesMap.get(e.getStartNode()).getX());
+                    double startY = yCoordOnTopElement(localNodesMap.get(e.getStartNode()).getY());
+                    double endX = xCoordOnTopElement(localNodesMap.get(e.getEndNode()).getX());
+                    double endY = yCoordOnTopElement(localNodesMap.get(e.getEndNode()).getY());
 
                     if (draggedNode != null && e.getStartNode().equals(draggedNode.getNodeID())) {
                         startX = draggedCircle.getCenterX();
@@ -356,15 +444,10 @@ public class MapDisplay implements LevelChangeListener {
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
 
-        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Process click events
+        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
-        addEscListener(addNodeField);
-        addEscListener(addEdgeField);
-        addEscListener(editNode);
-        addEscListener(deleteEdge);
-        addEscListener(rightClick);
-        addEscListener(anchor);
+        addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
         zooM.zoomAndPan();
     }
 
@@ -377,6 +460,12 @@ public class MapDisplay implements LevelChangeListener {
                 }
             }
         });
+    }
+
+    private void addEscListeners(javafx.scene.Node... _toAdd) {
+        for (javafx.scene.Node node : _toAdd) {
+            addEscListener(node);
+        }
     }
 
     public void hidePopups() {
@@ -419,7 +508,16 @@ public class MapDisplay implements LevelChangeListener {
         fileFxHeightRatio = mapHeight / fileHeight;
     }
 
-    public double xCoordOnTopElement(int x) {
+    private int xGridSnap(int _x) {
+        return (int) Math.round((double) _x / xGridSize) * xGridSize;
+    }
+
+    private int yGridSnap(int _y) {
+        return (int) Math.round((double) _y / yGridSize) * yGridSize;
+    }
+
+    public double xCoordOnTopElement(int _x) {
+        int x = xGridSnap(_x);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -456,10 +554,11 @@ public class MapDisplay implements LevelChangeListener {
     /**
      * for the scaling the displayed nodes on the map
      *
-     * @param y the y coordinate of the anchor pane, top element
+     * @param _y the y coordinate of the anchor pane, top element
      * @return the scaled y coordinate
      */
-    public double yCoordOnTopElement(int y) {
+    public double yCoordOnTopElement(int _y) {
+        int y = yGridSnap(_y);
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -512,76 +611,64 @@ public class MapDisplay implements LevelChangeListener {
      * Pull from LocalStorage and refresh data
      */
     void refreshData() {
+        doubleEdges.clear();
+        portalNodeMap.clear();
+        edgesBetweenFloors.clear();
         nodeToTextMap = new HashMap<>();
         allText = new ArrayList<>();
         nodes = LocalStorage.getInstance().getNodes(); // Get nodes from LocalStorage
         localNodes = new ArrayList<>(); // Reset localNodes
+        nodesMap.clear();
         nodes.forEach(n -> { // For node in nodes
             if (nodeWithinSpec(n)) { // If node is within spec (IE: building/floor)
                 localNodes.add(n); // Add to local nodes
             }
-            if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
-                Circle newCircle = new Circle(); //new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()),12);
-                edgeCircles.put(n, newCircle);
-
-                Text text = new Text();
-                // text.setTextFill(Color.web("#ff0000", 0.8));
-
-                //  text.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-
-                textToNodeMap.put(text, n);
-                portalNodeMap.put(n.getNodeID(), n);
-                // edgeTextList.add(text);
-                textLevels.put(n, new ArrayList<>());
-            }
+            nodesMap.put(n.getNodeID(), n);
         });
 
-        nodesMap.clear(); // CLear the node map
+        localNodesMap.clear(); // CLear the node map
         localNodes.forEach(n -> { // For node in localNodes
-            nodesMap.put(n.getNodeID(), n); // Add node to nodesMap
+            localNodesMap.put(n.getNodeID(), n); // Add node to localNodesMap
         });
 
         edges = LocalStorage.getInstance().getEdges(); // Get edges from LocalStorage
         localEdges = new ArrayList<>(); // Reset localEdges
         edges.forEach(e -> { // For edge in edges
-            int toNodeIndex = nodes.indexOf(new Node(e.getEndNode(), 0, 0));
-            int fromNodeIndex = nodes.indexOf(new Node(e.getStartNode(), 0, 0));
-            // Label label = edgeLabel.get(labelCounter.getAndIncrement());
-
-            if (toNodeIndex != -1 && fromNodeIndex != -1 && !(nodes.get(fromNodeIndex).getFloor().equals(nodes.get(toNodeIndex).getFloor()))) {
-                if (!nodeToTextMap.containsKey(e.getEndNode())) {
-                    nodeToTextMap.put(e.getEndNode(), new ArrayList<>());
-                }
-//                          textLevels.put(nodeToTextMap.get(nodes.get(toNodeIndex)), new ArrayList<>());
-//                      }
-                if (!nodeToTextMap.containsKey(e.getStartNode())) {
-                    nodeToTextMap.put(e.getStartNode(), new ArrayList<Text>());
-                }
-//                if(textLevels.get(nodeToTextMap.get(nodes.get(fromNodeIndex)))== null){
-//                    textLevels.put(nodeToTextMap.get(nodes.get(fromNodeIndex)), new ArrayList<>());
-//                }
-//                      if(nodeToTextMap.containsKey(nodes.get(toNodeIndex)) && nodeToTextMap.containsKey(nodes.get(fromNodeIndex))){
-
-                textLevels.get(portalNodeMap.get(e.getEndNode())).add(e.getStartNode().substring(e.getStartNode().length() - 2));
-
-                Text newText = new Text(e.getStartNode().substring(e.getStartNode().length() - 2));
-                nodeToTextMap.get(e.getEndNode()).add(newText);//.add(newText);
-                allText.add(newText);
-                textLevels.get(portalNodeMap.get(e.getStartNode())).add(e.getEndNode().substring(e.getEndNode().length() - 2));
-                Text otherText = new Text(e.getEndNode().substring(e.getEndNode().length() - 2));
-                nodeToTextMap.get(e.getStartNode()).add(otherText);
-                allText.add(otherText);
-                //  nodeToTextMap.put(e.getStartNode(), otherText);
-                textToEdgeMap.put(newText, e);
-                textToEdgeMap.put(otherText, e);
-            }
-            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) { // If nodes exist in nodes map
+            if (localNodesMap.containsKey(e.getStartNode()) && localNodesMap.containsKey(e.getEndNode())) { // If nodes exist in nodes map
                 /* We don't have to check if the start and end nodes
-                are within spec as all nodes in nodesMap are in spec. */
+                are within spec as all nodes in localNodesMap are in spec. */
                 localEdges.add(e); // Add edge to local edges
             }
-        });
 
+            if (nodesMap.containsKey(e.getStartNode()) && nodesMap.containsKey(e.getEndNode())) {
+                Node startNode = nodesMap.get(e.getStartNode());
+                Node endNode = nodesMap.get(e.getEndNode());
+                if (!startNode.getFloor().equals(endNode.getFloor())) {
+                    if (edgesBetweenFloors.containsKey(startNode)) {
+                        edgesBetweenFloors.get(startNode).add(e);
+                        doubleEdges.put(e.getEdgeID(), e);
+                        portalNodeMap.put(startNode.getNodeID(), startNode);
+                    } else {
+                        ArrayList<Edge> edgeArray = new ArrayList<>();
+                        edgeArray.add(e);
+                        edgesBetweenFloors.put(startNode, edgeArray);
+                        doubleEdges.put(e.getEdgeID(), e);
+                        //portalNodeMap.put(startNode.getNodeID(), nodesMap.get(startNode.getNodeID()));
+                    }
+                    if (edgesBetweenFloors.containsKey(endNode)) {
+                        Edge newEdge = new Edge(endNode.getNodeID() + "_" + startNode.getNodeID(), endNode.getNodeID(), startNode.getNodeID());
+                        edgesBetweenFloors.get(endNode).add(newEdge);
+                        doubleEdges.put(newEdge.getEdgeID(), newEdge);
+                    } else {
+                        Edge newEdge = new Edge(endNode.getNodeID() + "_" + startNode.getNodeID(), endNode.getNodeID(), startNode.getNodeID());
+                        ArrayList<Edge> edgeArray = new ArrayList<>();
+                        edgeArray.add(newEdge);
+                        edgesBetweenFloors.put(endNode, edgeArray);
+                        doubleEdges.put(newEdge.getEdgeID(), newEdge);
+                    }
+                }
+            }
+        });
         edgesMap.clear(); // Clear edge map
         localEdges.forEach(e -> { // For edge in localEdges
             edgesMap.put(e.getEdgeID(), e); // Add edge to edgesMap
@@ -606,11 +693,32 @@ public class MapDisplay implements LevelChangeListener {
      * @param t Mouse Event
      */
     public void processClick(MouseEvent t, boolean dragged) {
-        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            return; // Don't process clicks outside of the map editor.
-        }
         if (dragged) {
             return;
+        }
+        if (LoadFXML.getCurrentWindow().equals("navBar")) {
+            if (t.getTarget() instanceof Circle) {
+                if (endNode != null) {
+                    navigation.cancelNavigation();
+                    return;
+                }
+                if (startNode == null) {
+                    ((Circle) t.getTarget()).setFill(Color.RED);
+                    ((Circle) t.getTarget()).setRadius(12);
+                    startNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential start node for pathfinding
+                    navigation.setFromCombo(startNode);
+                } else {
+                    ((Circle) t.getTarget()).setFill(Color.RED);
+                    endNode = renderedNodeMap.get((Circle) t.getTarget()); // Get potential end node for pathfinding
+                    ((Circle) t.getTarget()).setRadius(12);
+                    navigation.setToCombo(endNode);
+                }
+                return;
+            }
+        }
+        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+            // System.out.println("i got in here though");
+            return; // Don't process clicks outside of the map editor.
         }
         if (t.getButton() == MouseButton.SECONDARY) {
             processRightClick(t);
@@ -620,32 +728,33 @@ public class MapDisplay implements LevelChangeListener {
         }
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
-            if (!start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-                start = true;
-                sNode = renderedNodeMap.get(((Circle) t.getTarget()));
-                System.out.println("start " + start);
-            } else if (!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-                fNode = renderedNodeMap.get(((Circle) t.getTarget()));
-                end = true;
-                System.out.println("end " + end);
-            }
-            if (start && end) {
-                Submit.getInstance().addEdge(new Edge(sNode.getNodeID() + "_" + fNode.getNodeID(), sNode.getNodeID(), fNode.getNodeID()));
-                System.out.println("edge submitted");
-                refreshData();
-                renderMap();
-                start = false;
-                end = false;
-                fNode = null;
-                sNode = null;
-                floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-                floor2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-                floor3Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-                L1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-                L2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-                groundBttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-                return;
-            }
+
+//            if (!start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
+//                start = true;
+//                sNode = renderedNodeMap.get(((Circle) t.getTarget()));
+//                System.out.println("start " + start);
+//            } else if (!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
+//                fNode = renderedNodeMap.get(((Circle) t.getTarget()));
+//                end = true;
+//                System.out.println("end " + end);
+//            }
+//            if (start && end) {
+//                Submit.getInstance().addEdge(new Edge(sNode.getNodeID() + "_" + fNode.getNodeID(), sNode.getNodeID(), fNode.getNodeID()));
+//                System.out.println("edge submitted");
+//                refreshData();
+//                renderMap();
+//                start = false;
+//                end = false;
+//                fNode = null;
+//                sNode = null;
+//                floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+//                floor2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+//                floor3Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
+//                L1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+//                L2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
+//                groundBttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+//                return;
+//            }
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
                 hidePopups(); // Hide all popups
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
@@ -681,16 +790,16 @@ public class MapDisplay implements LevelChangeListener {
         addNodeField.setVisible(true); // Show the add node popup
 
         // Relative to mouse
-        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
             addNodeField.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             addNodeField.setTranslateY(t.getY() - addNodeField.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             addNodeField.setTranslateX(t.getX()); // Show popup to the right
-        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             addNodeField.setTranslateX(t.getX() - (0.5 * addNodeField.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             addNodeField.setTranslateX(t.getX() - addNodeField.getWidth()); // Show popup to the left
@@ -726,7 +835,7 @@ public class MapDisplay implements LevelChangeListener {
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Text) {
             Edge toRemove = textToEdgeMap.get(t.getTarget());
-            System.out.println("Gotcha");
+            //System.out.println("Gotcha");
             Submit.getInstance().removeEdge(toRemove);
             refreshData();
             renderMap();
@@ -745,19 +854,425 @@ public class MapDisplay implements LevelChangeListener {
         }
     }
 
+    private void disableButtons(JFXButton... _toDisable) {
+        for (JFXButton btn : _toDisable) {
+            btn.setDisable(true);
+        }
+    }
+
     /**
      * Hide the edit node popup
      */
     private void hideEditNodePopup() {
         editNode.setVisible(false); // Hide the popup
         editNode.setPickOnBounds(false); // Set clickable to false
-
+        edgeBetweenFloors.setVisible(false); // Hide the popup
+        edgeBetweenFloors.setPickOnBounds(false); // Set clickable to false
         editNodeBuilding.setText(""); // Reset the node building field
         editNodeType.setText(""); // Reset the node type field
         editNodeShortName.setText(""); // Reset the node short name field
         editNodeLongName.setText(""); // Reset the node long name field
-
         selectedNode = null; // Reset the selected node
+        //disableButtons(edge_1, edge_2, edge_3, edge_g, edge_l1, edge_l2); // Disable edge buttons
+        edge_1.setDisable(false);
+        edge_2.setDisable(false);
+        edge_3.setDisable(false);
+        edge_g.setDisable(false);
+        edge_l1.setDisable(false);
+        edge_l2.setDisable(false);
+        edge_l2.setTextFill(Paint.valueOf("ddd8d8"));
+        edge_l1.setTextFill(Paint.valueOf("ddd8d8"));
+        edge_g.setTextFill(Paint.valueOf("ddd8d8"));
+        edge_2.setTextFill(Paint.valueOf("ddd8d8"));
+        edge_1.setTextFill(Paint.valueOf("ddd8d8"));
+        edge_3.setTextFill(Paint.valueOf("ddd8d8"));
+
+    }
+
+    @FXML
+    void press1(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_1.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("1")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+                 ) {if(n.getFloor().equals("1")){
+                     double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                     if (temporary<distance){
+                         tempNode2 = n;
+                         distance = temporary;
+                     }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+    }
+
+    @FXML
+    void press2(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_2.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("2")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("2")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+
+    }
+
+    @FXML
+    void press3(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_3.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("3")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("3")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+
+
+    }
+
+
+    @FXML
+    void pressG(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_g.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("G")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("G")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+
+    }
+
+
+    @FXML
+    void pressL1(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_l1.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L1")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("L1")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+    }
+
+
+    @FXML
+    void pressL2(ActionEvent event) {
+        tempNode = selectedNode;
+        if (edge_l2.getTextFill().toString().equals("0x9e9e9eff")) {
+            if (edgesBetweenFloors.containsKey(tempNode)) {
+                for (Edge e : edgesBetweenFloors.get(tempNode)
+                ) {
+                    //System.out.println(e.getEdgeID());
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L2")) {
+                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
+                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
+                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
+                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
+                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+
+                    }
+                }
+            }
+
+
+        } else {
+            Node tempNode2 = selectedNode;
+            double distance = 100000000.0;
+            listOfNodes = LocalStorage.getInstance().getNodes();
+            for (Node n: listOfNodes
+            ) {if(n.getFloor().equals("L2")){
+                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
+                if (temporary<distance){
+                    tempNode2 = n;
+                    distance = temporary;
+                }
+            }
+
+            }
+            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Submit.getInstance().addEdge(newEdge);
+            if(edgesBetweenFloors.containsKey(tempNode2)){
+                edgesBetweenFloors.get(tempNode2).add(newEdge);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge);
+                edgesBetweenFloors.put(tempNode2, list);
+            }
+            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Submit.getInstance().addEdge(newEdge2);
+            if(edgesBetweenFloors.containsKey(tempNode)){
+                edgesBetweenFloors.get(tempNode).add(newEdge2);
+            } else
+            {
+                ArrayList<Edge> list = new ArrayList<>();
+                list.add(newEdge2);
+                edgesBetweenFloors.put(tempNode, list);
+            }
+
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the data from LocalStorage
+        renderMap(); // Render/refresh the map (with the updated data)
+
     }
 
     /**
@@ -774,22 +1289,56 @@ public class MapDisplay implements LevelChangeListener {
         editNodeShortName.setText(_toEdit.getShortName()); // Set the short name field
         editNodeLongName.setText(_toEdit.getLongName()); // Set the long name field
 
+        // TODO enable edge buttons
+        if (edgesBetweenFloors.get(_toEdit) != null) {
+            edgesBetweenFloors.get(_toEdit).forEach(e -> {
+                switch (nodesMap.get(e.getEndNode()).getFloor()) {
+                    case "3":
+                        edge_3.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+                    case "2":
+                        edge_2.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+                    case "1":
+                        edge_1.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+                    case "g":
+                        edge_g.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+                    case "L1":
+                        edge_l1.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+                    case "L2":
+                        edge_l2.setTextFill(Paint.valueOf("9e9e9e"));
+                        break;
+
+                }
+            });
+        }
+
         editNode.setVisible(true); // Set visible to true
+        edgeBetweenFloors.setVisible(true); // Set visible to true
         editNode.setPickOnBounds(true); // Set clickable to true
+        edgeBetweenFloors.setPickOnBounds(true); // Set clickable to true
         // Relative to mouse
-        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
             editNode.setTranslateY(t.getY() + 20); // Show above
+            edgeBetweenFloors.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             editNode.setTranslateY(t.getY() - editNode.getHeight() - 20); // Show below
+            edgeBetweenFloors.setTranslateY(t.getY() - editNode.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             editNode.setTranslateX(t.getX()); // Show popup to the right
-        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+            edgeBetweenFloors.setTranslateX(t.getX() + editNode.getWidth() + 6); // Show popup to the right
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             editNode.setTranslateX(t.getX() - (0.5 * editNode.getWidth())); // Show popup in the center
+            edgeBetweenFloors.setTranslateX(t.getX() + (editNode.getWidth() / 2) + 6); // Show popup to the right
         } else { // Else (if mouse is in the right 1/5th)
             editNode.setTranslateX(t.getX() - editNode.getWidth()); // Show popup to the left
+            edgeBetweenFloors.setTranslateX(t.getX() - editNode.getWidth() - edgeBetweenFloors.getWidth() - 6); // Show popup to the left
         }
     }
 
@@ -807,16 +1356,16 @@ public class MapDisplay implements LevelChangeListener {
         deleteEdge.setVisible(true); // Show the remove edge popup
         deleteEdge.setPickOnBounds(true); // Set clickable to true
         // Relative to mouse
-        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
             deleteEdge.setTranslateY(t.getY() + 20); // Show above
         } else { // Else (if mouse is in top half of screen)
             deleteEdge.setTranslateY(t.getY() - deleteEdge.getHeight() - 20); // Show below
         }
 
         // Relative to mouse
-        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             deleteEdge.setTranslateX(t.getX()); // Show popup to the right
-        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             deleteEdge.setTranslateX(t.getX() - (0.5 * deleteEdge.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             deleteEdge.setTranslateX(t.getX() - deleteEdge.getWidth()); // Show popup to the left
@@ -846,16 +1395,16 @@ public class MapDisplay implements LevelChangeListener {
         rightClick.setPickOnBounds(true); // Set clickable to true
 
         // Relative to mouse
-        if (t.getY() < anchor.getHeight() / 2) { // If mouse is in bottom half of screen
+        if (t.getY() < onTopOfTopElements.getHeight() / 2) { // If mouse is in bottom half of screen
             rightClick.setTranslateY(t.getY()); // Show above
         } else { // Else (if mouse is in top half of screen)
             rightClick.setTranslateY(t.getY() - rightClick.getHeight()); // Show below
         }
 
         // Relative to mouse
-        if (anchor.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
+        if (onTopOfTopElements.getWidth() * 0.2 > t.getX()) { // If mouse is in the left 1/5th of screen
             rightClick.setTranslateX(t.getX()); // Show popup to the right
-        } else if (anchor.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
+        } else if (onTopOfTopElements.getWidth() * 0.8 > t.getX()) { // Else if it's in the middle
             rightClick.setTranslateX(t.getX() - (0.5 * rightClick.getWidth())); // Show popup in the center
         } else { // Else (if mouse is in the right 1/5th)
             rightClick.setTranslateX(t.getX() - rightClick.getWidth()); // Show popup to the left
@@ -934,19 +1483,64 @@ public class MapDisplay implements LevelChangeListener {
         edgeIdPreview.setText(startNode.getNodeID() + "_" + endNode.getNodeID()); // Prefill edgeId (not editable)
 
         // Relative to mouse
-        if (y < anchor.getHeight() / 2) { // If mouse is in the bottom half of screen
+        if (y < onTopOfTopElements.getHeight() / 2) { // If mouse is in the bottom half of screen
             addEdgeField.setTranslateY(y + 20); // Show popup above
         } else { // Else (if mouse is in top half of screen)
             addEdgeField.setTranslateY(y - addEdgeField.getHeight() - 20); // Show popup below
         }
 
-        if (anchor.getWidth() * 0.2 > x) { // If mouse is in the left 1/5th of screen
+        if (onTopOfTopElements.getWidth() * 0.2 > x) { // If mouse is in the left 1/5th of screen
             addEdgeField.setTranslateX(x); // Show popup to the right
-        } else if (anchor.getWidth() * 0.8 > x) { // Else if it's in the middle
+        } else if (onTopOfTopElements.getWidth() * 0.8 > x) { // Else if it's in the middle
             addEdgeField.setTranslateX(x - (0.5 * addEdgeField.getWidth())); // Show popup in the center
         } else { // Else if it's in the right 1/5th of screen
             addEdgeField.setTranslateX(x - addEdgeField.getWidth()); // Show popup to the left
         }
+    }
+
+    @FXML
+    void addBetween() {
+        addBtwn.setVisible(true);
+        Edge newEdge = new Edge(tempNode.getNodeID() + "_" + btwnEdge.getValue(), tempNode.getNodeID(), btwnEdge.getValue());
+        Submit.getInstance().addEdge(newEdge);
+        if (edgesBetweenFloors.containsKey(tempNode)) {
+            if (!(edgesBetweenFloors.get(tempNode).contains(tempNode))) {
+                edgesBetweenFloors.get(tempNode).add(newEdge);
+            }
+
+        } else {
+            ArrayList<Edge> list = new ArrayList<>();
+            list.add(newEdge);
+            edgesBetweenFloors.put(tempNode, list);
+        }
+        Edge newEdge2 = new Edge(btwnEdge.getValue() + "_" + tempNode.getNodeID(), btwnEdge.getValue(), tempNode.getNodeID());
+        Submit.getInstance().addEdge(newEdge2);
+        if (edgesBetweenFloors.containsKey(nodesMap.get(btwnEdge.getValue()))) {
+            if (!(edgesBetweenFloors.get(nodesMap.get(btwnEdge.getValue())).contains(newEdge2))) {
+                edgesBetweenFloors.get(nodesMap.get(btwnEdge.getValue())).add(newEdge2);
+            }
+        } else {
+            ArrayList<Edge> list2 = new ArrayList<>();
+            list2.add(newEdge2);
+            edgesBetweenFloors.put(nodesMap.get(btwnEdge.getValue()), list2);
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
+    }
+
+    @FXML
+    void removeBetween() {
+        if (!(comboRemoveBtwn.getValue() == null)) {
+            String otherEdge = doubleEdges.get(comboRemoveBtwn.getValue()).getEndNode() + "_" + doubleEdges.get(comboRemoveBtwn.getValue()).getStartNode();
+            edgesBetweenFloors.remove(tempNode, edgesMap.get(comboRemoveBtwn.getValue()));
+            Submit.getInstance().removeEdge(doubleEdges.get(comboRemoveBtwn.getValue())); // Remove the selected edge
+            edgesBetweenFloors.remove(nodesMap.get(doubleEdges.get(comboRemoveBtwn.getValue()).getEndNode()), otherEdge);
+            Submit.getInstance().removeEdge(doubleEdges.get(otherEdge)); // Remove the selected edge
+        }
+        hidePopups(); // Hide all popups
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
     }
 
     /**
@@ -999,31 +1593,63 @@ public class MapDisplay implements LevelChangeListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-
+        pathTransition = new PathTransition();
+        Polygon triangle = new Polygon();
+        triangle.getPoints().setAll(
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
+        );
+        triangle.setFill(Color.RED); //RED
+        triangle.setStroke(Color.RED); //RED
+        triangle.setStrokeWidth(1.0);
+        triangle.setOpacity(1.0);
+        onTopOfTopElements.getChildren().add(triangle);
+        pathTransition.setDuration(Duration.seconds(4));
+        pathTransition.setPath(tonysPath);
+        pathTransition.setNode(triangle);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(PathTransition.INDEFINITE);
+        pathTransition.play();
     }
 
     /**
      * toggles the navigation window
      */
     public void toggleNav() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         LevelManager.getInstance().addListener(this);
         clearMap(); // clear the map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        Navigation navigation = new Navigation(this); // Load controller
+        navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
+        ButtonManager.selectButton(navButton);
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
             return;
         }
+        navButton.getStyleClass().add("nav-btn-selected");
         displayHotspots(0.8); // Display nodes at 0.8 (80%) opacity
     }
+
+    private void remove_class(String _class, javafx.scene.Node... _remove) {
+        for (javafx.scene.Node node : _remove) {
+            node.getStyleClass().remove(_class);
+        }
+    }
+
 
     /**
      * Clear the map
      */
     public void clearMap() {
+        remove_class("nav-btn-selected", navButton, checkButton, reqButton);
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         currentPath.clear();
@@ -1035,12 +1661,17 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        System.out.println(LoadFXML.getCurrentWindow());
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
-
         clearMap(); // Clear map
         //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
+        ButtonManager.selectButton(reqButton);
     }
 
 
@@ -1048,6 +1679,11 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the login window
      */
     public void openLogin() {
+        LoadFXML.setCurrentHelp("");
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
+        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(340);
         clearMap(); // Clear map
         // currentPath= new ArrayList();
@@ -1056,18 +1692,23 @@ public class MapDisplay implements LevelChangeListener {
             LoadFXML.getInstance().loadWindow("Login", "loginBar", popPop); // Display login button
         } else { // Else (if user is authenticated)
             AuthenticationManager.getInstance().signOut(); // Display sign out button
+            SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
     }
 
-    /**
-     * toggle the check in window
-     */
-    public void openCheckIn() {
-        popPop.setPrefWidth(657);
-        clearMap(); // Clear map
-        popPop.setPrefWidth(657.0); // Set preferable width to 657
-        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
-    }
+//    /**
+//     * toggle the check in window
+//     */
+//    public void openCheckIn() {
+//        if (navigation != null) {
+//            navigation.cancelNavigation();
+//        }
+//        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
+//        popPop.setPrefWidth(657);
+//        clearMap(); // Clear map
+//        popPop.setPrefWidth(657.0); // Set preferable width to 657
+//        LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
+//    }
 
     /**
      * Triggered by Add Node button
@@ -1090,10 +1731,8 @@ public class MapDisplay implements LevelChangeListener {
 
     /**
      * Triggered by Add Edge button
-     *
-     * @param event Action event
      */
-    public void addEdge(ActionEvent event) {
+    public void addEdge() {
         String edgeId = addEdgeStart.getNodeID() + "_" + addEdgeEnd.getNodeID(); // Create edgeId
         // If the edge (or the reverse edge) already exists
         if (edgesMap.containsKey(edgeId) || edgesMap.containsKey(addEdgeEnd.getNodeID() + "_" + addEdgeStart.getNodeID()) || addEdgeStart.getNodeID().equals(addEdgeEnd.getNodeID())) {
@@ -1147,45 +1786,21 @@ public class MapDisplay implements LevelChangeListener {
         dragEnd = null; // Reset dragEnd
     }
 
-    /**
-     * Load the specified nodes into the database
-     *
-     * @param e Action Event
-     */
     @FXML
-    private void loadNodesCsv(ActionEvent e) {
+    private void loadCSV() {
         FileChooser fileChooser = new FileChooser(); // New file chooser
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
         );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
+        List<File> files = fileChooser.showOpenMultipleDialog(anchor.getScene().getWindow()); // Open file chooser
+        if (files == null) {
             return;
         }
         // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertNodeCsvIntoDatabase(selectedFile.getAbsolutePath());
-        hidePopups(); // Hide all popups
-        refreshData(); // Pull/update data from LocalStorage
-        renderMap(); // Render/refresh the map (with updated data)
-    }
+        files.forEach(f -> {
+            PathFindingDatabaseManager.getInstance().insertNodeOrEdgeCsvIntoDatabase(f.getAbsolutePath());
+        });
 
-    /**
-     * Load the specified edges into the database
-     *
-     * @param e Action Event
-     */
-    @FXML
-    private void loadEdgesCsv(ActionEvent e) {
-        FileChooser fileChooser = new FileChooser(); // New file chooser
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv") // Only allow csv files
-        );
-        File selectedFile = fileChooser.showOpenDialog(anchor.getScene().getWindow()); // Open file chooser
-        if (selectedFile == null) {
-            return;
-        }
-        // Load the csv into the database
-        PathFindingDatabaseManager.getInstance().insertEdgeCsvIntoDatabase(selectedFile.getAbsolutePath());
         hidePopups(); // Hide all popups
         refreshData(); // Pull/update data from LocalStorage
         renderMap(); // Render/refresh the map (with updated data)
@@ -1231,44 +1846,60 @@ public class MapDisplay implements LevelChangeListener {
         hidePopups(); // Hide all popups
     }
 
+    private void resetFloors() {
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+    }
+
     @FXML
     private void setFloor0(ActionEvent e) {
         LevelManager.getInstance().setFloor(0);
-        edgeBetweenFloors();
+        resetFloors();
+        L2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
         LevelManager.getInstance().setFloor(1);
-        edgeBetweenFloors();
+        resetFloors();
+        L1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
         LevelManager.getInstance().setFloor(2);
-        edgeBetweenFloors();
+        resetFloors();
+        groundBttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
         LevelManager.getInstance().setFloor(3);
-        edgeBetweenFloors();
+        resetFloors();
+        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
         LevelManager.getInstance().setFloor(4);
-        edgeBetweenFloors();
+        resetFloors();
+        floor2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
         LevelManager.getInstance().setFloor(5);
-        edgeBetweenFloors();
+        resetFloors();
+        floor3Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @Override
     public void levelChanged(int _level) {
+        // TODO Selected floor should be highlighted
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
@@ -1276,37 +1907,8 @@ public class MapDisplay implements LevelChangeListener {
                 break;
             case "navBar":
                 clearMap();
-                displayHotspots(0.8);
+                displayHotspots(.8);
                 break;
         }
-    }
-    public void edgeBetweenFloors() {
-        if (start) {
-
-            switch (sNode.getFloor()) {
-                case "G":
-                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-
-                case "1":
-                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-                case "2":
-                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-                case "3":
-                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-                case "L2":
-                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-                case "L1":
-                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-                    break;
-
-            }
-
-        }
-
     }
 }

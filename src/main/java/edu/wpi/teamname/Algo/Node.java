@@ -117,6 +117,8 @@ public class Node {
         this.AStarScore = Double.POSITIVE_INFINITY;
     }
 
+    public Node(){}
+
     /**Minimal constructor that loads the x, and y coordinates without loading the edges
      * @param nodeID nodeID for this node
      * @param x x value of the node's location

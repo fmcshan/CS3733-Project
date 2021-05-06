@@ -163,4 +163,48 @@ public class PathFindingDatabaseManager {
         });
         insertEdgeListIntoDatabase(edgeList);
     }
+
+    public void insertNodeOrEdgeCsvIntoDatabase(String file) {
+
+        List<List<String>> allData = CSVOperator.readFile(file);
+        if (allData.size() == 0) { return; }
+        if(allData.get(0).size() == 3) {
+            Set<List<String>> edgesDataAsSet = new HashSet<>(allData); // to avoid duplicate elements
+            allData.clear();
+            allData.addAll(edgesDataAsSet);
+
+            ArrayList<Edge> edgeList = new ArrayList<Edge>();
+            allData.forEach(n -> {
+                edgeList.add(new Edge(
+                        n.get(0),
+                        n.get(1),
+                        n.get(2)
+                ));
+            });
+            insertEdgeListIntoDatabase(edgeList);
+        }
+
+        if(allData.get(0).size() == 8) {
+            Set<List<String>> nodesDataAsSet = new HashSet<>(allData); // to avoid duplicate elements
+            allData.clear();
+            allData.addAll(nodesDataAsSet);
+
+            ArrayList<Node> nodeList = new ArrayList<Node>();
+            allData.forEach(n -> {
+                nodeList.add(new Node(
+                        n.get(0),
+                        Integer.parseInt(n.get(1)),
+                        Integer.parseInt(n.get(2)),
+                        n.get(3),
+                        n.get(4),
+                        n.get(5),
+                        n.get(6),
+                        n.get(7)
+                ));
+            });
+            insertNodeListIntoDatabase(nodeList);
+        } else {
+//            System.out.println("not a proper csv");
+        }
+    }
 }

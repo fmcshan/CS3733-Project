@@ -16,13 +16,13 @@ public class SearchContext {
     /**
      * Interface that allows us to switch between algorithms
      */
-    private IAlgorithm searchAlgorithm;
+    private Algorithm searchAlgorithm;
 
     /**
      * Constructor which we load the search algorithm we'd like to use
      * @param searchAlgorithm the specified search algorithm
      */
-    public SearchContext(IAlgorithm searchAlgorithm){
+    public SearchContext(Algorithm searchAlgorithm){
         this.searchAlgorithm = searchAlgorithm;
     }
 
@@ -30,7 +30,7 @@ public class SearchContext {
      * Switches the search algorithm we'd like to use
      * @param searchAlgorithm the specified search algorithm
      */
-    public void setContext(IAlgorithm searchAlgorithm){
+    public void setContext(Algorithm searchAlgorithm){
         this.searchAlgorithm = searchAlgorithm;
     }
 
@@ -42,17 +42,29 @@ public class SearchContext {
         return searchAlgorithm.getPath();
     }
 
+    public ArrayList<ArrayList<Node>> getAllFloorPaths() {return searchAlgorithm.getAllFloorPaths();}
+
+    public ArrayList<ArrayList<Node>> getFloorPaths(String floor) {return searchAlgorithm.getFloorPaths(floor);}
+
+    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal) {this.searchAlgorithm.loadNodes(nodes, start, goal);}
+
+    public ArrayList<String> getRelevantFloors(){return searchAlgorithm.getRelevantFloors();}
+
     public static void main(String[] args) {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(0), nodes.get(60)));
-        ArrayList<Node> aStarPath = searchAlgorithms.getPath();
-        searchAlgorithms.setContext(new DFS(nodes, nodes.get(0), nodes.get(60)));
-        ArrayList<Node> DFSPath = searchAlgorithms.getPath();
-        searchAlgorithms.setContext(new BFS(nodes, nodes.get(0), nodes.get(60)));
-        ArrayList<Node> BFSPath = searchAlgorithms.getPath();
-        System.out.println("" + aStarPath.size() + " " + DFSPath.size() + " " + BFSPath.size());
+        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(10), nodes.get(76), false));
+        ArrayList<ArrayList<Node>> aStarPaths = searchAlgorithms.getAllFloorPaths();
+        searchAlgorithms.setContext(new DFS(nodes, nodes.get(10), nodes.get(76)));
+        ArrayList<ArrayList<Node>> DFSPaths = searchAlgorithms.getAllFloorPaths();
+        searchAlgorithms.setContext(new BFS(nodes, nodes.get(10), nodes.get(76)));
+        ArrayList<ArrayList<Node>> BFSPaths = searchAlgorithms.getAllFloorPaths();
+        searchAlgorithms.setContext(new Djikstra(nodes, nodes.get(10), nodes.get(76)));
+        ArrayList<ArrayList<Node>> DjikstraPaths = searchAlgorithms.getAllFloorPaths();
+        searchAlgorithms.setContext(new BestFirstSearch(nodes, nodes.get(10), nodes.get(76)));
+        ArrayList<ArrayList<Node>> BestFirstSearchPaths = searchAlgorithms.getAllFloorPaths();
+        System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DjikstraPaths.size() + " " + BestFirstSearchPaths.size());
     }
 
 }

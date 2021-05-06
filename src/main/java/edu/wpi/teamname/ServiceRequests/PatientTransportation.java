@@ -11,6 +11,7 @@ import edu.wpi.teamname.Entities.ServiceRequests.ServiceRequest;
 import edu.wpi.teamname.views.LoadFXML;
 import edu.wpi.teamname.views.Requests;
 import edu.wpi.teamname.views.Success;
+import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -133,6 +134,7 @@ public class PatientTransportation {
         });
     }
 
+
     /**
      * Retrieves success pop up page
      *
@@ -230,6 +232,8 @@ public class PatientTransportation {
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);
             success.loadSuccess("You have successfully submitted the form. Your request will be fulfilled shortly.", successPop);
+
+            ButtonManager.remove_class();
         }
     }
 

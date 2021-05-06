@@ -7,7 +7,7 @@ import java.util.Comparator;
  * Implements the original Comparator class but specifically compares two nodes according to their AStarScore
  * @author Emmanuel Ola
  */
-public class NodeComparator implements Comparator<Node> {
+public class NodeAStarComparator implements Comparator<Node> {
     /** Compares two nodes
      * @param a the first node to be compared
      * @param b the second node to be compared
