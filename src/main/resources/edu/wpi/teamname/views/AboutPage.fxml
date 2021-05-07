@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.defaultBar">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="657.0" style="-fx-background-radius: 15px;">
+         <children>
+            <Label fx:id="title" text="About Page">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </Label>
+            <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="799.0" prefWidth="657.0">
+               <children>
+                  <Label fx:id="desc" lineSpacing="3.0" prefHeight="308.0" prefWidth="557.0" text="This application was created by nine Worcester Polytechnic Institute students taking CS3733 Software Engineering within the WPI Computer Science Department. The course was taught by Professor Wilson Wong, and our team was coached by Michael Clements. This project was in collaboration with Brigham and Women’s Hospital in Boston, MA. The team worked in a class competition to apply Agile development methodologies and software design patterns in Java to create an indoor pathfinding application, map builder, COVID-screening survey, and integrated service request modules for Brigham and Women’s Hospital. The team also added a Support Chat and Google Maps functionality to direct visitors to and from the hospital." textFill="#868686" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="desc11" layoutX="60.0" layoutY="344.0" lineSpacing="3.0" prefHeight="50.0" prefWidth="632.0" text="The team would like to thank Brigham and Women's Hospital and representative Andrew Shinn for their time and input." textFill="#868686" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="desc1" layoutX="35.0" layoutY="10.0" lineSpacing="3.0" prefHeight="50.0" prefWidth="632.0" text="The Brigham &amp; Women's Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." textFill="#868686" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutY="717.0" prefHeight="183.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#closeWindow" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Close" textFill="#bbbbbb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
