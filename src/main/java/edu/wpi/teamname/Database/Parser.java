@@ -96,7 +96,10 @@ public class Parser {
                 reasonList,
                 _registration.getString("phone"),
                 _registration.getBoolean("ack"),
-                _registration.getDouble("ackTime")
+                _registration.getDouble("ackTime"),
+                _registration.getBoolean("cleared"),
+                _registration.getInt("rating"),
+                _registration.getString("details")
         );
     };
 
