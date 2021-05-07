@@ -1628,7 +1628,7 @@ public class MapDisplay implements LevelChangeListener {
         navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
-        ButtonManager.selectButton(navButton);
+        ButtonManager.selectButton(navButton, "nav-btn-selected", ButtonManager.buttons);
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
@@ -1670,7 +1670,7 @@ public class MapDisplay implements LevelChangeListener {
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        ButtonManager.selectButton(reqButton);
+        ButtonManager.selectButton(reqButton, "nav-btn-selected", ButtonManager.buttons);
         if (LoadFXML.getCurrentWindow().equals("reqBar")) {
             System.out.println("remove blue");
             ButtonManager.remove_class();
@@ -1861,44 +1861,44 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor0(ActionEvent e) {
+        ButtonManager.selectButton(L2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(0);
         resetFloors();
-        L2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
+        ButtonManager.selectButton(L1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(1);
         resetFloors();
-        L1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
+        ButtonManager.selectButton(groundBttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(2);
         resetFloors();
-        groundBttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
+        ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(3);
         resetFloors();
-        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
+        ButtonManager.selectButton(floor2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(4);
         resetFloors();
-        floor2Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
+        ButtonManager.selectButton(floor3Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(5);
         resetFloors();
-        floor3Bttn.setTextFill(Paint.valueOf("ddd8d8"));
     }
 
     @Override

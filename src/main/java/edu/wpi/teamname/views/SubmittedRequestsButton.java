@@ -20,7 +20,7 @@ public class SubmittedRequestsButton {
     @FXML
     void openSubmittedRequests() {
         SceneManager.getInstance().getDefaultPage().toggleRequest();
-        ButtonManager.selectButton(submittedReqButton);
+        ButtonManager.selectButton(submittedReqButton, "nav-btn-selected", ButtonManager.buttons);
         if (LoadFXML.getCurrentWindow().equals("")) {
             ButtonManager.remove_class();
         }

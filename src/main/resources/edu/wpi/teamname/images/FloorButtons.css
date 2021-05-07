@@ -1,0 +1,31 @@
+.button {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-font-size: 22;
+    -fx-text-fill: #9e9e9e;
+    -fx-font-weight: 800;
+}
+
+.button:hover {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 22;
+    -fx-font-weight: 800;
+}
+
+.floor-btn-selected {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 22;
+    -fx-font-weight: 800;
+}
+
+.button:selected {
+    -fx-background-color: #0067b1;
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-font-size: 22;
+    -fx-font-weight: 800;
+}

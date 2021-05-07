@@ -493,7 +493,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
-        ButtonManager.selectButton(checkButton);
+        ButtonManager.selectButton(checkButton, "nav-btn-selected",  ButtonManager.buttons);
         if (LoadFXML.getCurrentWindow().equals("surveyBar") || LoadFXML.getCurrentWindow().equals("checkOutBar")) {
             ButtonManager.remove_class();
         }
