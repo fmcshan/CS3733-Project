@@ -85,8 +85,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.buttons);
-        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
         SceneManager.getInstance().setDefaultPage(this);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
@@ -297,7 +296,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void initGoogleForm() {
-        System.out.println("called");
         zooM.zoomAndPan();
     }
 
@@ -380,7 +378,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     sentMessage.setWrappingWidth(255);
                 }
 
-                System.out.println(LoadFXML.getCurrentWindow());
                 //if chat bot is not open, only show response message and write a reply
                 if (!opened) {
                     Text sentMessage2 = new Text();
@@ -489,8 +486,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     public void openCheckIn() {
-        System.out.println(LoadFXML.getCurrentWindow().equals(""));
-        System.out.println(LoadFXML.getCurrentWindow());
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
