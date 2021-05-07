@@ -337,10 +337,9 @@ public class Navigation implements LevelChangeListener {
                 System.out.println("hello");
                 return;
             }
-//            if (toCombo.getValue() == null || fromCombo.getValue() == null) {
-//                System.out.println("goodbye");
-//                return;
-//            }
+            if (toCombo.getValue() == null || fromCombo.getValue() == null) {
+                return;
+            }
             mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true); // correct path, incorrect startEnd
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false); //correct startEnd
         }
