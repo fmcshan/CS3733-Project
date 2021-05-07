@@ -1592,18 +1592,39 @@ public class MapDisplay implements LevelChangeListener {
                     }
                 });
             }
+            //minX[0] = minX[0] * 1427/(1427-370);
+            System.out.println("X" + minX[0]);
+            System.out.println("X" + maxX[0]);
+            System.out.println("Y" + minY[0]);
+            System.out.println("Y" + maxY[0]);
             double diffX = maxX[0] - minX[0];
             double diffY = maxY[0] - minY[0];
             double midX = (maxX[0] + minX[0]) / 2;
             double midY = (maxY[0] + minY[0]) / 2;
-            scaledX = midX - (diffX / 2) * 1.2 - 1200;
-            scaledY = midY - (diffY / 2) - 500;
-            scaledWidth = diffX * 1.2 + 1500;
-            scaledHeight = diffY * 1.2 + 1500 * 3400 / 5000;
-            System.out.println(scaledX);
-            System.out.println(scaledY);
-            System.out.println(scaledWidth);
-            System.out.println(scaledHeight);
+            System.out.println(diffX);
+            System.out.println(diffY);
+            System.out.println(midX);
+            System.out.println(midY);
+            double ref = 0;
+            if (diffX * 3400/5000  > diffY) {
+                ref = diffX * 3400/5000;
+            } else {
+                ref = diffY;
+            }
+            double spacing = 0.4; //how much blank space around
+            double shrink = 0.4; // just like my brain
+            scaledWidth = ref * 5000/3400 * (1 + spacing);
+            scaledHeight = ref * (1 + spacing);
+            scaledX = midX - scaledWidth / 2;
+            scaledY = midY - scaledHeight / 2;
+//            scaledWidth = diffX + 2 * spacing * (2500 - midX) + diffX * 370 /1427; // +diffX for navBar clearance
+//            scaledHeight = diffY + 2 * spacing * (1700 - midY);
+//            scaledX = minX[0] - spacing * (2500 - midX) - scaledWidth * 370 /1427; // -370 for navBar clearance
+//            scaledY = minY[0] - spacing * (1700 - midY); // map/2  = 1700
+            System.out.println(" " + scaledX);
+            System.out.println(" " + scaledY);
+            System.out.println(" " + scaledWidth);
+            System.out.println(" " + scaledHeight);
             zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
             for (ArrayList<Node> listOfNode : _listOfNodes) {
                 Node firstNode = listOfNode.get(0);
