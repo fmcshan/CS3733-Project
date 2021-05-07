@@ -210,10 +210,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             zooM.zoomAndPan();
             return;
         }
-
-        initMapEditor();
-
         LoadFXML.setCurrentWindow("mapEditorBar");
+        initMapEditor();
     }
 
     /**

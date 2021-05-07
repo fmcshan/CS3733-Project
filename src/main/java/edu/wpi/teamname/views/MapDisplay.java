@@ -253,6 +253,7 @@ public class MapDisplay implements LevelChangeListener {
      * @param _opacity Node opacity
      */
     public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
+        System.out.println("enter display nodes");
         resizingInfo(); // Set resizing info
 
         ArrayList<Node> nodes = _nodes;
@@ -275,6 +276,7 @@ public class MapDisplay implements LevelChangeListener {
         });
 
         nodes.forEach(n -> { // For each node in localNodes
+            System.out.println("enter for loop");
 
             if (n.getNodeType().equals("HALL") && !showHall) {
                 return;
@@ -284,6 +286,7 @@ public class MapDisplay implements LevelChangeListener {
                 return;
             }
             if (onScreen(n)) {
+                System.out.println("on screen");
                 Tooltip tooltip = new Tooltip(n.getLongName());
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
@@ -331,10 +334,14 @@ public class MapDisplay implements LevelChangeListener {
                         });
 
                 if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                    System.out.println("im here");
                     return; // Don't process drags outside of the map editor.
                 }
 
+                System.out.println("hello");
+
                 circle.setOnMouseDragged(e -> {
+                    System.out.println("here");
                     nodeBeingDragged = true;
                     draggedCircle = (Circle) e.getTarget();
                     draggedCircle.setCenterX(e.getX());

@@ -108,7 +108,6 @@ public class ZoomAndPan {
             page.hidePopups();
             page.drawPath(page.currentPath);
             page.displayHotspots(0.8);
-
         }
     }
 
