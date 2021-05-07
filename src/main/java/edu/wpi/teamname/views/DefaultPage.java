@@ -187,7 +187,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
-        LoadFXML.setCurrentHelp("");
         helpButton.setVisible(true);
         if (navigation != null) {
             navigation.cancelNavigation();
@@ -209,7 +208,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
             zooM.zoomAndPan();
-            ButtonManager.remove_class();
             return;
         }
 
@@ -490,17 +488,21 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     public void openCheckIn() {
+        System.out.println(LoadFXML.getCurrentWindow().equals(""));
+        System.out.println(LoadFXML.getCurrentWindow());
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
+        ButtonManager.selectButton(checkButton);
+        if (LoadFXML.getCurrentWindow().equals("surveyBar") || LoadFXML.getCurrentWindow().equals("checkOutBar")) {
+            ButtonManager.remove_class();
+        }
         if (checkButton.getText().equals("Check-In")) {
             LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
         } else {
-            LoadFXML.getInstance().loadWindow("UserCheckout", "checkoutBar", popPop); // Load registration window
+            LoadFXML.getInstance().loadWindow("UserCheckout", "checkOutBar", popPop); // Load registration window
         }
         SceneManager.getInstance().getDefaultPage().setHelpButton(false);
-        checkButton.getStyleClass().add("nav-btn-selected");
-        ButtonManager.selectButton(checkButton);
     }
 
     public void setHelpButton(boolean value) {

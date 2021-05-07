@@ -22,5 +22,8 @@ public class SubmittedRegistrationsButton {
     public void openSubmittedRegistrations() {
         SceneManager.getInstance().getDefaultPage().toggleRegistration();
         ButtonManager.selectButton(regButton);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 }

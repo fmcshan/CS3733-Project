@@ -514,7 +514,7 @@
                      <graphic>
                         <VBox alignment="CENTER">
                            <children>
-                              <MaterialDesignIconView fx:id="checkIcon" fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36">
+                              <MaterialDesignIconView fx:id="checkIcon" fill="#c3c3c3" glyphName="ACCOUNT_CHECK" size="36" styleClass="nav-icon">
                                  <VBox.margin>
                                     <Insets left="12.0" />
                                  </VBox.margin>
@@ -539,7 +539,7 @@
                      <graphic>
                         <VBox>
                            <children>
-                              <MaterialDesignIconView fx:id="reqIcon" fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" />
+                              <MaterialDesignIconView fx:id="reqIcon" fill="#c3c3c3" glyphName="HELP_CIRCLE" size="36" styleClass="nav-icon" />
                            </children>
                            <padding>
                               <Insets right="10.0" />

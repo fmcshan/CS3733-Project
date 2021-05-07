@@ -17,5 +17,8 @@ public class EmployeeTableButton {
     public void openEmployeeTable() {
         SceneManager.getInstance().getDefaultPage().toggleEmployee();
         ButtonManager.selectButton(employeeButton);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 }

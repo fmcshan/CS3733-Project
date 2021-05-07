@@ -21,5 +21,8 @@ public class MapEditorButton {
     public void openMapEditor() {
         SceneManager.getInstance().getDefaultPage().toggleMapEditor();
         ButtonManager.selectButton(mapEditorButton);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 }

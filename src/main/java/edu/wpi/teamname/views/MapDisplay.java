@@ -1632,6 +1632,7 @@ public class MapDisplay implements LevelChangeListener {
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
+            ButtonManager.remove_class();
             return;
         }
         navButton.getStyleClass().add("nav-btn-selected");
@@ -1661,17 +1662,20 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
+        System.out.println(LoadFXML.getCurrentWindow().equals(""));
         if (navigation != null) {
             navigation.cancelNavigation();
         }
-        System.out.println(LoadFXML.getCurrentWindow());
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
-        //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
-        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
         ButtonManager.selectButton(reqButton);
+        if (LoadFXML.getCurrentWindow().equals("reqBar")) {
+            System.out.println("remove blue");
+            ButtonManager.remove_class();
+        }
+        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
     }
 
 

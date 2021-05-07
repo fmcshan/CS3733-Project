@@ -21,5 +21,8 @@ public class SubmittedRequestsButton {
     void openSubmittedRequests() {
         SceneManager.getInstance().getDefaultPage().toggleRequest();
         ButtonManager.selectButton(submittedReqButton);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 }
