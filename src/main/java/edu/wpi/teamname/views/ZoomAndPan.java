@@ -153,7 +153,48 @@ public class ZoomAndPan {
         render();
     }
 
-    public void setViewPort(double x, double y, double width, double height) {
+    public void setViewPort(double x, double y, double width, double height) {//this is working
         page.hospitalMap.setViewport(new Rectangle2D(x, y, width, height));
+    }
+
+    public void smoothTest(double x, double y, double width, double height) {//this is just a test when im brain-dead
+        System.out.println(page.hospitalMap.getX());
+        System.out.println(page.hospitalMap.getY());
+        System.out.println(page.hospitalMap.getFitWidth());
+        System.out.println(page.hospitalMap.getFitHeight());
+        double a = 0.1;
+        double x1 = page.hospitalMap.getX();
+        double y1 = page.hospitalMap.getY();
+        double w1 = page.hospitalMap.getFitWidth();
+        double h1 = page.hospitalMap.getFitHeight();
+        if (Math.abs(x - x1) < a && Math.abs(y - y1) < a && Math.abs(width - w1) < a && Math.abs(height - h1) < a) {
+            return;
+        }
+        if (x > x1) {
+            x1 += a;
+        }
+        if (x < x1) {
+            x1 -= a;
+        }
+        if (y > y1) {
+            y1 += a;
+        }
+        if (y < y1) {
+            y1 -= a;
+        }
+        if (width > w1) {
+            w1 += a;
+        }
+        if (width < w1) {
+            w1 -= a;
+        }
+        if (height > h1) {
+            h1 += a;
+        }
+        if (height < h1) {
+            h1 -= a;
+        }
+        page.hospitalMap.setViewport(new Rectangle2D(x1, y1, w1, h1));
+        smoothTest(x, y, width, height);
     }
 }
