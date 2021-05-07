@@ -52,7 +52,7 @@ public class Navigation implements LevelChangeListener {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
-    SearchContext searchAlgorithm = new SearchContext(new AStar());
+    SearchContext searchAlgorithm;
     boolean pathCanceled = false;
     @FXML
     private ComboBox<String> toCombo, algoCombo; // destination drop down
@@ -141,7 +141,7 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().getStartNode();
         SceneManager.getInstance().getDefaultPage().getEndNode();
         AStar aStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), false);
-        SearchContext searchAlgorithm = new SearchContext(aStar);
+        searchAlgorithm = new SearchContext(aStar);
     }
 
     public HBox generateNavElem(String _direction) {
@@ -330,9 +330,11 @@ public class Navigation implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
+        System.out.println(searchAlgorithm);
         if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
             if (searchAlgorithm == null) {
+                System.out.println("hello");
                 return;
             }
             mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true); // correct path, incorrect startEnd

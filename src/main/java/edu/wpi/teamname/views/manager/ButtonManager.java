@@ -31,5 +31,6 @@ public class ButtonManager {
         }
         remove_class(styleClass, listOfButtons);
         button.getStyleClass().add(styleClass);
+        System.out.println(listOfButtons);
     }
 }
