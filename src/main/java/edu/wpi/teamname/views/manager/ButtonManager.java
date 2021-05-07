@@ -11,7 +11,7 @@ public class ButtonManager {
     public static ArrayList<JFXButton> buttons = new ArrayList<>();
     public static ArrayList<JFXButton> floors = new ArrayList<>();
 
-    private static void remove_class(String _class, ArrayList<JFXButton> _buttons) {
+    public static void remove_class(String _class, ArrayList<JFXButton> _buttons) {
         for (JFXButton button : _buttons) {
             try {
                 button.getStyleClass().remove(_class);
@@ -31,6 +31,5 @@ public class ButtonManager {
         }
         remove_class(styleClass, listOfButtons);
         button.getStyleClass().add(styleClass);
-        System.out.println(listOfButtons);
     }
 }

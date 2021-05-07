@@ -1596,14 +1596,18 @@ public class MapDisplay implements LevelChangeListener {
             double diffY = maxY[0] - minY[0];
             double midX = (maxX[0] + minX[0]) / 2;
             double midY = (maxY[0] + minY[0]) / 2;
-            scaledX = midX - (diffX / 2) * 1.2 - 1200;
-            scaledY = midY - (diffY / 2) - 500;
-            scaledWidth = diffX * 1.2 + 1500;
-            scaledHeight = diffY * 1.2 + 1500 * 3400 / 5000;
-            System.out.println(scaledX);
-            System.out.println(scaledY);
-            System.out.println(scaledWidth);
-            System.out.println(scaledHeight);
+            double ref = 0;
+            if (diffX * 3400/5000  > diffY) {
+                ref = diffX * 3400/5000;
+            } else {
+                ref = diffY;
+            }
+            double spacing = 0.4; //how much blank space around
+            double shrink = 0.4; // just like my brain
+            scaledWidth = ref * 5000/3400 * (1 + spacing);
+            scaledHeight = ref * (1 + spacing);
+            scaledX = midX - scaledWidth / 2;
+            scaledY = midY - scaledHeight / 2;
             zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
             for (ArrayList<Node> listOfNode : _listOfNodes) {
                 Node firstNode = listOfNode.get(0);
@@ -1665,7 +1669,6 @@ public class MapDisplay implements LevelChangeListener {
             ButtonManager.remove_class();
             return;
         }
-        navButton.getStyleClass().add("nav-btn-selected");
         displayHotspots(0.8); // Display nodes at 0.8 (80%) opacity
     }
 
@@ -1680,7 +1683,6 @@ public class MapDisplay implements LevelChangeListener {
      * Clear the map
      */
     public void clearMap() {
-        remove_class("nav-btn-selected", navButton, checkButton, reqButton);
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         currentPath.clear();
@@ -1889,6 +1891,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor0(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(L2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(0);
         resetFloors();
@@ -1896,6 +1901,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor1(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(L1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(1);
         resetFloors();
@@ -1903,6 +1911,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor2(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(groundBttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(2);
         resetFloors();
@@ -1910,6 +1921,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor3(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(3);
         resetFloors();
@@ -1917,6 +1931,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor4(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(floor2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(4);
         resetFloors();
@@ -1924,6 +1941,9 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor5(ActionEvent e) {
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
         ButtonManager.selectButton(floor3Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(5);
         resetFloors();
@@ -1931,7 +1951,6 @@ public class MapDisplay implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
-        // TODO Selected floor should be highlighted
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":

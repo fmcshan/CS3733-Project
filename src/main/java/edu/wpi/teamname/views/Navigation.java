@@ -141,7 +141,6 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().getStartNode();
         SceneManager.getInstance().getDefaultPage().getEndNode();
         AStar aStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), false);
-        searchAlgorithm = new SearchContext(aStar);
     }
 
     public HBox generateNavElem(String _direction) {
@@ -260,6 +259,7 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
+        searchAlgorithm = new SearchContext(new AStar());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
@@ -330,11 +330,14 @@ public class Navigation implements LevelChangeListener {
 
     @Override
     public void levelChanged(int _level) {
-        System.out.println(searchAlgorithm);
+        // TODO
         if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
             if (searchAlgorithm == null) {
                 System.out.println("hello");
+                return;
+            }
+            if (toCombo.getValue() == null || fromCombo.getValue() == null) {
                 return;
             }
             mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true); // correct path, incorrect startEnd
