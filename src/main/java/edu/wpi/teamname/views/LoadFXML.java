@@ -1,9 +1,11 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -67,6 +69,10 @@ public class LoadFXML {
      * @param vbox       the vbox the fxml will be open in
      */
     public static void openWindow(String windowName, Parent root, VBox vbox) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.2), vbox);
+        fadeIn.setFromValue(0.6);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
         vbox.getChildren().clear();
         SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         currentHelp = "";
@@ -89,6 +95,10 @@ public class LoadFXML {
     }
 
     public static void openHelp(String windowName, Parent root, VBox vbox) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), vbox);
+        fadeIn.setFromValue(0.4);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
         vbox.getChildren().clear();
         if (!windowName.equals(currentHelp)) {
             vbox.getChildren().add(root);
