@@ -194,7 +194,7 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     MapEditorButton mapEditorButton;
 
-    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     public MapDisplay() {
         zooM = new ZoomAndPan(this);
@@ -260,12 +260,6 @@ public class MapDisplay implements LevelChangeListener {
 
         if (startNode != null && endNode != null) {
             nodes.clear();
-            if (LevelManager.getInstance().getFloor().equals(startNode.getFloor())) {
-                nodes.add(startNode);
-            }
-            if (LevelManager.getInstance().getFloor().equals(endNode.getFloor())) {
-                nodes.add(endNode);
-            }
         }
 
         currentPath.forEach(n -> {
@@ -921,33 +915,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-                 ) {if(n.getFloor().equals("1")){
-                     double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                     if (temporary<distance){
-                         tempNode2 = n;
-                         distance = temporary;
-                     }
-            }
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("1")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
+                }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -984,33 +977,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-            ) {if(n.getFloor().equals("2")){
-                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                if (temporary<distance){
-                    tempNode2 = n;
-                    distance = temporary;
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("2")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
                 }
-            }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1048,33 +1040,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-            ) {if(n.getFloor().equals("3")){
-                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                if (temporary<distance){
-                    tempNode2 = n;
-                    distance = temporary;
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("3")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
                 }
-            }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1114,33 +1105,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-            ) {if(n.getFloor().equals("G")){
-                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                if (temporary<distance){
-                    tempNode2 = n;
-                    distance = temporary;
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("G")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
                 }
-            }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1179,33 +1169,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-            ) {if(n.getFloor().equals("L1")){
-                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                if (temporary<distance){
-                    tempNode2 = n;
-                    distance = temporary;
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("L1")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
                 }
-            }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1243,33 +1232,32 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-            ) {if(n.getFloor().equals("L2")){
-                double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                if (temporary<distance){
-                    tempNode2 = n;
-                    distance = temporary;
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals("L2")) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
                 }
-            }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             Submit.getInstance().addEdge(newEdge);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             Submit.getInstance().addEdge(newEdge2);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1586,27 +1574,71 @@ public class MapDisplay implements LevelChangeListener {
      *
      * @param _listOfNodes Arraylist of nodes to render
      */
-    public void drawPath(ArrayList<ArrayList<Node>> _listOfNodes) {
+    public void drawPath(ArrayList<ArrayList<Node>> _listOfNodes, boolean autoZoomAndPan) {
         if (_listOfNodes.size() < 1) {
             return;
         }
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        for (ArrayList<Node> listOfNode : _listOfNodes) {
-            Node firstNode = listOfNode.get(0);
-            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-            tonysPath.getElements().add(start);
-            listOfNode.forEach(n -> {
-                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-            });
+        if (autoZoomAndPan) {
+            final double[] minX = {5000}; // for auto zoom&pan
+            final double[] minY = {3400}; // for auto zoom&pan
+            final double[] maxX = {0}; // for auto zoom&pan
+            final double[] maxY = {0}; // for auto zoom&pan
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                listOfNode.forEach(n -> {
+                    if (n.getX() < minX[0]) {
+                        minX[0] = n.getX();
+                    }
+                    if (n.getX() > maxX[0]) {
+                        maxX[0] = n.getX();
+                    }
+                    if (n.getY() < minY[0]) {
+                        minY[0] = n.getY();
+                    }
+                    if (n.getY() > maxY[0]) {
+                        maxY[0] = n.getY();
+                    }
+                });
+            }
+            double diffX = maxX[0] - minX[0];
+            double diffY = maxY[0] - minY[0];
+            double midX = (maxX[0] + minX[0]) / 2;
+            double midY = (maxY[0] + minY[0]) / 2;
+            scaledX = midX - (diffX / 2) * 1.2 - 1200;
+            scaledY = midY - (diffY / 2) - 500;
+            scaledWidth = diffX * 1.2 + 1500;
+            scaledHeight = diffY * 1.2 + 1500 * 3400 / 5000;
+            System.out.println(scaledX);
+            System.out.println(scaledY);
+            System.out.println(scaledWidth);
+            System.out.println(scaledHeight);
+            zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                Node firstNode = listOfNode.get(0);
+                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+                tonysPath.getElements().add(start);
+                listOfNode.forEach(n -> {
+                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+                });
+            }
+        } else {
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                Node firstNode = listOfNode.get(0);
+                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+                tonysPath.getElements().add(start);
+                listOfNode.forEach(n -> {
+                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+                });
+            }
         }
         pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
-                0.0,0.0,
-                20.0,7.5,
-                0.0,15.0,
-                5.0,7.5
+                0.0, 0.0,
+                20.0, 7.5,
+                0.0, 15.0,
+                5.0, 7.5
         );
         triangle.setFill(Color.RED); //RED
         triangle.setStroke(Color.RED); //RED

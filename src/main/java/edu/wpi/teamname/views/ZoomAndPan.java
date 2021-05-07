@@ -106,7 +106,7 @@ public class ZoomAndPan {
             page.topElements.getChildren().clear(); // Clear top elements
             page.tonysPath.getElements().clear(); // Clear Tony's path
             page.hidePopups();
-            page.drawPath(page.currentPath);
+            page.drawPath(page.currentPath, false);
             page.displayHotspots(0.8);
         }
     }
@@ -151,5 +151,9 @@ public class ZoomAndPan {
         page.scaledWidth = viewPortWidth;
         page.scaledHeight = viewPortHeight;
         render();
+    }
+
+    public void setViewPort(double x, double y, double width, double height) {
+        page.hospitalMap.setViewport(new Rectangle2D(x, y, width, height));
     }
 }
