@@ -61,6 +61,5 @@ public class ChatSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-        System.out.println("Chat socket error");
     }
 }

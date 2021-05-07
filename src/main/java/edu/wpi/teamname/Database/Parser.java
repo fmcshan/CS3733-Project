@@ -142,6 +142,7 @@ public class Parser {
     public static User parseUser(JSONObject _user) {
         return new User(
                 null,
+                null,
                 _user.getString("email"),
                 _user.getString("name"),
                 _user.getString("id"),

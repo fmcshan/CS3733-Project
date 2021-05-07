@@ -19,6 +19,7 @@ public class SocketManager {
     WebSocketClient nonAuthClient = null;
     WebSocketClient authClient = null;
     WebSocketClient chatClient = null;
+    int failedConnections = 0;
 
     HashMap<String, Integer> reconnectTime = new HashMap<String, Integer>();
 
@@ -27,18 +28,27 @@ public class SocketManager {
     }
 
     private int getReconnectTimeout(String _socket) {
+        if (failedConnections == 10) {
+            System.out.println("Failing over seems probable. Attempting socket connection ~10 more times.");
+        }
+        if (failedConnections >= 20 && !LocalFailover.getInstance().hasFailedOver()) {
+            LocalFailover.getInstance().failOver();
+            return -1;
+        }
         if (this.reconnectTime.containsKey(_socket)) {
-            if (this.reconnectTime.get(_socket) < 20) {
+            if (this.reconnectTime.get(_socket) < 10) {
                 this.reconnectTime.put(_socket, this.reconnectTime.get(_socket) + 1);
             }
         } else {
             this.reconnectTime.put(_socket, 1);
         }
+        failedConnections += 1;
         return this.reconnectTime.get(_socket);
     }
 
     public void resetReconnectTimeout(String _socket) {
         this.reconnectTime.put(_socket, 0);
+        failedConnections = 0;
     }
 
     public static synchronized SocketManager getInstance() {
@@ -97,11 +107,21 @@ public class SocketManager {
         }
     }
 
+    private String getSecondsText(int _seconds) {
+        if (_seconds == 1) {
+            return " second...";
+        } else {
+            return " seconds...";
+        }
+    }
+
     public void reconnectSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.nonAuthClient == null || this.nonAuthClient.isClosed() || this.nonAuthClient.isClosing() || !this.nonAuthClient.isOpen()) {
             try {
                 int timeout = getReconnectTimeout("user");
-                System.out.println("Attempting user socket reconnect in " + timeout + " seconds...");
+                if (timeout == -1) { return; }
+                System.out.println("Attempting user socket reconnect in " + timeout + getSecondsText(timeout));
                 TimeUnit.SECONDS.sleep(timeout);
                 this.nonAuthClient = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/user/"));
                 this.nonAuthClient.connect();
@@ -110,22 +130,27 @@ public class SocketManager {
     }
 
     public void reconnectChatSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.chatClient == null || this.chatClient.isClosed() || this.chatClient.isClosing() || !this.chatClient.isOpen()) {
             try {
                 int timeout = getReconnectTimeout("chat");
-                System.out.println("Attempting chat socket reconnect in " + timeout + " seconds...");
+                if (timeout == -1) { return; }
+                System.out.println("Attempting chat socket reconnect in " + timeout + getSecondsText(timeout));
                 TimeUnit.SECONDS.sleep(timeout);
-                this.chatClient = new Socket(new URI(SOCKET_URL  +"/ws/chat/" + ChatBot.getInstance().getChatId() + "/"));
+                this.chatClient = new ChatSocket(new URI(SOCKET_URL  +"/ws/chat/" + ChatBot.getInstance().getChatId() + "/"));
                 this.chatClient.connect();
             } catch (Exception ignored) {}
         }
     }
 
     public void reconnectAuthSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.authClient == null || this.authClient.isClosed() || this.authClient.isClosing() || !this.nonAuthClient.isOpen()) {
             try {
                 int timeout = getReconnectTimeout("auth");
-                System.out.println("Attempting auth socket reconnect in " + timeout + " seconds...");
+                if (timeout == -1) { return; }
+                System.out.println("Attempting auth socket reconnect in " + timeout + getSecondsText(timeout));
+                TimeUnit.SECONDS.sleep(timeout);
                 WebSocketClient client = new AuthSocket(new URI(SOCKET_URL + "/ws/pipeline/authenticated/"));
                 if (AuthenticationManager.getInstance().isAuthenticated()) {
                     client.addHeader("fb-auth", AuthenticationManager.getInstance().userId());

@@ -110,6 +110,5 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-        System.out.println("Auth socket error");
     }
 }
