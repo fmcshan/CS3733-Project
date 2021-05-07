@@ -16,14 +16,14 @@ public class Main {
     public static void main(String[] args) {
 
         System.setProperty("javafx.animation.fullspeed", "true");
-        Config.getInstance().setEnv("staging"); // dev staging production
-        SocketManager.getInstance().startDataSocket();
+        Config.getInstance().setEnv("dev"); // dev staging production
 
         // ========== IN EVENT OF SERVER FAILURE ==========
-//        LocalFailover.getInstance().failOver();
+        LocalFailover.getInstance().failOver();
         // ========== IN EVENT OF SERVER FAILURE ==========
 
         SocketManager.getInstance().startChatSocket();
+        SocketManager.getInstance().startDataSocket();
         AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
   //   DatabaseThread.getInstance().start();

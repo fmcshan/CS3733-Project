@@ -1,10 +1,17 @@
 package edu.wpi.teamname.Database;
 
+import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import edu.wpi.teamname.Algo.Edge;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class LocalFailover {
@@ -19,7 +26,7 @@ public class LocalFailover {
     }
 
     private boolean failedOver = false;
-    private JsonObject db;
+    private JSONObject db;
 
     public boolean hasFailedOver() {
         return failedOver;
@@ -31,6 +38,9 @@ public class LocalFailover {
         this.failedOver = true;
 
         loadJson();
+        parseNodes();
+        parseEdges();
+        parseEmployees();
 
         System.out.println("==== LOCAL FAILOVER ====");
         System.out.println("Reduced functionality: ");
@@ -46,9 +56,10 @@ public class LocalFailover {
     // Load JSON
     private void loadJson() {
         try {
-            FileReader jsonFile = new FileReader(getClass().getResource("/edu/wpi/teamname/failover.json").toURI().toString());
-            JsonElement jsonElem = JsonParser.parseReader(jsonFile);
-            this.db = jsonElem.getAsJsonObject();
+            File jsonFile = new File(getClass().getResource("/edu/wpi/teamname/failover.json").toURI());
+            FileReader jsonFileReader = new FileReader(jsonFile);
+            JsonElement jsonElem = JsonParser.parseReader(jsonFileReader);
+            this.db = new JSONObject(jsonElem.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,15 +68,78 @@ public class LocalFailover {
 
     // Parse nodes from JSON
     private void parseNodes() {
-        System.out.println(db.get("nodes").getAsJsonArray());;
+        JSONArray nodeArray = db.getJSONArray("nodes");
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        nodeArray.forEach(jn -> {
+            JSONObject n = (JSONObject) jn;
+            nodes.add(new Node(
+                    n.getString("i"),
+                    n.getInt("x"),
+                    n.getInt("y"),
+                    n.getString("le"),
+                    n.getString("b"),
+                    n.getString("t"),
+                    n.getString("lo"),
+                    n.getString("s")
+            ));
+        });
+        LocalStorage.getInstance().setNodes(nodes);
     }
 
     // Parse edges from JSON
+    private void parseEdges() {
+        JSONArray edgeArray = db.getJSONArray("edges");
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        edgeArray.forEach(je -> {
+            JSONObject e = (JSONObject) je;
+            edges.add(new Edge(
+                    e.getString("i"),
+                    e.getString("s"),
+                    e.getString("e")
+            ));
+        });
+        LocalStorage.getInstance().setEdges(edges);
+    }
 
     // Parse employees from JSON
+    private void parseEmployees() {
+        JSONArray userArray = db.getJSONArray("users");
+        ArrayList<User> users = new ArrayList<User>();
+        userArray.forEach(ju -> {
+            JSONObject u = (JSONObject) ju;
+            users.add(new User(
+                    "local",
+                    "local",
+                    u.getString("e"),
+                    u.getString("n"),
+                    u.getString("l"),
+                    u.getString("p"),
+                    u.getBoolean("a"),
+                    u.getBoolean("e")
+            ));
+        });
+        LocalStorage.getInstance().setUsers(users);
+    }
 
     // Parse requests from JSON
-
+    private void parseRequests() {
+        JSONArray userArray = db.getJSONArray("users");
+        ArrayList<User> users = new ArrayList<User>();
+        userArray.forEach(ju -> {
+            JSONObject u = (JSONObject) ju;
+            users.add(new User(
+                    "local",
+                    "local",
+                    u.getString("e"),
+                    u.getString("n"),
+                    u.getString("l"),
+                    u.getString("p"),
+                    u.getBoolean("a"),
+                    u.getBoolean("e")
+            ));
+        });
+        LocalStorage.getInstance().setUsers(users);
+    }
     // Save arraylist of nodes to JSON
 
     // Save arraylist of edges to JSON

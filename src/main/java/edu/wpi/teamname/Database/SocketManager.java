@@ -39,6 +39,9 @@ public class SocketManager {
         }
         if (failedConnections >= 20 && !LocalFailover.getInstance().hasFailedOver()) {
             LocalFailover.getInstance().failOver();
+            stopChatSocket();
+            stopAuthDataSocket();
+            stopDataSocket();
             return -1;
         }
         if (this.reconnectTime.containsKey(_socket)) {
@@ -62,6 +65,7 @@ public class SocketManager {
     }
 
     public void startDataSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.nonAuthClient == null) {
             try {
                 this.nonAuthClient = new Socket(new URI(SOCKET_URL  +"/ws/pipeline/user/"));
@@ -78,6 +82,7 @@ public class SocketManager {
     }
 
     public void startChatSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.chatClient == null) {
             try {
                 this.chatClient = new ChatSocket(new URI(SOCKET_URL  +"/ws/chat/" + ChatBot.getInstance().getChatId() + "/"));
@@ -94,6 +99,7 @@ public class SocketManager {
     }
 
     public void startAuthDataSocket() {
+        if (LocalFailover.getInstance().hasFailedOver()) { return; }
         if (this.authClient == null) {
             try {
                 WebSocketClient client = new AuthSocket(new URI(SOCKET_URL + "/ws/pipeline/authenticated/"));

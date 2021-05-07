@@ -21,6 +21,10 @@ public class AuthenticationManager {
         return instance;
     }
 
+    public void setUser(User _user) {
+        this.user = _user;
+    }
+
     public Boolean isAuthenticated() {
         return (user != null);
     }
