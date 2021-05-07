@@ -306,6 +306,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         closedChatBox.getChildren().clear();
         closedChatBox.setPickOnBounds(false);
         if (!opened) {
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), chatBot);
+            fadeIn.setFromValue(0.4);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
             chatBot.setVisible(true);
             chatBot.setPickOnBounds(true);
             opened = true;
