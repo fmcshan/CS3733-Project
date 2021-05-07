@@ -28,6 +28,12 @@ public class SocketManager {
     }
 
     private int getReconnectTimeout(String _socket) {
+        if (failedConnections == 5) {
+            if (AuthenticationManager.getInstance().isAuthenticated()) {
+                System.out.println("Possible authentication error, attempting token refresh.");
+                AuthenticationManager.getInstance().refreshUser();
+            }
+        }
         if (failedConnections == 10) {
             System.out.println("Failing over seems probable. Attempting socket connection ~10 more times.");
         }
