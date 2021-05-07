@@ -17,12 +17,12 @@
          <children>
             <HBox alignment="TOP_RIGHT">
                <children>
-                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" minWidth="-Infinity" onAction="#openCredits" prefHeight="43.0" prefWidth="32.0" ripplerFill="#c3c3c3">
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#openCredits" prefHeight="32.0" prefWidth="32.0" ripplerFill="#c3c3c3">
                      <graphic>
-                        <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="35" />
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="35" wrappingWidth="32.0" />
                      </graphic>
                      <HBox.margin>
-                        <Insets right="10.0" top="5.0" />
+                        <Insets right="10.0" top="10.0" />
                      </HBox.margin>
                   </JFXButton>
                </children>
