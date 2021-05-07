@@ -19,7 +19,7 @@ public class Main {
         Config.getInstance().setEnv("staging"); // dev staging production
 
         // ========== IN EVENT OF SERVER FAILURE ==========
-        LocalFailover.getInstance().failOver();
+//        LocalFailover.getInstance().failOver();
         // ========== IN EVENT OF SERVER FAILURE ==========
 
         SocketManager.getInstance().startChatSocket();
