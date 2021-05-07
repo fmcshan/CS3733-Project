@@ -291,8 +291,6 @@ public class Navigation implements LevelChangeListener {
         System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
-        String currentFloor = LevelManager.getInstance().getFloor();
-        mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
         ArrayList<String> relevantFloors = searchAlgorithm.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -340,8 +338,8 @@ public class Navigation implements LevelChangeListener {
             if (toCombo.getValue() == null || fromCombo.getValue() == null) {
                 return;
             }
-            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true); // correct path, incorrect startEnd
-            SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false); //correct startEnd
+            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
+            SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
     }
 

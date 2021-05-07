@@ -1603,31 +1603,23 @@ public class MapDisplay implements LevelChangeListener {
                 ref = diffY;
             }
             double spacing = 0.4; //how much blank space around
-            double shrink = 0.4; // just like my brain
             scaledWidth = ref * 5000/3400 * (1 + spacing) * 1427/(1427 - 370);
             scaledHeight = ref * (1 + spacing) * 1427/(1427 - 370);
-            scaledX = ((midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing)) + (midX + diffX/2 * (1 + spacing) - scaledWidth)) / 2;
+            scaledX = midX - (ref * 5000/3400 * (1 + spacing) * (1427 + 370)/(1427-370)) / 2;
+            //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
             zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
-            for (ArrayList<Node> listOfNode : _listOfNodes) {
-                Node firstNode = listOfNode.get(0);
-                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-                tonysPath.getElements().add(start);
-                listOfNode.forEach(n -> {
-                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-                });
-            }
-        } else {
-            for (ArrayList<Node> listOfNode : _listOfNodes) {
-                Node firstNode = listOfNode.get(0);
-                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-                tonysPath.getElements().add(start);
-                listOfNode.forEach(n -> {
-                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-                });
-            }
         }
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                Node firstNode = listOfNode.get(0);
+                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+                tonysPath.getElements().add(start);
+                listOfNode.forEach(n -> {
+                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+                });
+            }
+
         pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
