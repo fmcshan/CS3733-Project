@@ -1604,9 +1604,9 @@ public class MapDisplay implements LevelChangeListener {
             }
             double spacing = 0.4; //how much blank space around
             double shrink = 0.4; // just like my brain
-            scaledWidth = ref * 5000/3400 * (1 + spacing);
-            scaledHeight = ref * (1 + spacing);
-            scaledX = midX - scaledWidth / 2;
+            scaledWidth = ref * 5000/3400 * (1 + spacing) * 1427/(1427 - 370);
+            scaledHeight = ref * (1 + spacing) * 1427/(1427 - 370);
+            scaledX = midX + diffX/2 * (1 + spacing) - scaledWidth;//midX - scaledWidth / 2;
             scaledY = midY - scaledHeight / 2;
             zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
             for (ArrayList<Node> listOfNode : _listOfNodes) {
