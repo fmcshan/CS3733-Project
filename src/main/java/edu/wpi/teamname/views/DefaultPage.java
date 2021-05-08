@@ -47,10 +47,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     // used to save the current list of nodes after AStar
 
     boolean opened = false;
-    @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, GBttn, L2Bttn;
-
-
     @Override
     public VBox getPopPop() {
         return popPop;

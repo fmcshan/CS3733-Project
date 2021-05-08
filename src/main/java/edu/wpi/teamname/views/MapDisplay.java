@@ -139,7 +139,7 @@ public class MapDisplay implements LevelChangeListener {
     JFXTextField edgeIdPreview;
     ZoomAndPan zooM;
     @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
+    public JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
     private JFXButton edge_3;
     @FXML
