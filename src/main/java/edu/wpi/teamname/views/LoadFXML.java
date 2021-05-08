@@ -1,11 +1,14 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class LoadFXML {
 
@@ -19,12 +22,15 @@ public class LoadFXML {
         return currentHelp;
     }
 
-    public static synchronized LoadFXML getInstance() { return instance; }
+    public static synchronized LoadFXML getInstance() {
+        return instance;
+    }
 
     private static final LoadFXML instance = new LoadFXML();
 
     /**
      * setter for currentWindow
+     *
      * @param windowName // pass in the string that modifies currentWindow
      */
     public static void setCurrentWindow(String windowName) {
@@ -41,9 +47,10 @@ public class LoadFXML {
 
     /**
      * loads and opens an fxml inside another fxml
-     * @param fileName the fxml file you want to open
+     *
+     * @param fileName   the fxml file you want to open
      * @param windowName the variable the program will check to see if the window is open or closed
-     * @param vbox the vbox the fxml will be open in
+     * @param vbox       the vbox the fxml will be open in
      */
     public void loadWindow(String fileName, String windowName, VBox vbox) {
         try {
@@ -56,11 +63,16 @@ public class LoadFXML {
 
     /**
      * checks if the window is currently open or closed, and then opens the window
+     *
      * @param windowName the variable the function will check to see if the window is open or closed
-     * @param root the loaded fxml
-     * @param vbox the vbox the fxml will be open in
+     * @param root       the loaded fxml
+     * @param vbox       the vbox the fxml will be open in
      */
     public static void openWindow(String windowName, Parent root, VBox vbox) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.2), vbox);
+        fadeIn.setFromValue(0.6);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
         vbox.getChildren().clear();
         SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         currentHelp = "";
@@ -83,6 +95,10 @@ public class LoadFXML {
     }
 
     public static void openHelp(String windowName, Parent root, VBox vbox) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), vbox);
+        fadeIn.setFromValue(0.4);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
         vbox.getChildren().clear();
         if (!windowName.equals(currentHelp)) {
             vbox.getChildren().add(root);
@@ -91,5 +107,4 @@ public class LoadFXML {
         }
         currentHelp = "";
     }
-
 }

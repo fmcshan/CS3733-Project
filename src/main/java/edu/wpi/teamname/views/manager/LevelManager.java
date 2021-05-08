@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views.manager;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.DatabaseThread;
 import edu.wpi.teamname.Database.UserRegistration;
@@ -52,6 +53,7 @@ public class LevelManager {
     public void setFloor(String _level) {
         setFloor(floorNameMap.indexOf(_level));
     }
+
 
     public void addListener(LevelChangeListener _toAdd) {
         if (!listeners.contains(_toAdd)) {

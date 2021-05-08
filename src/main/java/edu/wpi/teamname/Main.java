@@ -17,8 +17,13 @@ public class Main {
 
         System.setProperty("javafx.animation.fullspeed", "true");
         Config.getInstance().setEnv("staging"); // dev staging production
-        SocketManager.getInstance().startDataSocket();
+
+        // ========== IN EVENT OF SERVER FAILURE ==========
+//        LocalFailover.getInstance().failOver();
+        // ========== IN EVENT OF SERVER FAILURE ==========
+
         SocketManager.getInstance().startChatSocket();
+        SocketManager.getInstance().startDataSocket();
         AuthenticationManager.getInstance().loginWithEmailAndPassword("admin@admin.com", "password");
         AsynchronousQueue.getInstance().start();
   //   DatabaseThread.getInstance().start();

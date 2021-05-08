@@ -101,7 +101,7 @@ public class UserRegistration {
         ArrayList<String> listOfSpaces = new ArrayList<>();
         listOfNodes = LocalStorage.getInstance().getNodes();
         listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
-        System.out.println(listOfSpaces);
+        //System.out.println(listOfSpaces);
         for (Node n : listOfNodes
         ) {
 

@@ -27,13 +27,12 @@ public class Parser {
 
     public static String parseSpace(JSONObject _space) {
         _space = _space.getJSONObject("fields");
-        String answer = _space.getString("nodeId");
-        return answer;
+        return _space.getString("nodeId");
     }
 
-    public static ArrayList<String> parseSpaces(JSONArray _space) {
+    public static ArrayList<String> parseSpaces(JSONArray _spaces) {
         ArrayList<String> spaces = new ArrayList<String>();
-        _space.forEach(s -> {
+        _spaces.forEach(s -> {
             spaces.add(parseSpace((JSONObject) s));
         });
         return spaces;
@@ -97,7 +96,10 @@ public class Parser {
                 reasonList,
                 _registration.getString("phone"),
                 _registration.getBoolean("ack"),
-                _registration.getDouble("ackTime")
+                _registration.getDouble("ackTime"),
+                _registration.getBoolean("cleared"),
+                _registration.getInt("rating"),
+                _registration.getString("details")
         );
     };
 
@@ -142,6 +144,7 @@ public class Parser {
 
     public static User parseUser(JSONObject _user) {
         return new User(
+                null,
                 null,
                 _user.getString("email"),
                 _user.getString("name"),

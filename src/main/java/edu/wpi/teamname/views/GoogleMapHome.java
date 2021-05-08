@@ -116,7 +116,7 @@ public class GoogleMapHome {
                 for (DirectionsLeg foot : feet) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);
-                        System.out.println(step.htmlInstructions);
+//                        System.out.println(step.htmlInstructions);
                         lowDir = lowDir + newStep + "\n";
                     }
                 }
