@@ -314,7 +314,7 @@ public class LaundryService {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid() && oneLoadSelected() && oneTempSelected()) {
+        if (nameInputValid() && checkBoxLoadSelected() && checkBoxTempSelected() && otherInputValid() && phoneNumberValid() && oneLoadSelected() && oneTempSelected() && locationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> laundryTypeSelected = new ArrayList<>();
             if (colorsBox.isSelected())
