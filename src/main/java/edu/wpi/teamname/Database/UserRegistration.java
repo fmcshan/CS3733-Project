@@ -81,6 +81,10 @@ public class UserRegistration {
         return cleared;
     }
 
+    public void setCleared(boolean _cleared) {
+        this.cleared = _cleared;
+    }
+
     public int getRating() {
         return rating;
     }

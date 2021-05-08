@@ -36,14 +36,30 @@
             </Text>
             <VBox prefHeight="800.0">
                <children>
-                  <Label fx:id="failedName" textFill="RED">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="25.0" />
-                     </VBox.margin>
-                  </Label>
+                  <HBox>
+                     <children>
+                        <VBox prefWidth="300.0">
+                           <HBox.margin>
+                              <Insets left="25.0" />
+                           </HBox.margin>
+                           <children>
+                              <Label fx:id="failedName" textFill="RED">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <Label fx:id="failedParking" textFill="RED">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="40.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                   <HBox>
                      <VBox.margin>
                         <Insets left="25.0" />

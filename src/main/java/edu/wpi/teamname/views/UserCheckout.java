@@ -36,7 +36,7 @@ public class UserCheckout {
         HashMap<String, Node> mapNodes2 = new HashMap<>();
         @FXML
         void initialize(){
-           refreshSpaces();
+            refreshSpaces();
             //System.out.println("ONCE");
         }
 
@@ -50,8 +50,10 @@ public class UserCheckout {
             }
             ArrayList<String> listOfSpaces = new ArrayList<>();
             listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
+            System.out.println("list of spaces: " + listOfSpaces);
             for (String s: listOfSpaces
             ) {
+                System.out.println("in here");
                 parkingBox.getItems().add(mapNodes.get(s).getLongName());
             }
         }

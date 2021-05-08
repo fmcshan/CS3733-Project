@@ -70,7 +70,7 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXSlider fx:id="experienceSlider" blockIncrement="0.5" majorTickUnit="1.0" max="7.0" maxWidth="450.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 18;" stylesheets="@../images/jfxSlider.css">
+                  <JFXSlider fx:id="experienceSlider" blockIncrement="0.5" majorTickUnit="1.0" max="5.0" maxWidth="450.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 18;" stylesheets="@../images/jfxSlider.css">
                      <VBox.margin>
                         <Insets left="45.0" top="20.0" />
                      </VBox.margin>
