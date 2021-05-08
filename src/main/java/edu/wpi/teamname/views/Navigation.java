@@ -264,6 +264,7 @@ public class Navigation implements LevelChangeListener {
             return;
         }
         SceneManager.getInstance().getDefaultPage().setStartNode(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue()))); // get starting location
+        LevelManager.getInstance().setFloor(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())).getFloor()); // switch to the floor that the selected node is on
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getStartNode());
         SceneManager.getInstance().getDefaultPage().displayNodes(SceneManager.getInstance().getDefaultPage().getStartAndEnd(), .8, false);
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
