@@ -18,6 +18,7 @@
 <?import javafx.scene.shape.MoveTo?>
 <?import javafx.scene.shape.Path?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="970.0" prefWidth="1800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.DefaultPage">
    <children>
@@ -575,7 +576,7 @@
          </children></VBox>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0">
          <children>
-            <JFXButton fx:id="exitButton" contentDisplay="GRAPHIC_ONLY" onAction="#exitApplication" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="exit" textFill="#9e9e9e">
+            <JFXButton fx:id="exitButton" contentDisplay="GRAPHIC_ONLY" onAction="#exitApplication" prefHeight="62.0" prefWidth="62.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="exit" textFill="#9e9e9e">
                <effect>
                   <DropShadow color="#a4a4a4" />
                </effect>
@@ -583,7 +584,7 @@
                   <Font size="24.0" />
                </font>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="52" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="56" />
                </graphic>
                <HBox.margin>
                   <Insets />
@@ -592,7 +593,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="adminButton" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" onAction="#openLogin" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="admin" textFill="#9e9e9e">
+            <JFXButton fx:id="adminButton" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" onAction="#openLogin" prefHeight="62.0" prefWidth="62.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="admin" textFill="#9e9e9e">
                <effect>
                   <DropShadow color="#a4a4a4" />
                </effect>
@@ -603,10 +604,10 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <HBox.margin>
-                  <Insets left="250.0" />
+                  <Insets left="242.0" />
                </HBox.margin>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="52" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="ACCOUNT_BOX_OUTLINE" size="56" />
                </graphic>
             </JFXButton>
          </children>
@@ -641,7 +642,7 @@
             <DropShadow color="#9e9e9e" radius="17.25" width="50.0" />
          </effect>
       </VBox>
-      <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="20.0">
+      <VBox alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="95.0" AnchorPane.rightAnchor="20.0">
          <children>
             <JFXButton fx:id="floor3Bttn" onAction="#setFloor5" prefHeight="56.0" prefWidth="56.0" stylesheets="@../images/FloorButtons.css" text="3" textFill="#9e9e9e">
                <effect>
@@ -721,7 +722,7 @@
       </VBox>
       <VBox layoutX="1640.0" layoutY="888.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <JFXButton fx:id="helpButton" contentDisplay="GRAPHIC_ONLY" onAction="#openHelp" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
+            <JFXButton fx:id="helpButton" contentDisplay="GRAPHIC_ONLY" onAction="#openHelp" prefHeight="62.0" prefWidth="62.0" ripplerFill="#bbbbbb" style="-fx-background-color: white; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
                <font>
                   <Font size="18.0" />
                </font>
@@ -729,7 +730,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="48" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="52" />
                </graphic>
             </JFXButton>
          </children>
@@ -739,7 +740,7 @@
       </VBox>
       <VBox layoutX="1734.0" layoutY="30.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <JFXButton fx:id="chatButton" contentDisplay="GRAPHIC_ONLY" onAction="#openChatBot" prefHeight="56.0" prefWidth="56.0" ripplerFill="#bbbbbb" style="-fx-background-color: #0067b1; -fx-opacity: 0.8; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
+            <JFXButton fx:id="chatButton" contentDisplay="GRAPHIC_ONLY" onAction="#openChatBot" prefHeight="62.0" prefWidth="62.0" ripplerFill="#bbbbbb" style="-fx-background-color: #0067b1; -fx-opacity: 0.8; -fx-background-radius: 10px;" text="help" textFill="#9e9e9e">
                <font>
                   <Font size="18.0" />
                </font>
@@ -747,7 +748,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <graphic>
-                  <MaterialDesignIconView fill="WHITE" glyphName="MESSAGE_REPLY" size="40" />
+                  <MaterialDesignIconView fill="WHITE" glyphName="MESSAGE_REPLY" size="44" />
                </graphic>
             </JFXButton>
          </children>
@@ -771,10 +772,24 @@
                      <content>
                         <VBox fx:id="chatBox" alignment="BOTTOM_CENTER" prefHeight="483.0" prefWidth="373.0" style="-fx-background-color: white;">
                            <children>
-                              <AnchorPane maxWidth="275.0">
+                              <AnchorPane maxWidth="275.0" nodeOrientation="LEFT_TO_RIGHT">
                                  <VBox.margin>
-                                    <Insets bottom="10.0" left="-50.0" top="10.0" />
+                                    <Insets bottom="10.0" left="50.0" top="10.0" />
                                  </VBox.margin>
+                                 <children>
+                                    <HBox alignment="BOTTOM_LEFT" minWidth="50.0" style="-fx-background-color: #317fb8; -fx-background-radius: 20 20 0 20;" styleClass="size16" stylesheets="@../images/text.css" visible="false" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What is wrong with the padding?">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
                               </AnchorPane>
                            </children>
                         </VBox>
@@ -802,6 +817,6 @@
             <DropShadow color="#9e9e9e" />
          </effect>
       </AnchorPane>
-      <VBox fx:id="closedChatBox" alignment="BOTTOM_RIGHT" onMouseClicked="#openChatBot" visible="false" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="85.0" />
+      <VBox fx:id="closedChatBox" alignment="BOTTOM_RIGHT" onMouseClicked="#openChatBot" visible="false" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="90.0" />
    </children>
 </AnchorPane>
