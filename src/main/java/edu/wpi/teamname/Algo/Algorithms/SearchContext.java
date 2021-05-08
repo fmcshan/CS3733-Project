@@ -48,6 +48,8 @@ public class SearchContext {
 
     public void loadNodes(ArrayList<Node> nodes, Node start, Node goal) {this.searchAlgorithm.loadNodes(nodes, start, goal);}
 
+    public String getAlgorithm(){return searchAlgorithm.getClass().getName();}
+
     public ArrayList<String> getRelevantFloors(){return searchAlgorithm.getRelevantFloors();}
 
     public static void main(String[] args) {

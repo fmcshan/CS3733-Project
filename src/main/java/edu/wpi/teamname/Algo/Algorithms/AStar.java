@@ -19,18 +19,6 @@ import java.util.Stack;
  * @author Emmanuel Ola
  */
 public class AStar extends Algorithm {
-    /**
-     * ArrayList of provided nodes
-     */
-    //private ArrayList nodes;
-    /**
-     * The starting node
-     */
-    //private Node start;
-    /**
-     * The ending node
-     */
-    //private Node goal;
 
     private boolean isHandicap;
     /**
@@ -66,12 +54,6 @@ public class AStar extends Algorithm {
             }
             node.setCostSoFar(Double.POSITIVE_INFINITY);
         }
-    }
-
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
     }
 
     /**

@@ -14,10 +14,8 @@ import java.util.PriorityQueue;
  * Uses breadth-first search for pathfinding
  */
 public class BFS extends Algorithm {
-    private Node start;
-    private Node goal;
-    private ArrayList<Node> path;
-    private PriorityQueue<Node> openNodes;
+    ArrayList<Node> path;
+    PriorityQueue<Node> openNodes;
 
     public BFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
@@ -28,7 +26,10 @@ public class BFS extends Algorithm {
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
     }
 
-    public BFS(){}
+    public BFS(){
+        this.path = new ArrayList<>();
+        this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
+    }
 
     @Override
     public ArrayList<Node> getPath(){
@@ -42,11 +43,6 @@ public class BFS extends Algorithm {
         }
     }
 
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
-    }
 
     public void process() {
         Node current = start;

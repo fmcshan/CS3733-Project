@@ -14,8 +14,6 @@ import java.util.ArrayList;
  * @author Emmanuel Ola
  */
 public class DFS extends Algorithm {
-    private Node start;
-    private Node goal;
     private ArrayList<Node> path;
 
 
@@ -34,7 +32,9 @@ public class DFS extends Algorithm {
         this.process(start);
     }
 
-    public DFS(){}
+    public DFS(){
+        this.path = new ArrayList<>();
+    }
 
     /**
      * Resets the visited flag of all the nodes in the provided list of nodes

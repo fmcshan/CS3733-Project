@@ -23,35 +23,45 @@ public class NavigationHelper {
     private SearchContext pathfinder;
     private double totalStraightDistance;
     private int lastStraightIndex;
+    private ArrayList<String> directionFloors;
 
     public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
         pathfinder = new SearchContext(new AStar(nodes, start, goal, false));
+        directionFloors = new ArrayList<>();
     }
 
     public NavigationHelper(SearchContext searchAlgorithm){
         pathfinder = searchAlgorithm;
+        directionFloors = new ArrayList<>();
     }
 
     public ArrayList<String> getTextDirections(){
         ArrayList<String> result = new ArrayList<>();
         ArrayList<Node> path = pathfinder.getPath();
         double total = 0;
+        directionFloors.clear();
         for (int i = 0; i < path.size(); i++) {
             Node node = path.get(i);
-            if (i == path.size() - 1)
+            if (i == path.size() - 1) {
                 result.add("You have arrived at your destination");
+                directionFloors.add(path.get(i).getFloor());
+            }
             else {
                 Node next = path.get(i + 1);
                 if (i > 0) {
                     Node prev = path.get(i - 1);
                     if (node.getNodeType().equals("ELEV") && next.getNodeType().equals("ELEV")){
                         result.add("Take the Elevator to Floor " + next.getFloor());
+                        directionFloors.add(next.getFloor());
                     }
                     else if (node.getNodeType().equals("STAI") && next.getNodeType().equals("STAI")){
                         result.add("Take the Stairs to Floor " + next.getFloor());
+                        directionFloors.add(next.getFloor());
                     }
-                    else if (next.getNodeType().equals("EXIT"))
+                    else if (next.getNodeType().equals("EXIT")) {
                         result.add("Head for " + next.getLongName());
+                        directionFloors.add(next.getFloor());
+                    }
                     else {
                         if (i > 2 && (i < path.size() - 3)){
                             boolean isPrevStraight = getDirection(getAngle(path.get(i-2), prev), getAngle(prev, node)).equals("Straight ");
@@ -63,31 +73,50 @@ public class NavigationHelper {
                             } else if (isPrevStraight && goStraight && isNextStraight){
                                 total += distance(node,next)/SCALE;
                             } else if (isPrevStraight && goStraight && !isNextStraight){
-                                if (node.getNodeType().equals("HALL"))
+                                if (node.getNodeType().equals("HALL")) {
                                     result.add("Head down the hall for " + (int) Math.ceil(total) + " feet");
-                                else
+                                    directionFloors.add(node.getFloor());
+                                }
+                                else {
                                     result.add("Go straight for " + (int) Math.ceil(total) + " feet to get to " + next.getLongName());
+                                    directionFloors.add(node.getFloor());
+                                }
                             } else if (!isPrevStraight && goStraight && !isNextStraight){
                                 result.add("Go straight towards " + next.getLongName());
+                                directionFloors.add(node.getFloor());
                             } else
-                                if (getDirection(getAngle(prev, node), getAngle(node, next)).equals("Turn "))
+                                if (getDirection(getAngle(prev, node), getAngle(node, next)).equals("Turn ")) {
                                     result.add("Turn towards " + next.getLongName());
-                                else
+                                    directionFloors.add(node.getFloor());
+                                }
+                                else {
                                     result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
-                        } else
+                                    directionFloors.add(node.getFloor());
+                                }
+                        } else {
                             result.add(getDirection(getAngle(prev, node), getAngle(node, next)) + next.getLongName());
+                            directionFloors.add(node.getFloor());
+                        }
                     }
-                } else result.add("Head for " + next.getLongName());
+                } else {
+                    result.add("Head for " + next.getLongName());
+                    directionFloors.add(node.getFloor());
+                }
             }
         }
         return result;
+    }
+
+    public ArrayList<String> getDirectionFloors(){
+        getTextDirections();
+        return directionFloors;
     }
 
     public String getDirection (double a, double b){
         double angle = this.NormalizeAngle(b - a);
 
         if (angle >= 315 || angle <= 45) {
-            return "Straight ";
+            return "Go straight towards ";
         }
         else if (angle >= 135 && angle <= 215) {
             return "Turn ";
@@ -141,15 +170,9 @@ public class NavigationHelper {
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         //Node start = nodes.get(Parser.indexOfNode(nodes, "ALABS001L2"));
         Node start = nodes.get(Parser.indexOfNode(nodes, "lPARK013GG"));
-        Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"));
+        Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00E02"));
         Stopwatch timer = new Stopwatch();
         NavigationHelper dir = new NavigationHelper(nodes, start, goal);
-        System.out.println(dir.getTextDirections());
-        ArrayList<String> nodeTypes = new ArrayList<>();
-        for (Node node : nodes) {
-            if (!nodeTypes.contains(node.getNodeType()))
-                nodeTypes.add(node.getNodeType());
-        }
-        System.out.println(nodeTypes);
+        System.out.println(dir.getDirectionFloors());
     }
 }

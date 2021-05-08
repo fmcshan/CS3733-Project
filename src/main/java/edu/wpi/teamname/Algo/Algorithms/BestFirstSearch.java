@@ -11,10 +11,7 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 public class BestFirstSearch extends Algorithm{
-    private ArrayList<Node> nodes;
-    private Node start;
-    private Node goal;
-    private PriorityQueue<Node> openNodes;
+    PriorityQueue<Node> openNodes;
 
     public BestFirstSearch(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);

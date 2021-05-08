@@ -12,17 +12,10 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 public class Djikstra extends Algorithm{
-    private ArrayList<Node> nodes;
-    private Node start;
-    private Node goal;
     private PriorityQueue<Node> openNodes;
 
     public Djikstra(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.resetNodes(nodes);
-        this.start = start;
-        start.setCostSoFar(0);
-        this.goal = goal;
         openNodes = new PriorityQueue<Node>(new NodeCostComparator());
         this.process();
     }
@@ -63,6 +56,7 @@ public class Djikstra extends Algorithm{
     }
 
     public void process(){
+        start.setCostSoFar(0);
         openNodes.add(start);
         Node current = start;
         double tentativeScore = 0;

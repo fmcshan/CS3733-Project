@@ -32,15 +32,14 @@ public abstract class Algorithm {
 
     public abstract ArrayList<Node> getPath();
 
-    public abstract void loadNodes(ArrayList<Node> nodes, Node start, Node goal);
+    //public abstract void loadNodes(ArrayList<Node> nodes, Node start, Node goal);
 
-    /*
+
     public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
         this.nodes = nodes;
         this.start = start;
         this.goal = goal;
     }
-     */
 
     /**
      * Returns a list of nodes representing the path specific to the floor provided
