@@ -67,7 +67,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="askUrgency" text="Please select the urgency of the request:" textFill="#868686">
+                  <Label fx:id="askUrgency" text="Please select a request urgency level:" textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
