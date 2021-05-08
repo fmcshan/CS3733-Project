@@ -23,6 +23,10 @@ class QueueStack<T> {
             return Optional.empty();
     }
 
+    Boolean isEmpty(){
+        return dataCollection.isEmpty();
+    }
+
     void clear() {
         dataCollection.clear();
     }

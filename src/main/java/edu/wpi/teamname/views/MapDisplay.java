@@ -274,7 +274,9 @@ public class MapDisplay implements LevelChangeListener {
                         return;
                     }
                     nodeBeingDragged = false;
-                    Submit.getInstance().editNode(new Node(
+                    List<Action> list = new LinkedList<>();
+                    list.remove(localNodesMap.get(draggedNode.getNodeID()));
+                    list.add(new ManageAdd(new Node(
                             draggedNode.getNodeID(),
                             (int) actualX(draggedCircle.getCenterX()),
                             (int) actualY(draggedCircle.getCenterY()),
@@ -283,7 +285,18 @@ public class MapDisplay implements LevelChangeListener {
                             draggedNode.getNodeType(),
                             draggedNode.getLongName(),
                             draggedNode.getShortName()
-                    ));
+                    )));
+                    RevisionManager.getInstance().execute(list);
+//                    Submit.getInstance().editNode(new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName()
+//                    ));
                     draggedCircle = null;
                     draggedNode = null;
                     refreshData();

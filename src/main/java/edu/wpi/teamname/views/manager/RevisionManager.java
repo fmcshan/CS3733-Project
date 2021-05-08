@@ -20,18 +20,23 @@ public class RevisionManager {
             actionHistory = new ArrayList<>();
         }
 
-        void execute(List<Action> actionList){
+        public void execute(List<Action> actionList){
             actionList.forEach(Action::execute);
             queueStackNormal.push(actionList);
             actionList.forEach(a -> actionHistory.add(a.getActionName()));
         }
-    void execute(Action action){
+    public void execute(Action action){
+        if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(action))){
+            actionHistory.clear();
+            clearReverse();
+            clearNormal();
+        }
         action.execute();
         List<Action> singleAction = new ArrayList<>();
         singleAction.add(action);
         queueStackNormal.push(singleAction);
-
          actionHistory.add(action.getActionName());
+
     }
 
         void undo() {
