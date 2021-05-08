@@ -21,7 +21,7 @@ public class RevisionManager {
         }
 
         public void execute(List<Action> actionList){
-            if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(actionList.get(1)))){
+            if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(actionList.get(0)))){
                 actionHistory.clear();
                 clearReverse();
                 clearNormal();
@@ -61,13 +61,15 @@ public class RevisionManager {
                 aList.forEach(a -> actionHistory.add(a.getActionName() + " - redo"));
             });
         }
-
-        void clearNormal() {
+        public void clearNormal() {
             queueStackNormal.clear();
         }
-
-        void clearReverse() {
+        public void clearReverse() {
             queueStackReverse.clear();
+        }
+        public void clearQueues(){
+            clearNormal();
+            clearReverse();
         }
 
         List<String> getActionHistory() {

@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
+import javafx.event.Event;
+import javafx.scene.input.*;
 import javafx.scene.shape.*;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
@@ -21,10 +23,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -383,12 +381,13 @@ public class MapDisplay implements LevelChangeListener {
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
-
+        undoRedo();
         //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
         addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
         zoom.zoomAndPan();
+
     }
 
     private void addEscListener(javafx.scene.Node _toAdd) {
@@ -1511,4 +1510,32 @@ public class MapDisplay implements LevelChangeListener {
         other4.setTextFill(Paint.valueOf("9e9e9e"));
         other5.setTextFill(Paint.valueOf("9e9e9e"));
     }
+    public void undoRedo() {
+        final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,
+                KeyCombination.CONTROL_DOWN);
+        final KeyCombination controlY = new KeyCodeCombination(KeyCode.Y,
+                KeyCombination.CONTROL_DOWN);
+        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent event) {
+                System.out.println("here");
+//                if(event.getCode() == KeyCode.Z){
+//                    System.out.println("ahaha");
+//                }
+                if (controlZ.match(event)) {
+                    undoChange();
+                    System.out.println("Ctrl+R pressed");
+
+                }
+                if (controlY.match(event)) {
+                    System.out.println("Ctrl+R pressed");
+                    redoChange();
+                }
+
+            }
+
+        });
+    }
+
 }
