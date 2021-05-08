@@ -83,23 +83,24 @@ public class Parser {
     };
 
     public static UserRegistration parseUserRegistration(JSONObject _registration) {
-        _registration = _registration.getJSONObject("fields");
+        JSONObject registration = _registration.getJSONObject("fields");
         ArrayList<String> reasonList = new ArrayList<String>();
         try {
-            String reasons = _registration.getString("reasons");
+            String reasons = registration.getString("reasons");
             reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
         } catch (Exception e) {e.printStackTrace();}
         return new UserRegistration(
-                _registration.getString("name"),
-                _registration.getString("date"),
+                _registration.getInt("pk"),
+                registration.getString("name"),
+                registration.getString("date"),
                 reasonList,
-                _registration.getString("phone"),
-                _registration.getBoolean("ack"),
-                _registration.getDouble("ackTime"),
-                _registration.getBoolean("cleared"),
-                _registration.getInt("rating"),
-                _registration.getString("details")
+                registration.getString("phone"),
+                registration.getBoolean("ack"),
+                registration.getDouble("ackTime"),
+                registration.getBoolean("cleared"),
+                registration.getInt("rating"),
+                registration.getString("details")
         );
     };
 

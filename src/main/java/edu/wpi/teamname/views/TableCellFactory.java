@@ -58,7 +58,7 @@ public class TableCellFactory {
         HBox.setMargin(clearWrapper, new Insets(0,0,0,5));
 
         MaterialDesignIconView clearedIcon;
-        if (!_reg.getCleared()) {
+        if (_reg.getCleared()) {
             clearedIcon = new MaterialDesignIconView(MaterialDesignIcon.CHECKBOX_MARKED_CIRCLE);
             clearedIcon.setGlyphSize(25);
             clearedIcon.setFill(Color.valueOf("317fb8"));
@@ -89,9 +89,9 @@ public class TableCellFactory {
         HBox starWrapper = new HBox();
         starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 0 4;");
 
-//        if (_reg.getRating() == -1) {
-//            return starWrapper;
-//        }
+        if (_reg.getRating() == -1) {
+            return starWrapper;
+        }
 
         for (int i = 0; i < _reg.getRating(); i++) {
             starWrapper.getChildren().add(generate_star(false));
