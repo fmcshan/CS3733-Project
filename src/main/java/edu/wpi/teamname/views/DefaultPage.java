@@ -14,6 +14,7 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -82,6 +84,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void initialize() {
         ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
+        receiveMessage("Top of the morning, how can I help you?");
         SceneManager.getInstance().setDefaultPage(this);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
@@ -332,8 +335,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         Text sentMessage = new Text();
         sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito'");
         sentMessage.setFill(Color.WHITE);
-        //System.out.println(message.length());
-        if (message.length() >= 30) {
+        Bounds bounds = TextBuilder.create().text(message).build().getLayoutBounds();
+        if (bounds.getWidth() >= 186) {
             sentMessage.setWrappingWidth(255);
         }
 
@@ -355,7 +358,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatBox.heightProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     chatBox.layout();
-                    chatScrollPane.setVvalue( 1.0d );
+                    chatScrollPane.setVvalue(1.0d);
                 }
         );
         ChatBot.getInstance().sendMessage(message);
