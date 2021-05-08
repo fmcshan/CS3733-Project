@@ -35,12 +35,11 @@ public class UserCheckout {
         HashMap<String, Node> mapNodes = new HashMap<>();
         HashMap<String, Node> mapNodes2 = new HashMap<>();
         @FXML
-        void initialize(){
+        void initialize() {
             refreshSpaces();
-            //System.out.println("ONCE");
         }
 
-        void refreshSpaces(){
+        void refreshSpaces() {
 
             listOfNodes = LocalStorage.getInstance().getNodes();
             for (Node n: listOfNodes
@@ -64,12 +63,19 @@ public class UserCheckout {
             LoadFXML.setCurrentWindow("");
             defaultPage.toggleCheckIn();
             SceneManager.getInstance().getDefaultPage().closeWindows();
-            if (!(parkingBox.getValue() == null)){
+            if (!(parkingBox.getValue() == null)) {
                 Submit.getInstance().removeParking(mapNodes2.get(parkingBox.getValue()).getNodeID());
                 Submit.getInstance().removeParking(parkingBox.getValue());
                 ButtonManager.remove_class();
             }
-        }
 
+            // experienceSlider.getValue();
+            // additionalComments.getText();
+            // Submit.getInstance().editUserRegistration();
+
+            successPop.setPrefWidth(657.0);
+            Success success = new Success(this);
+            success.loadSuccess("You have successfully checked out. Thank you for visiting Brigham and Women's Hospital!", successPop);
+        }
     }
 
