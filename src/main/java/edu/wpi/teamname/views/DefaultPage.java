@@ -59,6 +59,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     @FXML
     private JFXButton checkButton;
     @FXML
+    private JFXButton undoButton;
+    @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox, closedChatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     private Path tonysPath; // the path displayed on the map
@@ -85,6 +87,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
+        undoButton.setVisible(true);
 
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
 //
@@ -116,7 +119,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             }
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
@@ -129,11 +132,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         refreshData();
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     private void displayAuthPages() {
@@ -206,11 +209,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         startAndEnd.clear();
         startNode = null;
         endNode = null;
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
             return;
         }
 
@@ -265,7 +268,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML
@@ -289,7 +292,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     public void initGoogleForm() {
         System.out.println("called");
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML

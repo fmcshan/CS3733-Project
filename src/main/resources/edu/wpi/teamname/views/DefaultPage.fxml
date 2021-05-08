@@ -53,6 +53,22 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
+                  <JFXButton fx:id="undoButton" onAction="#undoChange" prefHeight="56.0" prefWidth="92.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Undo" textFill="#9e9e9e">
+                     <effect>
+                        <DropShadow color="#a4a4a4" />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="redoButton" onAction="#redoChange" prefHeight="56.0" prefWidth="85.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Redo" textFill="#9e9e9e">
+                     <effect>
+                        <DropShadow color="#a4a4a4" />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </HBox>
             <VBox fx:id="addNodeField" alignment="TOP_CENTER" maxHeight="315.0" maxWidth="200.0" prefHeight="300.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 10px;" styleClass="drop" visible="false">
@@ -554,7 +570,8 @@
                   <VBox fx:id="employeePop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css">
                      <VBox.margin>
                         <Insets top="15.0" />
-                     </VBox.margin></VBox>
+                     </VBox.margin>
+                  </VBox>
                </children>
             </VBox>
          </children></VBox>

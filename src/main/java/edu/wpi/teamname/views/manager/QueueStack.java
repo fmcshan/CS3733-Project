@@ -13,8 +13,13 @@ class QueueStack<T> {
     }
 
     void push(T item) {
-        dataCollection.add(0, item);
+        dataCollection.add(item);
     }
+
+//    void push(T item) {
+//        dataCollection.add(0, item);
+//    }
+
 
     Optional<T> pop() {
         if(dataCollection.size() > 0)

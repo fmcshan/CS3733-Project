@@ -275,7 +275,8 @@ public class MapDisplay implements LevelChangeListener {
                     }
                     nodeBeingDragged = false;
                     List<Action> list = new LinkedList<>();
-                    list.remove(localNodesMap.get(draggedNode.getNodeID()));
+                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID())));
+                    System.out.println(localNodesMap.get(draggedNode.getNodeID()));
                     list.add(new ManageAdd(new Node(
                             draggedNode.getNodeID(),
                             (int) actualX(draggedCircle.getCenterX()),
@@ -724,7 +725,10 @@ public class MapDisplay implements LevelChangeListener {
         if (t.getTarget() instanceof Text) {
             Edge toRemove = textToEdgeMap.get(t.getTarget());
             //System.out.println("Gotcha");
-            Submit.getInstance().removeEdge(toRemove);
+            //Submit.getInstance().removeEdge(toRemove);
+            List<Action> list = new LinkedList<>();
+            list.add(new ManageDelete(toRemove));
+            RevisionManager.getInstance().execute(list);
             refreshData();
             renderMap();
             return;
@@ -789,9 +793,15 @@ public class MapDisplay implements LevelChangeListener {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
                         edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        //Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        List<Action> list = new LinkedList<>();
+                        list.add(new ManageDelete(e));
+                        RevisionManager.getInstance().execute(list);
                         edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+                        //Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+                        List<Action> list2 = new LinkedList<>();
+                        list2.add(new ManageDelete(newEdge));
+                        RevisionManager.getInstance().execute(list2);
 
                     }
                 }
@@ -814,7 +824,10 @@ public class MapDisplay implements LevelChangeListener {
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
             Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
+            //Submit.getInstance().addEdge(newEdge);
+            List<Action> list2 = new LinkedList<>();
+            list2.add(new ManageAdd(newEdge));
+            RevisionManager.getInstance().execute(list2);
             if(edgesBetweenFloors.containsKey(tempNode2)){
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
             } else
@@ -824,7 +837,10 @@ public class MapDisplay implements LevelChangeListener {
                 edgesBetweenFloors.put(tempNode2, list);
             }
             Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
+            //Submit.getInstance().addEdge(newEdge2);
+            List<Action> list3 = new LinkedList<>();
+            list3.add(new ManageAdd(newEdge2));
+            RevisionManager.getInstance().execute(list3);
             if(edgesBetweenFloors.containsKey(tempNode)){
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
             } else
@@ -1034,7 +1050,13 @@ public class MapDisplay implements LevelChangeListener {
                 editNodeLongName.getText(),
                 editNodeShortName.getText()
         );
-        Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
+        //Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
+        List<Action> list = new LinkedList<>();
+        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()));
+        ManageAdd add = new ManageAdd(newNode);
+        list.add(delete);
+        list.add(add);
+        RevisionManager.getInstance().execute(list);
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
         renderMap(); // Render/refresh the map (with the updated data)
@@ -1047,7 +1069,10 @@ public class MapDisplay implements LevelChangeListener {
      */
     @FXML
     private void confirmDeleteEdge(ActionEvent e) {
-        Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
+        //Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageDelete(selectedEdge));
+        RevisionManager.getInstance().execute(list);
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1060,7 +1085,10 @@ public class MapDisplay implements LevelChangeListener {
      */
     @FXML
     private void deleteNode(ActionEvent e) {
-        Submit.getInstance().removeNode(selectedNode); // Remove the selected node
+        //Submit.getInstance().removeNode(selectedNode); // Remove the selected node
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageDelete(selectedNode));
+        RevisionManager.getInstance().execute(list);
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1298,12 +1326,28 @@ public class MapDisplay implements LevelChangeListener {
             return; // Don't add edge
         }
         Edge edge = new Edge(edgeId, addEdgeStart.getNodeID(), addEdgeEnd.getNodeID()); // Create new edge
-        Submit.getInstance().addEdge(edge); // Add the edge
+        //Submit.getInstance().addEdge(edge); // Add the edge
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageAdd(edge));
+        RevisionManager.getInstance().execute(list);
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
     }
 
+    @FXML
+    void undoChange(){
+        RevisionManager.getInstance().undo();
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
+
+    }
+    @FXML
+    void redoChange(){
+        RevisionManager.getInstance().redo();
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
+    }
     /**
      * exit the application
      */
@@ -1337,7 +1381,10 @@ public class MapDisplay implements LevelChangeListener {
      */
     private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
         Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName); // Create a node
-        Submit.getInstance().addNode(node); // Add the node
+        //Submit.getInstance().addNode(node); // Add the node
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageAdd(node));
+        RevisionManager.getInstance().execute(list);
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
         dragStart = null; // Reset dragStart

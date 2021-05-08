@@ -21,25 +21,30 @@ public class RevisionManager {
         }
 
         public void execute(List<Action> actionList){
+            if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(actionList.get(1)))){
+                actionHistory.clear();
+                clearReverse();
+                clearNormal();
+            }
             actionList.forEach(Action::execute);
             queueStackNormal.push(actionList);
             actionList.forEach(a -> actionHistory.add(a.getActionName()));
         }
-    public void execute(Action action){
-        if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(action))){
-            actionHistory.clear();
-            clearReverse();
-            clearNormal();
-        }
-        action.execute();
-        List<Action> singleAction = new ArrayList<>();
-        singleAction.add(action);
-        queueStackNormal.push(singleAction);
-         actionHistory.add(action.getActionName());
+//    public void execute(Action action){
+//        if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(action))){
+//            actionHistory.clear();
+//            clearReverse();
+//            clearNormal();
+//        }
+//        action.execute();
+//        List<Action> singleAction = new ArrayList<>();
+//        singleAction.add(action);
+//        queueStackNormal.push(singleAction);
+//         actionHistory.add(action.getActionName());
+//
+//    }
 
-    }
-
-        void undo() {
+       public void undo() {
             Optional<List<Action>> optionalActions = queueStackNormal.pop();
             optionalActions.ifPresent(aList -> {
                 aList.forEach(Action::undo);
@@ -48,7 +53,7 @@ public class RevisionManager {
             });
         }
 
-        void redo() {
+        public void redo() {
             Optional<List<Action>> optionalActions = queueStackReverse.pop();
             optionalActions.ifPresent(aList -> {
                 aList.forEach(Action::execute);
