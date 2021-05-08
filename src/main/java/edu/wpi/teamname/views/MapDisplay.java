@@ -81,7 +81,7 @@ public class MapDisplay implements LevelChangeListener {
 
 
     @FXML
-    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop, editHistoryBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML
@@ -1537,5 +1537,8 @@ public class MapDisplay implements LevelChangeListener {
 
         });
     }
-
+//   public void loadHistory(){
+//        List<String> allActions = RevisionManager.getInstance().getActionHistory();
+//       allActions.forEach( {}editHistoryBox.
+//   }
 }

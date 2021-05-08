@@ -72,7 +72,7 @@ public class RevisionManager {
             clearReverse();
         }
 
-        List<String> getActionHistory() {
+       public  List<String> getActionHistory() {
             return actionHistory;
         }
 
