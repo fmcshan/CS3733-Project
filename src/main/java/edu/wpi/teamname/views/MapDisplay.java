@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.Scene;
@@ -15,10 +16,6 @@ import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Database.CSVOperator;
-import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
@@ -47,7 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapDisplay implements LevelChangeListener {
+public class MapDisplay implements LevelChangeListener, DataListener {
     @FXML
     private VBox addBtwn;
     @FXML
@@ -432,6 +429,7 @@ public class MapDisplay implements LevelChangeListener {
      * Initialize the map editor/display
      */
     public void initMapEditor() {
+        LocalStorage.getInstance().addListener(this);
         LevelManager.getInstance().addListener(this);
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
@@ -1942,8 +1940,7 @@ public class MapDisplay implements LevelChangeListener {
         resetFloors();
     }
 
-    @Override
-    public void levelChanged(int _level) {
+    private void updateAndDisplay() {
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
@@ -1954,5 +1951,20 @@ public class MapDisplay implements LevelChangeListener {
                 displayHotspots(.8);
                 break;
         }
+    }
+
+    @Override
+    public void levelChanged(int _level) {
+        updateAndDisplay();
+    }
+
+    @Override
+    public void nodesSet(ArrayList<Node> _nodes) {
+        updateAndDisplay();
+    }
+
+    @Override
+    public void edgesSet(ArrayList<Edge> _edges) {
+        updateAndDisplay();
     }
 }
