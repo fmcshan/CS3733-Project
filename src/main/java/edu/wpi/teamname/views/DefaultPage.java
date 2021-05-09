@@ -9,16 +9,14 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.RevisionManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,10 +29,8 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -87,7 +83,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        undoButton.setVisible(true);
+        //undoButton.setVisible(true);
 
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
 //
@@ -194,6 +190,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     public void toggleMapEditor() {
         LoadFXML.setCurrentHelp("");
         helpButton.setVisible(true);
+        RevisionManager.getInstance().clearQueues();
         if (navigation != null) {
             navigation.cancelNavigation();
         }
