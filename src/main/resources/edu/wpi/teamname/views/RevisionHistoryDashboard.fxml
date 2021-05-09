@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -223,5 +224,13 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="40.0" />
          </VBox.margin>
       </ScrollPane>
+      <JFXButton onAction="#closeWindows" text=" ">
+         <graphic>
+            <MaterialDesignIconView fill="#c3c3c3" glyphName="CLOSE_BOX_OUTLINE" size="56" />
+         </graphic>
+         <VBox.margin>
+            <Insets right="1.0" />
+         </VBox.margin>
+      </JFXButton>
    </children>
 </VBox>

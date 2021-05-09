@@ -11,9 +11,9 @@ public class ManageAdd implements Action{
 //    private Object object2;
    public String   actionName;
    String snapshotUUID;
-    public ManageAdd(Object object, String snapshotUUID ){
+    public ManageAdd(Object object){
         this.object =object;
-         this.snapshotUUID=snapshotUUID;
+//         this.snapshotUUID=snapshotUUID;
     }
 
 //    public ManageAdd(Object object1, Object object2){
