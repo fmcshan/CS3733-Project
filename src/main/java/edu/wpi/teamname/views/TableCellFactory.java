@@ -56,7 +56,7 @@ public class TableCellFactory {
         HBox clearWrapper = new HBox();
         clearWrapper.setPrefWidth(50);
         clearWrapper.setAlignment(Pos.TOP_CENTER);
-        HBox.setMargin(clearWrapper, new Insets(0,0,10,5));
+        HBox.setMargin(clearWrapper, new Insets(0,0,0,5));
 
         MaterialDesignIconView clearedIcon;
         if (_reg.getCleared()) {
