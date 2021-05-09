@@ -94,7 +94,7 @@ public class Parser {
                 _registration.getInt("pk"),
                 registration.getString("name"),
                 registration.getString("date"),
-                registration.getDouble("submittedAt"),
+                registration.getLong("submittedAt"),
                 reasonList,
                 registration.getString("phone"),
                 registration.getBoolean("ack"),

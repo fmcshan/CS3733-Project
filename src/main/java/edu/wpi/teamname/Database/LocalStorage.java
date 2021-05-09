@@ -105,7 +105,14 @@ public class LocalStorage {
                 e.printStackTrace();
             }
         }
-        return (ArrayList<UserRegistration>) this.registrations.clone();
+
+        ArrayList<UserRegistration> ret = (ArrayList<UserRegistration>) this.registrations.clone();
+        ret.sort(new Comparator<UserRegistration>() {
+            public int compare(UserRegistration r1, UserRegistration r2) {
+                return (int) (r2.getSubmittedAt() - r1.getSubmittedAt());
+            }
+        });
+        return ret;
     }
 
     public void linkEdges() {

@@ -69,7 +69,6 @@ public class AuthSocket extends WebSocketClient {
 
         if (payloadId.equals("check_in_updated")) {
             payload = payload.getJSONObject("data");
-            System.out.println(payload);
             Change change = new Change("check_in_updated");
             change.setUserRegistrations(Parser.parseUserRegistrations(payload.getJSONArray("registrations")));
 
