@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -284,6 +285,7 @@ public class UserRegistration {
             //submit
             edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText(), false, 0, "");
             Submit.getInstance().submitUserRegistration(formData);
+            NavManager.getInstance().setUserRegistration(formData);
 
             // load Success page in successPop VBox
             successPop.setPrefWidth(657.0);

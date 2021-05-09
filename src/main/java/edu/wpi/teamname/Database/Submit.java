@@ -28,6 +28,7 @@ public class Submit {
 
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("uuid", _form.getUuid());
         data.put("name", _form.getName());
         data.put("submittedAt", String.valueOf(_form.getSubmittedAt()));
         data.put("reasons", reasons.toString());
@@ -53,7 +54,7 @@ public class Submit {
 
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
-        data.put("pk", String.valueOf(_form.getPk()));
+        data.put("uuid", _form.getUuid());
         data.put("name", _form.getName());
         data.put("reasons", reasons.toString());
         data.put("rating", String.valueOf(_form.getRating()));

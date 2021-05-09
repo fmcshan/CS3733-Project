@@ -84,7 +84,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void initialize() {
         ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
-        receiveMessage("Top of the morning, how can I help you?");
+        receiveMessage("Hi, how can I help you?");
         SceneManager.getInstance().setDefaultPage(this);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
