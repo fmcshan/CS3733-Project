@@ -85,12 +85,12 @@ public class Navigation implements LevelChangeListener {
 
     public void setToCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
-        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+        box.setValue(node.getLongName() + " [" + node.getFloor() + "]");
     }
 
     public void setFromCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(fromCombo);
-        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+        box.setValue(node.getLongName() + " [" + node.getFloor() + "]");
     }
 
     /**
@@ -121,7 +121,7 @@ public class Navigation implements LevelChangeListener {
 
         if (COVIDMessage.covid) {
             AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener(toCombo);
-            listener.setValue("Emergency Department Entrance[1]");
+            listener.setValue("Emergency Department Entrance [1]");
             COVIDMessage.covid = false;
         }
 
@@ -215,7 +215,7 @@ public class Navigation implements LevelChangeListener {
                 return;
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+            listOfNodeNames.add(n.getLongName() + " [" + n.getFloor() + "]");
             //Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
 
