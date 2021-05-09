@@ -25,11 +25,8 @@ public class DFS extends Algorithm {
      */
     public DFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.resetNodes(nodes);
-        this.start = start;
-        this.goal = goal;
         this.path = new ArrayList<>();
-        this.process(start);
+        this.process();
     }
 
     public DFS(){
@@ -50,6 +47,7 @@ public class DFS extends Algorithm {
         this.nodes = nodes;
         this.start = start;
         this.goal = goal;
+        this.process();
     }
 
     /**
@@ -58,21 +56,23 @@ public class DFS extends Algorithm {
      */
     @Override
     public ArrayList<Node> getPath(){
-        this.process(start);
         ArrayList<Node> newPath = new ArrayList<Node>(path.subList(0, path.indexOf(goal)));
         newPath.add(goal);
         return newPath;
     }
 
+    public void process(){
+        processDFS(start);
+    }
 
-    public void process(Node current){
+    public void processDFS(Node current){
         current.visitedFlag = true;
         path.add(current);
         if (current.equals(goal))
             return;
         for (Node neighbor : current.getEdges()) {
             if (!neighbor.visitedFlag){
-                process(neighbor);
+                processDFS(neighbor);
             }
         }
     }

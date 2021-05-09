@@ -19,9 +19,6 @@ public class BFS extends Algorithm {
 
     public BFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.resetNodes(nodes);
-        this.start = start;
-        this.goal = goal;
         this.path = new ArrayList<>();
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
     }
@@ -33,7 +30,6 @@ public class BFS extends Algorithm {
 
     @Override
     public ArrayList<Node> getPath(){
-        this.process();
         return path;
     }
 
@@ -45,6 +41,7 @@ public class BFS extends Algorithm {
 
 
     public void process() {
+        path.clear();
         Node current = start;
         current.visited();
         openNodes.add(current);

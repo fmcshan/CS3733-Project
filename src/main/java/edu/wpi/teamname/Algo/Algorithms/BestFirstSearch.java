@@ -15,10 +15,8 @@ public class BestFirstSearch extends Algorithm{
 
     public BestFirstSearch(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.resetNodes(nodes);
-        this.start = start;
-        this.goal = goal;
         this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
+        this.process();
     }
 
     public BestFirstSearch(){
@@ -26,14 +24,15 @@ public class BestFirstSearch extends Algorithm{
     }
 
     public ArrayList<Node> getPath() {
-        this.process();
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
             finalPath.push(current);
             current = current.getParent();
         }
-        finalPath.push(start); //Pushes the starting node on to the stack
+
+        if (!(current == null))
+            finalPath.push(start); //Pushes the starting node on to the stack
 
         ArrayList<Node> path = new ArrayList<Node>();
         while (!finalPath.isEmpty())
@@ -45,6 +44,7 @@ public class BestFirstSearch extends Algorithm{
         for (Node node : nodes) {
             if (node.getParent() != null) {
                 node.setParent(null);
+                node.visitedFlag = false;
             }
             node.setCostSoFar(0);
         }
@@ -68,16 +68,22 @@ public class BestFirstSearch extends Algorithm{
             }
 
             current = openNodes.poll();
-
             for (Node node : current.getEdges()) {
                 tentativeScore = AStar.distance(current, goal);
-                if (AStar.distance(node, goal) < tentativeScore){
+                if (AStar.distance(node, goal) <= tentativeScore){
                     node.setParent(current);
-                    if (!openNodes.contains(node))
-                        openNodes.add(node);
+                    node.setHeuristic(calculateHeuristic(node));
+                    node.updateAStarScore();
                 }
+                if (!openNodes.contains(node) && !node.visitedFlag)
+                    openNodes.add(node);
             }
+            current.visited();
         }
+    }
+
+    public double calculateHeuristic(Node node) {
+        return AStar.distance(node, goal);
     }
 
     public static void main(String[] args) {

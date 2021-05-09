@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
@@ -56,16 +57,16 @@ public class SearchContext {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(10), nodes.get(76), false));
-        ArrayList<ArrayList<Node>> aStarPaths = searchAlgorithms.getAllFloorPaths();
-        searchAlgorithms.setContext(new DFS(nodes, nodes.get(10), nodes.get(76)));
-        ArrayList<ArrayList<Node>> DFSPaths = searchAlgorithms.getAllFloorPaths();
-        searchAlgorithms.setContext(new BFS(nodes, nodes.get(10), nodes.get(76)));
-        ArrayList<ArrayList<Node>> BFSPaths = searchAlgorithms.getAllFloorPaths();
-        searchAlgorithms.setContext(new Djikstra(nodes, nodes.get(10), nodes.get(76)));
-        ArrayList<ArrayList<Node>> DjikstraPaths = searchAlgorithms.getAllFloorPaths();
-        searchAlgorithms.setContext(new BestFirstSearch(nodes, nodes.get(10), nodes.get(76)));
-        ArrayList<ArrayList<Node>> BestFirstSearchPaths = searchAlgorithms.getAllFloorPaths();
+        SearchContext searchAlgorithms = new SearchContext(new AStar(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01")), false));
+        ArrayList<Node> aStarPaths = searchAlgorithms.getPath();
+        searchAlgorithms.setContext(new DFS(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
+        ArrayList<Node> DFSPaths = searchAlgorithms.getPath();
+        searchAlgorithms.setContext(new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
+        ArrayList<Node> BFSPaths = searchAlgorithms.getPath();
+        searchAlgorithms.setContext(new Djikstra(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
+        ArrayList<Node> DjikstraPaths = searchAlgorithms.getPath();
+        searchAlgorithms.setContext(new BestFirstSearch(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
+        ArrayList<Node> BestFirstSearchPaths = searchAlgorithms.getPath();
         System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DjikstraPaths.size() + " " + BestFirstSearchPaths.size());
     }
 

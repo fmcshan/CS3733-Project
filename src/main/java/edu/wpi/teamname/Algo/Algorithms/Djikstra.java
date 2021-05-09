@@ -33,14 +33,7 @@ public class Djikstra extends Algorithm{
         }
     }
 
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
-    }
-
     public ArrayList<Node> getPath() {
-        this.process();
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {

@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.NodeAStarComparator;
+import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Algo.Stopwatch;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
@@ -37,6 +38,7 @@ public class AStar extends Algorithm {
          //Initializes the cost so far of the starting node to 0
         this.isHandicap = isHandicap;
         openNodes = new PriorityQueue<>(new NodeAStarComparator()); //Instantiates the priority queue with our overwrited comparator
+        this.process();
     }
 
     public AStar(){
@@ -90,14 +92,16 @@ public class AStar extends Algorithm {
      */
     @Override
     public ArrayList<Node> getPath() {
-        this.process();
         Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
         Node current = goal;
         while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
             finalPath.push(current);
             current = current.getParent();
         }
-        finalPath.push(start); //Pushes the starting node on to the stack
+
+        if (!(current == null)) {
+            finalPath.push(start); //Pushes the starting node on to the stack
+        }
 
         ArrayList<Node> path = new ArrayList<Node>();
         while (!finalPath.isEmpty())
@@ -206,9 +210,9 @@ public class AStar extends Algorithm {
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         Stopwatch timer = new Stopwatch();
-        AStar example = new AStar(nodes, nodes.get(10), nodes.get(76), false);
+        AStar example = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01")), false);
         ArrayList<String> nodeTypes = new ArrayList<>();
-        System.out.println(example.getAllFloorPaths().size());
+        System.out.println(example.getPath().size());
         /*for (ArrayList<Node> floorPath : example.getFloorPaths()) {
             System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
             for (Node node : floorPath) {

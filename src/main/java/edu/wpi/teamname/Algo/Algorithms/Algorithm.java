@@ -39,7 +39,10 @@ public abstract class Algorithm {
         this.nodes = nodes;
         this.start = start;
         this.goal = goal;
+        this.process();
     }
+
+    protected abstract void process();
 
     /**
      * Returns a list of nodes representing the path specific to the floor provided
@@ -64,14 +67,16 @@ public abstract class Algorithm {
         ArrayList<Node> nodes = new ArrayList<>();
         ArrayList<ArrayList<Node>> paths = new ArrayList<>();
         String currentfloor = start.getFloor();
-        for (Node node : this.getPath()) {
-            if (node.getFloor().equals(currentfloor))
-                nodes.add(node);
-            else {
-                currentfloor = node.getFloor();
-                paths.add(nodes);
-                nodes = new ArrayList<>();
-                nodes.add(node);
+        if (!(this.getPath().size() == 1)) {
+            for (Node node : this.getPath()) {
+                if (node.getFloor().equals(currentfloor))
+                    nodes.add(node);
+                else {
+                    currentfloor = node.getFloor();
+                    paths.add(nodes);
+                    nodes = new ArrayList<>();
+                    nodes.add(node);
+                }
             }
         }
         paths.add(nodes);

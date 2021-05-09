@@ -141,7 +141,8 @@ public class Navigation implements LevelChangeListener {
         scrollBar.setFitToHeight(true);
         SceneManager.getInstance().getDefaultPage().getStartNode();
         SceneManager.getInstance().getDefaultPage().getEndNode();
-        AStar aStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), false);
+        AStar aStar = new AStar();
+        searchAlgorithm = new SearchContext(aStar);
     }
 
     public HBox generateNavElem(String _direction) {
@@ -260,7 +261,7 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
-        searchAlgorithm = new SearchContext(new AStar());
+        //searchAlgorithm = new SearchContext(new AStar());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
@@ -293,10 +294,13 @@ public class Navigation implements LevelChangeListener {
         else
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
          */
-        System.out.println(handicap);
+        //System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
-        System.out.println(searchAlgorithm.getAlgorithm());
+        //System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
+        //System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
+        System.out.println(searchAlgorithm.getAlgorithm());
+        //System.out.println(path);
         ArrayList<String> relevantFloors = searchAlgorithm.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -343,7 +347,8 @@ public class Navigation implements LevelChangeListener {
             if (toCombo.getValue() == null || fromCombo.getValue() == null) {
                 return;
             }
-            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
+            if(!(searchAlgorithm.getPath().size() == 1))
+                mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
     }
