@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXButton fx:id="regButton" alignment="BASELINE_LEFT" onAction="#openSubmittedRegistrations" prefHeight="52.0" prefWidth="325.0" styleClass="size24" stylesheets="@../images/buttonHover.css" text="Registrations" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRegistrationsButton">
+<JFXButton fx:id="regButton" alignment="BASELINE_LEFT" onAction="#openSubmittedRegistrations" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Registrations" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.SubmittedRegistrationsButton">
     <font>
         <Font size="24.0" />
     </font>
@@ -16,7 +16,7 @@
     <graphic>
         <VBox prefHeight="37.0" prefWidth="33.0">
             <children>
-            <MaterialDesignIconView fill="#c3c3c3" glyphName="CLIPBOARD_ACCOUNT" size="36" />
+            <MaterialDesignIconView fill="#c3c3c3" glyphName="CLIPBOARD_ACCOUNT" size="36" styleClass="nav-icon" />
             </children>
          <padding>
             <Insets right="10.0" />
