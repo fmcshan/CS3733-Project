@@ -251,114 +251,109 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * @param _opacity Node opacity
      */
     public void displayNodes(ArrayList<Node> _nodes, double _opacity, boolean showHall) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                resizingInfo(); // Set resizing info
+        resizingInfo(); // Set resizing info
 
-                ArrayList<Node> nodes = _nodes;
+        ArrayList<Node> nodes = _nodes;
 
-                if (startNode != null && endNode != null) {
-                    nodes.clear();
+        if (startNode != null && endNode != null) {
+            nodes.clear();
+        }
+
+        currentPath.forEach(n -> {
+            n.forEach(h -> {
+                listOfNode.add(h);
+                nodes.add(h);
+            });
+        });
+
+        nodes.forEach(n -> { // For each node in localNodes
+
+            if (n.getNodeType().equals("HALL") && !showHall) {
+                return;
+            }
+
+            if (n.equals(draggedNode)) {
+                return;
+            }
+            if (onScreen(n)) {
+                Tooltip tooltip = new Tooltip(n.getLongName());
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                circle.setStrokeWidth(4); // Set the stroke with to 4
+                circle.setStroke(Color.TRANSPARENT);
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
+                circle.setOpacity(_opacity); // Set node opacity (input param)
+
+                renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
+                onTopOfTopElements.getChildren().add(circle); // Render the node
+
+                if (n.equals(startNode) || n.equals(endNode)) {
+                    circle.setFill(Color.RED);
+                    circle.setRadius(10);
                 }
 
-                currentPath.forEach(n -> {
-                    n.forEach(h -> {
-                        listOfNode.add(h);
-                        nodes.add(h);
-                    });
+                if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                    circle.setFill(Color.RED);
+                    circle.setRadius(6);
+                }
+
+                circle.setOnMouseEntered(e -> { // Show a hover effect
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(8);
+                    } else {
+                        circle.setRadius(12); // Increase radius
+                    }
+                    circle.setOpacity(0.6);
+                });
+                circle.setOnMouseExited(e -> { // Hide hover effect
+                    if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
+                        circle.setRadius(6);
+                    } else {
+                        circle.setRadius(8); // Reset/set radius
+                    }
+                    circle.setOpacity(0.8); // Reset/set opacity
+                    tooltip.hide();
+                });
+                circle.setOnMouseMoved(
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
+                                tooltip.show(circle, event.getScreenX() - 15, event.getScreenY() + 20);
+                            }
+                        });
+
+                if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                    return; // Don't process drags outside of the map editor.
+                }
+
+                circle.setOnMouseDragged(e -> {
+                    nodeBeingDragged = true;
+                    draggedCircle = (Circle) e.getTarget();
+                    draggedCircle.setCenterX(e.getX());
+                    draggedCircle.setCenterY(e.getY());
+                    draggedNode = renderedNodeMap.get(draggedCircle);
+                    refreshDraggedEdges();
                 });
 
-                nodes.forEach(n -> { // For each node in localNodes
-
-                    if (n.getNodeType().equals("HALL") && !showHall) {
+                circle.setOnMouseReleased(e -> {
+                    if (!nodeBeingDragged) {
                         return;
                     }
-
-                    if (n.equals(draggedNode)) {
-                        return;
-                    }
-                    if (onScreen(n)) {
-                        Tooltip tooltip = new Tooltip(n.getLongName());
-                        Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
-                        circle.setStrokeWidth(4); // Set the stroke with to 4
-                        circle.setStroke(Color.TRANSPARENT);
-                        circle.setFill(Color.valueOf("607548")); // Set node color to olive
-                        circle.setOpacity(_opacity); // Set node opacity (input param)
-
-                        renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
-                        onTopOfTopElements.getChildren().add(circle); // Render the node
-
-                        if (n.equals(startNode) || n.equals(endNode)) {
-                            circle.setFill(Color.RED);
-                            circle.setRadius(10);
-                        }
-
-                        if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                            circle.setFill(Color.RED);
-                            circle.setRadius(6);
-                        }
-
-                        circle.setOnMouseEntered(e -> { // Show a hover effect
-                            if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                                circle.setRadius(8);
-                            } else {
-                                circle.setRadius(12); // Increase radius
-                            }
-                            circle.setOpacity(0.6);
-                        });
-                        circle.setOnMouseExited(e -> { // Hide hover effect
-                            if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                                circle.setRadius(6);
-                            } else {
-                                circle.setRadius(8); // Reset/set radius
-                            }
-                            circle.setOpacity(0.8); // Reset/set opacity
-                            tooltip.hide();
-                        });
-                        circle.setOnMouseMoved(
-                                new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent event) {
-                                        // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
-                                        tooltip.show(circle, event.getScreenX() - 15, event.getScreenY() + 20);
-                                    }
-                                });
-
-                        if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-                            return; // Don't process drags outside of the map editor.
-                        }
-
-                        circle.setOnMouseDragged(e -> {
-                            nodeBeingDragged = true;
-                            draggedCircle = (Circle) e.getTarget();
-                            draggedCircle.setCenterX(e.getX());
-                            draggedCircle.setCenterY(e.getY());
-                            draggedNode = renderedNodeMap.get(draggedCircle);
-                            refreshDraggedEdges();
-                        });
-
-                        circle.setOnMouseReleased(e -> {
-                            if (!nodeBeingDragged) {
-                                return;
-                            }
-                            nodeBeingDragged = false;
-                            Submit.getInstance().editNode(new Node(
-                                    draggedNode.getNodeID(),
-                                    (int) actualX(draggedCircle.getCenterX()),
-                                    (int) actualY(draggedCircle.getCenterY()),
-                                    draggedNode.getFloor(),
-                                    draggedNode.getBuilding(),
-                                    draggedNode.getNodeType(),
-                                    draggedNode.getLongName(),
-                                    draggedNode.getShortName()
-                            ));
-                            draggedCircle = null;
-                            draggedNode = null;
-                            refreshData();
-                            renderMap();
-                        });
-                    }
+                    nodeBeingDragged = false;
+                    Submit.getInstance().editNode(new Node(
+                            draggedNode.getNodeID(),
+                            (int) actualX(draggedCircle.getCenterX()),
+                            (int) actualY(draggedCircle.getCenterY()),
+                            draggedNode.getFloor(),
+                            draggedNode.getBuilding(),
+                            draggedNode.getNodeType(),
+                            draggedNode.getLongName(),
+                            draggedNode.getShortName()
+                    ));
+                    draggedCircle = null;
+                    draggedNode = null;
+                    refreshData();
+                    renderMap();
                 });
             }
         });
@@ -384,54 +379,49 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * @param _opacity Edge opacity
      */
     public void displayEdges(double _opacity) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                resizingInfo(); // Set sizing info
-                portalNodeMap.forEach((Id, n) -> {
-                    if (localNodesMap.containsKey(Id)) {
-                        Circle circle = new Circle();
-                        circle.setCenterX(xCoordOnTopElement(n.getX()));
-                        circle.setCenterY(yCoordOnTopElement(n.getY()));
-                        circle.setRadius(15);
-                        circle.setFill(Color.YELLOW);
-                        onTopOfTopElements.getChildren().add(circle);
+        resizingInfo(); // Set sizing info
+        portalNodeMap.forEach((Id, n) -> {
+            if (localNodesMap.containsKey(Id)) {
+                Circle circle = new Circle();
+                circle.setCenterX(xCoordOnTopElement(n.getX()));
+                circle.setCenterY(yCoordOnTopElement(n.getY()));
+                circle.setRadius(15);
+                circle.setFill(Color.YELLOW);
+                onTopOfTopElements.getChildren().add(circle);
+            }
+        });
+        localEdges.forEach(e -> { // For edge in localEdges
+            if (localNodesMap.containsKey(e.getStartNode()) && localNodesMap.containsKey(e.getEndNode())) { // If nodes exist
+                if (onScreen(localNodesMap.get(e.getStartNode())) || onScreen(localNodesMap.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
+                    double startX = xCoordOnTopElement(localNodesMap.get(e.getStartNode()).getX());
+                    double startY = yCoordOnTopElement(localNodesMap.get(e.getStartNode()).getY());
+                    double endX = xCoordOnTopElement(localNodesMap.get(e.getEndNode()).getX());
+                    double endY = yCoordOnTopElement(localNodesMap.get(e.getEndNode()).getY());
+
+                    if (draggedNode != null && e.getStartNode().equals(draggedNode.getNodeID())) {
+                        startX = draggedCircle.getCenterX();
+                        startY = draggedCircle.getCenterY();
                     }
-                });
-                localEdges.forEach(e -> { // For edge in localEdges
-                    if (localNodesMap.containsKey(e.getStartNode()) && localNodesMap.containsKey(e.getEndNode())) { // If nodes exist
-                        if (onScreen(localNodesMap.get(e.getStartNode())) || onScreen(localNodesMap.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
-                            double startX = xCoordOnTopElement(localNodesMap.get(e.getStartNode()).getX());
-                            double startY = yCoordOnTopElement(localNodesMap.get(e.getStartNode()).getY());
-                            double endX = xCoordOnTopElement(localNodesMap.get(e.getEndNode()).getX());
-                            double endY = yCoordOnTopElement(localNodesMap.get(e.getEndNode()).getY());
-
-                            if (draggedNode != null && e.getStartNode().equals(draggedNode.getNodeID())) {
-                                startX = draggedCircle.getCenterX();
-                                startY = draggedCircle.getCenterY();
-                            }
-                            if (draggedNode != null && e.getEndNode().equals(draggedNode.getNodeID())) {
-                                endX = draggedCircle.getCenterX();
-                                endY = draggedCircle.getCenterY();
-                            }
-                            // Create edge
-                            LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
-                            Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
-                            renderedEdgeMap.put(edge, e);
-                            onTopOfTopElements.getChildren().add(edge); // Render edge
-
-                            edge.setOnMouseEntered(t -> { // Show a hover effect
-                                edge.setStrokeWidth(6); // Increase width
-                                edge.setOpacity(1); // Increase opacity
-                            });
-
-                            edge.setOnMouseExited(t -> { // Hide hover effect
-                                edge.setOpacity(_opacity); // Reset/set opacity
-                                edge.setStrokeWidth(3); // Reset/set stroke width
-                            });
-                        }
+                    if (draggedNode != null && e.getEndNode().equals(draggedNode.getNodeID())) {
+                        endX = draggedCircle.getCenterX();
+                        endY = draggedCircle.getCenterY();
                     }
-                });
+                    // Create edge
+                    LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
+                    Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
+                    renderedEdgeMap.put(edge, e);
+                    onTopOfTopElements.getChildren().add(edge); // Render edge
+
+                    edge.setOnMouseEntered(t -> { // Show a hover effect
+                        edge.setStrokeWidth(6); // Increase width
+                        edge.setOpacity(1); // Increase opacity
+                    });
+
+                    edge.setOnMouseExited(t -> { // Hide hover effect
+                        edge.setOpacity(_opacity); // Reset/set opacity
+                        edge.setStrokeWidth(3); // Reset/set stroke width
+                    });
+                }
             }
         });
     }
@@ -1685,16 +1675,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * Clear the map
      */
     public void clearMap() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                onTopOfTopElements.getChildren().clear();
-                topElements.getChildren().clear(); // Clear top elements
-                currentPath.clear();
-                tonysPath.getElements().clear(); // Clear Tony's path
-                hidePopups(); // Hide all popups
-            }
-        });
+        onTopOfTopElements.getChildren().clear();
+        topElements.getChildren().clear(); // Clear top elements
+        currentPath.clear();
+        tonysPath.getElements().clear(); // Clear Tony's path
+        hidePopups(); // Hide all popups
     }
 
     /**
@@ -1976,11 +1961,21 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @Override
     public void nodesSet(ArrayList<Node> _nodes) {
-        updateAndDisplay();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateAndDisplay();
+            }
+        });
     }
 
     @Override
     public void edgesSet(ArrayList<Edge> _edges) {
-        updateAndDisplay();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateAndDisplay();
+            }
+        });
     }
 }
