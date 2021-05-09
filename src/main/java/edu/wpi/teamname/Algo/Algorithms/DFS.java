@@ -7,6 +7,7 @@ import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * <h1>Depth-First Search Algorithm</h1>
@@ -14,8 +15,6 @@ import java.util.ArrayList;
  * @author Emmanuel Ola
  */
 public class DFS extends Algorithm {
-    private ArrayList<Node> path;
-
 
     /**
      * Constructor for DFS that takes in a list of nodes, and the start and goal node
@@ -25,40 +24,27 @@ public class DFS extends Algorithm {
      */
     public DFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.path = new ArrayList<>();
         this.process();
     }
 
-    public DFS(){
-        this.path = new ArrayList<>();
-    }
+    public DFS(){}
 
-    /**
-     * Resets the visited flag of all the nodes in the provided list of nodes
-     * @param nodes List of nodes containing the start and goal node
-     */
-    public void resetNodes(ArrayList<Node> nodes) {
-        for (Node node : nodes) {
-            node.visitedFlag = false;
+    public ArrayList<Node> getPath() {
+        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
+        Node current = goal;
+        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
+            finalPath.push(current);
+            current = current.getParent();
         }
-    }
 
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
-        this.process();
-    }
+        if (!(current == null)) {
+            finalPath.push(start); //Pushes the starting node on to the stack
+        }
 
-    /**
-     * Returns a list of nodes
-     * @return
-     */
-    @Override
-    public ArrayList<Node> getPath(){
-        ArrayList<Node> newPath = new ArrayList<Node>(path.subList(0, path.indexOf(goal)));
-        newPath.add(goal);
-        return newPath;
+        ArrayList<Node> path = new ArrayList<Node>();
+        while (!finalPath.isEmpty())
+            path.add(finalPath.pop());
+        return path;
     }
 
     public void process(){
@@ -67,11 +53,11 @@ public class DFS extends Algorithm {
 
     public void processDFS(Node current){
         current.visitedFlag = true;
-        path.add(current);
         if (current.equals(goal))
             return;
         for (Node neighbor : current.getEdges()) {
             if (!neighbor.visitedFlag){
+                neighbor.setParent(current);
                 processDFS(neighbor);
             }
         }

@@ -49,14 +49,7 @@ public class AStar extends Algorithm {
      * Resets the parents and costs of all nodes in the provided arraylist of nodes
      * @param nodes an ArrayList of Nodes to be reset
      */
-    public void resetNodes(ArrayList<Node> nodes) {
-        for (Node node : nodes) {
-            if (node.getParent() != null) {
-                node.setParent(null);
-            }
-            node.setCostSoFar(Double.POSITIVE_INFINITY);
-        }
-    }
+
 
     /**
      * Prints the path from the start node to the goal node

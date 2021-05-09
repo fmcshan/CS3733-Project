@@ -23,12 +23,20 @@ public abstract class Algorithm {
     }
 
     public Algorithm(){
-        this.nodes = new ArrayList<>();
         this.start = new Node();
         this.goal = new Node();
     }
 
-    public abstract void resetNodes(ArrayList<Node> nodes);
+    public void resetNodes(ArrayList<Node> nodes) {
+        for (Node node : nodes) {
+            if (node.getParent() != null) {
+                node.setParent(null);
+                node.visitedFlag = false;
+            }
+            node.setCostSoFar(Double.POSITIVE_INFINITY);
+            node.updateAStarScore();
+        }
+    }
 
     public abstract ArrayList<Node> getPath();
 
@@ -36,7 +44,7 @@ public abstract class Algorithm {
 
 
     public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
+        this.resetNodes(nodes);
         this.start = start;
         this.goal = goal;
         this.process();
@@ -87,8 +95,9 @@ public abstract class Algorithm {
         ArrayList<Node> nodes = new ArrayList<>();
         ArrayList<ArrayList<Node>> paths = new ArrayList<>();
         for (ArrayList<Node> floorPath : getAllFloorPaths()) {
-            if (floorPath.get(0).getFloor().equals(floor))
-                paths.add(floorPath);
+            if (floorPath.size() > 0)
+                if (floorPath.get(0).getFloor().equals(floor))
+                    paths.add(floorPath);
         }
         return paths;
     }

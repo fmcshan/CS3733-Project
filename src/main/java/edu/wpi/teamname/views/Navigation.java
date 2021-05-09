@@ -288,7 +288,7 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getEndNode());
         if (handicap )
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
-        else if(!(algoCombo.getValue() == null))
+        else if(algoCombo.getValue() == null)
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
         else if(algoCombo.getValue().equals("AStar"))
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
@@ -345,7 +345,7 @@ public class Navigation implements LevelChangeListener {
             if (toCombo.getValue() == null || fromCombo.getValue() == null) {
                 return;
             }
-            if(!(searchAlgorithm.getPath().size() == 1))
+            if(!(searchAlgorithm.getPath().size() == 0))
                 mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
         }
