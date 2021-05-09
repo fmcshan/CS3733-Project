@@ -1218,7 +1218,7 @@ public class MapDisplay implements LevelChangeListener {
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
-            zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
+            zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
             for (ArrayList<Node> listOfNode : _listOfNodes) {
                 Node firstNode = listOfNode.get(0);
@@ -1593,34 +1593,7 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-//    public void edgeBetweenFloors() {
-//        if (start) {
 //
-//            switch (sNode.getFloor()) {
-//                case "G":
-//                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "1":
-//                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "2":
-//                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "3":
-//                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L2":
-//                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//                case "L1":
-//                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-//                    break;
-//            }
-//
-//        }
-//
-//    }
-}
 
     public void undoRedo() {
         final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,

@@ -7,17 +7,19 @@ import edu.wpi.teamname.Database.Submit;
 public class ManageAdd implements Action{
 
     private Object object;
-    private Object object1;
-    private Object object2;
+//    private Object object1;
+//    private Object object2;
    public String   actionName;
-    public ManageAdd(Object object){
+   String snapshotUUID;
+    public ManageAdd(Object object, String snapshotUUID ){
         this.object =object;
+         this.snapshotUUID=snapshotUUID;
     }
 
-    public ManageAdd(Object object1, Object object2){
-        this.object1=object1;
-        this.object2=object2;
-    }
+//    public ManageAdd(Object object1, Object object2){
+//        this.object1=object1;
+//        this.object2=object2;
+//    }
 
     @Override
     public void execute() {

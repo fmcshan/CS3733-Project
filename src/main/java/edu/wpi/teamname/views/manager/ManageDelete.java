@@ -9,14 +9,17 @@ public class ManageDelete implements Action{
     private Object object;
     private Object object1;
     private Object object2;
+    String snapshotUUID;
 
-    public ManageDelete(Object object){
+    public ManageDelete(Object object,String snapshotUUID){
         this.object =object;
+        this.snapshotUUID= snapshotUUID;
     }
-    public ManageDelete(Object object1, Object object2){
+    public ManageDelete(Object object1, Object object2, String snapshotUUID){
         this.object1=object1;
         this.object2=object2;
         this.object=object1;
+        this.snapshotUUID= snapshotUUID;
     }
 
     @Override
