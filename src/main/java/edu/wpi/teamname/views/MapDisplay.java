@@ -1689,15 +1689,18 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         if (navigation != null) {
             navigation.cancelNavigation();
         }
-        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
+        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         ButtonManager.selectButton(reqButton, "nav-btn-selected", ButtonManager.buttons);
-        if (LoadFXML.getCurrentWindow().equals("reqBar")) {
+        if (LoadFXML.getCurrentWindow().equals("reqBar") || LoadFXML.getCurrentWindow().equals("giftDeliveryBar") || LoadFXML.getCurrentWindow().equals("computerServicesBar") || LoadFXML.getCurrentWindow().equals("foodDeliveryBar") || LoadFXML.getCurrentWindow().equals("laundryBar") || LoadFXML.getCurrentWindow().equals("patientTransportationBar") || LoadFXML.getCurrentWindow().equals("sanitationServicesBar") || LoadFXML.getCurrentWindow().equals("facilitiesMaintenanceForm") || LoadFXML.getCurrentWindow().equals("medicineDeliveryBar")) {
             ButtonManager.remove_class();
+            SceneManager.getInstance().getDefaultPage().closeWindows();
+            LoadFXML.setCurrentWindow("");
+            return;
         }
-        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
+        LoadFXML.getInstance().loadWindow("ServiceRequestsPrompt", "ServiceRequestsPrompt", popPop); // Load requests window
     }
 
 

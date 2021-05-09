@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="657.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.RequestsPrompt">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="657.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="title" text="Service Request Systems">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="successText" prefHeight="156.0" prefWidth="476.0" text="You can place service requests through our Support Chat. You can click on the button below to open Support Chat, or click &quot;Continue&quot; to proceed to service request modules." textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="chatButton" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" onAction="#openSupportChat" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #0067b1; -fx-opacity: 0.8; -fx-background-radius: 10px;" text="Support Chat" textAlignment="CENTER" textFill="WHITE">
+               <graphic>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <MaterialDesignIconView fx:id="checkIcon" fill="WHITE" glyphName="MESSAGE_REPLY" size="36" styleClass="nav-icon">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </MaterialDesignIconView>
+                     </children>
+                     <padding>
+                        <Insets right="20.0" top="2.0" />
+                     </padding>
+                  </VBox>
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton onAction="#openServiceRequests" prefHeight="50.0" prefWidth="300.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Continue" textFill="#c3c3c3">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+   <effect>
+      <DropShadow color="#a4a4a4" />
+   </effect>
+</AnchorPane>

@@ -299,7 +299,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     @FXML
-    private void openChatBot() {
+    public void openChatBot() {
         closedChatBox.getChildren().clear();
         closedChatBox.setPickOnBounds(false);
         if (!opened) {
