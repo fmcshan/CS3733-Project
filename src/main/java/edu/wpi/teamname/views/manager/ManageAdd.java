@@ -9,6 +9,7 @@ public class ManageAdd implements Action{
     private Object object;
     private Object object1;
     private Object object2;
+   public String   actionName;
     public ManageAdd(Object object){
         this.object =object;
     }
@@ -20,11 +21,15 @@ public class ManageAdd implements Action{
 
     @Override
     public void execute() {
+
         if(object instanceof Edge){
             Submit.getInstance().addEdge((Edge) object);
+            actionName = "added edge between:" + ((Edge) object).getStartNode() + " " +((Edge) object).getEndNode();
         }
         if(object instanceof Node) {
             Submit.getInstance().addNode((Node) object);
+            actionName = "added Node:" + ((Node) object).getLongName();
+
         }
 
     }
@@ -34,12 +39,16 @@ public class ManageAdd implements Action{
         if(object instanceof Edge){
             System.out.println(object);
             Submit.getInstance().removeEdge((Edge) object);
+            actionName = "removed edge between:" + ((Edge) object).getStartNode() + " " +((Edge) object).getEndNode();
         }
 
         if(object instanceof Node){
            //System.out.println("Add " + object);
             Submit.getInstance().removeNode((Node) object);
+            actionName = "removed Node:" + ((Node) object).getLongName();
+
         }
+
     }
 
     public boolean isNode(){
@@ -69,12 +78,12 @@ public class ManageAdd implements Action{
 
     @Override
     public String getActionName() {
-        if(object instanceof Edge){
-            return "added edge between:" + ((Edge) object).getStartNode() + " " +((Edge) object).getEndNode();
-        }
-        if(object instanceof Node){
-            return "added Node:" + ((Node) object).getLongName();
-        }
-        return "Hello";
+//        if(object instanceof Edge){
+//            return "added edge between:" + ((Edge) object).getStartNode() + " " +((Edge) object).getEndNode();
+//        }
+//        if(object instanceof Node){
+//            return "added Node:" + ((Node) object).getLongName();
+//        }
+        return actionName;
     }
 }

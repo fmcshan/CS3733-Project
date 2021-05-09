@@ -13,7 +13,7 @@ public class RevisionManager {
     private QueueStack<List<Action>> queueStackReverse;
 
     private List<String> actionHistory;
-
+    private List<String> lastActionHistory = new ArrayList();
     public static synchronized RevisionManager getInstance() {
         return instance;
     }
@@ -38,11 +38,16 @@ public class RevisionManager {
 
 
                     actionHistory.add(actionList.get(0).checkChangesDo() + "-execute");
+                    lastActionHistory.clear();
+                lastActionHistory.add(actionList.get(0).checkChangesDo() + "-execute");
+
                // }
             }
             return;
         }
+        lastActionHistory.clear();
         actionList.forEach(a -> actionHistory.add(a.getActionName()));
+        actionList.forEach(a -> lastActionHistory.add(a.getActionName()));
     }
 //    public void execute(Action action){
 //        if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(action))){
@@ -59,34 +64,48 @@ public class RevisionManager {
 //    }
 
     public void undo() {
+        lastActionHistory.clear();
+        if(queueStackNormal.isEmpty()){return;}
         Optional<List<Action>> optionalActions = queueStackNormal.pop();
         optionalActions.ifPresent(aList -> {
             aList.forEach(Action::undo);
 //            System.out.println((aList.get(0)));
 //            System.out.println(aList.get(1));
             queueStackReverse.push(aList);
+//            if(aList.isEmpty()){return;}
             if (aList.size() == 2) {
+                System.out.println("undonee");
                 if (aList.get(0).isNode()) {
+                    lastActionHistory.clear();
                     actionHistory.add(aList.get(0).checkChangesUndo() + "-undo");
+                    lastActionHistory.add(aList.get(0).checkChangesUndo() + "-undo");
                 }
                 return;
             }
             aList.forEach(a -> actionHistory.add(a.getActionName() + " - undo"));
+            lastActionHistory.clear();
+            aList.forEach(a -> lastActionHistory.add(a.getActionName() + " - undo"));
         });
     }
 
     public void redo() {
+        lastActionHistory.clear();
+        if(queueStackReverse.isEmpty()){ return;}
         Optional<List<Action>> optionalActions = queueStackReverse.pop();
         optionalActions.ifPresent(aList -> {
             aList.forEach(Action::execute);
             queueStackNormal.push(aList);
             if (aList.size() == 2) {
                 if (aList.get(0).isNode()) {
+
                        actionHistory.add(aList.get(0).checkChangesDo() + "-redo");
+                    lastActionHistory.add(aList.get(0).checkChangesDo() + "-redo");
                 }
                 return;
             }
             aList.forEach(a -> actionHistory.add(a.getActionName() + " - redo"));
+            lastActionHistory.clear();
+            aList.forEach(a -> lastActionHistory.add(a.getActionName() + " - undo"));
         });
     }
 
@@ -102,9 +121,16 @@ public class RevisionManager {
         clearNormal();
         clearReverse();
     }
+    public boolean normalQueueIsEmpty(){
+        return normalQueueIsEmpty();
+    }
 
+    public boolean reverseQueueIsEmpty(){
+        return reverseQueueIsEmpty();
+    }
     public List<String> getActionHistory() {
-        return actionHistory;
+        System.out.println(lastActionHistory.size());
+        return lastActionHistory;
     }
 
 //        public static void main(String[] args) {

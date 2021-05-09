@@ -1,11 +1,9 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
-import javafx.event.Event;
 import javafx.scene.input.*;
 import javafx.scene.shape.*;
 import edu.wpi.teamname.Algo.Edge;
@@ -14,7 +12,6 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.CSVOperator;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
-import edu.wpi.teamname.Database.Submit;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
@@ -62,6 +59,7 @@ public class MapDisplay implements LevelChangeListener {
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     HashMap<Node, ArrayList<Edge>> edgesBetweenFloors = new HashMap<>();
     HashMap<String, Edge> doubleEdges = new HashMap<>();
+    List<String> allActions = new ArrayList<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
@@ -282,6 +280,7 @@ public class MapDisplay implements LevelChangeListener {
                             draggedNode.getNodeType(),
                             draggedNode.getLongName(),
                             draggedNode.getShortName())));
+
                     System.out.println(localNodesMap.get(draggedNode.getNodeID()));
                     list.add(new ManageAdd(new Node(
                             draggedNode.getNodeID(),
@@ -294,6 +293,7 @@ public class MapDisplay implements LevelChangeListener {
                             draggedNode.getShortName()
                     )));
                     RevisionManager.getInstance().execute(list);
+                    refreshHistory();
 //                    Submit.getInstance().editNode(new Node(
 //                            draggedNode.getNodeID(),
 //                            (int) actualX(draggedCircle.getCenterX()),
@@ -736,6 +736,7 @@ public class MapDisplay implements LevelChangeListener {
             List<Action> list = new LinkedList<>();
             list.add(new ManageDelete(toRemove));
             RevisionManager.getInstance().execute(list);
+            refreshHistory();
             refreshData();
             renderMap();
             return;
@@ -804,11 +805,13 @@ public class MapDisplay implements LevelChangeListener {
                         List<Action> list = new LinkedList<>();
                         list.add(new ManageDelete(e));
                         RevisionManager.getInstance().execute(list);
+                        refreshHistory();
                         edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
                         //Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
                         List<Action> list2 = new LinkedList<>();
                         list2.add(new ManageDelete(newEdge));
                         RevisionManager.getInstance().execute(list2);
+                        refreshHistory();
 
                     }
                 }
@@ -836,6 +839,7 @@ public class MapDisplay implements LevelChangeListener {
             List<Action> list2 = new LinkedList<>();
             list2.add(new ManageAdd(newEdge));
             RevisionManager.getInstance().execute(list2);
+            refreshHistory();
             if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
             } else {
@@ -848,6 +852,7 @@ public class MapDisplay implements LevelChangeListener {
             List<Action> list3 = new LinkedList<>();
             list3.add(new ManageAdd(newEdge2));
             RevisionManager.getInstance().execute(list3);
+            refreshHistory();
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
             } else {
@@ -1063,6 +1068,7 @@ public class MapDisplay implements LevelChangeListener {
         list.add(delete);
         list.add(add);
         RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
@@ -1080,6 +1086,7 @@ public class MapDisplay implements LevelChangeListener {
         List<Action> list = new LinkedList<>();
         list.add(new ManageDelete(selectedEdge));
         RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1096,6 +1103,7 @@ public class MapDisplay implements LevelChangeListener {
         List<Action> list = new LinkedList<>();
         list.add(new ManageDelete(selectedNode));
         RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1336,6 +1344,7 @@ public class MapDisplay implements LevelChangeListener {
         List<Action> list = new LinkedList<>();
         list.add(new ManageAdd(edge));
         RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1393,6 +1402,7 @@ public class MapDisplay implements LevelChangeListener {
         List<Action> list = new LinkedList<>();
         list.add(new ManageAdd(node));
         RevisionManager.getInstance().execute(list);
+        refreshHistory();
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
         dragStart = null; // Reset dragStart
@@ -1526,6 +1536,7 @@ public class MapDisplay implements LevelChangeListener {
         other4.setTextFill(Paint.valueOf("9e9e9e"));
         other5.setTextFill(Paint.valueOf("9e9e9e"));
     }
+    boolean undoing = false;
 
     public void undoRedo() {
         final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,
@@ -1541,28 +1552,45 @@ public class MapDisplay implements LevelChangeListener {
 //                    System.out.println("ahaha");
 //                }
                 if (controlZ.match(event)) {
+//                    if(!RevisionManager.getInstance().normalQueueIsEmpty()){
+//                        undoing = true;
+//                    }
                     undoChange();
                     System.out.println("Ctrl+R pressed");
-                    loadHistory();
+
+                    refreshHistory();
                 }
                 if (controlY.match(event)) {
                     System.out.println("Ctrl+R pressed");
                     redoChange();
-                    loadHistory();
+                    refreshHistory();
                 }
 
             }
 
         });
     }
+    int size =0;
 
-    public void loadHistory() {
-        List<String> allActions = RevisionManager.getInstance().getActionHistory();
-        allActions.forEach(a -> {
-            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
-                editHistoryBox.getChildren().add(new Text(a));
-            }
-        });
+    public void refreshHistory() {
 
+
+        RevisionManager.getInstance().getActionHistory().forEach(history->{
+           // if(!(allActions.contains(history))){
+                allActions.add(history);
+                editHistoryBox.getChildren().add(new Text(history));
+        //    }
+       });
+
+       // List<String> allActions = RevisionManager.getInstance().getActionHistory();
+       // if(allActions.size()!= size) {
+//            editHistoryBox.getChildren().clear();
+            size= allActions.size();
+            allActions.forEach(a -> {
+//            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
+
+//            }
+            });
+        }
     }
-}
+//}
