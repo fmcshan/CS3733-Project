@@ -301,7 +301,7 @@ public class GiftDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid()) {
+        if (nameInputValid() && checkBoxSelected() && otherInputValid() && phoneNumberValid() && locationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> giftSelected = new ArrayList<>();
             if (teddyBearBox.isSelected())

@@ -242,7 +242,7 @@ public class FoodDelivery {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && otherInputValid()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && otherInputValid() && locationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (hamburgerBox.isSelected())

@@ -40,6 +40,29 @@ public class Submit {
         AsynchronousQueue.getInstance().add(task);
     }
 
+    public void editUserRegistration(UserRegistration _form) {
+        StringBuilder reasons = new StringBuilder();
+        reasons.append("[");
+        _form.getReasonsForVisit().forEach(r -> reasons.append("'").append(r).append("', "));
+        reasons.setLength(reasons.length()-2);
+        reasons.append("]");
+
+        JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("pk", _form.getPk());
+        data.put("name", _form.getName());
+        data.put("reasons", reasons.toString());
+        data.put("date", _form.getDate());
+        data.put("phone", _form.getPhoneNumber());
+        data.put("ack", String.valueOf(_form.isAcknowledged()));
+        data.put("ackAt", String.valueOf(_form.getAcknowledgedAt()));
+
+        String url = SERVER_URL + "/api/edit-check-in";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
