@@ -11,7 +11,7 @@ public class UserRegistration {
     private String phoneNumber;
     private boolean acknowledged;
     private double acknowledgedAt;
-    private double submittedAt;
+    private long submittedAt;
     private boolean cleared;
     private int rating;
     private String details;
@@ -23,7 +23,7 @@ public class UserRegistration {
         this.phoneNumber = phoneNumber;
         this.acknowledged = false;
         this.acknowledgedAt = 0.0;
-        this.submittedAt = Instant.EPOCH.getEpochSecond();
+        this.submittedAt = System.currentTimeMillis() / 1000L;
         this.cleared = false;
         this.rating = -1;
         this.details = "";
@@ -37,7 +37,7 @@ public class UserRegistration {
         this.phoneNumber = phoneNumber;
         this.acknowledged = false;
         this.acknowledgedAt = 0.0;
-        this.submittedAt = Instant.EPOCH.getEpochSecond();
+        this.submittedAt = System.currentTimeMillis() / 1000L;
         this.cleared = false;
         this.rating = -1;
         this.details = "";
@@ -50,7 +50,7 @@ public class UserRegistration {
         this.phoneNumber = phoneNumber;
         this.acknowledged = false;
         this.acknowledgedAt = 0.0;
-        this.submittedAt = Instant.EPOCH.getEpochSecond();
+        this.submittedAt = System.currentTimeMillis() / 1000L;
         this.cleared = cleared;
         this.rating = rating;
         this.details = details;
@@ -68,10 +68,11 @@ public class UserRegistration {
         this.details = details;
     }
 
-    public UserRegistration(int pk, String name, String date, ArrayList<String> reasonsForVisit, String phoneNumber, Boolean acknowledged, double acknowledgedAt, boolean cleared, int rating, String details) {
+    public UserRegistration(int pk, String name, String date, long submittedAt, ArrayList<String> reasonsForVisit, String phoneNumber, Boolean acknowledged, double acknowledgedAt, boolean cleared, int rating, String details) {
         this.pk = pk;
         this.name = name;
         this.date = date;
+        this.submittedAt = submittedAt;
         this.reasonsForVisit = reasonsForVisit;
         this.phoneNumber = phoneNumber;
         this.acknowledged = acknowledged;
@@ -85,8 +86,8 @@ public class UserRegistration {
         return name;
     }
 
-    public String getPk() {
-        return name;
+    public int getPk() {
+        return pk;
     }
 
     public String getDate() {

@@ -89,11 +89,12 @@ public class Parser {
             String reasons = registration.getString("reasons");
             reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception ignored) {}
         return new UserRegistration(
                 _registration.getInt("pk"),
                 registration.getString("name"),
                 registration.getString("date"),
+                registration.getLong("submittedAt"),
                 reasonList,
                 registration.getString("phone"),
                 registration.getBoolean("ack"),

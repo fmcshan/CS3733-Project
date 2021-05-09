@@ -218,11 +218,11 @@ public class TableCellFactory {
             switch (((MenuItem) e.getTarget()).getText()) {
                 case "Mark as Cleared":
                     _reg.setCleared(true);
-                    //Submit.getInstance().editRegistration();
+                    Submit.getInstance().editUserRegistration(_reg);
                     break;
                 case "Reset":
                     _reg.setCleared(false);
-                    //Submit.getInstance().editRegistration();
+                    Submit.getInstance().editUserRegistration(_reg);
                     break;
             }
         });
