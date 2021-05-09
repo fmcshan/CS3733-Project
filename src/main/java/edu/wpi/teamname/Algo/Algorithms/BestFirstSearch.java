@@ -40,23 +40,6 @@ public class BestFirstSearch extends Algorithm{
         return path;
     }
 
-    public void resetNodes(ArrayList<Node> nodes) {
-        for (Node node : nodes) {
-            if (node.getParent() != null) {
-                node.setParent(null);
-                node.visitedFlag = false;
-            }
-            node.setCostSoFar(0);
-        }
-    }
-
-
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
-    }
-
     public void process() {
         openNodes.add(start);
         Node current = start;
