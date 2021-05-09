@@ -24,22 +24,6 @@ public class Djikstra extends Algorithm{
         openNodes = new PriorityQueue<>(new NodeCostComparator());
     }
 
-
-    public ArrayList<Node> getPath() {
-        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
-        Node current = goal;
-        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
-            finalPath.push(current);
-            current = current.getParent();
-        }
-        finalPath.push(start); //Pushes the starting node on to the stack
-
-        ArrayList<Node> path = new ArrayList<Node>();
-        while (!finalPath.isEmpty())
-            path.add(finalPath.pop());
-        return path;
-    }
-
     public void process(){
         start.setCostSoFar(0);
         openNodes.add(start);

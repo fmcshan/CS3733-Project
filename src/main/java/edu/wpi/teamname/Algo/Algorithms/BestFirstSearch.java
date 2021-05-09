@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.NodeAStarComparator;
+import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
@@ -23,24 +24,8 @@ public class BestFirstSearch extends Algorithm{
         openNodes = new PriorityQueue<>(new NodeAStarComparator());
     }
 
-    public ArrayList<Node> getPath() {
-        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
-        Node current = goal;
-        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
-            finalPath.push(current);
-            current = current.getParent();
-        }
-
-        if (!(current == null))
-            finalPath.push(start); //Pushes the starting node on to the stack
-
-        ArrayList<Node> path = new ArrayList<Node>();
-        while (!finalPath.isEmpty())
-            path.add(finalPath.pop());
-        return path;
-    }
-
     public void process() {
+        start.setCostSoFar(0);
         openNodes.add(start);
         Node current = start;
         double tentativeScore = 0;
@@ -51,17 +36,18 @@ public class BestFirstSearch extends Algorithm{
             }
 
             current = openNodes.poll();
+            Node temp = current.getEdges().get(0);
             for (Node node : current.getEdges()) {
                 tentativeScore = AStar.distance(current, goal);
-                if (AStar.distance(node, goal) <= tentativeScore){
+                if (AStar.distance(node, goal) < tentativeScore){
                     node.setParent(current);
                     node.setHeuristic(calculateHeuristic(node));
                     node.updateAStarScore();
                 }
-                if (!openNodes.contains(node) && !node.visitedFlag)
+                if (!openNodes.contains(node))
                     openNodes.add(node);
             }
-            current.visited();
+            //current.visited();
         }
     }
 
@@ -73,8 +59,11 @@ public class BestFirstSearch extends Algorithm{
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        BestFirstSearch example = new BestFirstSearch(nodes, nodes.get(10), nodes.get(76));
+        AStar example1 = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")), false);
+        BFS example2 = new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
+        BestFirstSearch example = new BestFirstSearch(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
         System.out.println(example.getPath());
         System.out.println(example.getPath().size());
+        System.out.println(example1.getPath().size());
     }
 }

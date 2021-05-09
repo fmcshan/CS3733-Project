@@ -84,23 +84,7 @@ public class AStar extends Algorithm {
      * @return a List of nodes representing the path of the algorithm
      */
     @Override
-    public ArrayList<Node> getPath() {
-        Stack<Node> finalPath = new Stack<>(); //Stack containing the final path of our algorithm
-        Node current = goal;
-        while (current.getParent() != null && !current.getNodeID().equals(start.getNodeID())) {
-            finalPath.push(current);
-            current = current.getParent();
-        }
 
-        if (!(current == null)) {
-            finalPath.push(start); //Pushes the starting node on to the stack
-        }
-
-        ArrayList<Node> path = new ArrayList<Node>();
-        while (!finalPath.isEmpty())
-            path.add(finalPath.pop());
-        return path;
-    }
 
     /**
      * Navigates the map by processing the priority queue

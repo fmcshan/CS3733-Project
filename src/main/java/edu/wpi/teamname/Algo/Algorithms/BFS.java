@@ -2,6 +2,7 @@ package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.NodeAStarComparator;
+import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
@@ -15,15 +16,16 @@ import java.util.Stack;
  * Uses breadth-first search for pathfinding
  */
 public class BFS extends Algorithm {
-    PriorityQueue<Node> openNodes;
+    Stack<Node> openNodes;
 
     public BFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
+        this.openNodes = new Stack<>();
+        this.process();
     }
 
     public BFS(){
-        this.openNodes = new PriorityQueue<>(new NodeAStarComparator());
+        this.openNodes = new Stack<>();
     }
 
     public ArrayList<Node> getPath() {
@@ -49,11 +51,11 @@ public class BFS extends Algorithm {
     public void process() {
         Node temp = start;
         temp.visited();
-        openNodes.add(temp);
+        openNodes.push(temp);
         Node current;
 
         while (!openNodes.isEmpty()){
-            current = openNodes.poll();
+            current = openNodes.pop();
             if (current.equals(goal)){
                 return;
             }
@@ -61,7 +63,7 @@ public class BFS extends Algorithm {
                 if (!node.visitedFlag && !openNodes.contains(node)){
                     node.visited();
                     node.setParent(current);
-                    openNodes.add(node);
+                    openNodes.push(node);
                 }
             }
         }
@@ -71,7 +73,7 @@ public class BFS extends Algorithm {
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        BFS bfs = new BFS(nodes, nodes.get(10), nodes.get(76));
+        BFS bfs = new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
         ArrayList<Node> path = bfs.getPath();
         System.out.println(path.size());
     }

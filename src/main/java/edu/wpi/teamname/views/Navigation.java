@@ -294,8 +294,8 @@ public class Navigation implements LevelChangeListener {
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
         //System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
-        //System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
-        //System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
+        System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
+        System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
         System.out.println(searchAlgorithm.getAlgorithm());
         //System.out.println(path);
