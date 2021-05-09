@@ -1,35 +1,49 @@
 package edu.wpi.teamname.views.manager;
 
+import edu.wpi.teamname.Algo.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class RevisionManager {
 
-        private static final RevisionManager instance = new RevisionManager();
-        private QueueStack<List<Action>> queueStackNormal;
-        private QueueStack<List<Action>> queueStackReverse;
+    private static final RevisionManager instance = new RevisionManager();
+    private QueueStack<List<Action>> queueStackNormal;
+    private QueueStack<List<Action>> queueStackReverse;
 
-        private List<String> actionHistory;
+    private List<String> actionHistory;
 
-       public static synchronized RevisionManager getInstance(){return instance;}
+    public static synchronized RevisionManager getInstance() {
+        return instance;
+    }
 
-        private RevisionManager() {
-            queueStackNormal = new QueueStack<>();
-            queueStackReverse = new QueueStack<>();
-            actionHistory = new ArrayList<>();
+    private RevisionManager() {
+        queueStackNormal = new QueueStack<>();
+        queueStackReverse = new QueueStack<>();
+        actionHistory = new ArrayList<>();
+    }
+
+    public void execute(List<Action> actionList) {
+        if (!(queueStackReverse.isEmpty()) && !(actionHistory.contains(actionList.get(0)))) {
+            actionHistory.clear();
+            clearReverse();
+            clearNormal();
         }
+        actionList.forEach(Action::execute);
+        queueStackNormal.push(actionList);
+        if (actionList.size() == 2) {
+            if (actionList.get(0).isNode()) {
+//                if (!(actionHistory.get(actionHistory.size() - 1).equals("Edited Node: " + actionList.get(0).getLongName() + "-execute"))) {
 
-        public void execute(List<Action> actionList){
-            if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(actionList.get(0)))){
-                actionHistory.clear();
-                clearReverse();
-                clearNormal();
+
+                    actionHistory.add(actionList.get(0).checkChangesDo() + "-execute");
+               // }
             }
-            actionList.forEach(Action::execute);
-            queueStackNormal.push(actionList);
-            actionList.forEach(a -> actionHistory.add(a.getActionName()));
+            return;
         }
+        actionList.forEach(a -> actionHistory.add(a.getActionName()));
+    }
 //    public void execute(Action action){
 //        if(!(queueStackReverse.isEmpty()) && !(actionHistory.contains(action))){
 //            actionHistory.clear();
@@ -44,37 +58,54 @@ public class RevisionManager {
 //
 //    }
 
-       public void undo() {
-            Optional<List<Action>> optionalActions = queueStackNormal.pop();
-            optionalActions.ifPresent(aList -> {
-                aList.forEach(Action::undo);
-                queueStackReverse.push(aList);
-                aList.forEach(a -> actionHistory.add(a.getActionName() + " - undo"));
-            });
-        }
+    public void undo() {
+        Optional<List<Action>> optionalActions = queueStackNormal.pop();
+        optionalActions.ifPresent(aList -> {
+            aList.forEach(Action::undo);
+//            System.out.println((aList.get(0)));
+//            System.out.println(aList.get(1));
+            queueStackReverse.push(aList);
+            if (aList.size() == 2) {
+                if (aList.get(0).isNode()) {
+                    actionHistory.add(aList.get(0).checkChangesUndo() + "-undo");
+                }
+                return;
+            }
+            aList.forEach(a -> actionHistory.add(a.getActionName() + " - undo"));
+        });
+    }
 
-        public void redo() {
-            Optional<List<Action>> optionalActions = queueStackReverse.pop();
-            optionalActions.ifPresent(aList -> {
-                aList.forEach(Action::execute);
-                queueStackNormal.push(aList);
-                aList.forEach(a -> actionHistory.add(a.getActionName() + " - redo"));
-            });
-        }
-        public void clearNormal() {
-            queueStackNormal.clear();
-        }
-        public void clearReverse() {
-            queueStackReverse.clear();
-        }
-        public void clearQueues(){
-            clearNormal();
-            clearReverse();
-        }
+    public void redo() {
+        Optional<List<Action>> optionalActions = queueStackReverse.pop();
+        optionalActions.ifPresent(aList -> {
+            aList.forEach(Action::execute);
+            queueStackNormal.push(aList);
+            if (aList.size() == 2) {
+                if (aList.get(0).isNode()) {
+                       actionHistory.add(aList.get(0).checkChangesDo() + "-redo");
+                }
+                return;
+            }
+            aList.forEach(a -> actionHistory.add(a.getActionName() + " - redo"));
+        });
+    }
 
-       public  List<String> getActionHistory() {
-            return actionHistory;
-        }
+    public void clearNormal() {
+        queueStackNormal.clear();
+    }
+
+    public void clearReverse() {
+        queueStackReverse.clear();
+    }
+
+    public void clearQueues() {
+        clearNormal();
+        clearReverse();
+    }
+
+    public List<String> getActionHistory() {
+        return actionHistory;
+    }
 
 //        public static void main(String[] args) {
 //            CommandManager manager = CommandManager.getInstance();
@@ -94,7 +125,6 @@ public class RevisionManager {
 //            System.out.println("===HISTORY===");
 //            System.out.println(manager.getActionHistory().toString());
 //        }
-
 
 
 }

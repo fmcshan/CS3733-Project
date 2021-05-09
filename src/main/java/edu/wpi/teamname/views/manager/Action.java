@@ -6,5 +6,13 @@ public interface Action {
 
     void undo();
 
+    boolean isNode();
+
     String getActionName();
+
+    String getLongName();
+
+    StringBuilder checkChangesDo();
+
+    StringBuilder checkChangesUndo();
 }

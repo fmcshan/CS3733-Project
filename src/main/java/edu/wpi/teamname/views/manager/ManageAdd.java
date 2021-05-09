@@ -7,8 +7,15 @@ import edu.wpi.teamname.Database.Submit;
 public class ManageAdd implements Action{
 
     private Object object;
+    private Object object1;
+    private Object object2;
     public ManageAdd(Object object){
         this.object =object;
+    }
+
+    public ManageAdd(Object object1, Object object2){
+        this.object1=object1;
+        this.object2=object2;
     }
 
     @Override
@@ -25,12 +32,40 @@ public class ManageAdd implements Action{
     @Override
     public void undo() {
         if(object instanceof Edge){
+            System.out.println(object);
             Submit.getInstance().removeEdge((Edge) object);
         }
+
         if(object instanceof Node){
+           //System.out.println("Add " + object);
             Submit.getInstance().removeNode((Node) object);
         }
     }
+
+    public boolean isNode(){
+        if(object instanceof Node){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public String getLongName() {
+        return ((Node) object).getLongName();
+    }
+
+    @Override
+    public StringBuilder checkChangesDo() {
+        return null;
+    }
+
+    @Override
+    public StringBuilder checkChangesUndo() {
+        return null;
+    }
+
+
+
 
     @Override
     public String getActionName() {

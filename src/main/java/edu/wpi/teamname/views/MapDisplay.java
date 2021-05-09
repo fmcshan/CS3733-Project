@@ -44,7 +44,7 @@ public class MapDisplay implements LevelChangeListener {
     double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
-    double mapWidth,mapHeight,fileWidth,fileHeight ;
+    double mapWidth, mapHeight, fileWidth, fileHeight;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
     int xGridSize = 8;
@@ -66,9 +66,9 @@ public class MapDisplay implements LevelChangeListener {
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
-    Circle dragStart, dragEnd,draggedCircle;
+    Circle dragStart, dragEnd, draggedCircle;
     Line renderedEdgePreview;
-    Node addEdgeStart,addEdgeEnd,selectedNode,tempNode,
+    Node addEdgeStart, addEdgeEnd, selectedNode, tempNode,
             draggedNode, startNode, endNode;
 
     Edge selectedEdge;
@@ -89,24 +89,24 @@ public class MapDisplay implements LevelChangeListener {
     @FXML
     StackPane stackPane; // the pane the map is housed in
     @FXML
-    VBox addNodeField,addEdgeField;
+    VBox addNodeField, addEdgeField;
     @FXML
-    AnchorPane pathAnchor, anchor, topElements,onTopOfTopElements;
+    AnchorPane pathAnchor, anchor, topElements, onTopOfTopElements;
     ZoomAndPan zoom;
     @FXML
-    private JFXButton edge_3,edge_2, edge_1, edge_g,  edge_l1, edge_l2;              //floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
+    private JFXButton edge_3, edge_2, edge_1, edge_g, edge_l1, edge_l2;              //floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
-    private JFXTextField nodeId,nodeBuilding,nodeType,nodeShortName, nodeLongName, edgeIdPreview,
-            editNodeBuilding, editNodeType, editNodeShortName,editNodeLongName, deleteEdgeId ;
+    private JFXTextField nodeId, nodeBuilding, nodeType, nodeShortName, nodeLongName, edgeIdPreview,
+            editNodeBuilding, editNodeType, editNodeShortName, editNodeLongName, deleteEdgeId;
     @FXML
     private Label addEdgeWarning;
     @FXML
-    private VBox editNode,edgeBetweenFloors,deleteEdge, rightClick;
+    private VBox editNode, edgeBetweenFloors, deleteEdge, rightClick;
 
     PathTransition pathTransition;
     @FXML
-    JFXButton navButton, reqButton, checkButton, exitButton,adminButton,L1Bttn,L2Bttn,
-            groundBttn,floor1Bttn,floor3Bttn,floor2Bttn;
+    JFXButton navButton, reqButton, checkButton, exitButton, adminButton, L1Bttn, L2Bttn,
+            groundBttn, floor1Bttn, floor3Bttn, floor2Bttn;
 
 //    @FXML
 //    SubmittedRequestsButton submittedRequestsButton;
@@ -273,7 +273,15 @@ public class MapDisplay implements LevelChangeListener {
                     }
                     nodeBeingDragged = false;
                     List<Action> list = new LinkedList<>();
-                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID())));
+                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID()), new Node(
+                            draggedNode.getNodeID(),
+                            (int) actualX(draggedCircle.getCenterX()),
+                            (int) actualY(draggedCircle.getCenterY()),
+                            draggedNode.getFloor(),
+                            draggedNode.getBuilding(),
+                            draggedNode.getNodeType(),
+                            draggedNode.getLongName(),
+                            draggedNode.getShortName())));
                     System.out.println(localNodesMap.get(draggedNode.getNodeID()));
                     list.add(new ManageAdd(new Node(
                             draggedNode.getNodeID(),
@@ -481,7 +489,7 @@ public class MapDisplay implements LevelChangeListener {
         return ((y - scaledY) / smallestScales().get(0)) * smallestScales().get(1);
     }
 
-    public LinkedList<Double> smallestScales(){
+    public LinkedList<Double> smallestScales() {
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -811,39 +819,38 @@ public class MapDisplay implements LevelChangeListener {
             Node tempNode2 = selectedNode;
             double distance = 100000000.0;
             listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n: listOfNodes
-                 ) {if(n.getFloor().equals(num)){
-                     double temporary = Math.sqrt(Math.pow(n.getX()-selectedNode.getX(), 2) + Math.pow(n.getY()-selectedNode.getY(), 2));
-                     if (temporary<distance){
-                         tempNode2 = n;
-                         distance = temporary;
-                     }
-            }
+            for (Node n : listOfNodes
+            ) {
+                if (n.getFloor().equals(num)) {
+                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
+                    if (temporary < distance) {
+                        tempNode2 = n;
+                        distance = temporary;
+                    }
+                }
 
             }
             System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID()+"_"+tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
+            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             //Submit.getInstance().addEdge(newEdge);
             List<Action> list2 = new LinkedList<>();
             list2.add(new ManageAdd(newEdge));
             RevisionManager.getInstance().execute(list2);
-            if(edgesBetweenFloors.containsKey(tempNode2)){
+            if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge);
                 edgesBetweenFloors.put(tempNode2, list);
             }
-            Edge newEdge2 = new Edge(tempNode.getNodeID()+"_"+tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
+            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
             //Submit.getInstance().addEdge(newEdge2);
             List<Action> list3 = new LinkedList<>();
             list3.add(new ManageAdd(newEdge2));
             RevisionManager.getInstance().execute(list3);
-            if(edgesBetweenFloors.containsKey(tempNode)){
+            if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else
-            {
+            } else {
                 ArrayList<Edge> list = new ArrayList<>();
                 list.add(newEdge2);
                 edgesBetweenFloors.put(tempNode, list);
@@ -1051,11 +1058,12 @@ public class MapDisplay implements LevelChangeListener {
         );
         //Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
         List<Action> list = new LinkedList<>();
-        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()));
+        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()), newNode);
         ManageAdd add = new ManageAdd(newNode);
         list.add(delete);
         list.add(add);
         RevisionManager.getInstance().execute(list);
+        hidePopups(); // Hide all popups
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
         renderMap(); // Render/refresh the map (with the updated data)
@@ -1124,7 +1132,6 @@ public class MapDisplay implements LevelChangeListener {
     }
 
 
-
     /**
      * Hide add edge confirmation popup
      */
@@ -1178,10 +1185,10 @@ public class MapDisplay implements LevelChangeListener {
         Polygon triangle = new Polygon();
         pathTransition = new PathTransition();
         triangle.getPoints().setAll(
-                0.0,0.0,
-                20.0,7.5,
-                0.0,15.0,
-                5.0,7.5
+                0.0, 0.0,
+                20.0, 7.5,
+                0.0, 15.0,
+                5.0, 7.5
         );
         triangle.setFill(Color.RED); //RED
         triangle.setStroke(Color.RED); //RED
@@ -1335,18 +1342,20 @@ public class MapDisplay implements LevelChangeListener {
     }
 
     @FXML
-    void undoChange(){
+    void undoChange() {
         RevisionManager.getInstance().undo();
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap();
 
     }
+
     @FXML
-    void redoChange(){
+    void redoChange() {
         RevisionManager.getInstance().redo();
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap();
     }
+
     /**
      * exit the application
      */
@@ -1452,38 +1461,44 @@ public class MapDisplay implements LevelChangeListener {
 
     @FXML
     private void setFloor0(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(0);
-        setButtonColor(L2Bttn,floor1Bttn,groundBttn,floor3Bttn,floor2Bttn,L1Bttn);
+        setButtonColor(L2Bttn, floor1Bttn, groundBttn, floor3Bttn, floor2Bttn, L1Bttn);
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(1);
-        setButtonColor(floor1Bttn,groundBttn,floor3Bttn,floor2Bttn,L1Bttn,L2Bttn);
+        setButtonColor(floor1Bttn, groundBttn, floor3Bttn, floor2Bttn, L1Bttn, L2Bttn);
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(2);
-        setButtonColor(groundBttn,floor1Bttn,floor3Bttn,floor2Bttn,L1Bttn,L2Bttn);
+        setButtonColor(groundBttn, floor1Bttn, floor3Bttn, floor2Bttn, L1Bttn, L2Bttn);
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(3);
-        setButtonColor(floor1Bttn,floor3Bttn,floor2Bttn,groundBttn,L1Bttn,L2Bttn);
+        setButtonColor(floor1Bttn, floor3Bttn, floor2Bttn, groundBttn, L1Bttn, L2Bttn);
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(4);
-        setButtonColor(floor2Bttn,floor1Bttn,groundBttn,L1Bttn,L2Bttn,floor3Bttn);
+        setButtonColor(floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn, floor3Bttn);
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         LevelManager.getInstance().setFloor(5);
-        setButtonColor(floor3Bttn,floor2Bttn,floor1Bttn,groundBttn,L1Bttn,L2Bttn);
+        setButtonColor(floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn);
 
     }
 
@@ -1501,7 +1516,8 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-    public void setButtonColor(JFXButton invisible, JFXButton other1, JFXButton other2, JFXButton other3,JFXButton other4, JFXButton other5){
+
+    public void setButtonColor(JFXButton invisible, JFXButton other1, JFXButton other2, JFXButton other3, JFXButton other4, JFXButton other5) {
 
         invisible.setTextFill(Paint.valueOf("ddd8d8"));
         other1.setTextFill(Paint.valueOf("9e9e9e"));
@@ -1510,6 +1526,7 @@ public class MapDisplay implements LevelChangeListener {
         other4.setTextFill(Paint.valueOf("9e9e9e"));
         other5.setTextFill(Paint.valueOf("9e9e9e"));
     }
+
     public void undoRedo() {
         final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,
                 KeyCombination.CONTROL_DOWN);
@@ -1526,19 +1543,26 @@ public class MapDisplay implements LevelChangeListener {
                 if (controlZ.match(event)) {
                     undoChange();
                     System.out.println("Ctrl+R pressed");
-
+                    loadHistory();
                 }
                 if (controlY.match(event)) {
                     System.out.println("Ctrl+R pressed");
                     redoChange();
+                    loadHistory();
                 }
 
             }
 
         });
     }
-//   public void loadHistory(){
-//        List<String> allActions = RevisionManager.getInstance().getActionHistory();
-//       allActions.forEach( {}editHistoryBox.
-//   }
+
+    public void loadHistory() {
+        List<String> allActions = RevisionManager.getInstance().getActionHistory();
+        allActions.forEach(a -> {
+            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
+                editHistoryBox.getChildren().add(new Text(a));
+            }
+        });
+
+    }
 }
