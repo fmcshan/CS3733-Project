@@ -67,6 +67,16 @@ public class AuthSocket extends WebSocketClient {
             return;
         }
 
+        if (payloadId.equals("check_in_updated")) {
+            payload = payload.getJSONObject("data");
+            System.out.println(payload);
+            Change change = new Change("check_in_updated");
+            change.setUserRegistrations(Parser.parseUserRegistrations(payload.getJSONArray("registrations")));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
         if (payloadId.equals("submit_gift_delivery")) {
             payload = payload.getJSONObject("data");
             Change change = new Change("submit_gift_delivery");

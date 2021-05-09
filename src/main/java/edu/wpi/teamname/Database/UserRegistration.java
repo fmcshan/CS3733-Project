@@ -11,7 +11,7 @@ public class UserRegistration {
     private String phoneNumber;
     private boolean acknowledged;
     private double acknowledgedAt;
-    private double submittedAt;
+    private double submittedAt = Instant.EPOCH.getEpochSecond();
     private boolean cleared;
     private int rating;
     private String details;
@@ -68,10 +68,11 @@ public class UserRegistration {
         this.details = details;
     }
 
-    public UserRegistration(int pk, String name, String date, ArrayList<String> reasonsForVisit, String phoneNumber, Boolean acknowledged, double acknowledgedAt, boolean cleared, int rating, String details) {
+    public UserRegistration(int pk, String name, String date, double submittedAt, ArrayList<String> reasonsForVisit, String phoneNumber, Boolean acknowledged, double acknowledgedAt, boolean cleared, int rating, String details) {
         this.pk = pk;
         this.name = name;
         this.date = date;
+        this.submittedAt = submittedAt;
         this.reasonsForVisit = reasonsForVisit;
         this.phoneNumber = phoneNumber;
         this.acknowledged = acknowledged;
@@ -85,8 +86,8 @@ public class UserRegistration {
         return name;
     }
 
-    public String getPk() {
-        return name;
+    public int getPk() {
+        return pk;
     }
 
     public String getDate() {

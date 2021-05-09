@@ -1,22 +1,48 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.UserRegistration;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.Database.socketListeners.RegistrationListener;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
-public class RegistrationAdminView {
+public class RegistrationAdminView implements RegistrationListener {
 
     @FXML
     private VBox cellHolder;
 
     public void initialize() {
+        Initiator.getInstance().addRegistrationListener(this);
         LocalStorage.getInstance().getRegistrations().forEach(r -> {
-            //String reasonsForVisit = String.join(", ", r.getReasonsForVisit()).replace("\"", "");
             cellHolder.getChildren().add(TableCellFactory.generate_check_in(r));
-            //generateRow(r.getName(), r.getDate(), reasonsForVisit, r.getPhoneNumber());
+        });
+    }
+
+    @Override
+    public void registrationAdded(UserRegistration _obj) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                cellHolder.getChildren().add(0, TableCellFactory.generate_check_in(_obj));
+            }
+        });
+    }
+
+    @Override
+    public void registrationRefresh() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                cellHolder.getChildren().clear();
+                LocalStorage.getInstance().getRegistrations().forEach(r -> {
+                    cellHolder.getChildren().add(TableCellFactory.generate_check_in(r));
+                });
+            }
         });
     }
 
