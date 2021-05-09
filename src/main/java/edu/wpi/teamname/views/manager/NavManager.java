@@ -1,5 +1,6 @@
 package edu.wpi.teamname.views.manager;
 
+import edu.wpi.teamname.Database.UserRegistration;
 import edu.wpi.teamname.views.Navigation;
 
 public class NavManager {
@@ -12,5 +13,16 @@ public class NavManager {
 
     public Navigation getNavigationPage() {
         return navigationPage;
+    }
+
+
+    private UserRegistration userRegistration;
+
+    public UserRegistration getUserRegistration() {
+        return userRegistration;
+    }
+
+    public void setUserRegistration(UserRegistration userRegistration) {
+        this.userRegistration = userRegistration;
     }
 }

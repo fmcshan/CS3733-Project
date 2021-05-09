@@ -4,7 +4,9 @@ import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.Database.UserRegistration;
 import edu.wpi.teamname.views.manager.ButtonManager;
+import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -49,10 +51,8 @@ public class UserCheckout {
             }
             ArrayList<String> listOfSpaces = new ArrayList<>();
             listOfSpaces = LocalStorage.getInstance().getReservedParkingSpaces();
-            System.out.println("list of spaces: " + listOfSpaces);
             for (String s: listOfSpaces
             ) {
-                System.out.println("in here");
                 parkingBox.getItems().add(mapNodes.get(s).getLongName());
             }
         }
@@ -69,9 +69,13 @@ public class UserCheckout {
                 ButtonManager.remove_class();
             }
 
-            // experienceSlider.getValue();
-            // additionalComments.getText();
-            // Submit.getInstance().editUserRegistration();
+            if (NavManager.getInstance().getUserRegistration() != null) {
+                UserRegistration formData = NavManager.getInstance().getUserRegistration();
+                formData.setRating((int) experienceSlider.getValue());
+                formData.setDetails(additionalComments.getText());
+                Submit.getInstance().editUserRegistration(formData);
+                NavManager.getInstance().setUserRegistration(null);
+            }
 
             successPop.setPrefWidth(657.0);
             Success success = new Success(this);

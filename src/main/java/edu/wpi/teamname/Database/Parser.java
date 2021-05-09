@@ -91,7 +91,7 @@ public class Parser {
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
         } catch (Exception ignored) {}
         return new UserRegistration(
-                _registration.getInt("pk"),
+                registration.getString("uuid"),
                 registration.getString("name"),
                 registration.getString("date"),
                 registration.getLong("submittedAt"),
