@@ -261,7 +261,7 @@ public class FacilitiesRequest {
             requests = new ArrayList<ServiceRequest>();
         }
 
-        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid() && oneUrgencySelected()) {
+        if (nameInputValid() && checkBoxSelected() && phoneNumberValid() && descriptionValid() && oneUrgencySelected() && locationValid()) {
             //Adds all the selected gifts to an arraylist
             ArrayList<String> selected = new ArrayList<>();
             if (lowUrgency.isSelected())

@@ -164,6 +164,7 @@ public class GoogleMapForm {
 
     @FXML
     void arrived() {
+        defaultPage.setHelpButton(false);
         defaultPage.getPopPop().setPrefWidth(657);
         defaultPage.clearMap(); // Clear map
         defaultPage.getPopPop().setPrefWidth(657.0); // Set preferable width to 657

@@ -81,6 +81,5 @@ public class Socket extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-        System.out.println("User socket error");
     }
 }

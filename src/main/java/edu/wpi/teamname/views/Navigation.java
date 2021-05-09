@@ -10,6 +10,7 @@ import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelChangeListener;
 import edu.wpi.teamname.views.manager.LevelManager;
 import edu.wpi.teamname.views.manager.SceneManager;
@@ -52,7 +53,7 @@ public class Navigation implements LevelChangeListener {
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
-    SearchContext searchAlgorithm = new SearchContext(new AStar());
+    SearchContext searchAlgorithm;
     boolean pathCanceled = false;
     @FXML
     private ComboBox<String> toCombo, algoCombo; // destination drop down
@@ -141,7 +142,6 @@ public class Navigation implements LevelChangeListener {
         SceneManager.getInstance().getDefaultPage().getStartNode();
         SceneManager.getInstance().getDefaultPage().getEndNode();
         AStar aStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), false);
-        SearchContext searchAlgorithm = new SearchContext(aStar);
     }
 
     public HBox generateNavElem(String _direction) {
@@ -260,10 +260,13 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
+        searchAlgorithm = new SearchContext(new AStar());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         SceneManager.getInstance().getDefaultPage().setStartNode(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue()))); // get starting location
+        LevelManager.getInstance().setFloor(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())).getFloor()); // switch to the floor that the selected node is on
+        selectButtonBasedOnFloor();
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getStartNode());
         SceneManager.getInstance().getDefaultPage().displayNodes(SceneManager.getInstance().getDefaultPage().getStartAndEnd(), .8, false);
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
@@ -291,8 +294,6 @@ public class Navigation implements LevelChangeListener {
         System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
-        String currentFloor = LevelManager.getInstance().getFloor();
-        mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
         ArrayList<String> relevantFloors = searchAlgorithm.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
@@ -333,10 +334,37 @@ public class Navigation implements LevelChangeListener {
         if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
             if (searchAlgorithm == null) {
+                System.out.println("hello");
                 return;
             }
-            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
+            if (toCombo.getValue() == null || fromCombo.getValue() == null) {
+                return;
+            }
+            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
+        }
+    }
+
+    private void selectButtonBasedOnFloor() {
+        switch(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())).getFloor()) {
+            case "L2":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().L2Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "L1":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().L1Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "G":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().groundBttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "1":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor1Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "2":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor2Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "3":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor3Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
         }
     }
 

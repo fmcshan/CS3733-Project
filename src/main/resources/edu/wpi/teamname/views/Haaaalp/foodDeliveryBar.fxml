@@ -53,7 +53,7 @@
                         <Insets left="25.0" top="7.0" />
                      </HBox.margin>
                   </MaterialDesignIconView>
-                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please include your name, what gift you would like to send, your phone number, and the hospital room the gift will be sent to." wrappingWidth="270.0">
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Please include your name, what food you would like to order, your phone number, and the hospital room the food will be sent to." wrappingWidth="270.0">
                      <font>
                         <Font size="16.0" />
                      </font>

@@ -14,6 +14,8 @@ import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
@@ -29,8 +31,11 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -43,10 +48,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     // used to save the current list of nodes after AStar
 
     boolean opened = false;
-    @FXML
-    private JFXButton floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, GBttn, L2Bttn;
-
-
     @Override
     public VBox getPopPop() {
         return popPop;
@@ -54,8 +55,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private JFXButton checkButton;
-    @FXML
-    private JFXButton undoButton;
     @FXML
     private VBox popPop, adminPop, requestPop, registrationPop, helpPop, chatBox, closedChatBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
@@ -83,17 +82,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * run on startup
      */
     public void initialize() {
-        //undoButton.setVisible(true);
-
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/teamname/views/SubmittedRegistrationsButton.fxml"));
-//
-//        submittedRegistrationsButton = loader.getController();
-        floor1Bttn.setTextFill(Paint.valueOf("ddd8d8"));
+        ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
+        receiveMessage("Top of the morning, how can I help you?");
         SceneManager.getInstance().setDefaultPage(this);
-        Font test = Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-SemiBold.ttf"), 16);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
-        //System.out.println(test.getFamily());
         hideAddNodePopup();
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
@@ -108,7 +101,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath);
+                drawPath(currentPath, true);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
@@ -120,7 +113,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath);
+                drawPath(currentPath, true);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
@@ -175,7 +168,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         registrationPop.getChildren().clear();
         employeePop.getChildren().clear();
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
-        navigation.cancelNavigation();
+        if (navigation != null) {
+            navigation.cancelNavigation();
+        }
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
@@ -188,7 +183,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      * toggle the map editor window
      */
     public void toggleMapEditor() {
-        LoadFXML.setCurrentHelp("");
         helpButton.setVisible(true);
         RevisionManager.getInstance().clearQueues();
         if (navigation != null) {
@@ -213,10 +207,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             zoom.zoomAndPan();
             return;
         }
-
-        initMapEditor();
-
         LoadFXML.setCurrentWindow("mapEditorBar");
+        initMapEditor();
     }
 
     /**
@@ -227,6 +219,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RegistrationAdminView", "checkAdminBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     /**
@@ -237,6 +232,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("RequestAdmin", "reqAdminBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     /**
@@ -247,6 +245,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         clearMap();
         popPop.setPrefWidth(1000);
         LoadFXML.getInstance().loadWindow("EmployeeTable", "employeeBar", popPop);
+        if (!LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 
     public void toggleGoogleMaps() {
@@ -287,8 +288,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.getInstance().loadHelp(LoadFXML.getCurrentWindow(), "help_" + LoadFXML.getCurrentWindow(), popPop2);
     }
 
+    @FXML
+    private void openHistory() {
+        hidePopups();
+        LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
+    }
+
     public void initGoogleForm() {
-        System.out.println("called");
         zoom.zoomAndPan();
     }
 
@@ -297,6 +303,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         closedChatBox.getChildren().clear();
         closedChatBox.setPickOnBounds(false);
         if (!opened) {
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), chatBot);
+            fadeIn.setFromValue(0.4);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
             chatBot.setVisible(true);
             chatBot.setPickOnBounds(true);
             opened = true;
@@ -304,7 +314,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             messageIcon.setFill(Color.WHITE);
             messageIcon.setGlyphSize(40);
             chatButton.setGraphic(messageIcon);
-            LoadFXML.setCurrentWindow("chatBot");
             return;
         }
         chatBot.setVisible(false);
@@ -315,7 +324,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         messageIcon.setFill(Color.WHITE);
         messageIcon.setGlyphSize(40);
         chatButton.setGraphic(messageIcon);
-        LoadFXML.setCurrentWindow("");
     }
 
     @FXML
@@ -327,8 +335,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         Text sentMessage = new Text();
         sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito'");
         sentMessage.setFill(Color.WHITE);
-        //System.out.println(message.length());
-        if (message.length() >= 30) {
+        Bounds bounds = TextBuilder.create().text(message).build().getLayoutBounds();
+        if (bounds.getWidth() >= 186) {
             sentMessage.setWrappingWidth(255);
         }
 
@@ -347,10 +355,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatBox.getChildren().add(sentPane);
         enteredMessage.clear();
 
-        chatScrollPane.setFitToHeight(false);
-
-        chatScrollPane.setVvalue(1);
-
+        chatBox.heightProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    chatBox.layout();
+                    chatScrollPane.setVvalue(1.0d);
+                }
+        );
         ChatBot.getInstance().sendMessage(message);
     }
 
@@ -367,9 +377,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     sentMessage.setWrappingWidth(255);
                 }
 
-                System.out.println(LoadFXML.getCurrentWindow());
                 //if chat bot is not open, only show response message and write a reply
-                if (!(LoadFXML.getCurrentWindow().equals("chatBot"))) {
+                if (!opened) {
                     Text sentMessage2 = new Text();
                     sentMessage2.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
                     HBox sentBox2 = new HBox(sentMessage2);
@@ -423,7 +432,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 enteredMessage.clear();
 
                 chatScrollPane.setFitToHeight(false);
-                chatScrollPane.setVvalue(1);
             }
         });
     }
@@ -480,14 +488,16 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(657.0); // Set preferable width to 657
+        ButtonManager.selectButton(checkButton, "nav-btn-selected",  ButtonManager.buttons);
+        if (LoadFXML.getCurrentWindow().equals("surveyBar") || LoadFXML.getCurrentWindow().equals("checkOutBar")) {
+            ButtonManager.remove_class();
+        }
         if (checkButton.getText().equals("Check-In")) {
             LoadFXML.getInstance().loadWindow("COVIDSurvey", "surveyBar", popPop); // Load registration window
         } else {
-            LoadFXML.getInstance().loadWindow("UserCheckout", "checkoutBar", popPop); // Load registration window
+            LoadFXML.getInstance().loadWindow("UserCheckout", "checkOutBar", popPop); // Load registration window
         }
         SceneManager.getInstance().getDefaultPage().setHelpButton(false);
-        checkButton.getStyleClass().add("nav-btn-selected");
-        ButtonManager.selectButton(checkButton);
     }
 
     public void setHelpButton(boolean value) {

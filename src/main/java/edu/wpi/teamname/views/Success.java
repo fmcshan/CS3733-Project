@@ -38,11 +38,16 @@ public class Success {
 
     private PatientTransportation patientTransportation;
 
+    private UserCheckout userCheckout;
 
     private VBox pop;
 
     public Success(UserRegistration userRegistration) {
         this.userRegistration = userRegistration;
+    }
+
+    public Success(UserCheckout userCheckout) {
+        this.userCheckout = userCheckout;
     }
 
     public Success(GiftDelivery giftDelivery) {

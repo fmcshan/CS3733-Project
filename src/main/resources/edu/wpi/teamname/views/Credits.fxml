@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.help.defaultSignOutBar">
+   <children>
+      <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="340.0" style="-fx-background-radius: 15px;">
+         <children>
+            <Label fx:id="title" text="Credits">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="42.0" />
+               </VBox.margin>
+            </Label>
+            <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="799.0" prefWidth="340.0">
+               <children>
+                  <Label fx:id="desc" prefHeight="50.0" prefWidth="632.0" text="APIs used in this application:" textFill="#868686" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="57.0" prefWidth="548.0">
+                     <children>
+                        <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                           <HBox.margin>
+                              <Insets left="25.0" top="7.0" />
+                           </HBox.margin>
+                        </MaterialDesignIconView>
+                        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Google Maps" wrappingWidth="387.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="57.0" prefWidth="548.0">
+                     <children>
+                        <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                           <HBox.margin>
+                              <Insets left="25.0" top="7.0" />
+                           </HBox.margin>
+                        </MaterialDesignIconView>
+                        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Dialogflow" wrappingWidth="387.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="57.0" prefWidth="548.0">
+                     <children>
+                        <MaterialDesignIconView glyphName="CHECKBOX_BLANK_CIRCLE" size="8">
+                           <HBox.margin>
+                              <Insets left="25.0" top="7.0" />
+                           </HBox.margin>
+                        </MaterialDesignIconView>
+                        <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="Firebase" wrappingWidth="387.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutY="717.0" prefHeight="183.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
+         <children>
+            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#closeWindow" prefHeight="50.0" prefWidth="250.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Close" textFill="#bbbbbb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+      <VBox fx:id="symptomsPop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" AnchorPane.bottomAnchor="240.0" AnchorPane.leftAnchor="178.5" AnchorPane.rightAnchor="178.5" AnchorPane.topAnchor="240.0" />
+   </children>
+</AnchorPane>

@@ -21,6 +21,10 @@ public class AuthenticationManager {
         return instance;
     }
 
+    public void setUser(User _user) {
+        this.user = _user;
+    }
+
     public Boolean isAuthenticated() {
         return (user != null);
     }
@@ -66,6 +70,7 @@ public class AuthenticationManager {
 
             user = new User(
                     payload.getString("idToken"),
+                    payload.getString("refreshToken"),
                     payload.getString("displayName"),
                     payload.getString("email"),
                     payload.getString("localId"),
@@ -105,4 +110,14 @@ public class AuthenticationManager {
         return user.getIdToken();
     }
 
+    public void refreshUser() {
+        JSONObject data = new JSONObject();
+        data.put("grant_type", "refresh_token");
+        data.put("refresh_token", user.getRefreshToken());
+
+        // Refresh endpoint
+        Response res = Requests.post("https://securetoken.googleapis.com/v1/token?key=AIzaSyDmVqldcnj6B21Ah339Zj_aJgC7p5Jq1zE", data);
+        JSONObject payload = res.json();
+        user.refresh(payload.getString("id_token"), payload.getString("refresh_token"));
+    }
 }

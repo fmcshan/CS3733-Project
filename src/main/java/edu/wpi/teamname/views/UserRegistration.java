@@ -55,6 +55,9 @@ public class UserRegistration {
     private Label reasonsLabel;
 
     @FXML
+    private Label failedParking;
+
+    @FXML
     private JFXCheckBox emergencyRoomCheckbox;
 
     @FXML
@@ -170,6 +173,15 @@ public class UserRegistration {
     }
 
     /**
+     * If the "Other" checkbox was selected, check if there was an input in the text field
+     *
+     * @return true if there is an input in the text field
+     */
+    public boolean parkingValid() {
+        return parkingSpot.getValue() != null;
+    }
+
+    /**
      * Check if the phone number entered is valid
      *
      * @return true if the phone number is valid
@@ -180,7 +192,7 @@ public class UserRegistration {
     }
 
     void refreshNodes(){
-        parkingSpot.getItems().clear();
+        //parkingSpot.getItems().clear();
         ArrayList<Node> listOfNodes = new ArrayList<>();
         ArrayList<String> listOfSpaces = new ArrayList<>();
         listOfNodes = LocalStorage.getInstance().getNodes();
@@ -190,21 +202,19 @@ public class UserRegistration {
 
             if (!(listOfSpaces.contains(n.getNodeID())) && n.getLongName().contains("Parking Spot")) {
                 theNodes.put(n.getLongName(), n.getNodeID());
-                parkingSpot.getItems().add(n.getLongName());
+                //parkingSpot.getItems().add(n.getLongName());
             }
 
         }
-        parkingSpot.getItems().add("Other Parking");
+        //parkingSpot.getItems().add("Other Parking");
     }
 
     /**
      * If the submit button is pressed, check if inputs are valid and display Success page
      */
     public void submitRegistration() {
-        if (theNodes.containsKey(parkingSpot.getValue())) {
-            Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
-        }
         refreshNodes();
+
         if (phoneInput.getText().length() == 10 && !phoneInput.getText().contains("-")) {
             phoneInput.setText(phoneInput.getText().substring(0, 3) + "-" + phoneInput.getText().substring(3, 6) + "-" + phoneInput.getText().substring(6));
         }
@@ -218,6 +228,12 @@ public class UserRegistration {
             failedDate.setText("Invalid Date Entry");
         } else {
             failedDate.setText("");
+        }
+
+        if (!parkingValid()) {
+            failedParking.setText("Invalid Parking Entry");
+        } else {
+            failedParking.setText("");
         }
 
         if (!aCheckboxSelected()) {
@@ -234,7 +250,10 @@ public class UserRegistration {
             failedPhoneNumber.setText("");
         }
 
-        if (nameInputValid() && dateSelected() && aCheckboxSelected() && otherCheckboxValid() && phoneNumberValid()) {
+        if (nameInputValid() && parkingValid() && dateSelected() && aCheckboxSelected() && otherCheckboxValid() && phoneNumberValid()) {
+            if (theNodes.containsKey(parkingSpot.getValue())) {
+                Submit.getInstance().reserveParking(theNodes.get(parkingSpot.getValue()));
+            }
             LocalDate localDate = dateOfBirth.getValue();
             String date = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth();
             //System.out.println(date);
@@ -260,11 +279,10 @@ public class UserRegistration {
             if (otherCheckbox.isSelected()) {
                 reasonsForVisit.add(otherInput.getText());
             }
-
             LoadFXML.setCurrentWindow("");
             //submit Parking Spot Taken
             //submit
-            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText());
+            edu.wpi.teamname.Database.UserRegistration formData = new edu.wpi.teamname.Database.UserRegistration(fullName.getText(), date, reasonsForVisit, phoneInput.getText(), false, 0, "");
             Submit.getInstance().submitUserRegistration(formData);
 
             // load Success page in successPop VBox

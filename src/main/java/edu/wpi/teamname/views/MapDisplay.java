@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.input.*;
+import javafx.scene.input.*;
 import javafx.scene.shape.*;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
@@ -117,6 +118,7 @@ public class MapDisplay implements LevelChangeListener {
 //
 //    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
+    static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     public MapDisplay() {
         zoom = new ZoomAndPan(this);
@@ -181,12 +183,6 @@ public class MapDisplay implements LevelChangeListener {
 
         if (startNode != null && endNode != null) {
             nodes.clear();
-            if (LevelManager.getInstance().getFloor().equals(startNode.getFloor())) {
-                nodes.add(startNode);
-            }
-            if (LevelManager.getInstance().getFloor().equals(endNode.getFloor())) {
-                nodes.add(endNode);
-            }
         }
 
         currentPath.forEach(n -> {
@@ -336,7 +332,7 @@ public class MapDisplay implements LevelChangeListener {
         resizingInfo(); // Set sizing info
         portalNodeMap.forEach((Id, n) -> {
             if (localNodesMap.containsKey(Id)) {
-                Circle circle = edgeCircles.get(n);
+                Circle circle = new Circle();
                 circle.setCenterX(xCoordOnTopElement(n.getX()));
                 circle.setCenterY(yCoordOnTopElement(n.getY()));
                 circle.setRadius(15);
@@ -537,6 +533,7 @@ public class MapDisplay implements LevelChangeListener {
      */
     void refreshData() {
         doubleEdges.clear();
+        portalNodeMap.clear();
         edgesBetweenFloors.clear();
         nodeToTextMap = new HashMap<>();
         allText = new ArrayList<>();
@@ -571,11 +568,13 @@ public class MapDisplay implements LevelChangeListener {
                     if (edgesBetweenFloors.containsKey(startNode)) {
                         edgesBetweenFloors.get(startNode).add(e);
                         doubleEdges.put(e.getEdgeID(), e);
+                        portalNodeMap.put(startNode.getNodeID(), startNode);
                     } else {
                         ArrayList<Edge> edgeArray = new ArrayList<>();
                         edgeArray.add(e);
                         edgesBetweenFloors.put(startNode, edgeArray);
                         doubleEdges.put(e.getEdgeID(), e);
+                        //portalNodeMap.put(startNode.getNodeID(), nodesMap.get(startNode.getNodeID()));
                     }
                     if (edgesBetweenFloors.containsKey(endNode)) {
                         Edge newEdge = new Edge(endNode.getNodeID() + "_" + startNode.getNodeID(), endNode.getNodeID(), startNode.getNodeID());
@@ -639,7 +638,6 @@ public class MapDisplay implements LevelChangeListener {
             }
         }
         if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
-            // System.out.println("i got in here though");
             return; // Don't process clicks outside of the map editor.
         }
         if (t.getButton() == MouseButton.SECONDARY) {
@@ -1176,27 +1174,68 @@ public class MapDisplay implements LevelChangeListener {
      *
      * @param _listOfNodes Arraylist of nodes to render
      */
-    public void drawPath(ArrayList<ArrayList<Node>> _listOfNodes) {
+    public void drawPath(ArrayList<ArrayList<Node>> _listOfNodes, boolean autoZoomAndPan) {
         if (_listOfNodes.size() < 1) {
             return;
         }
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        for (ArrayList<Node> listOfNode : _listOfNodes) {
-            Node firstNode = listOfNode.get(0);
-            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-            tonysPath.getElements().add(start);
-            listOfNode.forEach(n -> {
-                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-            });
+        if (autoZoomAndPan) {
+            final double[] minX = {5000}; // for auto zoom&pan
+            final double[] minY = {3400}; // for auto zoom&pan
+            final double[] maxX = {0}; // for auto zoom&pan
+            final double[] maxY = {0}; // for auto zoom&pan
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                listOfNode.forEach(n -> {
+                    if (n.getX() < minX[0]) {
+                        minX[0] = n.getX();
+                    }
+                    if (n.getX() > maxX[0]) {
+                        maxX[0] = n.getX();
+                    }
+                    if (n.getY() < minY[0]) {
+                        minY[0] = n.getY();
+                    }
+                    if (n.getY() > maxY[0]) {
+                        maxY[0] = n.getY();
+                    }
+                });
+            }
+            double diffX = maxX[0] - minX[0];
+            double diffY = maxY[0] - minY[0];
+            double midX = (maxX[0] + minX[0]) / 2;
+            double midY = (maxY[0] + minY[0]) / 2;
+            double ref = 0;
+            if (diffX * 3400/5000  > diffY) {
+                ref = diffX * 3400/5000;
+            } else {
+                ref = diffY;
+            }
+            double spacing = 0.4; //how much blank space around
+            scaledWidth = ref * 5000/3400 * (1 + spacing) * 1427/(1427 - 370);
+            scaledHeight = ref * (1 + spacing) * 1427/(1427 - 370);
+            scaledX = midX - (ref * 5000/3400 * (1 + spacing) * (1427 + 370)/(1427-370)) / 2;
+            //leaving this behind to make sure I can still understand this in the future
+            //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
+            scaledY = midY - scaledHeight / 2;
+            zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
-        Polygon triangle = new Polygon();
+            for (ArrayList<Node> listOfNode : _listOfNodes) {
+                Node firstNode = listOfNode.get(0);
+                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+                tonysPath.getElements().add(start);
+                listOfNode.forEach(n -> {
+                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+                });
+            }
+
         pathTransition = new PathTransition();
+        Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
-                0.0, 0.0,
-                20.0, 7.5,
-                0.0, 15.0,
-                5.0, 7.5
+                0.0,0.0,
+                20.0,7.5,
+                0.0,15.0,
+                5.0,7.5
         );
         triangle.setFill(Color.RED); //RED
         triangle.setStroke(Color.RED); //RED
@@ -1215,7 +1254,6 @@ public class MapDisplay implements LevelChangeListener {
      * toggles the navigation window
      */
     public void toggleNav() {
-        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -1226,13 +1264,13 @@ public class MapDisplay implements LevelChangeListener {
         navigation = new Navigation(this); // Load controller
         navigation.loadNav(); // Load nav controller
         listOfNodes = navigation.getListOfNodes(); // Get list of nodes from navigation
-        ButtonManager.selectButton(navButton);
+        ButtonManager.selectButton(navButton, "nav-btn-selected", ButtonManager.buttons);
         if (!LoadFXML.getCurrentWindow().equals("navBar")) { // If navbar selected
             onTopOfTopElements.getChildren().clear(); // Clear children
             tonysPath.getElements().clear();
+            ButtonManager.remove_class();
             return;
         }
-        navButton.getStyleClass().add("nav-btn-selected");
         displayHotspots(0.8); // Display nodes at 0.8 (80%) opacity
     }
 
@@ -1247,7 +1285,6 @@ public class MapDisplay implements LevelChangeListener {
      * Clear the map
      */
     public void clearMap() {
-        remove_class("nav-btn-selected", navButton, reqButton, checkButton, adminButton, exitButton);
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
         currentPath.clear();
@@ -1259,18 +1296,18 @@ public class MapDisplay implements LevelChangeListener {
      * toggle the requests window
      */
     public void openRequests() {
-        LoadFXML.setCurrentHelp("");
         if (navigation != null) {
             navigation.cancelNavigation();
         }
         SceneManager.getInstance().getDefaultPage().setHelpButton(true);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
-        //  currentPath= new ArrayList();
         popPop.setPrefWidth(350.0); // Set preferable width to 350
+        ButtonManager.selectButton(reqButton, "nav-btn-selected", ButtonManager.buttons);
+        if (LoadFXML.getCurrentWindow().equals("reqBar")) {
+            ButtonManager.remove_class();
+        }
         LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
-        reqButton.getStyleClass().add("nav-btn-selected");
-        ButtonManager.selectButton(reqButton);
     }
 
 
@@ -1293,7 +1330,6 @@ public class MapDisplay implements LevelChangeListener {
             AuthenticationManager.getInstance().signOut(); // Display sign out button
             SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
         }
-        adminButton.getStyleClass().add("nav-btn-selected");
     }
 
 //    /**
@@ -1468,53 +1504,84 @@ public class MapDisplay implements LevelChangeListener {
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
         hidePopups(); // Hide all popups
     }
+    private void resetFloors() {
+        L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        groundBttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+        floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
+    }
+
 
     @FXML
     private void setFloor0(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(L2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(0);
-        setButtonColor(L2Bttn, floor1Bttn, groundBttn, floor3Bttn, floor2Bttn, L1Bttn);
+        resetFloors();
     }
 
     @FXML
     private void setFloor1(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(L1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(1);
-        setButtonColor(floor1Bttn, groundBttn, floor3Bttn, floor2Bttn, L1Bttn, L2Bttn);
+        resetFloors();
     }
 
     @FXML
     private void setFloor2(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(groundBttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(2);
-        setButtonColor(groundBttn, floor1Bttn, floor3Bttn, floor2Bttn, L1Bttn, L2Bttn);
+        resetFloors();
     }
 
     @FXML
     private void setFloor3(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(3);
-        setButtonColor(floor1Bttn, floor3Bttn, floor2Bttn, groundBttn, L1Bttn, L2Bttn);
+        resetFloors();
     }
 
     @FXML
     private void setFloor4(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(floor2Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(4);
-        setButtonColor(floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn, floor3Bttn);
+        resetFloors();
     }
 
     @FXML
     private void setFloor5(ActionEvent e) {
         RevisionManager.getInstance().clearQueues();
+        if (ButtonManager.floors.size() == 1) {
+            ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
+        }
+        ButtonManager.selectButton(floor3Bttn, "floor-btn-selected", ButtonManager.floors);
         LevelManager.getInstance().setFloor(5);
-        setButtonColor(floor3Bttn, floor2Bttn, floor1Bttn, groundBttn, L1Bttn, L2Bttn);
-
+        resetFloors();
     }
 
     @Override
     public void levelChanged(int _level) {
-        // TODO Selected floor should be highlighted
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
@@ -1526,17 +1593,34 @@ public class MapDisplay implements LevelChangeListener {
                 break;
         }
     }
-
-    public void setButtonColor(JFXButton invisible, JFXButton other1, JFXButton other2, JFXButton other3, JFXButton other4, JFXButton other5) {
-
-        invisible.setTextFill(Paint.valueOf("ddd8d8"));
-        other1.setTextFill(Paint.valueOf("9e9e9e"));
-        other2.setTextFill(Paint.valueOf("9e9e9e"));
-        other3.setTextFill(Paint.valueOf("9e9e9e"));
-        other4.setTextFill(Paint.valueOf("9e9e9e"));
-        other5.setTextFill(Paint.valueOf("9e9e9e"));
-    }
-    boolean undoing = false;
+//    public void edgeBetweenFloors() {
+//        if (start) {
+//
+//            switch (sNode.getFloor()) {
+//                case "G":
+//                    groundBttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//                case "1":
+//                    floor1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//                case "2":
+//                    floor2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//                case "3":
+//                    floor3Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//                case "L2":
+//                    L2Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//                case "L1":
+//                    L1Bttn.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+//                    break;
+//            }
+//
+//        }
+//
+//    }
+}
 
     public void undoRedo() {
         final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,
@@ -1576,21 +1660,21 @@ public class MapDisplay implements LevelChangeListener {
 
 
         RevisionManager.getInstance().getActionHistory().forEach(history->{
-           // if(!(allActions.contains(history))){
-                allActions.add(history);
-                editHistoryBox.getChildren().add(new Text(history));
-        //    }
-       });
+            // if(!(allActions.contains(history))){
+            allActions.add(history);
+            editHistoryBox.getChildren().add(new Text(history));
+            //    }
+        });
 
-       // List<String> allActions = RevisionManager.getInstance().getActionHistory();
-       // if(allActions.size()!= size) {
+        // List<String> allActions = RevisionManager.getInstance().getActionHistory();
+        // if(allActions.size()!= size) {
 //            editHistoryBox.getChildren().clear();
-            size= allActions.size();
-            allActions.forEach(a -> {
+        size= allActions.size();
+        allActions.forEach(a -> {
 //            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
 
 //            }
-            });
-        }
+        });
     }
+}
 //}

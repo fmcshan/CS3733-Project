@@ -20,6 +20,9 @@ public class MapEditorButton {
 
     public void openMapEditor() {
         SceneManager.getInstance().getDefaultPage().toggleMapEditor();
-        ButtonManager.selectButton(mapEditorButton);
+        ButtonManager.selectButton(mapEditorButton, "nav-btn-selected", ButtonManager.buttons);
+        if (LoadFXML.getCurrentWindow().equals("")) {
+            ButtonManager.remove_class();
+        }
     }
 }

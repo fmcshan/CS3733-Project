@@ -9,8 +9,9 @@ import java.util.List;
 public class ButtonManager {
 
     public static ArrayList<JFXButton> buttons = new ArrayList<>();
+    public static ArrayList<JFXButton> floors = new ArrayList<>();
 
-    private static void remove_class(String _class, ArrayList<JFXButton> _buttons) {
+    public static void remove_class(String _class, ArrayList<JFXButton> _buttons) {
         for (JFXButton button : _buttons) {
             try {
                 button.getStyleClass().remove(_class);
@@ -24,13 +25,11 @@ public class ButtonManager {
         remove_class("nav-btn-selected", buttons);
     }
 
-    public static void selectButton(JFXButton button) {
-        if (!buttons.contains(button)) {
-            buttons.add(button);
+    public static void selectButton(JFXButton button, String styleClass, ArrayList<JFXButton> listOfButtons) {
+        if (!listOfButtons.contains(button)) {
+            listOfButtons.add(button);
         }
-        remove_class("nav-btn-selected", buttons);
-        button.getStyleClass().add("nav-btn-selected");
+        remove_class(styleClass, listOfButtons);
+        button.getStyleClass().add(styleClass);
     }
-
-
 }
