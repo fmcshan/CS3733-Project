@@ -98,7 +98,10 @@ public class ZoomAndPan {
     }
 
     private void render() {
-        if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+        if (page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")){
+            page.updateAndDisplay();
+        }
+        if (LoadFXML.getCurrentWindow().equals("mapEditorBar") || !page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")) {
             page.renderMap();
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {

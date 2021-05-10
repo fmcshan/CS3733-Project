@@ -50,7 +50,7 @@ import java.util.List;
 public class MapDisplay implements LevelChangeListener, DataListener {
     @FXML
     public Navigation navigation;
-    double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
+   public double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
     double mapWidth, mapHeight, fileWidth, fileHeight;
@@ -82,7 +82,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             draggedNode, startNode, endNode;
 
     Edge selectedEdge;
-    Boolean revisionHistoryMode = false;
+     private Boolean revisionHistoryMode = false;
+    ArrayList<Node> revisionNodes = new ArrayList<>();
+    ArrayList<Edge> revisionEdges = new ArrayList<>();
 
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
@@ -90,6 +92,13 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     HashMap<String, Node> portalNodeMap = new HashMap<>();
     HashMap<Node, Circle> edgeCircles = new HashMap<>();
 
+    public void setRevisionHistoryMode(Boolean revisionHistoryMode) {
+        this.revisionHistoryMode = revisionHistoryMode;
+    }
+
+    public Boolean getRevisionHistoryMode() {
+        return revisionHistoryMode;
+    }
 
     @FXML
     VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop, editHistoryBox; // vbox to populate with different fxml such as Navigation/Requests/Login
@@ -260,6 +269,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             }
                         });
 
+                System.out.println(LoadFXML.getCurrentWindow());
+
                 if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                     return; // Don't process drags outside of the map editor.
                 }
@@ -388,6 +399,21 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         });
     }
 
+    public void rebootMapEditor(){
+
+        LocalStorage.getInstance().addListener(this);
+        LevelManager.getInstance().addListener(this);
+        popPop.setPickOnBounds(false); // Set popPop to disregard clicks
+        popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
+
+//        displayEdges(.6); // Render edges at 0.6 opacity
+//        displayNodes(.8); // Render nodes at 0.8 opacity
+        undoRedo();
+        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
+        onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
+        addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
+       // zoom.zoomAndPan();
+    }
     /**
      * Initialize the map editor/display
      */
@@ -620,7 +646,14 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
     }
 
+//    public ArrayList<>
     public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+//zoom.zoomAndPan();
+        if(!revisionHistoryMode){
+         revisionHistoryMode = true;
+             revisionNodes = nodes;
+             revisionEdges = edges;}
+
         HashMap<String, Node> nodeHash = new HashMap<>();
         for (Node n : nodes
         ) {
@@ -1632,9 +1665,22 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         resetFloors();
     }
 
-    private void updateAndDisplay() {
+  public void updateAndDisplay() {
+        System.out.println(LoadFXML.getCurrentWindow());
+
+        if(revisionHistoryMode &&LoadFXML.getCurrentWindow().equals("revisionHistory")){
+            clearMap();
+            displayNodesAndEdgesPreveiw(revisionNodes, revisionEdges);
+        }
+//        if(history){
+//            displayNodesAndEdgesPreveiw();
+//        }
+
         refreshData(); // Update localNodes with new floor
-        switch (LoadFXML.getCurrentWindow()) {
+      if(LoadFXML.getCurrentWindow().equals("revisionHistory")&& !revisionHistoryMode){
+          renderMap();
+      }
+      switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
                 renderMap(); // Render/refresh map (with updated data)
                 break;

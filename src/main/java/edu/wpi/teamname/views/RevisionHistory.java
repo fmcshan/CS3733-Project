@@ -63,6 +63,9 @@ public class RevisionHistory {
 
     public void closeWindows() {
         defaultPage.getPopPop().getChildren().clear();
+        LoadFXML.setCurrentWindow("mapEditorBar");
+        defaultPage.rebootMapEditor();
+        defaultPage.renderMap();
 
     }
 
@@ -70,6 +73,9 @@ public class RevisionHistory {
     public void cancel() {
         cancelButton.setVisible(false);
         restoreButton.setVisible(false);
+        defaultPage.setRevisionHistoryMode(false);
+        defaultPage.renderMap();
+
 
     }
     @FXML

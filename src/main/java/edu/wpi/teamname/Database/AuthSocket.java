@@ -64,16 +64,16 @@ public class AuthSocket extends WebSocketClient {
             LocalStorage.getInstance().setSnapshots(snaps);
 
 
-            for (Event e: events
-            ) {
-                System.out.println(e.toString());
-
-            }
-            for (Snapshot s: snaps
-                 ) {
-                System.out.println(s.toString());
-
-            }
+//            for (Event e: events
+//            ) {
+//                System.out.println(e.toString());
+//
+//            }
+//            for (Snapshot s: snaps
+//                 ) {
+//                System.out.println(s.toString());
+//
+//            }
 
 //            System.out.println(payload.getJSONArray("snapshots"));
 //            System.out.println(payload.getJSONArray("events"));
