@@ -109,10 +109,6 @@ public class AuthSocket extends WebSocketClient {
             ChangeManager.getInstance().processChange(change);
             return;
         }
-
-        // TODO Chatbot commands
-            // TODO Chatbot navigate command
-                // TODO Open navigation, trigger listener
     }
 
     @Override

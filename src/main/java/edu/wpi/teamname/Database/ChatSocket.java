@@ -1,6 +1,8 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.ChatBotCommand;
+import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -49,6 +51,15 @@ public class ChatSocket extends WebSocketClient {
         if (payloadId.equals("receive_message")) {
             payload = payload.getJSONObject("data");
             SceneManager.getInstance().getDefaultPage().receiveMessage(payload.getString("message"));
+            return;
+        }
+
+        if (payloadId.equals("client_command")) {
+            payload = payload.getJSONObject("data");
+            JSONObject params = payload.getJSONObject("params");
+            String start = params.getString("from");
+            String end = params.getString("to");
+            NavManager.getInstance().triggerNavigationCommand(start, end);
             return;
         }
 
