@@ -373,7 +373,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 HBox sentBox = new HBox(sentMessage);
                 sentMessage.setText(_msg);
 
-                if (_msg.length() >= 30) {
+                Bounds bounds = TextBuilder.create().text(_msg).build().getLayoutBounds();
+                if (bounds.getWidth() >= 186) {
                     sentMessage.setWrappingWidth(255);
                 }
 
