@@ -73,7 +73,7 @@ public class AuthSocket extends WebSocketClient {
 //            }
 
 //            System.out.println(payload.getJSONArray("snapshots"));
-//            System.out.println(payload.getJSONArray("events"));
+            System.out.println(payload.getJSONArray("events"));
 
             // TODO Switch to edit node (instead of remove and add)
             // TODO Parse snapshots

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Parser {
     public static Node parseNode(JSONObject _node) {
@@ -79,7 +80,10 @@ public class Parser {
         );
     };
 
-    public static Edge parseEdge2(JSONObject _edge) {
+    public static Edge parseEdge2(JSONObject _edge) throws Exception{
+//        if(_edge.isNull())
+        if(_edge.isNull("i")){
+            throw new Exception(" null");}
         return new Edge(
                 _edge.getString("i"),
                 _edge.getString("s"),
@@ -231,19 +235,39 @@ public class Parser {
 
     public static Event parseEvent(JSONObject _event) {
         //System.out.println( _snapShot.getString("author"));
+       // System.out.println( _event.("node"));
+//        System.out.println("contains node: "+ _event.has("node"));
+//        System.out.println("contains edge: "+_event.has("edge") );
+
+        for (Iterator<String> it = _event.keys(); it.hasNext(); ) {
+            String key = it.next();
+            if (_event.get(key) instanceof JSONObject) {
+                // Yes, it contains at least one JSONObject, whose key is `key`
+                System.out.println(key);
+            }
+        }
+        JSONObject node = new JSONObject();
+        JSONObject edge = new JSONObject();
+        if(!(_event.get("node").equals(null))){
+        node = (JSONObject)_event.get("node");}
+        if(!(_event.get("edge").equals(null))){
+        edge = (JSONObject)_event.get("edge");}
         return new Event(
                 _event.getString("id"),
                 _event.getString("snapshot"),
                 _event.getString("author"),
                 _event.getString("date"),
                 _event.getString("event"),
-                parseNode2(_event.getJSONObject("node")),
-                parseEdge2(_event.getJSONObject("edge"))
+              //  new Node("aa", 2,3),
+                 parseNode2(node),
+            //    new Edge("aa", "a","a")
+               parseEdge2(edge)
         );
     }
 
     public static Snapshot parseSnapshot(JSONObject _snapShot) {
         //System.out.println( _snapShot.getString("author"));
+
         return new Snapshot(
                 _snapShot.getString("id"),
                 _snapShot.getString("author"),
