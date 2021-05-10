@@ -380,6 +380,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         allFloors.add("1");
         allFloors.add("2");
         allFloors.add("3");
+        mapDisplay.resetZoomAndPan();
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         SceneManager.getInstance().getDefaultPage().listOfNode.clear();

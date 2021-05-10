@@ -1589,24 +1589,24 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             double midY = (maxY[0] + minY[0]) / 2;
             double windowWidth = 1427;
             double navBarWidth = 370;
-            double ref = Math.max(diffX * fileHeight/fileWidth, diffY);
+            double ref = Math.max(diffX * fileHeight / fileWidth, diffY);
             double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * fileWidth/fileHeight * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
-            scaledHeight = ref * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
-            scaledX = midX - (ref * fileWidth/fileHeight * (1 + spacing) * (windowWidth + navBarWidth)/(windowWidth-navBarWidth)) / 2;
+            scaledWidth = ref * fileWidth / fileHeight * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+            scaledHeight = ref * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+            scaledX = midX - (ref * fileWidth / fileHeight * (1 + spacing) * (windowWidth + navBarWidth) / (windowWidth - navBarWidth)) / 2;
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
             zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
-            for (ArrayList<Node> listOfNode : _listOfNodes) {
-                Node firstNode = listOfNode.get(0);
-                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-                tonysPath.getElements().add(start);
-                listOfNode.forEach(n -> {
-                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-                });
-            }
+        for (ArrayList<Node> listOfNode : _listOfNodes) {
+            Node firstNode = listOfNode.get(0);
+            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+            tonysPath.getElements().add(start);
+            listOfNode.forEach(n -> {
+                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+            });
+        }
 
         pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
@@ -1944,6 +1944,14 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 displayHotspots(.8);
                 break;
         }
+    }
+
+    public void resetZoomAndPan() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = fileWidth;
+        scaledHeight = fileHeight;
+        zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
     }
 
     @Override
