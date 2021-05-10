@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.scene.shape.*;
 import javafx.animation.Transition;
 import edu.wpi.teamname.Algo.Algorithms.AStar;
-import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
