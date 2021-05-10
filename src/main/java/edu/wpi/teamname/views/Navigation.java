@@ -6,7 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.*;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
+import edu.wpi.teamname.Algo.Pathfinding.TextDirections;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
@@ -30,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -302,7 +303,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
             if (!relevantFloors.contains(floor))
                 unusedFloors.add(floor);
         }
-        NavigationHelper nav = new NavigationHelper(searchAlgorithm);
+        TextDirections nav = new TextDirections(searchAlgorithm);
         nav.getTextDirections().forEach(t -> {
             navBox.getChildren().add(generateNavElem(t));
             VBox spacer = new VBox();
@@ -436,6 +437,21 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
     @Override
     public void navigate(String _from, String _to) {
+        String startNode = "";
+        String endNode = "";
+        ArrayList<String> nodeLongNames = new ArrayList<>();
+        for (Node node : listOfNodes) {
+            nodeLongNames.add(node.getLongName());
+        }
         // TODO Oi, Demi & Bryan, put your code in here
+        startNode = FuzzySearch.extractOne(_from, nodeLongNames).getString();
+        endNode = FuzzySearch.extractOne(_to, nodeLongNames).getString();
+
+        AutoCompleteComboBoxListener listenerFrom = new AutoCompleteComboBoxListener(fromCombo);
+        listenerFrom.setValue(startNode);
+
+        AutoCompleteComboBoxListener listenerTo = new AutoCompleteComboBoxListener(toCombo);
+        listenerTo.setValue(endNode);
+
     }
 }

@@ -1,7 +1,6 @@
 package edu.wpi.teamname.Algo.Pathfinding;
 
 import edu.wpi.teamname.Algo.Algorithms.AStar;
-import edu.wpi.teamname.Algo.Algorithms.Algorithm;
 import edu.wpi.teamname.Algo.Algorithms.SearchContext;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Parser;
@@ -15,22 +14,20 @@ import java.util.ArrayList;
 import static edu.wpi.teamname.Algo.Algorithms.AStar.distance;
 
 /**
- * <h1>Navigation Helper</h1>
+ * <h1>Text Directions</h1>
  * Class designed to help reduce the complexity of navigation, in terms of floor switching, as well as text directions
  */
-public class NavigationHelper {
+public class TextDirections {
     final double SCALE = 3.25;
     private SearchContext pathfinder;
-    private double totalStraightDistance;
-    private int lastStraightIndex;
     private ArrayList<String> directionFloors;
 
-    public NavigationHelper(ArrayList<Node> nodes, Node start, Node goal) {
+    public TextDirections(ArrayList<Node> nodes, Node start, Node goal) {
         pathfinder = new SearchContext(new AStar(nodes, start, goal, false));
         directionFloors = new ArrayList<>();
     }
 
-    public NavigationHelper(SearchContext searchAlgorithm){
+    public TextDirections(SearchContext searchAlgorithm){
         pathfinder = searchAlgorithm;
         directionFloors = new ArrayList<>();
     }
@@ -172,7 +169,7 @@ public class NavigationHelper {
         Node start = nodes.get(Parser.indexOfNode(nodes, "lPARK013GG"));
         Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00E02"));
         Stopwatch timer = new Stopwatch();
-        NavigationHelper dir = new NavigationHelper(nodes, start, goal);
+        TextDirections dir = new TextDirections(nodes, start, goal);
         System.out.println(dir.getDirectionFloors());
     }
 }
