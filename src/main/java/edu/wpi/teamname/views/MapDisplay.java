@@ -912,7 +912,6 @@ public class MapDisplay implements LevelChangeListener {
         editNodeShortName.setText(_toEdit.getShortName()); // Set the short name field
         editNodeLongName.setText(_toEdit.getLongName()); // Set the long name field
 
-        // TODO enable edge buttons
         if (edgesBetweenFloors.get(_toEdit) != null) {
             edgesBetweenFloors.get(_toEdit).forEach(e -> {
                 switch (nodesMap.get(e.getEndNode()).getFloor()) {
