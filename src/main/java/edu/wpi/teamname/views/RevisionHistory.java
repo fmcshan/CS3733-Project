@@ -146,12 +146,33 @@ public class RevisionHistory {
         spacer.setMinSize(10, 1);
 
         VBox navLabelWrapper = new VBox();
-        Text navigationLabel = new Text(_event);
+        String type = "";
+        if (_event.equals("remove_node")){
+            type = "Remove Node " + event.getNode().getLongName();
+        }
+        if (_event.equals("remove_edge")){
+            type = "Remove Edge " + event.getEdge().getEdgeID();
+        }
+        if (_event.equals("add_node")){
+            type = "Add Node " + event.getNode().getLongName();
+        }
+        if (_event.equals("add_edge")){
+            type = "Add Edge "+ event.getEdge().getEdgeID();
+        }
+        Text navigationLabel = new Text(type);
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
         navigationLabel.setWrappingWidth(200);
         navLabelWrapper.getChildren().add(navigationLabel);
         navigationLabel.prefWidth(200);
         navigationLabel.prefHeight(60);
+
+
+//        Text navigationLabel2 = new Text(event.getDate());
+//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+//        navigationLabel2.setWrappingWidth(200);
+//        navLabelWrapper.getChildren().add(navigationLabel2);
+//        navigationLabel2.prefWidth(200);
+//        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
@@ -159,11 +180,16 @@ public class RevisionHistory {
         directionGuiWrapper.setOnMouseClicked(a -> {
             cancelButton.setVisible(true);
             restoreButton.setVisible(true);
+            ArrayList<Node> nodes = new ArrayList<>();
+            ArrayList<Edge> edges = new ArrayList<>();
             for (Snapshot s : snapshots) {
                 if (s.getId().equals(event.getSnapshot())){
                     s.doEvent(event);
+                    nodes = s.getNodes();
+                    edges = s.getEdges();
                 }
             }
+            System.out.println(nodes.get(nodes.size()-1).getLongName());
             defaultPage.clearMap();
             defaultPage.displayNodesAndEdgesPreveiw(nodes, edges);
         });
@@ -200,7 +226,7 @@ public class RevisionHistory {
         spacer.setMinSize(10, 1);
 
         VBox navLabelWrapper = new VBox();
-        Text navigationLabel = new Text(_snap.getId());
+        Text navigationLabel = new Text("File loaded");
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
         navigationLabel.setWrappingWidth(200);
         navLabelWrapper.getChildren().add(navigationLabel);

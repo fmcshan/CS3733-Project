@@ -1,14 +1,12 @@
 package edu.wpi.teamname.views.manager;
+
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Snapshot {
     ArrayList<Node> nodes;
@@ -18,17 +16,18 @@ public class Snapshot {
     JSONObject data;
     String date;
     ArrayList<Action> actions;
-//    public Snapshot(){
+
+    //    public Snapshot(){
 //        nodes = LocalStorage.getInstance().getNodes();
 //        edges = LocalStorage.getInstance().getEdges();
 ////           Id = UUID.randomUUID().toString();
 ////    }
-    public Snapshot(String Id, String author, String date, ArrayList<Node> nodes, ArrayList<Edge> edges){
-        this.Id=Id;
+    public Snapshot(String Id, String author, String date, ArrayList<Node> nodes, ArrayList<Edge> edges) {
+        this.Id = Id;
         this.author = author;
-        this.date=date;
-        this.nodes=nodes;
-        this.edges=edges;
+        this.date = date;
+        this.nodes = nodes;
+        this.edges = edges;
 
     }
 
@@ -45,12 +44,11 @@ public class Snapshot {
     }
 
     @Override
-    public String toString(){
-        return "ID: " + Id + "\nauthor: " + author + "\ndate: "+ date + "\nnodes: " + nodes.size() + "\nedges: " + edges.size();
+    public String toString() {
+        return "ID: " + Id + "\nauthor: " + author + "\ndate: " + date + "\nnodes: " + nodes.size() + "\nedges: " + edges.size();
 
 
     }
-
 
 
     @Override
@@ -82,26 +80,32 @@ public class Snapshot {
         return Objects.hash(Id);
     }
 
-    public void doEvent(Event event){
-        ArrayList<Event> events =  LocalStorage.getInstance().getEvents();
+    public void doEvent(Event event) {
+        ArrayList<Event> events = LocalStorage.getInstance().getEvents();
         ArrayList<Event> correctEvents = new ArrayList<Event>();
-        for (Event e: events){
-            if (e.getSnapshot().equals(Id)){
-
+        for (Event e : events) {
+            if (e.getSnapshot().equals(Id)) {
+                correctEvents.add(e);
             }
-
         }
-        if (event.getEvent().equals("delete_node")){
-            nodes.remove(event.node);
-        }
-        if (event.getEvent().equals("delete_edge")){
-            edges.remove(event.edge);
-        }
-        if (event.getEvent().equals("add_node")){
-            nodes.add(event.node);
-        }
-        if (event.getEvent().equals("add_edge")){
-            edges.add(event.edge);
+        Collections.reverse(correctEvents);
+        for (Event e : correctEvents) {
+            if (e.getEvent().equals("remove_node")) {
+                //System.out.println(e.event + e.getDate());
+                nodes.remove(event.node);
+            }
+            if (e.getEvent().equals("remove_edge")) {
+               // System.out.println(e.event + e.getDate());
+                edges.remove(event.edge);
+            }
+            if (e.getEvent().equals("add_node")) {
+               // System.out.println(e.event + e.getDate());
+                nodes.add(event.node);
+            }
+            if (e.getEvent().equals("add_edge")) {
+               // System.out.println(e.event + e.getDate());
+                edges.add(event.edge);
+            }
         }
     }
 

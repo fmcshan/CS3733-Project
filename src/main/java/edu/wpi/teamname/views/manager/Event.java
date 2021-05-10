@@ -34,6 +34,26 @@ public class Event {
         return snapshotId;
     }
 
+    public String getSnapshotId() {
+        return snapshotId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public Edge getEdge() {
+        return edge;
+    }
+
     @Override
     public String toString(){
         String theEdge = "null";
