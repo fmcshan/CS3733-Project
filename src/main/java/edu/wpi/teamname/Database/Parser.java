@@ -3,6 +3,8 @@ package edu.wpi.teamname.Database;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.Snapshot;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,6 +24,20 @@ public class Parser {
                 _node.getString("nodeType"),
                 _node.getString("longName"),
                 _node.getString("shortName")
+        );
+    };
+
+    public static Node parseNode2(JSONObject _node) {
+        return new Node(
+                _node.getString("i"),
+                _node.getInt("x"),
+                _node.getInt("y"),
+                _node.getString("le"),
+                _node.getString("b"),
+                _node.getString("t"),
+                _node.getString("lo"),
+                _node.getString("s")
+
         );
     };
 
@@ -46,6 +62,14 @@ public class Parser {
         return nodes;
     };
 
+    public static ArrayList<Node> parseNodes2(JSONArray _nodes) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        _nodes.forEach(n -> {
+            nodes.add(parseNode2((JSONObject) n));
+        });
+        return nodes;
+    };
+
     public static Edge parseEdge(JSONObject _edge) {
         _edge = _edge.getJSONObject("fields");
         return new Edge(
@@ -55,10 +79,25 @@ public class Parser {
         );
     };
 
+    public static Edge parseEdge2(JSONObject _edge) {
+        return new Edge(
+                _edge.getString("i"),
+                _edge.getString("s"),
+                _edge.getString("e")
+        );
+    };
+
     public static ArrayList<Edge> parseEdges(JSONArray _edges) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         _edges.forEach(e -> {
             edges.add(parseEdge((JSONObject) e));
+        });
+        return edges;
+    };
+    public static ArrayList<Edge> parseEdges2(JSONArray _edges) {
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        _edges.forEach(e -> {
+            edges.add(parseEdge2((JSONObject) e));
         });
         return edges;
     };
@@ -80,6 +119,16 @@ public class Parser {
         });
 
         return nodes;
+    };
+
+    public static ArrayList<Node> parseNodes3(JSONObject _data) {
+        ArrayList<Node> nodes = parseNodes2(_data.getJSONArray("nodes"));
+        return nodes;
+    };
+
+    public static ArrayList<Edge> parseEdges3(JSONObject _data) {
+        ArrayList<Edge> edges = parseEdges2(_data.getJSONArray("edges"));
+        return edges;
     };
 
     public static UserRegistration parseUserRegistration(JSONObject _registration) {
@@ -162,5 +211,45 @@ public class Parser {
             users.add(parseUser((JSONObject) u));
         });
         return users;
+    }
+
+    public static ArrayList<Snapshot> parseSnapshots(JSONArray _snapShots) {
+        ArrayList<Snapshot> snapShots = new ArrayList<Snapshot>();
+        _snapShots.forEach(s -> {
+            snapShots.add(parseSnapshot((JSONObject) s));
+        });
+        return snapShots;
+    }
+
+    public static ArrayList<Event> parseEvents(JSONArray _event) {
+        ArrayList<Event> events = new ArrayList<Event>();
+        _event.forEach(s -> {
+            events.add(parseEvent((JSONObject) s));
+        });
+        return events;
+    }
+
+    public static Event parseEvent(JSONObject _event) {
+        //System.out.println( _snapShot.getString("author"));
+        return new Event(
+                _event.getString("id"),
+                _event.getString("snapshot"),
+                _event.getString("author"),
+                _event.getString("date"),
+                _event.getString("event"),
+                parseNode2(_event.getJSONObject("node")),
+                parseEdge2(_event.getJSONObject("edge"))
+        );
+    }
+
+    public static Snapshot parseSnapshot(JSONObject _snapShot) {
+        //System.out.println( _snapShot.getString("author"));
+        return new Snapshot(
+                _snapShot.getString("id"),
+                _snapShot.getString("author"),
+                _snapShot.getString("date"),
+                parseNodes3(_snapShot.getJSONObject("data")),
+                parseEdges3(_snapShot.getJSONObject("data"))
+        );
     }
 }

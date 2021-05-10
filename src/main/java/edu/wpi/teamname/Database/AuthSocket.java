@@ -1,6 +1,9 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.Action;
+import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.Snapshot;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -55,8 +58,23 @@ public class AuthSocket extends WebSocketClient {
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
             LocalStorage.getInstance().setUsers(users);
 
-            System.out.println(payload.getJSONArray("snapshots"));
-            System.out.println(payload.getJSONArray("events"));
+            ArrayList<Snapshot> snaps = Parser.parseSnapshots(payload.getJSONArray("snapshots"));
+            ArrayList<Event> events = Parser.parseEvents(payload.getJSONArray("events"));
+
+            for (Event e: events
+            ) {
+                System.out.println(e.toString());
+
+            }
+//            for (Snapshot s: snaps
+//                 ) {
+//                System.out.println(s.toString());
+//
+//            }
+
+//            System.out.println(payload.getJSONArray("snapshots"));
+//            System.out.println(payload.getJSONArray("events"));
+
             // TODO Switch to edit node (instead of remove and add)
             // TODO Parse snapshots
             // TODO Parse events
