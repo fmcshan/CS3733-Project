@@ -32,6 +32,18 @@ public class Snapshot {
 
     }
 
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public ArrayList<Action> getActions() {
+        return actions;
+    }
+
     @Override
     public String toString(){
         return "ID: " + Id + "\nauthor: " + author + "\ndate: "+ date + "\nnodes: " + nodes.size() + "\nedges: " + edges.size();

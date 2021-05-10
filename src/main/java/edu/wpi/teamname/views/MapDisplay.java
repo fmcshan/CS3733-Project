@@ -71,6 +71,7 @@ public class MapDisplay implements LevelChangeListener {
             draggedNode, startNode, endNode;
 
     Edge selectedEdge;
+    Boolean revisionHistoryMode = false;
 
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
@@ -605,6 +606,44 @@ public class MapDisplay implements LevelChangeListener {
         displayNodes(.8); // Display nodes at 0.8 opacity
         dragStart = null; // Reset dragStart (IE: user clicks away)
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
+    }
+
+    public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+        HashMap<String, Node> nodeHash = new HashMap<>();
+        for (Node n : nodes
+        ) {
+            if (nodeWithinSpec(n)) {
+                nodeHash.put(n.getNodeID(), n);
+            }
+        }
+        edges.forEach(e ->
+
+        { // For edge in localEdges
+            if (nodeHash.containsKey(e.getStartNode()) && nodeHash.containsKey(e.getEndNode())) { // If nodes exist
+                if (onScreen(nodeHash.get(e.getStartNode())) || onScreen(nodeHash.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
+                    double startX = xCoordOnTopElement(nodeHash.get(e.getStartNode()).getX());
+                    double startY = yCoordOnTopElement(nodeHash.get(e.getStartNode()).getY());
+                    double endX = xCoordOnTopElement(nodeHash.get(e.getEndNode()).getX());
+                    double endY = yCoordOnTopElement(nodeHash.get(e.getEndNode()).getY());
+                    // Create edge
+                    LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
+                    Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).build(); // Style edge
+                    onTopOfTopElements.getChildren().add(edge); // Render edge
+                }
+            }
+        });
+        for (Node n : nodes
+        ) {
+            if (nodeWithinSpec(n) && onScreen(n)) {
+                Tooltip tooltip = new Tooltip(n.getLongName());
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                circle.setStrokeWidth(4); // Set the stroke with to 4
+                circle.setStroke(Color.TRANSPARENT);
+                circle.setFill(Color.valueOf("607548")); // Set node color to olive
+//            circle.setOpacity(_opacity); // Set node opacity (input param)
+                onTopOfTopElements.getChildren().add(circle);
+            }
+        }
     }
 
     /**
@@ -1205,36 +1244,36 @@ public class MapDisplay implements LevelChangeListener {
             double midX = (maxX[0] + minX[0]) / 2;
             double midY = (maxY[0] + minY[0]) / 2;
             double ref = 0;
-            if (diffX * 3400/5000  > diffY) {
-                ref = diffX * 3400/5000;
+            if (diffX * 3400 / 5000 > diffY) {
+                ref = diffX * 3400 / 5000;
             } else {
                 ref = diffY;
             }
             double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * 5000/3400 * (1 + spacing) * 1427/(1427 - 370);
-            scaledHeight = ref * (1 + spacing) * 1427/(1427 - 370);
-            scaledX = midX - (ref * 5000/3400 * (1 + spacing) * (1427 + 370)/(1427-370)) / 2;
+            scaledWidth = ref * 5000 / 3400 * (1 + spacing) * 1427 / (1427 - 370);
+            scaledHeight = ref * (1 + spacing) * 1427 / (1427 - 370);
+            scaledX = midX - (ref * 5000 / 3400 * (1 + spacing) * (1427 + 370) / (1427 - 370)) / 2;
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
             zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
-            for (ArrayList<Node> listOfNode : _listOfNodes) {
-                Node firstNode = listOfNode.get(0);
-                MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
-                tonysPath.getElements().add(start);
-                listOfNode.forEach(n -> {
-                    tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
-                });
-            }
+        for (ArrayList<Node> listOfNode : _listOfNodes) {
+            Node firstNode = listOfNode.get(0);
+            MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
+            tonysPath.getElements().add(start);
+            listOfNode.forEach(n -> {
+                tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
+            });
+        }
 
         pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
-                0.0,0.0,
-                20.0,7.5,
-                0.0,15.0,
-                5.0,7.5
+                0.0, 0.0,
+                20.0, 7.5,
+                0.0, 15.0,
+                5.0, 7.5
         );
         triangle.setFill(Color.RED); //RED
         triangle.setStroke(Color.RED); //RED
@@ -1431,7 +1470,8 @@ public class MapDisplay implements LevelChangeListener {
      * @param nodeShortName Node short name
      * @param nodeLongName  Node long name
      */
-    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
+    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String
+            nodeType, String nodeShortName, String nodeLongName) {
         Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName); // Create a node
         //Submit.getInstance().addNode(node); // Add the node
         List<Action> list = new LinkedList<>();
@@ -1503,6 +1543,7 @@ public class MapDisplay implements LevelChangeListener {
         CSVOperator.writeEdgeCSV(LocalStorage.getInstance().getEdges(), saveLocation.getAbsolutePath());
         hidePopups(); // Hide all popups
     }
+
     private void resetFloors() {
         L2Bttn.setTextFill(Paint.valueOf("9e9e9e"));
         L1Bttn.setTextFill(Paint.valueOf("9e9e9e"));
@@ -1626,12 +1667,13 @@ public class MapDisplay implements LevelChangeListener {
 
         });
     }
-    int size =0;
+
+    int size = 0;
 
     public void refreshHistory() {
 
 
-        RevisionManager.getInstance().getActionHistory().forEach(history->{
+        RevisionManager.getInstance().getActionHistory().forEach(history -> {
             // if(!(allActions.contains(history))){
             allActions.add(history);
             editHistoryBox.getChildren().add(new Text(history));
@@ -1641,7 +1683,7 @@ public class MapDisplay implements LevelChangeListener {
         // List<String> allActions = RevisionManager.getInstance().getActionHistory();
         // if(allActions.size()!= size) {
 //            editHistoryBox.getChildren().clear();
-        size= allActions.size();
+        size = allActions.size();
         allActions.forEach(a -> {
 //            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
 

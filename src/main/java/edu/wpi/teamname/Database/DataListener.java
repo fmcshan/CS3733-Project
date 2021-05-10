@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public interface DataListener {
 
+
+
     void nodesSet(ArrayList<Node> _nodes);
     void nodeAdded(Node _node);
     void nodeEdited(Node _node);

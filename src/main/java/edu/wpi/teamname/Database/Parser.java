@@ -30,7 +30,10 @@ public class Parser {
 
     ;
 
-    public static Node parseNode2(JSONObject _node) {
+    public static Node parseNode2(JSONObject _node) throws Exception {
+        if (_node.isNull("i")) {
+            throw new Exception("nullthing happens");
+        }
         return new Node(
                 _node.getString("i"),
                 _node.getInt("x"),
@@ -72,9 +75,16 @@ public class Parser {
     ;
 
     public static ArrayList<Node> parseNodes2(JSONArray _nodes) {
+
         ArrayList<Node> nodes = new ArrayList<Node>();
         _nodes.forEach(n -> {
-            nodes.add(parseNode2((JSONObject) n));
+            try {
+                Node node = null;
+                node = parseNode2((JSONObject) n);
+                nodes.add(node);
+            } catch (Exception e) {
+               // System.out.println(e);
+            }
         });
         return nodes;
     }
@@ -122,7 +132,8 @@ public class Parser {
             try {
                 edge = parseEdge2((JSONObject) e);
             } catch (Exception exception) {
-                System.out.println(exception);;
+                //System.out.println(exception);
+                ;
             }
             edges.add(edge);
 
@@ -283,7 +294,7 @@ public class Parser {
             String key = it.next();
             if (_event.get(key) instanceof JSONObject) {
                 // Yes, it contains at least one JSONObject, whose key is `key`
-                System.out.println(key);
+                //System.out.println(key);
             }
         }
         JSONObject node = new JSONObject();
@@ -298,7 +309,13 @@ public class Parser {
         try {
             newEdge = parseEdge2(edge);
         } catch (Exception e) {
-            System.out.println(e);
+         //   System.out.println(e);
+        }
+        Node newNode = null;
+        try {
+            newNode = parseNode2(node);
+        } catch (Exception e) {
+           // System.out.println(e);
         }
         return new Event(
                 _event.getString("id"),
@@ -307,7 +324,7 @@ public class Parser {
                 _event.getString("date"),
                 _event.getString("event"),
                 //  new Node("aa", 2,3),
-                parseNode2(node),
+                newNode,
                 //    new Edge("aa", "a","a")
                 newEdge
         );

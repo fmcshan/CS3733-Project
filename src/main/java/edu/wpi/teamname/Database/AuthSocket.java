@@ -60,20 +60,23 @@ public class AuthSocket extends WebSocketClient {
 
             ArrayList<Snapshot> snaps = Parser.parseSnapshots(payload.getJSONArray("snapshots"));
             ArrayList<Event> events = Parser.parseEvents(payload.getJSONArray("events"));
+            LocalStorage.getInstance().setEvents(events);
+            LocalStorage.getInstance().setSnapshots(snaps);
+
 
             for (Event e: events
             ) {
                 System.out.println(e.toString());
 
             }
-//            for (Snapshot s: snaps
-//                 ) {
-//                System.out.println(s.toString());
-//
-//            }
+            for (Snapshot s: snaps
+                 ) {
+                System.out.println(s.toString());
+
+            }
 
 //            System.out.println(payload.getJSONArray("snapshots"));
-            System.out.println(payload.getJSONArray("events"));
+//            System.out.println(payload.getJSONArray("events"));
 
             // TODO Switch to edit node (instead of remove and add)
             // TODO Parse snapshots
