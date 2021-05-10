@@ -10,10 +10,7 @@ import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.views.manager.ButtonManager;
-import edu.wpi.teamname.views.manager.LevelChangeListener;
-import edu.wpi.teamname.views.manager.LevelManager;
-import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.views.manager.*;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,7 +44,7 @@ import static javafx.scene.effect.BlurType.GAUSSIAN;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Navigation implements LevelChangeListener {
+public class Navigation implements LevelChangeListener, ChatBotCommand {
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
@@ -435,5 +432,10 @@ public class Navigation implements LevelChangeListener {
                 calcPath();
                 break;
         }
+    }
+
+    @Override
+    public void navigate(String _from, String _to) {
+        // TODO Oi, Demi & Bryan, put your code in here
     }
 }

@@ -110,7 +110,9 @@ public class AuthSocket extends WebSocketClient {
             return;
         }
 
-
+        // TODO Chatbot commands
+            // TODO Chatbot navigate command
+                // TODO Open navigation, trigger listener
     }
 
     @Override
