@@ -111,10 +111,12 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             algoBox.setVisible(true);
-            algoCombo.setStyle("-fx-font-size: 24");
+            scrollBar.setMinHeight(249);
+           // algoCombo.setStyle("-fx-font-size: 24; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         } else {
             algoBox.setVisible(false);
-            algoCombo.setStyle("-fx-font-size: .1");
+            scrollBar.setMinHeight(322);
+           // algoCombo.setStyle("-fx-font-size: .1; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         }
 
         if (COVIDMessage.covid) {

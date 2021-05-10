@@ -54,7 +54,7 @@ public class Login {
 
     public void colorLoginButton() {
         if (!emailField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
-            loginButton.setStyle("-fx-background-color: #0067b1; -fx-text-fill: white; -fx-background-radius: 8");
+            loginButton.setStyle("-fx-background-color: #317fb8; -fx-text-fill: white; -fx-background-radius: 8");
         }
         else {
             loginButton.setStyle("-fx-background-color: white; -fx-border-color: #c3c3c3; -fx-border-radius: 8; -fx-text-fill: #c3c3c3");
