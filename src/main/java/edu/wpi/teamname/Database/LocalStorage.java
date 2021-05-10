@@ -49,7 +49,7 @@ public class LocalStorage {
     }
 
     public ArrayList<Node> getNodes() {
-        while (this.reservedParkingSpaces == null) {
+        while (this.nodes == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 50);
             } catch (InterruptedException e) {
@@ -74,7 +74,7 @@ public class LocalStorage {
     }
 
     public ArrayList<Edge> getEdges() {
-        while (this.reservedParkingSpaces == null) {
+        while (this.edges == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {
@@ -98,7 +98,7 @@ public class LocalStorage {
             return null;
         }
 
-        while (this.reservedParkingSpaces == null) {
+        while (this.registrations == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {
@@ -173,7 +173,7 @@ public class LocalStorage {
             return null;
         }
 
-        while (this.reservedParkingSpaces == null) {
+        while (this.users == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {
