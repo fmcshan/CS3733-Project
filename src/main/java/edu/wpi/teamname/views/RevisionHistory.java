@@ -184,9 +184,9 @@ public class RevisionHistory {
             ArrayList<Edge> edges = new ArrayList<>();
             for (Snapshot s : snapshots) {
                 if (s.getId().equals(event.getSnapshot())){
-                    s.doEvent(event);
-                    nodes = s.getNodes();
-                    edges = s.getEdges();
+                    Snapshot newSnap = s.doEvent(event);
+                    nodes = newSnap.getNodes();
+                    edges = newSnap.getEdges();
                 }
             }
             System.out.println(nodes.get(nodes.size()-1).getLongName());

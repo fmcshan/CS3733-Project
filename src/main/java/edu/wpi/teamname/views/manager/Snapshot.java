@@ -79,34 +79,47 @@ public class Snapshot {
     public int hashCode() {
         return Objects.hash(Id);
     }
-
-    public void doEvent(Event event) {
+    Snapshot returnSnap = this;
+    public Snapshot doEvent(Event event) {
         ArrayList<Event> events = LocalStorage.getInstance().getEvents();
         ArrayList<Event> correctEvents = new ArrayList<Event>();
+        ArrayList<Event> finalEvents = new ArrayList<Event>();
         for (Event e : events) {
             if (e.getSnapshot().equals(Id)) {
                 correctEvents.add(e);
             }
         }
         Collections.reverse(correctEvents);
-        for (Event e : correctEvents) {
+        Boolean flag = true;
+        for (Event e: events){
+            if(e.id.equals(event.id)){
+                finalEvents.add(e);
+                flag = false;
+                System.out.println("LOLLLLLLLLLLLLLLLLLLLLLLL");
+            }
+            if(flag){
+                finalEvents.add(e);
+            }
+        }
+        for (Event e : finalEvents) {
             if (e.getEvent().equals("remove_node")) {
                 //System.out.println(e.event + e.getDate());
-                nodes.remove(event.node);
+                returnSnap.nodes.remove(event.node);
             }
             if (e.getEvent().equals("remove_edge")) {
                // System.out.println(e.event + e.getDate());
-                edges.remove(event.edge);
+                returnSnap.edges.remove(event.edge);
             }
             if (e.getEvent().equals("add_node")) {
                // System.out.println(e.event + e.getDate());
-                nodes.add(event.node);
+                returnSnap.nodes.add(event.node);
             }
             if (e.getEvent().equals("add_edge")) {
                // System.out.println(e.event + e.getDate());
-                edges.add(event.edge);
+                returnSnap.edges.add(event.edge);
             }
         }
+        return returnSnap;
     }
 
 }
