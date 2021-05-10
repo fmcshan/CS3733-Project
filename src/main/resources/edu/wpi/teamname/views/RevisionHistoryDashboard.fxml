@@ -38,7 +38,7 @@
                <children>
                   <HBox prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
                      <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
+                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #317fb8; -fx-background-radius: 8px;">
                            <children>
                               <MaterialDesignIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="56" />
                            </children>
@@ -81,7 +81,7 @@
                   </HBox>
                   <HBox layoutX="10.0" layoutY="10.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
                      <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
+                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #317fb8; -fx-background-radius: 8px;">
                            <children>
                               <MaterialDesignIconView fill="WHITE" glyphName="MINUS_CIRCLE" size="56" />
                            </children>
@@ -127,7 +127,7 @@
                   </HBox>
                   <HBox layoutX="10.0" layoutY="89.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
                      <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
+                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #317fb8; -fx-background-radius: 8px;">
                            <children>
                               <MaterialDesignIconView fill="WHITE" glyphName="UPLOAD" size="56" />
                            </children>
@@ -173,7 +173,7 @@
                   </HBox>
                   <HBox layoutX="10.0" layoutY="153.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
                      <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
+                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #317fb8; -fx-background-radius: 8px;">
                            <children>
                               <MaterialDesignIconView fill="WHITE" glyphName="PENCIL" size="56" />
                            </children>

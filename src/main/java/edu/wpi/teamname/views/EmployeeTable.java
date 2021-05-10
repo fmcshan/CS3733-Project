@@ -336,7 +336,7 @@ public class EmployeeTable implements UserListener {
         phoneCell.setPrefWidth(300);
         phoneCell.setFocusColor(Color.WHITE);
         phoneCell.setUnFocusColor(Color.WHITE);
-        userPhoneMap.put(employeeID, emailCell);
+        userPhoneMap.put(employeeID, phoneCell);
 
         VBox actionsBox = new VBox(actionsButton);
         actionsBox.setAlignment(Pos.CENTER);

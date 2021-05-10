@@ -55,6 +55,18 @@ public class AuthSocket extends WebSocketClient {
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
             LocalStorage.getInstance().setUsers(users);
 
+            System.out.println(payload.getJSONArray("snapshots"));
+            System.out.println(payload.getJSONArray("events"));
+            // TODO Parse snapshots
+            // TODO Parse events
+            // Both stored in revision history
+            // Add snapshots to map
+            // Add events to snapshots
+            // TODO List snapshots and events in rev history menu (generate list programmatically, see TableCellFactory for ex)
+            // TODO On click, generate arraylist of nodes & edges, preview locally
+            // TODO on restore, send arraylists to db (same as csv loading)
+
+
             return;
         }
 
