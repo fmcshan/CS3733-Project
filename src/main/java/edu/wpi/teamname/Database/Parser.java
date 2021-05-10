@@ -26,7 +26,9 @@ public class Parser {
                 _node.getString("longName"),
                 _node.getString("shortName")
         );
-    };
+    }
+
+    ;
 
     public static Node parseNode2(JSONObject _node) {
         return new Node(
@@ -40,7 +42,9 @@ public class Parser {
                 _node.getString("s")
 
         );
-    };
+    }
+
+    ;
 
     public static String parseSpace(JSONObject _space) {
         _space = _space.getJSONObject("fields");
@@ -53,7 +57,9 @@ public class Parser {
             spaces.add(parseSpace((JSONObject) s));
         });
         return spaces;
-    };
+    }
+
+    ;
 
     public static ArrayList<Node> parseNodes(JSONArray _nodes) {
         ArrayList<Node> nodes = new ArrayList<Node>();
@@ -61,7 +67,9 @@ public class Parser {
             nodes.add(parseNode((JSONObject) n));
         });
         return nodes;
-    };
+    }
+
+    ;
 
     public static ArrayList<Node> parseNodes2(JSONArray _nodes) {
         ArrayList<Node> nodes = new ArrayList<Node>();
@@ -69,7 +77,9 @@ public class Parser {
             nodes.add(parseNode2((JSONObject) n));
         });
         return nodes;
-    };
+    }
+
+    ;
 
     public static Edge parseEdge(JSONObject _edge) {
         _edge = _edge.getJSONObject("fields");
@@ -78,18 +88,22 @@ public class Parser {
                 _edge.getString("startNode"),
                 _edge.getString("endNode")
         );
-    };
+    }
 
-    public static Edge parseEdge2(JSONObject _edge) throws Exception{
-//        if(_edge.isNull())
-        if(_edge.isNull("i")){
-            throw new Exception(" null");}
+    ;
+
+    public static Edge parseEdge2(JSONObject _edge) throws Exception {
+        if (_edge.isNull("i")) {
+            throw new Exception("nullthing happens");
+        }
         return new Edge(
                 _edge.getString("i"),
                 _edge.getString("s"),
                 _edge.getString("e")
         );
-    };
+    }
+
+    ;
 
     public static ArrayList<Edge> parseEdges(JSONArray _edges) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
@@ -97,14 +111,26 @@ public class Parser {
             edges.add(parseEdge((JSONObject) e));
         });
         return edges;
-    };
+    }
+
+    ;
+
     public static ArrayList<Edge> parseEdges2(JSONArray _edges) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         _edges.forEach(e -> {
-            edges.add(parseEdge2((JSONObject) e));
+            Edge edge = null;
+            try {
+                edge = parseEdge2((JSONObject) e);
+            } catch (Exception exception) {
+                System.out.println(exception);;
+            }
+            edges.add(edge);
+
         });
         return edges;
-    };
+    }
+
+    ;
 
     public static ArrayList<Node> parseNodes(JSONObject _data) {
         HashMap<String, ArrayList<Node>> edgeMap = new HashMap<String, ArrayList<Node>>();
@@ -123,26 +149,34 @@ public class Parser {
         });
 
         return nodes;
-    };
+    }
+
+    ;
 
     public static ArrayList<Node> parseNodes3(JSONObject _data) {
         ArrayList<Node> nodes = parseNodes2(_data.getJSONArray("nodes"));
         return nodes;
-    };
+    }
+
+    ;
 
     public static ArrayList<Edge> parseEdges3(JSONObject _data) {
         ArrayList<Edge> edges = parseEdges2(_data.getJSONArray("edges"));
         return edges;
-    };
+    }
+
+    ;
 
     public static UserRegistration parseUserRegistration(JSONObject _registration) {
         JSONObject registration = _registration.getJSONObject("fields");
         ArrayList<String> reasonList = new ArrayList<String>();
         try {
             String reasons = registration.getString("reasons");
-            reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
+            reasons = reasons.replace("\\", "").substring(1, reasons.length() - 1);
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new UserRegistration(
                 _registration.getInt("pk"),
                 registration.getString("name"),
@@ -155,7 +189,9 @@ public class Parser {
                 registration.getInt("rating"),
                 registration.getString("details")
         );
-    };
+    }
+
+    ;
 
     public static ArrayList<UserRegistration> parseUserRegistrations(JSONArray _registrations) {
         ArrayList<UserRegistration> registrations = new ArrayList<UserRegistration>();
@@ -172,9 +208,11 @@ public class Parser {
         try {
             String requested = giftDeliveryStorage.getString("requestedItems");
             requested = requested.replace("\\", "");
-            requested = requested.substring(1, requested.length()-1);
+            requested = requested.substring(1, requested.length() - 1);
             requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new MasterServiceRequestStorage(
                 _giftDeliveryStorage.getInt("pk"),
                 giftDeliveryStorage.getString("requestType"),
@@ -186,7 +224,9 @@ public class Parser {
                 giftDeliveryStorage.getString("assignedTo"),
                 giftDeliveryStorage.getBoolean("completed")
         );
-    };
+    }
+
+    ;
 
     public static ArrayList<MasterServiceRequestStorage> parseGiftDeliveryStorages(JSONArray _giftDeliveryStorages) {
         ArrayList<MasterServiceRequestStorage> giftDeliveryStorages = new ArrayList<MasterServiceRequestStorage>();
@@ -235,7 +275,7 @@ public class Parser {
 
     public static Event parseEvent(JSONObject _event) {
         //System.out.println( _snapShot.getString("author"));
-       // System.out.println( _event.("node"));
+        // System.out.println( _event.("node"));
 //        System.out.println("contains node: "+ _event.has("node"));
 //        System.out.println("contains edge: "+_event.has("edge") );
 
@@ -248,20 +288,28 @@ public class Parser {
         }
         JSONObject node = new JSONObject();
         JSONObject edge = new JSONObject();
-        if(!(_event.get("node").equals(null))){
-        node = (JSONObject)_event.get("node");}
-        if(!(_event.get("edge").equals(null))){
-        edge = (JSONObject)_event.get("edge");}
+        if (!(_event.get("node").equals(null))) {
+            node = (JSONObject) _event.get("node");
+        }
+        if (!(_event.get("edge").equals(null))) {
+            edge = (JSONObject) _event.get("edge");
+        }
+        Edge newEdge = null;
+        try {
+            newEdge = parseEdge2(edge);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return new Event(
                 _event.getString("id"),
                 _event.getString("snapshot"),
                 _event.getString("author"),
                 _event.getString("date"),
                 _event.getString("event"),
-              //  new Node("aa", 2,3),
-                 parseNode2(node),
-            //    new Edge("aa", "a","a")
-               parseEdge2(edge)
+                //  new Node("aa", 2,3),
+                parseNode2(node),
+                //    new Edge("aa", "a","a")
+                newEdge
         );
     }
 
