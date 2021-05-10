@@ -53,7 +53,7 @@
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
                   <ImageView fx:id="imageBox" fitHeight="526.0" fitWidth="728.0" pickOnBounds="true" preserveRatio="true" />
-                  <JFXTextArea fx:id="directionSpace" focusColor="#ababab" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="500.0" unFocusColor="#c3c3c3">
+                  <JFXTextArea fx:id="directionSpace" editable="false" focusColor="#ababab" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="500.0" unFocusColor="#c3c3c3">
                      <font>
                         <Font size="14.0" />
                      </font>

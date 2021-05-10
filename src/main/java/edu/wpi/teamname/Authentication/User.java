@@ -22,6 +22,18 @@ public class User {
         this.employee = employee;
     }
 
+    public User(String idToken, String refreshToken, String email, String name, String localId, String phone, boolean admin, boolean employee, String password) {
+        this.idToken = idToken;
+        this.refreshToken = refreshToken;
+        this.email = email;
+        this.name = name;
+        this.localId = localId;
+        this.phone = phone;
+        this.admin = admin;
+        this.employee = employee;
+        this.password = password;
+    }
+
     public User(String email, String name, String phone, String password) {
         this.email = email;
         this.name = name;
