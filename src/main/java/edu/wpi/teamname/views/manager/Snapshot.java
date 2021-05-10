@@ -82,4 +82,27 @@ public class Snapshot {
         return Objects.hash(Id);
     }
 
+    public void doEvent(Event event){
+        ArrayList<Event> events =  LocalStorage.getInstance().getEvents();
+        ArrayList<Event> correctEvents = new ArrayList<Event>();
+        for (Event e: events){
+            if (e.getSnapshot().equals(Id)){
+
+            }
+
+        }
+        if (event.getEvent().equals("delete_node")){
+            nodes.remove(event.node);
+        }
+        if (event.getEvent().equals("delete_edge")){
+            edges.remove(event.edge);
+        }
+        if (event.getEvent().equals("add_node")){
+            nodes.add(event.node);
+        }
+        if (event.getEvent().equals("add_edge")){
+            edges.add(event.edge);
+        }
+    }
+
 }

@@ -157,7 +157,15 @@ public class RevisionHistory {
         directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
         directionGuiWrapper.setOnMouseClicked(a -> {
-
+            cancelButton.setVisible(true);
+            restoreButton.setVisible(true);
+            for (Snapshot s : snapshots) {
+                if (s.getId().equals(event.getSnapshot())){
+                    s.doEvent(event);
+                }
+            }
+            defaultPage.clearMap();
+            defaultPage.displayNodesAndEdgesPreveiw(nodes, edges);
         });
 
         return directionGuiWrapper;
