@@ -58,7 +58,7 @@ public class LocalStorage {
     }
 
     public ArrayList<Node> getNodes() {
-        while (this.reservedParkingSpaces == null) {
+        while (this.nodes == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 50);
             } catch (InterruptedException e) {
@@ -112,7 +112,7 @@ public class LocalStorage {
     }
 
     public ArrayList<Edge> getEdges() {
-        while (this.reservedParkingSpaces == null) {
+        while (this.edges == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {
@@ -138,14 +138,21 @@ public class LocalStorage {
             return null;
         }
 
-        while (this.reservedParkingSpaces == null) {
+        while (this.registrations == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        return (ArrayList<UserRegistration>) this.registrations.clone();
+
+        ArrayList<UserRegistration> ret = (ArrayList<UserRegistration>) this.registrations.clone();
+        ret.sort(new Comparator<UserRegistration>() {
+            public int compare(UserRegistration r1, UserRegistration r2) {
+                return (int) (r2.getSubmittedAt() - r1.getSubmittedAt());
+            }
+        });
+        return ret;
     }
 
     public void linkEdges() {
@@ -206,7 +213,7 @@ public class LocalStorage {
             return null;
         }
 
-        while (this.reservedParkingSpaces == null) {
+        while (this.users == null) {
             try {
                 TimeUnit.MILLISECONDS.sleep((long) 200);
             } catch (InterruptedException e) {

@@ -1,12 +1,18 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.input.*;
 import javafx.scene.input.*;
+import javafx.application.Platform;
 import javafx.scene.shape.*;
+import javafx.animation.Transition;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
+import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -21,22 +27,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MapDisplay implements LevelChangeListener {
+public class MapDisplay implements LevelChangeListener, DataListener {
     @FXML
     public Navigation navigation;
     double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
@@ -381,6 +393,7 @@ public class MapDisplay implements LevelChangeListener {
      * Initialize the map editor/display
      */
     public void initMapEditor() {
+        LocalStorage.getInstance().addListener(this);
         LevelManager.getInstance().addListener(this);
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
@@ -1219,8 +1232,8 @@ public class MapDisplay implements LevelChangeListener {
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
         if (autoZoomAndPan) {
-            final double[] minX = {5000}; // for auto zoom&pan
-            final double[] minY = {3400}; // for auto zoom&pan
+            final double[] minX = {fileWidth}; // for auto zoom&pan
+            final double[] minY = {fileHeight}; // for auto zoom&pan
             final double[] maxX = {0}; // for auto zoom&pan
             final double[] maxY = {0}; // for auto zoom&pan
             for (ArrayList<Node> listOfNode : _listOfNodes) {
@@ -1243,16 +1256,13 @@ public class MapDisplay implements LevelChangeListener {
             double diffY = maxY[0] - minY[0];
             double midX = (maxX[0] + minX[0]) / 2;
             double midY = (maxY[0] + minY[0]) / 2;
-            double ref = 0;
-            if (diffX * 3400 / 5000 > diffY) {
-                ref = diffX * 3400 / 5000;
-            } else {
-                ref = diffY;
-            }
+            double windowWidth = 1427;
+            double navBarWidth = 370;
+            double ref = Math.max(diffX * fileHeight/fileWidth, diffY);
             double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * 5000 / 3400 * (1 + spacing) * 1427 / (1427 - 370);
-            scaledHeight = ref * (1 + spacing) * 1427 / (1427 - 370);
-            scaledX = midX - (ref * 5000 / 3400 * (1 + spacing) * (1427 + 370) / (1427 - 370)) / 2;
+            scaledWidth = ref * fileWidth/fileHeight * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
+            scaledHeight = ref * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
+            scaledX = midX - (ref * fileWidth/fileHeight * (1 + spacing) * (windowWidth + navBarWidth)/(windowWidth-navBarWidth)) / 2;
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
@@ -1337,15 +1347,18 @@ public class MapDisplay implements LevelChangeListener {
         if (navigation != null) {
             navigation.cancelNavigation();
         }
-        SceneManager.getInstance().getDefaultPage().setHelpButton(true);
+        SceneManager.getInstance().getDefaultPage().setHelpButton(false);
         popPop.setPrefWidth(657);
         clearMap(); // Clear map
         popPop.setPrefWidth(350.0); // Set preferable width to 350
         ButtonManager.selectButton(reqButton, "nav-btn-selected", ButtonManager.buttons);
-        if (LoadFXML.getCurrentWindow().equals("reqBar")) {
+        if (LoadFXML.getCurrentWindow().equals("reqBar") || LoadFXML.getCurrentWindow().equals("giftDeliveryBar") || LoadFXML.getCurrentWindow().equals("computerServicesBar") || LoadFXML.getCurrentWindow().equals("foodDeliveryBar") || LoadFXML.getCurrentWindow().equals("laundryBar") || LoadFXML.getCurrentWindow().equals("patientTransportationBar") || LoadFXML.getCurrentWindow().equals("sanitationServicesBar") || LoadFXML.getCurrentWindow().equals("facilitiesMaintenanceForm") || LoadFXML.getCurrentWindow().equals("medicineDeliveryBar")) {
             ButtonManager.remove_class();
+            SceneManager.getInstance().getDefaultPage().closeWindows();
+            LoadFXML.setCurrentWindow("");
+            return;
         }
-        LoadFXML.getInstance().loadWindow("Requests", "reqBar", popPop); // Load requests window
+        LoadFXML.getInstance().loadWindow("ServiceRequestsPrompt", "ServiceRequestsPrompt", popPop); // Load requests window
     }
 
 
@@ -1620,8 +1633,7 @@ public class MapDisplay implements LevelChangeListener {
         resetFloors();
     }
 
-    @Override
-    public void levelChanged(int _level) {
+    private void updateAndDisplay() {
         refreshData(); // Update localNodes with new floor
         switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
@@ -1688,6 +1700,31 @@ public class MapDisplay implements LevelChangeListener {
 //            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
 
 //            }
+        });
+    }
+
+    @Override
+    public void levelChanged(int _level) {
+        updateAndDisplay();
+    }
+
+    @Override
+    public void nodesSet(ArrayList<Node> _nodes) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateAndDisplay();
+            }
+        });
+    }
+
+    @Override
+    public void edgesSet(ArrayList<Edge> _edges) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateAndDisplay();
+            }
         });
     }
 }

@@ -32,6 +32,7 @@ public class TableCellFactory {
         status.setStyle("-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;");
         VBox.setMargin(status, new Insets(0,0,0,15));
         statusWrapper.getChildren().add(status);
+//        statusWrapper.setStyle("-fx-border-color: black;");
 
         String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px;";
         if (_req.isCompleted()) {
@@ -88,8 +89,13 @@ public class TableCellFactory {
 
         HBox starWrapper = new HBox();
         starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 0 4;");
+        starWrapper.setPrefWidth(160);
+        starWrapper.setAlignment(Pos.TOP_CENTER);
 
         if (_reg.getRating() == -1) {
+            for (int i = 0; i < 5; i++) {
+                starWrapper.getChildren().add(generate_star(true));
+            }
             return starWrapper;
         }
 
@@ -218,11 +224,11 @@ public class TableCellFactory {
             switch (((MenuItem) e.getTarget()).getText()) {
                 case "Mark as Cleared":
                     _reg.setCleared(true);
-                    //Submit.getInstance().editRegistration();
+                    Submit.getInstance().editUserRegistration(_reg);
                     break;
                 case "Reset":
                     _reg.setCleared(false);
-                    //Submit.getInstance().editRegistration();
+                    Submit.getInstance().editUserRegistration(_reg);
                     break;
             }
         });

@@ -117,10 +117,10 @@
             </ScrollPane>
             <VBox fx:id="algoBox" maxHeight="1.0">
                <VBox.margin>
-                  <Insets left="25.0" />
+                  <Insets left="25.0" top="25.0" />
                </VBox.margin>
                <children>
-                  <JFXComboBox fx:id="algoCombo" focusColor="WHITE" onAction="#changeSearch" prefWidth="300.0" promptText="Search Algorithm" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #c3c3c3; -fx-border-radius: 6;" unFocusColor="WHITE">
+                  <JFXComboBox fx:id="algoCombo" focusColor="WHITE" onAction="#changeSearch" prefWidth="300.0" promptText="Search Algorithm" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #dddddd; -fx-border-radius: 6;" unFocusColor="WHITE">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
@@ -132,7 +132,7 @@
                   <Font size="24.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="10.0" left="25.0" top="15.0" />
+                  <Insets bottom="10.0" left="25.0" top="5.0" />
                </VBox.margin>
                <graphic>
                   <MaterialDesignIconView fill="#c3c3c3" glyphName="HOSPITAL_BUILDING" size="35" translateX="-5.0" />

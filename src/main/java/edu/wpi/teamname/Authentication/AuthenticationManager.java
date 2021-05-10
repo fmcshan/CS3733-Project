@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Authentication;
 
-import com.google.api.client.json.Json;
+import edu.wpi.teamname.Database.LocalFailover;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Requests;
 import edu.wpi.teamname.simplify.Response;
@@ -42,6 +43,27 @@ public class AuthenticationManager {
     }
 
     public void loginWithEmailAndPassword(String _email, String _password) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            try {
+                LocalStorage.getInstance().getUsers().forEach(u -> {
+                    if (u.getEmail().toLowerCase().equals(_email.toLowerCase())) {
+                        if (u.getPassword().equals(_password)) {
+                            AuthenticationManager.getInstance().setUser(u);
+
+                            for (AuthListener ull : listeners) {
+                                try {
+                                    ull.userLogin();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                });
+                return;
+            } catch (Exception ignored) {
+            }
+        }
         try {
             JSONObject data = new JSONObject();
             data.put("email", _email);
@@ -61,12 +83,16 @@ public class AuthenticationManager {
             boolean isAdmin;
             if (body.has("admin")) {
                 isAdmin = body.getBoolean("admin");
-            } else { isAdmin = false; }
+            } else {
+                isAdmin = false;
+            }
 
             boolean isEmployee;
             if (body.has("employee")) {
                 isEmployee = body.getBoolean("employee");
-            } else { isEmployee = false; }
+            } else {
+                isEmployee = false;
+            }
 
             user = new User(
                     payload.getString("idToken"),
@@ -82,7 +108,9 @@ public class AuthenticationManager {
             for (AuthListener ull : listeners) {
                 try {
                     ull.userLogin();
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             if (isAdmin || isEmployee) {

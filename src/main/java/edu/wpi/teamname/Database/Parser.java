@@ -60,9 +60,7 @@ public class Parser {
             spaces.add(parseSpace((JSONObject) s));
         });
         return spaces;
-    }
-
-    ;
+    };
 
     public static ArrayList<Node> parseNodes(JSONArray _nodes) {
         ArrayList<Node> nodes = new ArrayList<Node>();
@@ -183,15 +181,14 @@ public class Parser {
         ArrayList<String> reasonList = new ArrayList<String>();
         try {
             String reasons = registration.getString("reasons");
-            reasons = reasons.replace("\\", "").substring(1, reasons.length() - 1);
+            reasons = reasons.replace("\\", "").substring(1, reasons.length()-1);
             reasonList = new ArrayList<String>(Arrays.asList(reasons.split(",")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         return new UserRegistration(
-                _registration.getInt("pk"),
+                registration.getString("uuid"),
                 registration.getString("name"),
                 registration.getString("date"),
+                registration.getLong("submittedAt"),
                 reasonList,
                 registration.getString("phone"),
                 registration.getBoolean("ack"),
@@ -200,9 +197,7 @@ public class Parser {
                 registration.getInt("rating"),
                 registration.getString("details")
         );
-    }
-
-    ;
+    };
 
     public static ArrayList<UserRegistration> parseUserRegistrations(JSONArray _registrations) {
         ArrayList<UserRegistration> registrations = new ArrayList<UserRegistration>();
@@ -219,11 +214,9 @@ public class Parser {
         try {
             String requested = giftDeliveryStorage.getString("requestedItems");
             requested = requested.replace("\\", "");
-            requested = requested.substring(1, requested.length() - 1);
+            requested = requested.substring(1, requested.length()-1);
             requestedItems = new ArrayList<String>(Arrays.asList(requested.split(",")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {e.printStackTrace();}
         return new MasterServiceRequestStorage(
                 _giftDeliveryStorage.getInt("pk"),
                 giftDeliveryStorage.getString("requestType"),
@@ -235,9 +228,7 @@ public class Parser {
                 giftDeliveryStorage.getString("assignedTo"),
                 giftDeliveryStorage.getBoolean("completed")
         );
-    }
-
-    ;
+    };
 
     public static ArrayList<MasterServiceRequestStorage> parseGiftDeliveryStorages(JSONArray _giftDeliveryStorages) {
         ArrayList<MasterServiceRequestStorage> giftDeliveryStorages = new ArrayList<MasterServiceRequestStorage>();

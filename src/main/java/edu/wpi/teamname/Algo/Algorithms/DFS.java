@@ -7,6 +7,7 @@ import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * <h1>Depth-First Search Algorithm</h1>
@@ -14,10 +15,6 @@ import java.util.ArrayList;
  * @author Emmanuel Ola
  */
 public class DFS extends Algorithm {
-    private Node start;
-    private Node goal;
-    private ArrayList<Node> path;
-
 
     /**
      * Constructor for DFS that takes in a list of nodes, and the start and goal node
@@ -27,52 +24,25 @@ public class DFS extends Algorithm {
      */
     public DFS(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
-        this.resetNodes(nodes);
-        this.start = start;
-        this.goal = goal;
-        this.path = new ArrayList<>();
-        this.process(start);
+        this.process();
     }
 
     public DFS(){}
 
-    /**
-     * Resets the visited flag of all the nodes in the provided list of nodes
-     * @param nodes List of nodes containing the start and goal node
-     */
-    public void resetNodes(ArrayList<Node> nodes) {
-        for (Node node : nodes) {
-            node.visitedFlag = false;
-        }
+
+
+    public void process(){
+        processDFS(start);
     }
 
-    public void loadNodes(ArrayList<Node> nodes, Node start, Node goal){
-        this.nodes = nodes;
-        this.start = start;
-        this.goal = goal;
-    }
-
-    /**
-     * Returns a list of nodes
-     * @return
-     */
-    @Override
-    public ArrayList<Node> getPath(){
-        this.process(start);
-        ArrayList<Node> newPath = new ArrayList<Node>(path.subList(0, path.indexOf(goal)));
-        newPath.add(goal);
-        return newPath;
-    }
-
-
-    public void process(Node current){
+    public void processDFS(Node current){
         current.visitedFlag = true;
-        path.add(current);
         if (current.equals(goal))
             return;
         for (Node neighbor : current.getEdges()) {
             if (!neighbor.visitedFlag){
-                process(neighbor);
+                neighbor.setParent(current);
+                processDFS(neighbor);
             }
         }
     }
