@@ -1571,8 +1571,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
         if (autoZoomAndPan) {
-            final double[] minX = {5000}; // for auto zoom&pan
-            final double[] minY = {3400}; // for auto zoom&pan
+            final double[] minX = {fileWidth}; // for auto zoom&pan
+            final double[] minY = {fileHeight}; // for auto zoom&pan
             final double[] maxX = {0}; // for auto zoom&pan
             final double[] maxY = {0}; // for auto zoom&pan
             for (ArrayList<Node> listOfNode : _listOfNodes) {
@@ -1595,16 +1595,13 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             double diffY = maxY[0] - minY[0];
             double midX = (maxX[0] + minX[0]) / 2;
             double midY = (maxY[0] + minY[0]) / 2;
-            double ref = 0;
-            if (diffX * 3400/5000  > diffY) {
-                ref = diffX * 3400/5000;
-            } else {
-                ref = diffY;
-            }
+            double windowWidth = 1427;
+            double navBarWidth = 370;
+            double ref = Math.max(diffX * fileHeight/fileWidth, diffY);
             double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * 5000/3400 * (1 + spacing) * 1427/(1427 - 370);
-            scaledHeight = ref * (1 + spacing) * 1427/(1427 - 370);
-            scaledX = midX - (ref * 5000/3400 * (1 + spacing) * (1427 + 370)/(1427-370)) / 2;
+            scaledWidth = ref * fileWidth/fileHeight * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
+            scaledHeight = ref * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
+            scaledX = midX - (ref * fileWidth/fileHeight * (1 + spacing) * (windowWidth + navBarWidth)/(windowWidth-navBarWidth)) / 2;
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
