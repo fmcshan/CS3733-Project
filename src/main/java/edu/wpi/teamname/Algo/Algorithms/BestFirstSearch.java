@@ -27,27 +27,25 @@ public class BestFirstSearch extends Algorithm{
     public void process() {
         start.setCostSoFar(0);
         openNodes.add(start);
-        Node current = start;
+        Node current;
         double tentativeScore = 0;
 
         while (!openNodes.isEmpty()){
+            current = openNodes.poll();
             if (current.getNodeID().equals(goal.getNodeID())){
                 return;
             }
 
-            current = openNodes.poll();
-            Node temp = current.getEdges().get(0);
             for (Node node : current.getEdges()) {
-                tentativeScore = AStar.distance(current, goal);
-                if (AStar.distance(node, goal) < tentativeScore){
-                    node.setParent(current);
+                if(!node.visitedFlag && !openNodes.contains(node)){
+                    node.visited();
                     node.setHeuristic(calculateHeuristic(node));
                     node.updateAStarScore();
-                }
-                if (!openNodes.contains(node))
+                    node.setParent(current);
                     openNodes.add(node);
+                }
+
             }
-            //current.visited();
         }
     }
 
