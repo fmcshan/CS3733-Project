@@ -459,8 +459,8 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         for (Node node : listOfNodes) {
             nodeLongNames.add(node.getLongName());
         }
-        startNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
-        endNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
+        startNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
+        endNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
 
         setFromCombo(startNode);
         setToCombo(endNode);
