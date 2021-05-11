@@ -15,7 +15,7 @@ import java.util.UUID;
 public class ChatBot {
 
     private static final ChatBot instance = new ChatBot();
-    private final String chatId = UUID.randomUUID().toString().replace("-", "");
+    private final String chatId = UUID.randomUUID().toString().replace("-", "0x0");
 
     private ChatBot() {
     }

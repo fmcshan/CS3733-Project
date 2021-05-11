@@ -143,6 +143,9 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         SceneManager.getInstance().getDefaultPage().getEndNode();
         AStar aStar = new AStar();
         searchAlgorithm = new SearchContext(aStar);
+
+        NavManager.getInstance().addChatBotCommandListener(this);
+        navigateChat();
     }
 
     public HBox generateNavElem(String _direction) {
@@ -438,23 +441,28 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         }
     }
 
+    public void navigateChat() {
+        String from = NavManager.getInstance().getStartNode();
+        String to = NavManager.getInstance().getEndNode();
+        if (from == null || to == null || from.equals("") || to.equals("")) {
+            return;
+        }
+        NavManager.getInstance().resetNodes();
+        navigate(from, to);
+    }
+
     @Override
     public void navigate(String _from, String _to) {
-        String startNode = "";
-        String endNode = "";
+        Node startNode;
+        Node endNode;
         ArrayList<String> nodeLongNames = new ArrayList<>();
         for (Node node : listOfNodes) {
             nodeLongNames.add(node.getLongName());
         }
-        // TODO Oi, Demi & Bryan, put your code in here
-        startNode = FuzzySearch.extractOne(_from, nodeLongNames).getString();
-        endNode = FuzzySearch.extractOne(_to, nodeLongNames).getString();
+        startNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
+        endNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
 
-        AutoCompleteComboBoxListener listenerFrom = new AutoCompleteComboBoxListener(fromCombo);
-        listenerFrom.setValue(startNode);
-
-        AutoCompleteComboBoxListener listenerTo = new AutoCompleteComboBoxListener(toCombo);
-        listenerTo.setValue(endNode);
-
+        setFromCombo(startNode);
+        setToCombo(endNode);
     }
 }
