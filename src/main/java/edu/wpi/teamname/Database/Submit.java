@@ -51,6 +51,12 @@ public class Submit {
     }
 
     public void editUserRegistration(UserRegistration _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+            registrations.add(_form);
+            LocalFailover.getInstance().setCheckins(registrations);
+            return;
+        }
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         try {
