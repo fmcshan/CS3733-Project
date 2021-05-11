@@ -364,8 +364,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         HBox sentBox = new HBox(sentMessage);
         sentBox.setStyle("-fx-background-color: #317fb8; " + "-fx-background-radius: 20 20 0 20;" +
-                "-fx-min-width: 50; -fx-padding: 10 10 10 10");
-        sentBox.setAlignment(Pos.BOTTOM_LEFT);
+                "-fx-min-width: 40; -fx-padding: 10 10 10 10");
+        sentBox.setAlignment(Pos.TOP_CENTER);
 
         AnchorPane sentPane = new AnchorPane(sentBox);
         AnchorPane.setRightAnchor(sentBox, 0.0);
