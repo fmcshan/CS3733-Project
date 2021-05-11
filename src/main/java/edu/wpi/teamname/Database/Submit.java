@@ -94,6 +94,13 @@ public class Submit {
     }
 
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            _form.setUUID();
+            requests.add(_form);
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         StringBuilder items = new StringBuilder();
         items.append("[");
         if (_form.getRequestedItems().size() > 0) {
@@ -121,6 +128,19 @@ public class Submit {
     }
 
     public void updateGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            for (int i = 0; i < requests.size(); i++) {
+                MasterServiceRequestStorage req = requests.get(i);
+                if (req.getUUID().equals(_form.getUUID())) {
+                    req.setAssignTo(_form.getAssignTo());
+                    req.setCompleted(_form.isCompleted());
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         StringBuilder items = new StringBuilder();
         items.append("[");
         _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
@@ -146,6 +166,18 @@ public class Submit {
     }
 
     public void deleteGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            for (int i = 0; i < requests.size(); i++) {
+                MasterServiceRequestStorage req = requests.get(i);
+                if (req.getUUID().equals(_form.getUUID())) {
+                    requests.remove(req);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
         data.put("id", String.valueOf(_form.getId()));

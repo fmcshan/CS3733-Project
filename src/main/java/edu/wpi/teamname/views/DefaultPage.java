@@ -6,6 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.LocalFailover;
 import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelManager;
@@ -90,7 +91,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void initialize() {
         ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
-        receiveMessage("Hi, how can I help you?");
+
+        if (!LocalFailover.getInstance().hasFailedOver()) {
+            receiveMessage("Hi, how can I help you?");
+        } else {
+            receiveMessage("It looks like you failed over... Unfortunately, the chatbot doesn't work with the local failover/database.");
+        }
         SceneManager.getInstance().setDefaultPage(this);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
@@ -314,6 +320,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHistory() {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            receiveMessage("Unfortunately, revision history doesn't work with the local failover/database.");
+            return;
+        }
         popPop.setPrefWidth(350);
         helpButton.setVisible(false);
         hidePopups();

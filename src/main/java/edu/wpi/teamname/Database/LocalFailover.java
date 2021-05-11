@@ -147,11 +147,15 @@ public class LocalFailover implements DataListener {
         ArrayList<MasterServiceRequestStorage> requests = new ArrayList<MasterServiceRequestStorage>();
         requestArray.forEach(ju -> {
             JSONObject r = (JSONObject) ju;
+            ArrayList<String> requested = new ArrayList<String>(Arrays.asList(r.getString("requestedItems").split(",")));
+            for (int i = 0; i < requested.size(); i++) {
+                requested.set(i, requested.get(i).replace("'", ""));
+            }
             requests.add(new MasterServiceRequestStorage(
-                    r.getInt("id"),
+                    r.getString("uuid"),
                     r.getString("type"),
                     r.getString("location"),
-                    new ArrayList<String>(Arrays.asList(r.getString("requestedItems").split(","))),
+                    requested,
                     r.getString("description"),
                     r.getString("requestedBy"),
                     r.getString("contact"),
@@ -306,7 +310,7 @@ public class LocalFailover implements DataListener {
         }
     }
 
-    // Save requests to JSON
+    // Save checkins to JSON
     public void setCheckins(ArrayList<UserRegistration> _checkins) {
         JSONArray newCheckins = new JSONArray();
         _checkins.forEach(c -> {
@@ -333,4 +337,33 @@ public class LocalFailover implements DataListener {
         Initiator.getInstance().triggerRegistrationRefresh();
     }
 
+    // Save requests to JSON
+    public void setRequests(ArrayList<MasterServiceRequestStorage> _requests) {
+        JSONArray newRequests = new JSONArray();
+        _requests.forEach(r -> {
+            String desc;
+            if (r.getDescription() == null || r.getDescription().equals("")) {
+                desc = "";
+            } else {
+                desc = r.getDescription();
+            }
+            JSONObject newRequest = new JSONObject();
+            newRequest.put("uuid", r.getUUID());
+            newRequest.put("type", r.getRequestType());
+            newRequest.put("location", r.getLocation());
+            newRequest.put("requestedItems", arrayListToString(r.getRequestedItems()));
+            newRequest.put("description", desc);
+            newRequest.put("requestedBy", r.getRequestedBy());
+            newRequest.put("contact", r.getContact());
+            newRequest.put("assignTo", r.getAssignTo());
+            newRequest.put("completed", r.isCompleted());
+
+            newRequests.put(newRequest);
+        });
+
+        this.db.put("requests", newRequests);
+        saveDb();
+        refreshData();
+        Initiator.getInstance().triggerGiftDeliveryUpdated();
+    }
 }

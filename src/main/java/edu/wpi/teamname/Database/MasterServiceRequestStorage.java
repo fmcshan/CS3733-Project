@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Database;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MasterServiceRequestStorage {
     private String requestType;
@@ -12,6 +13,7 @@ public class MasterServiceRequestStorage {
     private String assignTo;
     private boolean completed;
     private int id = 0;
+    String uuid;
 
 
     public MasterServiceRequestStorage(int id, String requestType, String location, ArrayList<String> requestedItems, String requestedBy, String contact, String assignTo, boolean completed) {
@@ -48,6 +50,18 @@ public class MasterServiceRequestStorage {
     }
 
     public MasterServiceRequestStorage(String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
+        this.requestType = requestType;
+        this.location = location;
+        this.requestedItems = requestedItems;
+        this.description = description;
+        this.requestedBy = requestedBy;
+        this.contact = contact;
+        this.assignTo = assignTo;
+        this.completed = completed;
+    }
+
+    public MasterServiceRequestStorage(String uuid, String requestType, String location, ArrayList<String> requestedItems, String description, String requestedBy, String contact, String assignTo, boolean completed) {
+        this.uuid = uuid;
         this.requestType = requestType;
         this.location = location;
         this.requestedItems = requestedItems;
@@ -102,5 +116,10 @@ public class MasterServiceRequestStorage {
     public void setAssignTo(String assignTo) {
         this.assignTo = assignTo;
     }
+
+    public void setUUID() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+    public String getUUID() { return this.uuid; }
 }
 
