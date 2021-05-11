@@ -348,8 +348,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatButton.setGraphic(messageIcon);
     }
 
+    // blue message in chat bot
     @FXML
-    void sendMessage() { //317fb8
+    void sendMessage() {
         String message = enteredMessage.getText();
         if (message.isEmpty()) {
             return;
@@ -392,6 +393,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         ChatBot.getInstance().sendMessage(message);
     }
 
+    // grey message in chat bot
     public void receiveMessage(String _msg) {
         Platform.runLater(new Runnable() {
             @Override
