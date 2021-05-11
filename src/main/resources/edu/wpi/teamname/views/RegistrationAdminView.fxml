@@ -33,9 +33,9 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
+            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8px;">
                <children>
-                  <Label prefHeight="35.0" prefWidth="200.0" text="Name">
+                  <Label prefHeight="35.0" prefWidth="200.0" text="Name" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -46,7 +46,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label prefHeight="35.0" prefWidth="121.0" text="Date of Birth">
+                  <Label prefHeight="35.0" prefWidth="121.0" text="Date of Birth" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -57,7 +57,7 @@
                         <Insets left="15.0" />
                      </padding>
                   </Label>
-                  <Label prefHeight="20.0" prefWidth="192.0" text="Reason(s) For Visit">
+                  <Label prefHeight="20.0" prefWidth="192.0" text="Reason(s) For Visit" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -65,7 +65,7 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <Label prefWidth="115.0" text="Phone Number">
+                  <Label prefWidth="115.0" text="Phone Number" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -76,7 +76,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="668.0" layoutY="19.0" prefHeight="20.0" prefWidth="60.0" text="Clear">
+                  <Label layoutX="668.0" layoutY="19.0" prefHeight="20.0" prefWidth="60.0" text="Clear" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -87,7 +87,7 @@
                         <Insets left="11.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="900.0" layoutY="19.0" prefHeight="20.0" prefWidth="134.0" text="Rating">
+                  <Label layoutX="900.0" layoutY="19.0" prefHeight="20.0" prefWidth="134.0" text="Rating" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -95,7 +95,7 @@
                         <Insets left="45.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="975.0" layoutY="19.0" prefHeight="20.0" prefWidth="320.0" text="Comments">
+                  <Label layoutX="975.0" layoutY="19.0" prefHeight="20.0" prefWidth="320.0" text="Comments" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -106,7 +106,7 @@
                         <Insets left="7.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="1113.0" layoutY="19.0" prefHeight="20.0" prefWidth="117.0" text="Actions">
+                  <Label layoutX="1113.0" layoutY="19.0" prefHeight="20.0" prefWidth="117.0" text="Actions" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
