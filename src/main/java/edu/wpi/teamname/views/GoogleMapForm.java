@@ -260,6 +260,8 @@ public class GoogleMapForm {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ESCALATOR);
         } else if (directionText.contains("destination")) {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MAP_MARKER);
+        } else if (directionText.contains("ferry") && directionText.contains("take")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.FERRY);
         } else {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD);
         }
