@@ -595,6 +595,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 localNodes.add(n); // Add to local nodes
             }
             nodesMap.put(n.getNodeID(), n);
+                    if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
+                        portalNodeMap.put(n.getNodeID(), n);
+                    }
         });
 
         localNodesMap.clear(); // CLear the node map
@@ -618,7 +621,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     if (edgesBetweenFloors.containsKey(startNode)) {
                         edgesBetweenFloors.get(startNode).add(e);
                         doubleEdges.put(e.getEdgeID(), e);
-                        portalNodeMap.put(startNode.getNodeID(), startNode);
+//                        portalNodeMap.put(startNode.getNodeID(), startNode);
                     } else {
                         ArrayList<Edge> edgeArray = new ArrayList<>();
                         edgeArray.add(e);
