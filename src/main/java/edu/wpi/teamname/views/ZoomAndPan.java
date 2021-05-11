@@ -99,10 +99,12 @@ public class ZoomAndPan {
 
     private void render() {
         if (page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")){
+//            System.out.println("called");
             page.updateAndDisplay();
         }
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar") || !page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")) {
             page.renderMap();
+            System.out.println("rascal");
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             page.onTopOfTopElements.getChildren().clear();

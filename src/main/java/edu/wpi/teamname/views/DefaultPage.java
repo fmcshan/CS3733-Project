@@ -292,6 +292,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private void openHistory() {
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
+
     }
 
     public void initGoogleForm() {

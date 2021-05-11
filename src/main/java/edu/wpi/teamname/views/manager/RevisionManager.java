@@ -74,7 +74,7 @@ public class RevisionManager {
             queueStackReverse.push(aList);
 //            if(aList.isEmpty()){return;}
             if (aList.size() == 2) {
-                System.out.println("undonee");
+             //   System.out.println("undonee");
                 if (aList.get(0).isNode()) {
                     lastActionSnapshot.clear();
                     actionTracker.add(aList.get(0).checkChangesUndo() + "-undo");

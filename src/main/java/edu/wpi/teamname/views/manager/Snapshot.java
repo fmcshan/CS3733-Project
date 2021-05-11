@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class Snapshot {
-    ArrayList<Node> nodes;
+   private ArrayList<Node> nodes;
     ArrayList<Edge> edges;
     String Id;
     String author;
@@ -23,6 +23,14 @@ public class Snapshot {
 ////           Id = UUID.randomUUID().toString();
 ////    }
     public Snapshot(String Id, String author, String date, ArrayList<Node> nodes, ArrayList<Edge> edges) {
+        this.Id = Id;
+        this.author = author;
+        this.date = date;
+        this.nodes = nodes;
+        this.edges = edges;
+
+    }
+    public Snapshot(ArrayList<Node> nodes, ArrayList<Edge> edges) {
         this.Id = Id;
         this.author = author;
         this.date = date;
@@ -82,7 +90,11 @@ public class Snapshot {
 
 
     public Snapshot doEvent(Event event) {
-        Snapshot returnSnap = new Snapshot(this.Id, this.author, this.date, this.nodes, this.edges);
+
+        ArrayList<Node> newSnapNodes = (ArrayList<Node>) this.nodes.clone();
+        ArrayList<Edge> newSnapEdges =( ArrayList<Edge> ) this.edges.clone();
+
+        Snapshot returnSnap = new Snapshot(Id,author,date,newSnapNodes,newSnapEdges);
         ArrayList<Event> events = LocalStorage.getInstance().getEvents();
         ArrayList<Event> correctEvents = new ArrayList<Event>();
         ArrayList<Event> finalEvents = new ArrayList<Event>();
@@ -94,11 +106,11 @@ public class Snapshot {
         Boolean flag = true;
         Collections.reverse(correctEvents);
         for (Event e : correctEvents) {
-            System.out.println("Event " + e.event);
+          //  System.out.println("Event " + e.event);
             if (e.id.equals(event.id)) {
                 finalEvents.add(e);
                 flag = false;
-               System.out.println("Made it");
+              // System.out.println("Made it");
             }
             if (flag) {
                 finalEvents.add(e);
@@ -106,23 +118,36 @@ public class Snapshot {
         }
         for (Event e : finalEvents) {
             if (e.getEvent().equals("remove_node")) {
-                System.out.println("TEST remove node: " + e.getNode());
+             //   System.out.println("TEST remove node: " + e.getNode());
                 returnSnap.nodes.remove(e.node);
             }
             if (e.getEvent().equals("remove_edge")) {
-                System.out.println("TEST remove edge: " + e.getEdge());
+            //    System.out.println("TEST remove edge: " + e.getEdge());
                 returnSnap.edges.remove(e.edge);
             }
             if (e.getEvent().equals("add_node")) {
-                System.out.println("TEST add node: " + e.getNode().getLongName());
+            //    System.out.println("TEST add node: " + e.getNode().getLongName());
                 returnSnap.nodes.add(e.node);
             }
             if (e.getEvent().equals("add_edge")) {
-                System.out.println("TEST add edge: " + e.getEdge().getEdgeID());
+            //    System.out.println("TEST add edge: " + e.getEdge().getEdgeID());
                 returnSnap.edges.add(e.edge);
+            }
+            if(e.getEvent().equals("edit_node")){
+                returnSnap.nodes.remove(e.node); // the trick is that the nodes have the same id
+                returnSnap.nodes.add(e.node);
+
             }
         }
         return returnSnap;
     }
 
+//    Class NodeEdge{
+//        ArrayList<Node> nodes = new ArrayList<>();
+//        ArrayList<Edge> edges = new ArrayList<>();
+//        NodeEdge(Node nodes,Edge edges){
+//
+//        }
+
+   // }
 }

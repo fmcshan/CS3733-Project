@@ -6,6 +6,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.views.manager.Event;
 import edu.wpi.teamname.views.manager.SceneManager;
 import edu.wpi.teamname.views.manager.Snapshot;
@@ -46,10 +47,12 @@ public class RevisionHistory {
     @FXML
     private MaterialDesignIconView exitOut;
 
-    ArrayList<Snapshot> snapshots = LocalStorage.getInstance().getSnapshots();
+    ArrayList<Snapshot> snapshots; //= LocalStorage.getInstance().getSnapshots();
 
     HashMap<HBox, Event> eventMap = new HashMap<>();
     HashMap<HBox, Snapshot> snapMap = new HashMap<>();
+    ArrayList<Node> currentNodes;
+    ArrayList<Edge> currentEdges;
 
     public RevisionHistory() {
 
@@ -58,7 +61,9 @@ public class RevisionHistory {
     public void initialize() {
         restoreButton.setVisible(false);
         cancelButton.setVisible(false);
-        addEventsAndSnapshots();
+//        System.out.println("initialized");
+        snapshots = LocalStorage.getInstance().getSnapshots();
+       addEventsAndSnapshots();
     }
 
 
@@ -84,6 +89,13 @@ public class RevisionHistory {
     public void restore() {
         cancelButton.setVisible(false);
         restoreButton.setVisible(false);
+        PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(currentNodes);
+        PathFindingDatabaseManager.getInstance().insertEdgeListIntoDatabase(currentEdges);
+        defaultPage.refreshData();
+        closeWindows();
+
+
+
     }
 
     public void addEventsAndSnapshots() {
@@ -139,6 +151,9 @@ public class RevisionHistory {
         } else if (_event.equals("remove_edge")) {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE);
         }
+        else if(_event.equals("edit_node")){
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.TOOLTIP_EDIT);
+        }
 
         navigationIcon.setFill(Paint.valueOf("#ffffff"));
         navigationIcon.setGlyphSize(56);
@@ -162,7 +177,10 @@ public class RevisionHistory {
         if (_event.equals("add_edge")) {
             type = "Add Edge " + event.getEdge().getEdgeID();
         }
-        System.out.println(event.getEvent());
+        if (_event.equals("edit_node")) {
+            type = "Edit Node " + event.getNode().getLongName();
+        }
+       // System.out.println(event.getEvent());
         Text navigationLabel = new Text(type);
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
         navigationLabel.setWrappingWidth(200);
@@ -171,12 +189,12 @@ public class RevisionHistory {
         navigationLabel.prefHeight(60);
 
 
-        Text navigationLabel2 = new Text(event.getDate());
-        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-        navigationLabel2.setWrappingWidth(200);
-        navLabelWrapper.getChildren().add(navigationLabel2);
-        navigationLabel2.prefWidth(200);
-        navigationLabel2.prefHeight(60);
+//        Text navigationLabel2 = new Text(event.getDate());
+//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+//        navigationLabel2.setWrappingWidth(200);
+//        navLabelWrapper.getChildren().add(navigationLabel2);
+//        navigationLabel2.prefWidth(200);
+//        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
@@ -191,6 +209,8 @@ public class RevisionHistory {
                 }
             }
             defaultPage.clearMap();
+            currentEdges = newSnap.getEdges();
+            currentNodes = newSnap.getNodes();
             defaultPage.displayNodesAndEdgesPreveiw(newSnap.getNodes(), newSnap.getEdges());
         });
 
@@ -200,7 +220,7 @@ public class RevisionHistory {
     public HBox generateElemSnap(Snapshot _snap) {
         HBox directionGuiWrapper = new HBox();
         directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 0 0 0 0;");
-        snapMap.put(directionGuiWrapper, _snap);
+//        snapMap.put(directionGuiWrapper, _snap);
         DropShadow shadow = new DropShadow();
         shadow.setBlurType(GAUSSIAN);
         shadow.setSpread(0.33);
@@ -233,20 +253,25 @@ public class RevisionHistory {
         navigationLabel.prefWidth(200);
         navigationLabel.prefHeight(60);
 
-        Text navigationLabel2 = new Text(_snap.getDate());
-        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-        navigationLabel2.setWrappingWidth(200);
-        navLabelWrapper.getChildren().add(navigationLabel2);
-        navigationLabel2.prefWidth(200);
-        navigationLabel2.prefHeight(60);
+//        Text navigationLabel2 = new Text(_snap.getDate());
+//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+//        navigationLabel2.setWrappingWidth(200);
+//        navLabelWrapper.getChildren().add(navigationLabel2);
+//        navigationLabel2.prefWidth(200);
+//        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
+        //directionGuiWrapper.equals();
         directionGuiWrapper.setOnMouseClicked(a -> {
             cancelButton.setVisible(true);
             restoreButton.setVisible(true);
             defaultPage.clearMap();
+//            System.out.println(_snap.getId());
+//            System.out.println(_snap.getNodes().size());
+            currentNodes = _snap.getNodes();
+            currentEdges = _snap.getEdges();
             defaultPage.displayNodesAndEdgesPreveiw(_snap.getNodes(), _snap.getEdges());
         });
         return directionGuiWrapper;

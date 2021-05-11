@@ -269,7 +269,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             }
                         });
 
-                System.out.println(LoadFXML.getCurrentWindow());
+
 
                 if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                     return; // Don't process drags outside of the map editor.
@@ -290,7 +290,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     }
                     nodeBeingDragged = false;
                     List<Action> list = new LinkedList<>();
-                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID()), new Node(
+                    Node oldNode = localNodesMap.get(draggedNode.getNodeID());
+                    Node newNode = new Node(
                             draggedNode.getNodeID(),
                             (int) actualX(draggedCircle.getCenterX()),
                             (int) actualY(draggedCircle.getCenterY()),
@@ -298,19 +299,29 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             draggedNode.getBuilding(),
                             draggedNode.getNodeType(),
                             draggedNode.getLongName(),
-                            draggedNode.getShortName())));
+                            draggedNode.getShortName());
+                    list.add(new ManageEdit(oldNode,newNode));
+//                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID()), new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName())));
 
-                    System.out.println(localNodesMap.get(draggedNode.getNodeID()));
-                    list.add(new ManageAdd(new Node(
-                            draggedNode.getNodeID(),
-                            (int) actualX(draggedCircle.getCenterX()),
-                            (int) actualY(draggedCircle.getCenterY()),
-                            draggedNode.getFloor(),
-                            draggedNode.getBuilding(),
-                            draggedNode.getNodeType(),
-                            draggedNode.getLongName(),
-                            draggedNode.getShortName()
-                    )));
+//                    System.out.println(localNodesMap.get(draggedNode.getNodeID()));
+//                    list.add(new ManageAdd(new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName()
+//                    )));
                     RevisionManager.getInstance().execute(list);
                     refreshHistory();
 //                    Submit.getInstance().editNode(new Node(
@@ -649,10 +660,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 //    public ArrayList<>
     public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
 //zoom.zoomAndPan();
-        if(!revisionHistoryMode){
+//        if(!revisionHistoryMode){
+//            System.out.println("again");
          revisionHistoryMode = true;
              revisionNodes = nodes;
-             revisionEdges = edges;}
+             revisionEdges = edges;//}
 
         HashMap<String, Node> nodeHash = new HashMap<>();
         for (Node n : nodes
@@ -915,7 +927,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 }
 
             }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+//            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
             Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
             //Submit.getInstance().addEdge(newEdge);
             List<Action> list2 = new LinkedList<>();
@@ -1144,10 +1156,12 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         );
         //Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
         List<Action> list = new LinkedList<>();
-        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()), newNode);
-        ManageAdd add = new ManageAdd(newNode);
-        list.add(delete);
-        list.add(add);
+        ManageEdit edit = new ManageEdit(localNodesMap.get(newNode.getNodeID()),newNode);
+//        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()), newNode);
+//        ManageAdd add = new ManageAdd(newNode);
+        //list.add(delete);
+//        list.add(add);
+        list.add(edit);
         RevisionManager.getInstance().execute(list);
         refreshHistory();
         hidePopups(); // Hide all popups
@@ -1666,11 +1680,12 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     }
 
   public void updateAndDisplay() {
-        System.out.println(LoadFXML.getCurrentWindow());
+//        System.out.println(LoadFXML.getCurrentWindow());
 
         if(revisionHistoryMode &&LoadFXML.getCurrentWindow().equals("revisionHistory")){
             clearMap();
             displayNodesAndEdgesPreveiw(revisionNodes, revisionEdges);
+//            System.out.println("after call");;
         }
 //        if(history){
 //            displayNodesAndEdgesPreveiw();
@@ -1701,7 +1716,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
             @Override
             public void handle(KeyEvent event) {
-                System.out.println("here");
+//                System.out.println("here");
 //                if(event.getCode() == KeyCode.Z){
 //                    System.out.println("ahaha");
 //                }
@@ -1710,12 +1725,12 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 //                        undoing = true;
 //                    }
                     undoChange();
-                    System.out.println("Ctrl+R pressed");
+//                    System.out.println("Ctrl+R pressed");
 
                     refreshHistory();
                 }
                 if (controlY.match(event)) {
-                    System.out.println("Ctrl+R pressed");
+//                    System.out.println("Ctrl+R pressed");
                     redoChange();
                     refreshHistory();
                 }
