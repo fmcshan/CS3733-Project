@@ -129,7 +129,8 @@ public class LocalFailover implements DataListener {
                     u.getString("l"),
                     u.getString("p"),
                     u.getBoolean("a"),
-                    u.getBoolean("em")
+                    u.getBoolean("em"),
+                    u.getString("pa")
             ));
         });
         LocalStorage.getInstance().setUsers(users);

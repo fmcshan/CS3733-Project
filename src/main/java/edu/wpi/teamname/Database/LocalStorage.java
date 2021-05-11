@@ -169,7 +169,7 @@ public class LocalStorage {
     }
 
     public ArrayList<User> getUsers() {
-        if (!AuthenticationManager.getInstance().isAuthenticated()) {
+        if (!AuthenticationManager.getInstance().isAuthenticated() && !LocalFailover.getInstance().hasFailedOver()) {
             return null;
         }
 
