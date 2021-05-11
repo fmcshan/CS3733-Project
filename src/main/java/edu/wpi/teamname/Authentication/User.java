@@ -88,4 +88,11 @@ public class User {
         this.idToken = _id;
     }
 
+    public void grantAdmin() {
+        this.admin = true;
+    }
+
+    public void revokeAdmin() {
+        this.admin = false;
+    }
 }

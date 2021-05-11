@@ -1,5 +1,15 @@
 package edu.wpi.teamname.Database;
 
+import com.google.api.client.json.Json;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import edu.wpi.teamname.Algo.Edge;
+import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,33 +17,20 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.google.api.client.json.Json;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import edu.wpi.teamname.Algo.Edge;
-import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Authentication.AuthenticationManager;
-import edu.wpi.teamname.Authentication.User;
-import edu.wpi.teamname.Database.socketListeners.Initiator;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 
 public class LocalFailover implements DataListener {
     private static final LocalFailover instance = new LocalFailover();
-
-    public static synchronized LocalFailover getInstance() {
-        return instance;
-    }
+    private boolean failedOver = false;
+    private JSONObject db;
+    private URI filePath;
 
     private LocalFailover() {
 
     }
 
-    private boolean failedOver = false;
-    private JSONObject db;
-    private URI filePath;
+    public static synchronized LocalFailover getInstance() {
+        return instance;
+    }
 
     public boolean hasFailedOver() {
         return failedOver;
@@ -70,6 +67,7 @@ public class LocalFailover implements DataListener {
         parseEmployees();
         parseRequests();
         parseCheckins();
+        parseSpaces();
     }
 
     // Load JSON
@@ -182,9 +180,19 @@ public class LocalFailover implements DataListener {
                     r.getBoolean("cleared"),
                     r.getInt("rating"),
                     r.getString("details")
-                    ));
+            ));
         });
         LocalStorage.getInstance().setRegistrations(checkins);
+    }
+
+    private void parseSpaces() {
+        ArrayList<String> spaces = new ArrayList<String>();
+        JSONArray spacesJson = db.getJSONArray("spaces");
+        spacesJson.forEach(j -> {
+            JSONObject sj = (JSONObject) j;
+            spaces.add(sj.getString("n"));
+        });
+        LocalStorage.getInstance().setReservedParkingSpaces(spaces);
     }
 
 
@@ -235,6 +243,16 @@ public class LocalFailover implements DataListener {
         saveDb();
     }
 
+    public void setSpaces(ArrayList<String> _spaces) {
+        JSONArray spacesJson = db.getJSONArray("spaces");
+        _spaces.forEach(r -> {
+            JSONObject space = new JSONObject();
+            space.put("n", r);
+            spacesJson.put(space);
+        });
+        db.put("spaces", spacesJson);
+    }
+
     @Override
     public void nodesSet(ArrayList<Node> _nodes) {
         setNodes(_nodes);
@@ -244,17 +262,6 @@ public class LocalFailover implements DataListener {
     public void edgesSet(ArrayList<Edge> _edges) {
         setEdges(_edges);
     }
-
-//    users.add(new User(
-//                    "local",
-//                            "local",
-//                    u.getString("e"),
-//                    u.getString("n"),
-//                            u.getString("l"),
-//                            u.getString("p"),
-//                            u.getBoolean("a"),
-//                            u.getBoolean("e")
-//                            ));
 
     // Save employees to JSON
     public void setUsers(ArrayList<User> _users) {
@@ -280,6 +287,46 @@ public class LocalFailover implements DataListener {
         Initiator.getInstance().triggerUserRefresh();
     }
 
+    private String arrayListToString(ArrayList<String> _toParse) {
+        if (_toParse.size() > 0) {
+            StringBuilder nameBuilder = new StringBuilder();
+
+            for (String n : _toParse) {
+                nameBuilder.append("'").append(n.replace("'", "''")).append("',");
+            }
+            nameBuilder.deleteCharAt(nameBuilder.length() - 1);
+            return nameBuilder.toString();
+
+        } else {
+            return "";
+        }
+    }
+
     // Save requests to JSON
+    public void setCheckins(ArrayList<UserRegistration> _checkins) {
+        JSONArray newCheckins = new JSONArray();
+        _checkins.forEach(c -> {
+            JSONObject newCheckin = new JSONObject();
+            newCheckin.put("uuid", c.getUuid());
+            newCheckin.put("name", c.getName());
+            newCheckin.put("date", c.getDate());
+            newCheckin.put("submittedAt", c.getSubmittedAt());
+            newCheckin.put("reasonsForVisit", arrayListToString(c.getReasonsForVisit()));
+            newCheckin.put("phoneNumber", c.getPhoneNumber());
+            newCheckin.put("acknowledged", c.isAcknowledged());
+            newCheckin.put("acknowledgedAt", c.getAcknowledgedAt());
+            newCheckin.put("cleared", c.getCleared());
+            newCheckin.put("rating", c.getRating());
+            newCheckin.put("details", c.getDetails());
+            newCheckin.put("submittedAt", c.getSubmittedAt());
+
+            newCheckins.put(newCheckin);
+        });
+
+        this.db.put("checkins", newCheckins);
+        saveDb();
+        refreshData();
+        Initiator.getInstance().triggerRegistrationRefresh();
+    }
 
 }

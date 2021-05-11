@@ -1,17 +1,13 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.input.*;
-import javafx.scene.input.*;
 import javafx.application.Platform;
 import javafx.scene.shape.*;
-import javafx.animation.Transition;
-import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -35,13 +31,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -276,6 +270,10 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 }
 
                 circle.setOnMouseDragged(e -> {
+                    if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
+                        return; // Don't process drags outside of the map editor.
+                    }
+                    System.out.println(LoadFXML.getCurrentWindow());
                     nodeBeingDragged = true;
                     draggedCircle = (Circle) e.getTarget();
                     draggedCircle.setCenterX(e.getX());
@@ -301,39 +299,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             draggedNode.getLongName(),
                             draggedNode.getShortName());
                     list.add(new ManageEdit(oldNode,newNode));
-//                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID()), new Node(
-//                            draggedNode.getNodeID(),
-//                            (int) actualX(draggedCircle.getCenterX()),
-//                            (int) actualY(draggedCircle.getCenterY()),
-//                            draggedNode.getFloor(),
-//                            draggedNode.getBuilding(),
-//                            draggedNode.getNodeType(),
-//                            draggedNode.getLongName(),
-//                            draggedNode.getShortName())));
-
-//                    System.out.println(localNodesMap.get(draggedNode.getNodeID()));
-//                    list.add(new ManageAdd(new Node(
-//                            draggedNode.getNodeID(),
-//                            (int) actualX(draggedCircle.getCenterX()),
-//                            (int) actualY(draggedCircle.getCenterY()),
-//                            draggedNode.getFloor(),
-//                            draggedNode.getBuilding(),
-//                            draggedNode.getNodeType(),
-//                            draggedNode.getLongName(),
-//                            draggedNode.getShortName()
-//                    )));
                     RevisionManager.getInstance().execute(list);
                     refreshHistory();
-//                    Submit.getInstance().editNode(new Node(
-//                            draggedNode.getNodeID(),
-//                            (int) actualX(draggedCircle.getCenterX()),
-//                            (int) actualY(draggedCircle.getCenterY()),
-//                            draggedNode.getFloor(),
-//                            draggedNode.getBuilding(),
-//                            draggedNode.getNodeType(),
-//                            draggedNode.getLongName(),
-//                            draggedNode.getShortName()
-//                    ));
                     draggedCircle = null;
                     draggedNode = null;
                     refreshData();
@@ -416,14 +383,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         LevelManager.getInstance().addListener(this);
         popPop.setPickOnBounds(false); // Set popPop to disregard clicks
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
-
-//        displayEdges(.6); // Render edges at 0.6 opacity
-//        displayNodes(.8); // Render nodes at 0.8 opacity
         undoRedo();
-        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
         addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
-       // zoom.zoomAndPan();
     }
     /**
      * Initialize the map editor/display
@@ -595,6 +557,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 localNodes.add(n); // Add to local nodes
             }
             nodesMap.put(n.getNodeID(), n);
+                    if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
+                        portalNodeMap.put(n.getNodeID(), n);
+                    }
         });
 
         localNodesMap.clear(); // CLear the node map
@@ -618,7 +583,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     if (edgesBetweenFloors.containsKey(startNode)) {
                         edgesBetweenFloors.get(startNode).add(e);
                         doubleEdges.put(e.getEdgeID(), e);
-                        portalNodeMap.put(startNode.getNodeID(), startNode);
+//                        portalNodeMap.put(startNode.getNodeID(), startNode);
                     } else {
                         ArrayList<Edge> edgeArray = new ArrayList<>();
                         edgeArray.add(e);
@@ -658,13 +623,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     }
 
 //    public ArrayList<>
-    public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
-//zoom.zoomAndPan();
-//        if(!revisionHistoryMode){
-//            System.out.println("again");
+    public void displayNodesAndEdgesPreview(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+
          revisionHistoryMode = true;
              revisionNodes = nodes;
-             revisionEdges = edges;//}
+             revisionEdges = edges;
 
         HashMap<String, Node> nodeHash = new HashMap<>();
         for (Node n : nodes
@@ -696,12 +659,23 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/circle
                 circle.setOpacity(0.8); // Set the opacity to 0.8
                 // TODO May want to clarify it's just a preview:
-//                circle.setStrokeWidth(1); // Set the stroke with to 4
-//                circle.setStroke(Color.YELLOW);
+                circle.setStrokeWidth(1); // Set the stroke with to 4
+                circle.setStroke(Color.YELLOW);
 
                 circle.setFill(Color.valueOf("2f6d99")); // Set node color to blue
-//            circle.setOpacity(_opacity); // Set node opacity (input param)
                 onTopOfTopElements.getChildren().add(circle);
+
+                circle.setOnMouseExited(e -> { // Hide hover effect
+                    tooltip.hide();
+                });
+                circle.setOnMouseMoved(
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                // +15 moves the tooltip 15 pixels below the mouse cursor to avoid flicker
+                                tooltip.show(circle, event.getScreenX() - 15, event.getScreenY() + 20);
+                            }
+                        });
             }
         }
     }
@@ -1685,9 +1659,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
   public void updateAndDisplay() {
 //        System.out.println(LoadFXML.getCurrentWindow());
 
-        if(revisionHistoryMode &&LoadFXML.getCurrentWindow().equals("revisionHistory")){
+        if(revisionHistoryMode && LoadFXML.getCurrentWindow().equals("revisionHistory")){
             clearMap();
-            displayNodesAndEdgesPreveiw(revisionNodes, revisionEdges);
+            displayNodesAndEdgesPreview(revisionNodes, revisionEdges);
 //            System.out.println("after call");;
         }
 //        if(history){
