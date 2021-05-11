@@ -464,5 +464,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
         setFromCombo(startNode);
         setToCombo(endNode);
+
+        calcPath();
     }
 }

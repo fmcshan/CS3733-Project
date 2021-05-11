@@ -2,9 +2,9 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -53,11 +53,11 @@
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
                   <ImageView fx:id="imageBox" fitHeight="526.0" fitWidth="728.0" pickOnBounds="true" preserveRatio="true" />
-                  <JFXTextArea fx:id="directionSpace" editable="false" focusColor="#ababab" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="500.0" unFocusColor="#c3c3c3">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextArea>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="526.0" prefWidth="502.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
+                     <content>
+                        <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="525.0" prefWidth="501.0" style="-fx-background-color: transparent;" />
+                     </content>
+                  </ScrollPane>
                </children>
                <VBox.margin>
                   <Insets top="15.0" />
