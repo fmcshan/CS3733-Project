@@ -107,11 +107,6 @@ public class RevisionHistory {
         Collections.reverse(snapshots);
         snapshots.forEach(s -> {
             if (!(s.getNodes().isEmpty())) {
-                navBox.getChildren().add(generateElemSnap(s));
-                VBox spacer = new VBox();
-                spacer.setPrefSize(1, 10);
-                spacer.setMinSize(1, 10);
-                navBox.getChildren().add(spacer);
                 finalEvents.forEach(e -> {
                     if (e.getSnapshot().equals(s.getId())) {
                         navBox.getChildren().add(generateElem(e));
@@ -121,8 +116,21 @@ public class RevisionHistory {
                         navBox.getChildren().add(spacer2);
                     }
                 });
+                navBox.getChildren().add(generateElemSnap(s));
+                VBox spacer = new VBox();
+                spacer.setPrefSize(1, 10);
+                spacer.setMinSize(1, 10);
+                navBox.getChildren().add(spacer);
+
             }
         });
+    }
+
+    public String editTime(String time){
+        String newString = time;
+        newString = newString.replace("T", "      ");
+        newString = newString.substring(0, newString.indexOf("."));
+        return newString;
     }
 
     public HBox generateElem(Event event) {
@@ -189,12 +197,13 @@ public class RevisionHistory {
         navigationLabel.prefHeight(60);
 
 
-//        Text navigationLabel2 = new Text(event.getDate());
-//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-//        navigationLabel2.setWrappingWidth(200);
-//        navLabelWrapper.getChildren().add(navigationLabel2);
-//        navigationLabel2.prefWidth(200);
-//        navigationLabel2.prefHeight(60);
+        String edit = editTime(event.getDate());
+        Text navigationLabel2 = new Text(edit);
+        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 10px; -fx-padding: 10 0 0 10;");
+        navigationLabel2.setWrappingWidth(200);
+        navLabelWrapper.getChildren().add(navigationLabel2);
+        navigationLabel2.prefWidth(200);
+        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
@@ -253,12 +262,13 @@ public class RevisionHistory {
         navigationLabel.prefWidth(200);
         navigationLabel.prefHeight(60);
 
-//        Text navigationLabel2 = new Text(_snap.getDate());
-//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-//        navigationLabel2.setWrappingWidth(200);
-//        navLabelWrapper.getChildren().add(navigationLabel2);
-//        navigationLabel2.prefWidth(200);
-//        navigationLabel2.prefHeight(60);
+        String edit = editTime(_snap.getDate());
+        Text navigationLabel2 = new Text(edit);
+        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 10px; -fx-padding: 10 0 0 10;");
+        navigationLabel2.setWrappingWidth(200);
+        navLabelWrapper.getChildren().add(navigationLabel2);
+        navigationLabel2.prefWidth(200);
+        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);

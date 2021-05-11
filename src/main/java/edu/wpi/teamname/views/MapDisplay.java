@@ -1748,7 +1748,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         RevisionManager.getInstance().getActionHistory().forEach(history -> {
             // if(!(allActions.contains(history))){
             allActions.add(history);
-            editHistoryBox.getChildren().add(new Text(history));
             //    }
         });
 

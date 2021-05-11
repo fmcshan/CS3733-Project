@@ -104,7 +104,7 @@ public class ZoomAndPan {
         }
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar") || !page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")) {
             page.renderMap();
-            System.out.println("rascal");
+//            System.out.println("rascal");
         }
         if (LoadFXML.getCurrentWindow().equals("navBar")) {
             page.onTopOfTopElements.getChildren().clear();
