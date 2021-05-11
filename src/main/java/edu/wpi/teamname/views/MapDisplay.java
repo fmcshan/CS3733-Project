@@ -684,7 +684,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     double endY = yCoordOnTopElement(nodeHash.get(e.getEndNode()).getY());
                     // Create edge
                     LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
-                    Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).build(); // Style edge
+                    Line edge = edgeLocation.stroke(Color.RED).strokeWidth(3).build(); // Style edge
                     onTopOfTopElements.getChildren().add(edge); // Render edge
                 }
             }
@@ -696,7 +696,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("607548")); // Set node color to olive
+                circle.setFill(Color.valueOf("2f6d99")); // Set node color to olive
 //            circle.setOpacity(_opacity); // Set node opacity (input param)
                 onTopOfTopElements.getChildren().add(circle);
             }
@@ -1767,7 +1767,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         scaledY = 0;
         scaledWidth = fileWidth;
         scaledHeight = fileHeight;
-        zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
+        zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
     }
 
     @Override
