@@ -7,10 +7,12 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.Database.socketListeners.RevisionListener;
 import edu.wpi.teamname.views.manager.Event;
 import edu.wpi.teamname.views.manager.SceneManager;
 import edu.wpi.teamname.views.manager.Snapshot;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
@@ -19,40 +21,40 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import static javafx.scene.effect.BlurType.GAUSSIAN;
 
 /**
- * Controller for Navigation.fxml
+ * Controller for RevisionHistory.fxml
  *
- * @author Justin Luce
+ * @author Freud Oulon, Conor McDonough, Justin Luce
  */
-public class RevisionHistory {
+public class RevisionHistory implements RevisionListener {
     static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
-    @FXML
-    private ScrollPane scrollBar;
-
-    @FXML
-    private JFXButton restoreButton;
-
-    @FXML
-    private JFXButton cancelButton;
-    @FXML
-    private VBox navBox;
-
-    @FXML
-    private MaterialDesignIconView exitOut;
-
     ArrayList<Snapshot> snapshots; //= LocalStorage.getInstance().getSnapshots();
-
     HashMap<HBox, Event> eventMap = new HashMap<>();
     HashMap<HBox, Snapshot> snapMap = new HashMap<>();
     ArrayList<Node> currentNodes;
     ArrayList<Edge> currentEdges;
+    @FXML
+    private ScrollPane scrollBar;
+    @FXML
+    private JFXButton restoreButton;
+    @FXML
+    private JFXButton cancelButton;
+    @FXML
+    private VBox navBox;
+    @FXML
+    private MaterialDesignIconView exitOut;
 
     public RevisionHistory() {
 
@@ -61,9 +63,9 @@ public class RevisionHistory {
     public void initialize() {
         restoreButton.setVisible(false);
         cancelButton.setVisible(false);
-//        System.out.println("initialized");
         snapshots = LocalStorage.getInstance().getSnapshots();
-       addEventsAndSnapshots();
+        addEventsAndSnapshots();
+        Initiator.getInstance().addRevisionListener(this);
     }
 
 
@@ -95,10 +97,10 @@ public class RevisionHistory {
         closeWindows();
 
 
-
     }
 
     public void addEventsAndSnapshots() {
+        navBox.getChildren().clear();
         ArrayList<Event> events = new ArrayList<>();
         events = LocalStorage.getInstance().getEvents();
         ArrayList<Snapshot> snapshots = new ArrayList<>();
@@ -126,11 +128,16 @@ public class RevisionHistory {
         });
     }
 
-    public String editTime(String time){
-        String newString = time;
-        newString = newString.replace("T", "      ");
-        newString = newString.substring(0, newString.indexOf("."));
-        return newString;
+    public String editTime(String time) {
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'#'HH:mm:ss.SSSX");
+        Date editDate;
+        try {
+            editDate = isoFormat.parse(time);
+        } catch (ParseException e) {
+            editDate = new Date();
+        }
+        PrettyTime p = new PrettyTime();
+        return p.format(editDate);
     }
 
     public HBox generateElem(Event event) {
@@ -151,16 +158,15 @@ public class RevisionHistory {
         MaterialDesignIconView navigationIcon;
         navigationIcon = new MaterialDesignIconView();
         if (_event.equals("add_node")) {
-            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.PLUS_CIRCLE);
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.PLUS_BOX);
         } else if (_event.equals("remove_node")) {
-            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE);
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MINUS_BOX);
         } else if (_event.equals("add_edge")) {
-            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.PLUS_CIRCLE);
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.PLUS_BOX);
         } else if (_event.equals("remove_edge")) {
-            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE);
-        }
-        else if(_event.equals("edit_node")){
-            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.TOOLTIP_EDIT);
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MINUS_BOX);
+        } else if (_event.equals("edit_node")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.PENCIL_BOX);
         }
 
         navigationIcon.setFill(Paint.valueOf("#ffffff"));
@@ -188,7 +194,7 @@ public class RevisionHistory {
         if (_event.equals("edit_node")) {
             type = "Edit Node " + event.getNode().getLongName();
         }
-       // System.out.println(event.getEvent());
+        // System.out.println(event.getEvent());
         Text navigationLabel = new Text(type);
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
         navigationLabel.setWrappingWidth(200);
@@ -197,7 +203,7 @@ public class RevisionHistory {
         navigationLabel.prefHeight(60);
 
 
-        String edit = editTime(event.getDate());
+        String edit = event.getAuthor() + " - "  + editTime(event.getDate());
         Text navigationLabel2 = new Text(edit);
         navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 10px; -fx-padding: 10 0 0 10;");
         navigationLabel2.setWrappingWidth(200);
@@ -243,7 +249,7 @@ public class RevisionHistory {
         navIconWrapper.setMinSize(64, 64);
         MaterialDesignIconView navigationIcon;
         navigationIcon = new MaterialDesignIconView();
-        navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.UPLOAD);
+        navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.FILE_IMPORT);
 
 
         navigationIcon.setFill(Paint.valueOf("#ffffff"));
@@ -262,7 +268,7 @@ public class RevisionHistory {
         navigationLabel.prefWidth(200);
         navigationLabel.prefHeight(60);
 
-        String edit = editTime(_snap.getDate());
+        String edit = _snap.getAuthor() + " - "  + editTime(_snap.getDate());
         Text navigationLabel2 = new Text(edit);
         navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 10px; -fx-padding: 10 0 0 10;");
         navigationLabel2.setWrappingWidth(200);
@@ -285,5 +291,15 @@ public class RevisionHistory {
             defaultPage.displayNodesAndEdgesPreveiw(_snap.getNodes(), _snap.getEdges());
         });
         return directionGuiWrapper;
+    }
+
+    @Override
+    public void refreshRevisions() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                addEventsAndSnapshots();
+            }
+        });
     }
 }

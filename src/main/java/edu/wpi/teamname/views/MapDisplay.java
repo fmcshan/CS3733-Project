@@ -693,10 +693,13 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         ) {
             if (nodeWithinSpec(n) && onScreen(n)) {
                 Tooltip tooltip = new Tooltip(n.getLongName());
-                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
-                circle.setStrokeWidth(4); // Set the stroke with to 4
-                circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("2f6d99")); // Set node color to olive
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/circle
+                circle.setOpacity(0.8); // Set the opacity to 0.8
+                // TODO May want to clarify it's just a preview:
+//                circle.setStrokeWidth(1); // Set the stroke with to 4
+//                circle.setStroke(Color.YELLOW);
+
+                circle.setFill(Color.valueOf("2f6d99")); // Set node color to blue
 //            circle.setOpacity(_opacity); // Set node opacity (input param)
                 onTopOfTopElements.getChildren().add(circle);
             }

@@ -12,6 +12,7 @@ public class Initiator extends Thread {
     private List<RegistrationListener> registrationListeners = new ArrayList<RegistrationListener>();
     private List<GiftDeliveryListener> giftDeliveryListeners = new ArrayList<GiftDeliveryListener>();
     private List<UserListener> userListeners = new ArrayList<UserListener>();
+    private List<RevisionListener> revisionListeners = new ArrayList<RevisionListener>();
 
     private Initiator() {
 
@@ -29,6 +30,9 @@ public class Initiator extends Thread {
     }
     public void addUserListener(UserListener _toAdd) {
         userListeners.add(_toAdd);
+    }
+    public void addRevisionListener(RevisionListener _toAdd) {
+        revisionListeners.add(_toAdd);
     }
 
     public void triggerRegistration(UserRegistration _obj) {
@@ -91,4 +95,13 @@ public class Initiator extends Thread {
         }
     }
 
+    public void triggerRevisionRefresh() {
+        for (RevisionListener r : revisionListeners) {
+            try {
+                r.refreshRevisions();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
