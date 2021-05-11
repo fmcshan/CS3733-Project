@@ -6,6 +6,7 @@ import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Submit {
@@ -236,6 +237,13 @@ public class Submit {
     }
 
     public void newUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            _form.setFailoverId(UUID.randomUUID().toString());
+            users.add(_form);
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);

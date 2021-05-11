@@ -13,7 +13,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,6 +48,21 @@ public class LocalFailover implements DataListener {
         System.out.println("** CREDENTIALS ARE NOT ENCRYPTED IN THE LOCAL FAILOVER DB **");
         this.failedOver = true;
 
+        refreshData();
+
+        System.out.println("==== LOCAL FAILOVER ====");
+        System.out.println("Reduced functionality: ");
+        System.out.println("   Authentication");
+        System.out.println("   Chatbot");
+        System.out.println("   Revision History");
+        System.out.println("   Slightly degraded performance\n");
+        System.out.println("Credentials: ");
+        System.out.println("   Username: admin@admin.com");
+        System.out.println("   Password: password\n");
+
+    }
+
+    public void refreshData() {
         loadJson();
         parseNodes();
         parseEdges();
@@ -53,16 +70,6 @@ public class LocalFailover implements DataListener {
         parseEmployees();
         parseRequests();
         parseCheckins();
-
-        System.out.println("==== LOCAL FAILOVER ====");
-        System.out.println("Reduced functionality: ");
-        System.out.println("   Authentication");
-        System.out.println("   Chatbot");
-        System.out.println("   Slightly degraded performance\n");
-        System.out.println("Credentials: ");
-        System.out.println("   Username: admin@admin.com");
-        System.out.println("   Password: password\n");
-
     }
 
     // Load JSON
@@ -267,8 +274,10 @@ public class LocalFailover implements DataListener {
             newUsers.put(newUser);
         });
 
-        this.db.put("edges", newUsers);
+        this.db.put("users", newUsers);
         saveDb();
+        refreshData();
+        Initiator.getInstance().triggerUserRefresh();
     }
 
     // Save requests to JSON
