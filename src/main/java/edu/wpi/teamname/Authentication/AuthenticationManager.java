@@ -49,7 +49,6 @@ public class AuthenticationManager {
                     if (u.getEmail().toLowerCase().equals(_email.toLowerCase())) {
                         if (u.getPassword().equals(_password)) {
                             AuthenticationManager.getInstance().setUser(u);
-
                             for (AuthListener ull : listeners) {
                                 try {
                                     ull.userLogin();
@@ -60,9 +59,9 @@ public class AuthenticationManager {
                         }
                     }
                 });
-                return;
             } catch (Exception ignored) {
             }
+            return;
         }
         try {
             JSONObject data = new JSONObject();

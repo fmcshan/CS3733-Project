@@ -273,6 +273,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMaps() {
+        helpButton.setVisible(false);
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -284,6 +285,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMapsHome() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
@@ -312,6 +314,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHistory() {
+        helpButton.setVisible(false);
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
 
@@ -423,7 +426,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     closedChatBox.setVisible(true);
                     closedChatBox.setPickOnBounds(true);
                     sentBox2.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 0 20;" +
-                            "-fx-min-width: 50; -fx-padding: 10 10 10 10;");
+                            "-fx-min-width: 50; -fx-padding: 10 10 10 10; -fx-effect: dropshadow(three-pass-box, #a4a4a4, 10.0, 0.0, 0.0, 0.0);");
                     sentBox2.setAlignment(Pos.BOTTOM_LEFT);
                     closedChatBox.getChildren().add(sentBox2);
 
