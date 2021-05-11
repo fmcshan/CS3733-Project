@@ -13,7 +13,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
+import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,13 +48,7 @@ public class LocalFailover implements DataListener {
         System.out.println("** CREDENTIALS ARE NOT ENCRYPTED IN THE LOCAL FAILOVER DB **");
         this.failedOver = true;
 
-        loadJson();
-        parseNodes();
-        parseEdges();
-        LocalStorage.getInstance().linkEdges();
-        parseEmployees();
-        parseRequests();
-        parseCheckins();
+        refreshData();
 
         System.out.println("==== LOCAL FAILOVER ====");
         System.out.println("Reduced functionality: ");
@@ -63,6 +59,18 @@ public class LocalFailover implements DataListener {
         System.out.println("   Username: admin@admin.com");
         System.out.println("   Password: password\n");
 
+    }
+
+    public void refreshData() {
+        loadJson();
+        parseNodes();
+        parseEdges();
+        LocalStorage.getInstance().linkEdges();
+        parseEmployees();
+        parseRequests();
+        parseCheckins();
+
+        Initiator.getInstance().triggerUserRefresh();
     }
 
     // Load JSON
@@ -189,6 +197,7 @@ public class LocalFailover implements DataListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        refreshData();
     }
 
     // Save arraylist of nodes to JSON
