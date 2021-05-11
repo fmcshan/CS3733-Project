@@ -132,6 +132,8 @@ public class GoogleMapHome {
                 for (DirectionsLeg foot : feet2) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);
+                        System.out.println("hi 2");
+                        newStep.replace("&nbsp;", " ");
                         navBox.getChildren().add(generateNavElem(cleanTags(newStep)));
                         lowDir = lowDir + "\n" + newStep;
                         VBox spacer = new VBox();
@@ -187,7 +189,7 @@ public class GoogleMapHome {
     public String cleanTags(String s) {
         s = s.replaceAll("<[^>]*>", "");
         s = s.replaceAll("Destination", "\nDestination");
-        lowDir = lowDir.replaceAll("&nbsp;","");
+        s = s.replace("&nbsp;"," ");
         return s;
     }
 
