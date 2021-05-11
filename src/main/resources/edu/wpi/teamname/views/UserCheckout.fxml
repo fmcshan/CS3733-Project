@@ -7,6 +7,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -70,17 +71,61 @@
                         <Insets left="25.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXSlider fx:id="experienceSlider" blockIncrement="0.5" majorTickUnit="1.0" max="5.0" maxWidth="450.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 18;" stylesheets="@../images/jfxSlider.css">
+                  <JFXSlider fx:id="experienceSlider" blockIncrement="0.5" majorTickUnit="1.0" max="5.0" maxWidth="450.0" min="1.0" minorTickCount="0" prefHeight="31.0" prefWidth="474.0" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 18;" stylesheets="@../images/jfxSlider.css">
                      <VBox.margin>
                         <Insets left="45.0" top="20.0" />
                      </VBox.margin>
                   </JFXSlider>
+                  <HBox>
+                     <children>
+                        <Label text="Poor" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="38.5" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="Fair" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="77.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label layoutX="116.0" layoutY="10.0" text="Good" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="74.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label layoutX="219.0" layoutY="10.0" text="Very Good" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label layoutX="255.0" layoutY="10.0" text="Excellent" textFill="#868686">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="38.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                   <Label text="Please provide any additonal comments below." textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="25.0" top="25.0" />
+                        <Insets left="25.0" top="50.0" />
                      </VBox.margin>
                   </Label>
                   <JFXTextField fx:id="additionalComments" focusColor="#868686" maxWidth="-Infinity" prefHeight="51.0" prefWidth="300.0" promptText="Additional Comments" style="-fx-prompt-text-fill: #bbbbbb;" unFocusColor="#868686">
