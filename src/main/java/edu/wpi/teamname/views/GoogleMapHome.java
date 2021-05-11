@@ -74,7 +74,7 @@ public class GoogleMapHome {
     GeoApiContext context;
     String chosenPark = "";
 
-    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
+    static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
     static ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
     private HashMap<String, String> items = new HashMap<>();
 
@@ -189,7 +189,7 @@ public class GoogleMapHome {
     public String cleanTags(String s) {
         s = s.replaceAll("<[^>]*>", "");
         s = s.replaceAll("Destination", "\nDestination");
-        s = s.replace("&nbsp;"," ");
+        s = s.replace("&nbsp;", " ");
         return s;
     }
 
@@ -211,13 +211,14 @@ public class GoogleMapHome {
     }
 
 
-    public List <String> getAddresses(String lookup){
-        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context,lookup, token).awaitIgnoreError();
-        List<String>  results = new ArrayList<>();
-        if(autocompletePredictions!=null){
+    public List<String> getAddresses(String lookup) {
+        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context, lookup, token).awaitIgnoreError();
+        List<String> results = new ArrayList<>();
+        if (autocompletePredictions != null) {
             for (int i = 0; i < autocompletePredictions.length; i++) {
                 results.add(autocompletePredictions[i].description);
-            }}
+            }
+        }
         return results;
     }
 
@@ -251,6 +252,8 @@ public class GoogleMapHome {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ESCALATOR);
         } else if (directionText.contains("destination")) {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MAP_MARKER);
+        } else if (directionText.contains("ferry") && directionText.contains("take")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.FERRY);
         } else {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD);
         }

@@ -273,6 +273,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMaps() {
+        helpButton.setVisible(false);
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -284,6 +285,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMapsHome() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
@@ -312,6 +314,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHistory() {
+        helpButton.setVisible(false);
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
     }
