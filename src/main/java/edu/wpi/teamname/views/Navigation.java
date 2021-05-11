@@ -3,7 +3,6 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
-import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.Pathfinding.TextDirections;
@@ -11,20 +10,15 @@ import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.*;
-import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.SceneBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -33,7 +27,6 @@ import javafx.scene.text.Text;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -127,11 +120,11 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
         LevelManager.getInstance().addListener(this);
 
-        algoCombo.getItems().add("AStar");
-        algoCombo.getItems().add("Best First Search");
+        algoCombo.getItems().add("A-Star");
+        algoCombo.getItems().add("Best-First Search");
         algoCombo.getItems().add("Breadth-First Search");
         algoCombo.getItems().add("Depth-First Search");
-        algoCombo.getItems().add("Djikstra's Algorithm");
+        algoCombo.getItems().add("Dijkstra's Algorithm");
 
         refreshNodes();
 
@@ -293,7 +286,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
         else if(algoCombo.getValue() == null)
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
-        else if(algoCombo.getValue().equals("AStar"))
+        else if(algoCombo.getValue().equals("A-Star"))
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
         //System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
@@ -418,11 +411,11 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
     public void changeSearch() {
         switch (algoCombo.getValue()){
-            case "AStar":
+            case "A-Star":
                 searchAlgorithm.setContext(new AStar());
                 calcPath();
                 break;
-            case "Best First Search":
+            case "Best-First Search":
                 searchAlgorithm.setContext(new BestFirstSearch());
                 calcPath();
                 break;
@@ -434,8 +427,8 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
                 searchAlgorithm.setContext(new DFS());
                 calcPath();
                 break;
-            case "Djikstra's Algorithm":
-                searchAlgorithm.setContext(new Djikstra());
+            case "Dijkstra's Algorithm":
+                searchAlgorithm.setContext(new Dijkstra());
                 calcPath();
                 break;
         }

@@ -84,11 +84,11 @@ public class TableCellFactory {
         HBox ratingWrapper = new HBox();
         ratingWrapper.setPrefWidth(130);
         ratingWrapper.setAlignment(Pos.TOP_CENTER);
-        HBox.setMargin(ratingWrapper, new Insets(0,0,10,0));
+        HBox.setMargin(ratingWrapper, new Insets(0,0,0,0));
 
         HBox starWrapper = new HBox();
-        starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 0 4;");
-        starWrapper.setPrefWidth(160);
+        starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 10 4;");
+        starWrapper.setPrefWidth(130);
         starWrapper.setAlignment(Pos.TOP_CENTER);
 
         if (_reg.getRating() == -1) {
