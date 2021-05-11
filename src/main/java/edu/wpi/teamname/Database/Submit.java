@@ -260,6 +260,21 @@ public class Submit {
     }
 
     public void editUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.setPhone(_form.getPhone());
+                    user.setEmail(_form.getEmail());
+                    user.setName(_form.getName());
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -275,6 +290,19 @@ public class Submit {
     }
 
     public void grantAdmin(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.grantAdmin();
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -287,6 +315,19 @@ public class Submit {
     }
 
     public void revokeAdmin(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.revokeAdmin();
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -299,6 +340,18 @@ public class Submit {
     }
 
     public void deleteUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    users.remove(i);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);

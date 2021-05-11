@@ -1,17 +1,13 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
 import javafx.scene.input.*;
-import javafx.scene.input.*;
 import javafx.application.Platform;
 import javafx.scene.shape.*;
-import javafx.animation.Transition;
-import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
@@ -35,13 +31,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -629,7 +623,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     }
 
 //    public ArrayList<>
-    public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+    public void displayNodesAndEdgesPreview(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+
          revisionHistoryMode = true;
              revisionNodes = nodes;
              revisionEdges = edges;
@@ -1664,9 +1659,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
   public void updateAndDisplay() {
 //        System.out.println(LoadFXML.getCurrentWindow());
 
-        if(revisionHistoryMode &&LoadFXML.getCurrentWindow().equals("revisionHistory")){
+        if(revisionHistoryMode && LoadFXML.getCurrentWindow().equals("revisionHistory")){
             clearMap();
-            displayNodesAndEdgesPreveiw(revisionNodes, revisionEdges);
+            displayNodesAndEdgesPreview(revisionNodes, revisionEdges);
 //            System.out.println("after call");;
         }
 //        if(history){
