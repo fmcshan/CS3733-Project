@@ -20,6 +20,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static javafx.scene.effect.BlurType.GAUSSIAN;
@@ -78,6 +79,7 @@ public class RevisionHistory {
 
 
     }
+
     @FXML
     public void restore() {
         cancelButton.setVisible(false);
@@ -90,6 +92,7 @@ public class RevisionHistory {
         ArrayList<Snapshot> snapshots = new ArrayList<>();
         snapshots = LocalStorage.getInstance().getSnapshots();
         ArrayList<Event> finalEvents = events;
+        Collections.reverse(snapshots);
         snapshots.forEach(s -> {
             if (!(s.getNodes().isEmpty())) {
                 navBox.getChildren().add(generateElemSnap(s));
@@ -147,18 +150,19 @@ public class RevisionHistory {
 
         VBox navLabelWrapper = new VBox();
         String type = "";
-        if (_event.equals("remove_node")){
+        if (_event.equals("remove_node")) {
             type = "Remove Node " + event.getNode().getLongName();
         }
-        if (_event.equals("remove_edge")){
+        if (_event.equals("remove_edge")) {
             type = "Remove Edge " + event.getEdge().getEdgeID();
         }
-        if (_event.equals("add_node")){
+        if (_event.equals("add_node")) {
             type = "Add Node " + event.getNode().getLongName();
         }
-        if (_event.equals("add_edge")){
-            type = "Add Edge "+ event.getEdge().getEdgeID();
+        if (_event.equals("add_edge")) {
+            type = "Add Edge " + event.getEdge().getEdgeID();
         }
+        System.out.println(event.getEvent());
         Text navigationLabel = new Text(type);
         navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
         navigationLabel.setWrappingWidth(200);
@@ -167,12 +171,12 @@ public class RevisionHistory {
         navigationLabel.prefHeight(60);
 
 
-//        Text navigationLabel2 = new Text(event.getDate());
-//        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
-//        navigationLabel2.setWrappingWidth(200);
-//        navLabelWrapper.getChildren().add(navigationLabel2);
-//        navigationLabel2.prefWidth(200);
-//        navigationLabel2.prefHeight(60);
+        Text navigationLabel2 = new Text(event.getDate());
+        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+        navigationLabel2.setWrappingWidth(200);
+        navLabelWrapper.getChildren().add(navigationLabel2);
+        navigationLabel2.prefWidth(200);
+        navigationLabel2.prefHeight(60);
 
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
@@ -180,18 +184,14 @@ public class RevisionHistory {
         directionGuiWrapper.setOnMouseClicked(a -> {
             cancelButton.setVisible(true);
             restoreButton.setVisible(true);
-            ArrayList<Node> nodes = new ArrayList<>();
-            ArrayList<Edge> edges = new ArrayList<>();
+            Snapshot newSnap = null;
             for (Snapshot s : snapshots) {
-                if (s.getId().equals(event.getSnapshot())){
-                    Snapshot newSnap = s.doEvent(event);
-                    nodes = newSnap.getNodes();
-                    edges = newSnap.getEdges();
+                if (s.getId().equals(event.getSnapshot())) {
+                    newSnap = s.doEvent(event);
                 }
             }
-            System.out.println(nodes.get(nodes.size()-1).getLongName());
             defaultPage.clearMap();
-            defaultPage.displayNodesAndEdgesPreveiw(nodes, edges);
+            defaultPage.displayNodesAndEdgesPreveiw(newSnap.getNodes(), newSnap.getEdges());
         });
 
         return directionGuiWrapper;
@@ -233,16 +233,21 @@ public class RevisionHistory {
         navigationLabel.prefWidth(200);
         navigationLabel.prefHeight(60);
 
+        Text navigationLabel2 = new Text(_snap.getDate());
+        navigationLabel2.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+        navigationLabel2.setWrappingWidth(200);
+        navLabelWrapper.getChildren().add(navigationLabel2);
+        navigationLabel2.prefWidth(200);
+        navigationLabel2.prefHeight(60);
+
         directionGuiWrapper.getChildren().add(navIconWrapper);
         directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
         directionGuiWrapper.setOnMouseClicked(a -> {
             cancelButton.setVisible(true);
             restoreButton.setVisible(true);
-            ArrayList<Node> nodes = _snap.getNodes();
-            ArrayList<Edge> edges = _snap.getEdges();
             defaultPage.clearMap();
-            defaultPage.displayNodesAndEdgesPreveiw(nodes, edges);
+            defaultPage.displayNodesAndEdgesPreveiw(_snap.getNodes(), _snap.getEdges());
         });
         return directionGuiWrapper;
     }

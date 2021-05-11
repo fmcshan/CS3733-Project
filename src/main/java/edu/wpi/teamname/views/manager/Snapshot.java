@@ -79,8 +79,10 @@ public class Snapshot {
     public int hashCode() {
         return Objects.hash(Id);
     }
-    Snapshot returnSnap = this;
+
+
     public Snapshot doEvent(Event event) {
+        Snapshot returnSnap = new Snapshot(this.Id, this.author, this.date, this.nodes, this.edges);
         ArrayList<Event> events = LocalStorage.getInstance().getEvents();
         ArrayList<Event> correctEvents = new ArrayList<Event>();
         ArrayList<Event> finalEvents = new ArrayList<Event>();
@@ -89,34 +91,35 @@ public class Snapshot {
                 correctEvents.add(e);
             }
         }
-        Collections.reverse(correctEvents);
         Boolean flag = true;
-        for (Event e: events){
-            if(e.id.equals(event.id)){
+        Collections.reverse(correctEvents);
+        for (Event e : correctEvents) {
+            System.out.println("Event " + e.event);
+            if (e.id.equals(event.id)) {
                 finalEvents.add(e);
                 flag = false;
-                System.out.println("LOLLLLLLLLLLLLLLLLLLLLLLL");
+               System.out.println("Made it");
             }
-            if(flag){
+            if (flag) {
                 finalEvents.add(e);
             }
         }
         for (Event e : finalEvents) {
             if (e.getEvent().equals("remove_node")) {
-                //System.out.println(e.event + e.getDate());
-                returnSnap.nodes.remove(event.node);
+                System.out.println("TEST remove node: " + e.getNode());
+                returnSnap.nodes.remove(e.node);
             }
             if (e.getEvent().equals("remove_edge")) {
-               // System.out.println(e.event + e.getDate());
-                returnSnap.edges.remove(event.edge);
+                System.out.println("TEST remove edge: " + e.getEdge());
+                returnSnap.edges.remove(e.edge);
             }
             if (e.getEvent().equals("add_node")) {
-               // System.out.println(e.event + e.getDate());
-                returnSnap.nodes.add(event.node);
+                System.out.println("TEST add node: " + e.getNode().getLongName());
+                returnSnap.nodes.add(e.node);
             }
             if (e.getEvent().equals("add_edge")) {
-               // System.out.println(e.event + e.getDate());
-                returnSnap.edges.add(event.edge);
+                System.out.println("TEST add edge: " + e.getEdge().getEdgeID());
+                returnSnap.edges.add(e.edge);
             }
         }
         return returnSnap;
