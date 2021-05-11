@@ -95,7 +95,8 @@ public class GoogleMapHome {
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
-
+        errorMes.setText("Please enter a valid address");
+        errorMes.setVisible(false);
         if ((items.containsKey(addressFill.getSelectionModel().getSelectedItem()))) {
             lowDir = "";
             allDirFran = "";
@@ -103,13 +104,23 @@ public class GoogleMapHome {
             Duration durationFran = new Duration();
             Duration durationWhit = new Duration();
             String origin = addressFill.getValue();
-            DirectionsResult results = DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).await();
+            DirectionsResult results = DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).mode(TravelMode.DRIVING).awaitIgnoreError();
+            if(results == null){
+                errorMes.setText("There is no driving directions available for this address");
+                errorMes.setVisible(true);
+                return;
+            }
             DirectionsLeg[] feet = results.routes[0].legs;
 
             for (DirectionsLeg foot : feet) {
                 durationFran = foot.duration;
             }
-            DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).await();
+            DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).mode(TravelMode.DRIVING).awaitIgnoreError();
+            if(results2 == null){
+                errorMes.setText("There is no driving directions available for this address");
+                errorMes.setVisible(true);
+                return;
+            }
             DirectionsLeg[] feet2 = results2.routes[0].legs;
 
             for (DirectionsLeg foot : feet2) {
