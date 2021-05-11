@@ -35,7 +35,7 @@
             </Text>
             <VBox alignment="TOP_CENTER" prefHeight="113.0" prefWidth="332.0">
                <children>
-                  <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please submit a valid address before printing." wrappingWidth="340.0">
+                  <Text fx:id="errorMes" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid address" wrappingWidth="340.0">
                      <font>
                         <Font size="16.0" />
                      </font>
