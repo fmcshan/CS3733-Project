@@ -775,7 +775,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             onTopOfTopElements.getChildren().remove(renderedAddNode); // Hide old node
         }
         renderedAddNode = new Circle(t.getX(), t.getY(), 8); // Build potential new node
-        renderedAddNode.setFill(Color.TOMATO); // Set color
+        renderedAddNode.setFill(Color.YELLOW); // Set color
         renderedAddNode.setOpacity(0.9); // Set opacity
         onTopOfTopElements.getChildren().add(renderedAddNode); // Display potential new node
     }

@@ -10,6 +10,7 @@ import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.Database.socketListeners.Initiator;
 import edu.wpi.teamname.Database.socketListeners.RevisionListener;
 import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.RevisionManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import edu.wpi.teamname.views.manager.Snapshot;
 import javafx.application.Platform;
@@ -91,6 +92,7 @@ public class RevisionHistory implements RevisionListener {
     public void restore() {
         cancelButton.setVisible(false);
         restoreButton.setVisible(false);
+        RevisionManager.getInstance().clearQueues();
         PathFindingDatabaseManager.getInstance().insertNodeListIntoDatabase(currentNodes);
         PathFindingDatabaseManager.getInstance().insertEdgeListIntoDatabase(currentEdges);
         defaultPage.refreshData();

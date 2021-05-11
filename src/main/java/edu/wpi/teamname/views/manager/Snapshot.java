@@ -30,14 +30,7 @@ public class Snapshot {
         this.edges = edges;
 
     }
-    public Snapshot(ArrayList<Node> nodes, ArrayList<Edge> edges) {
-        this.Id = Id;
-        this.author = author;
-        this.date = date;
-        this.nodes = nodes;
-        this.edges = edges;
 
-    }
 
     public ArrayList<Node> getNodes() {
         return nodes;
