@@ -168,12 +168,16 @@ public class LocalFailover implements DataListener {
         ArrayList<UserRegistration> checkins = new ArrayList<UserRegistration>();
         checkinArray.forEach(jr -> {
             JSONObject r = (JSONObject) jr;
+            ArrayList<String> reasons = new ArrayList<String>(Arrays.asList(r.getString("reasonsForVisit").split(",")));
+            for (int i = 0; i < reasons.size(); i++) {
+                reasons.set(i, reasons.get(i).replace("'", ""));
+            }
             checkins.add(new UserRegistration(
                     r.getString("uuid"),
                     r.getString("name"),
                     r.getString("date"),
                     r.getLong("submittedAt"),
-                    new ArrayList<String>(Arrays.asList(r.getString("reasonsForVisit").split(","))),
+                    reasons,
                     r.getString("phoneNumber"),
                     r.getBoolean("acknowledged"),
                     r.getDouble("acknowledgedAt"),

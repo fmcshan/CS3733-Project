@@ -53,7 +53,16 @@ public class Submit {
     public void editUserRegistration(UserRegistration _form) {
         if (LocalFailover.getInstance().hasFailedOver()) {
             ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
-            registrations.add(_form);
+            for (int i = 0; i < registrations.size(); i++) {
+                UserRegistration reg = registrations.get(i);
+                if (reg.getUuid().equals(_form.getUuid())) {
+                    reg.setCleared(_form.getCleared());
+                    reg.setDetails(_form.getDetails());
+                    reg.setRating(_form.getRating());
+                    registrations.set(i, reg);
+                    break;
+                }
+            }
             LocalFailover.getInstance().setCheckins(registrations);
             return;
         }
