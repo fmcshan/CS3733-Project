@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -78,6 +79,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private JFXButton testingButton;
     @FXML
     private AnchorPane closedChatBot;
+    @FXML
+    private HBox typingImageBox = new HBox();
+    @FXML
+    private ImageView typing = new ImageView();
+    public long lastMessageTime;
+    public boolean loadingShowing = false;
 
     /**
      * run on startup
@@ -92,6 +99,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
         LoadFXML.setCurrentWindow("");
+
+        // Initialize typing indicator HBox and Image
+        typing.setFitWidth(75);
+        typing.setPreserveRatio(true);
+
+        try {
+            Image image = new Image(getClass().getResource("/edu/wpi/teamname/images/typingImage.gif").toURI().toString());
+            typing.setImage(image);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        VBox.setMargin(typingImageBox, new Insets(0, 0, 5, 10));
+        typingImageBox.getChildren().add(typing);
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -354,7 +374,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         VBox.setMargin(sentPane, new Insets(0, 0, 10, 50));
 
         sentMessage.setText(message);
+
+        if (loadingShowing) {
+            chatBox.getChildren().remove(typingImageBox);
+        }
         chatBox.getChildren().add(sentPane);
+        chatBox.getChildren().add(typingImageBox);
+        loadingShowing = true;
         enteredMessage.clear();
 
         chatBox.heightProperty().addListener(
@@ -373,6 +399,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 Text sentMessage = new Text();
                 sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
                 HBox sentBox = new HBox(sentMessage);
+
                 sentMessage.setText(_msg);
 
                 Bounds bounds = TextBuilder.create().text(_msg).build().getLayoutBounds();
@@ -434,8 +461,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 AnchorPane openChat = new AnchorPane(sentBox);
                 openChat.setMaxWidth(275);
                 VBox.setMargin(openChat, new Insets(0, 0, 10, -50));
-
                 sentMessage.setText(_msg);
+                chatBox.getChildren().remove(typingImageBox);
+                loadingShowing = false;
                 chatBox.getChildren().add(openChat);
                 enteredMessage.clear();
 
