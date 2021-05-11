@@ -43,7 +43,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Text>
-                  <JFXComboBox fx:id="addressFill" focusColor="#ababab" onHidden="#submit" onKeyReleased="#lookUp" prefHeight="51.0" prefWidth="381.0" promptText="Search Address" style="-fx-font-size: 16; -fx-background-color: white;" unFocusColor="#c3c3c3">
+                  <JFXComboBox fx:id="addressFill" focusColor="#ababab" onHidden="#submit" onKeyReleased="#lookUp" prefHeight="51.0" prefWidth="381.0" promptText="Search Address" style="-fx-font-size: 16;" unFocusColor="#c3c3c3">
                      <VBox.margin>
                         <Insets left="25.0" />
                      </VBox.margin>
