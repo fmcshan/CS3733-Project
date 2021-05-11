@@ -226,7 +226,7 @@ public class RevisionHistory implements RevisionListener {
             defaultPage.clearMap();
             currentEdges = newSnap.getEdges();
             currentNodes = newSnap.getNodes();
-            defaultPage.displayNodesAndEdgesPreveiw(newSnap.getNodes(), newSnap.getEdges());
+            defaultPage.displayNodesAndEdgesPreview(newSnap.getNodes(), newSnap.getEdges());
         });
 
         return directionGuiWrapper;
@@ -288,7 +288,7 @@ public class RevisionHistory implements RevisionListener {
 //            System.out.println(_snap.getNodes().size());
             currentNodes = _snap.getNodes();
             currentEdges = _snap.getEdges();
-            defaultPage.displayNodesAndEdgesPreveiw(_snap.getNodes(), _snap.getEdges());
+            defaultPage.displayNodesAndEdgesPreview(_snap.getNodes(), _snap.getEdges());
         });
         return directionGuiWrapper;
     }
