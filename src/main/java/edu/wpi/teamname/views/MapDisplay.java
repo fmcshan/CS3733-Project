@@ -273,7 +273,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                         return; // Don't process drags outside of the map editor.
                     }
-                    System.out.println(LoadFXML.getCurrentWindow());
                     nodeBeingDragged = true;
                     draggedCircle = (Circle) e.getTarget();
                     draggedCircle.setCenterX(e.getX());

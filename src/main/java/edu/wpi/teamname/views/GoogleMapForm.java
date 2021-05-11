@@ -69,6 +69,8 @@ public class GoogleMapForm {
     PlaceAutocompleteRequest.SessionToken token;
     @FXML
     private VBox navBox;
+    @FXML
+    private Navigation navigation;
 
     String allDirFran = "";
     String allDirWhit = "";
@@ -286,5 +288,9 @@ public class GoogleMapForm {
         directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
         return directionGuiWrapper;
+    }
+
+    public void backToNav() {
+        SceneManager.getInstance().getDefaultPage().toggleNav();
     }
 }

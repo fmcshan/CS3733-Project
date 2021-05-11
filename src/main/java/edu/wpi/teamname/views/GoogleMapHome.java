@@ -16,6 +16,7 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -66,6 +67,8 @@ public class GoogleMapHome {
     private ImageView imageBox;
     @FXML
     private VBox navBox;
+    @FXML
+    private Navigation navigation;
 
     String allDirFran = "";
     String allDirWhit = "";
@@ -278,5 +281,9 @@ public class GoogleMapHome {
         directionGuiWrapper.getChildren().add(spacer);
         directionGuiWrapper.getChildren().add(navLabelWrapper);
         return directionGuiWrapper;
+    }
+
+    public void backToNav() {
+        SceneManager.getInstance().getDefaultPage().toggleNav();
     }
 }

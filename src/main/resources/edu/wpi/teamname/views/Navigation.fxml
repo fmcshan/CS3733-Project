@@ -133,7 +133,7 @@
                   <Font size="24.0" />
                </font>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOSPITAL_BUILDING" size="35" translateX="-5.0" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOSPITAL_BUILDING" size="35" styleClass="nav-icon" translateX="-5.0" />
                </graphic>
                <effect>
                   <DropShadow color="#bcbbbb" />
@@ -144,7 +144,7 @@
                   <Font size="24.0" />
                </font>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOME" size="37" translateX="-5.0" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOME" size="37" styleClass="nav-icon" translateX="-5.0" />
                </graphic>
                <padding>
                   <Insets bottom="6.5" right="6.5" top="6.5" />

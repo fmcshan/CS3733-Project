@@ -78,6 +78,11 @@
                         <Font size="24.0" />
                      </font>
                   </JFXButton>
+                  <JFXButton fx:id="backButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#backToNav" prefHeight="50.0" prefWidth="197.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" text="Back" textFill="#bbbbbb">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </HBox>
          </children>

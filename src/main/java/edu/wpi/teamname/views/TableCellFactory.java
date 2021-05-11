@@ -32,7 +32,6 @@ public class TableCellFactory {
         status.setStyle("-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;");
         VBox.setMargin(status, new Insets(0,0,0,15));
         statusWrapper.getChildren().add(status);
-//        statusWrapper.setStyle("-fx-border-color: black;");
 
         String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px;";
         if (_req.isCompleted()) {
@@ -54,7 +53,7 @@ public class TableCellFactory {
 
     private static HBox generate_clear_cell(UserRegistration _reg) {
         HBox clearWrapper = new HBox();
-        clearWrapper.setPrefWidth(50);
+        clearWrapper.setPrefWidth(70);
         clearWrapper.setAlignment(Pos.TOP_CENTER);
         HBox.setMargin(clearWrapper, new Insets(0,0,0,5));
 
@@ -83,13 +82,13 @@ public class TableCellFactory {
 
     private static HBox generate_rating_cell(UserRegistration _reg) {
         HBox ratingWrapper = new HBox();
-        ratingWrapper.setPrefWidth(160);
+        ratingWrapper.setPrefWidth(130);
         ratingWrapper.setAlignment(Pos.TOP_CENTER);
-        HBox.setMargin(ratingWrapper, new Insets(0,0,10,0));
+        HBox.setMargin(ratingWrapper, new Insets(0,0,0,0));
 
         HBox starWrapper = new HBox();
-        starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 0 4;");
-        starWrapper.setPrefWidth(160);
+        starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 10 4;");
+        starWrapper.setPrefWidth(130);
         starWrapper.setAlignment(Pos.TOP_CENTER);
 
         if (_reg.getRating() == -1) {
@@ -367,7 +366,7 @@ public class TableCellFactory {
         Label phone = generate_label(_reg.getPhoneNumber(), 115);
         HBox clearCell = generate_clear_cell(_reg);
         HBox ratingCell = generate_rating_cell(_reg);
-        Label comments = generate_label(_reg.getDetails(), 375);
+        Label comments = generate_label(_reg.getDetails(), 385);
         VBox contextMenu = generate_context_menu_check_in(_reg);
 
         wrap_elements(cellWrapper, name, date, reason, phone, clearCell, ratingCell, comments, contextMenu);

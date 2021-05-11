@@ -21,6 +21,12 @@ public class Submit {
     }
 
     public void submitUserRegistration(UserRegistration _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+            registrations.add(_form);
+            LocalFailover.getInstance().setCheckins(registrations);
+            return;
+        }
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         _form.getReasonsForVisit().forEach(r -> reasons.append("'").append(r).append("', "));
@@ -45,6 +51,12 @@ public class Submit {
     }
 
     public void editUserRegistration(UserRegistration _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+            registrations.add(_form);
+            LocalFailover.getInstance().setCheckins(registrations);
+            return;
+        }
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         try {
@@ -364,6 +376,12 @@ public class Submit {
     }
 
     public void reserveParking(String toReserve) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<String> spaces = LocalStorage.getInstance().getReservedParkingSpaces();
+            spaces.add(toReserve);
+            LocalFailover.getInstance().setSpaces(spaces);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);

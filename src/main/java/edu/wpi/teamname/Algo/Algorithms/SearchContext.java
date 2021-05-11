@@ -63,11 +63,11 @@ public class SearchContext {
         ArrayList<Node> DFSPaths = searchAlgorithms.getPath();
         searchAlgorithms.setContext(new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
         ArrayList<Node> BFSPaths = searchAlgorithms.getPath();
-        searchAlgorithms.setContext(new Djikstra(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
-        ArrayList<Node> DjikstraPaths = searchAlgorithms.getPath();
+        searchAlgorithms.setContext(new Dijkstra(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
+        ArrayList<Node> DijkstraPaths = searchAlgorithms.getPath();
         searchAlgorithms.setContext(new BestFirstSearch(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
         ArrayList<Node> BestFirstSearchPaths = searchAlgorithms.getPath();
-        System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DjikstraPaths.size() + " " + BestFirstSearchPaths.size());
+        System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DijkstraPaths.size() + " " + BestFirstSearchPaths.size());
     }
 
 }
