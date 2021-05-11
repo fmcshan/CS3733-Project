@@ -103,9 +103,9 @@
                   <Insets top="35.0" />
                </VBox.margin>
             </HBox>
-            <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="312.0" prefWidth="330.0" style="-fx-background-color: white;" vbarPolicy="NEVER">
+            <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="249.0" prefWidth="330.0" style="-fx-background-color: white;" vbarPolicy="NEVER">
                <content>
-                  <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="312.0" prefWidth="329.0" style="-fx-background-color: white;">
+                  <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="323.0" prefWidth="329.0" style="-fx-background-color: white;">
                      <children>
                         <Label fx:id="textDirections" layoutX="170.0" layoutY="10.0" textFill="#9e9e9e" />
                      </children>
@@ -115,25 +115,23 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="25.0" />
                </VBox.margin>
             </ScrollPane>
-            <VBox fx:id="algoBox" maxHeight="1.0">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-               <children>
-                  <JFXComboBox fx:id="algoCombo" focusColor="WHITE" onAction="#changeSearch" prefWidth="300.0" promptText="Search Algorithm" style="-fx-font-size: 24; -fx-background-color: white; -fx-border-image-width: 5; -fx-border-color: #c3c3c3; -fx-border-radius: 6;" unFocusColor="WHITE">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXComboBox>
-               </children>
-            </VBox>
+         </children>
+      </VBox>
+      <VBox fx:id="algoBox" alignment="TOP_CENTER" maxHeight="1.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXComboBox fx:id="algoCombo" focusColor="WHITE" onAction="#changeSearch" prefWidth="300.0" promptText="Search Algorithm" style="-fx-font-size: 24; -fx-border-color: #c3c3c3; -fx-border-radius: 8; -fx-prompt-text-fill: #9e9e9e;" unFocusColor="WHITE">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </JFXComboBox>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
             <JFXButton fx:id="mapsButton" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#googleMaps" prefHeight="47.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" stylesheets="@../images/buttonHover.css" text="Travel to Hospital" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="25.0" top="15.0" />
-               </VBox.margin>
                <graphic>
                   <MaterialDesignIconView fill="#c3c3c3" glyphName="HOSPITAL_BUILDING" size="35" translateX="-5.0" />
                </graphic>
@@ -141,15 +139,12 @@
                   <DropShadow color="#bcbbbb" />
                </effect>
             </JFXButton>
-            <JFXButton fx:id="mapsButtonHome" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#googleMapsHome" prefHeight="47.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" stylesheets="@../images/buttonHover.css" text="Travel Home" textFill="#bbbbbb">
+            <JFXButton fx:id="mapsButtonHome" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#googleMapsHome" prefHeight="53.0" prefWidth="300.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8px;" stylesheets="@../images/buttonHover.css" text="Travel Home" textFill="#bbbbbb">
                <font>
                   <Font size="24.0" />
                </font>
-               <VBox.margin>
-                  <Insets bottom="25.0" left="25.0" top="5.0" />
-               </VBox.margin>
                <graphic>
-                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOME" size="38" translateX="-5.0" />
+                  <MaterialDesignIconView fill="#c3c3c3" glyphName="HOME" size="37" translateX="-5.0" />
                </graphic>
                <padding>
                   <Insets bottom="6.5" right="6.5" top="6.5" />

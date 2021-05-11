@@ -1,6 +1,8 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.ChatBotCommand;
+import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -52,6 +54,15 @@ public class ChatSocket extends WebSocketClient {
             return;
         }
 
+        if (payloadId.equals("client_command")) {
+            payload = payload.getJSONObject("data");
+            JSONObject params = payload.getJSONObject("params");
+            String start = params.getString("from");
+            String end = params.getString("to");
+            NavManager.getInstance().triggerNavigationCommand(start, end);
+            return;
+        }
+
 
     }
 
@@ -61,6 +72,5 @@ public class ChatSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-        System.out.println("Chat socket error");
     }
 }

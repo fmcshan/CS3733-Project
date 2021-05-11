@@ -41,6 +41,16 @@ public class Initiator extends Thread {
         }
     }
 
+    public void triggerRegistrationRefresh() {
+        for (RegistrationListener l : registrationListeners) {
+            try {
+                l.registrationRefresh();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void triggerGiftDelivery(MasterServiceRequestStorage _obj) {
         for (GiftDeliveryListener l : giftDeliveryListeners) {
             try {

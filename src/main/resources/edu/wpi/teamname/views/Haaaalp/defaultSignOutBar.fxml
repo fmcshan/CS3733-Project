@@ -15,12 +15,24 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="340.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <HBox alignment="TOP_RIGHT">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#openCredits" prefHeight="32.0" prefWidth="32.0" ripplerFill="#c3c3c3">
+                     <graphic>
+                        <MaterialDesignIconView fill="#c3c3c3" glyphName="INFORMATION_OUTLINE" size="35" wrappingWidth="32.0" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
             <Label text="Help">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
             <Text fill="#868686" layoutX="43.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Brigham and Women's Hospital." textAlignment="CENTER" wrappingWidth="327.0">

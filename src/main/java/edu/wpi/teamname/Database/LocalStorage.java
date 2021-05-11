@@ -28,23 +28,14 @@ public class LocalStorage {
         this.reservedParkingSpaces = spaces;
     }
     public ArrayList<String> getReservedParkingSpaces() {
-        if (this.reservedParkingSpaces == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.reservedParkingSpaces != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.reservedParkingSpaces == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.reservedParkingSpaces == null) {
-            return null;
-        } else {
-            return (ArrayList<String>) this.reservedParkingSpaces.clone();
-        }
+        return (ArrayList<String>) this.reservedParkingSpaces.clone();
     }
 
 
@@ -58,23 +49,14 @@ public class LocalStorage {
     }
 
     public ArrayList<Node> getNodes() {
-        if (this.nodes == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.nodes != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.nodes == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.nodes == null) {
-            return null;
-        } else {
-            return (ArrayList<Node>) this.nodes.clone();
-        }
+        return (ArrayList<Node>) this.nodes.clone();
     }
 
     public void setNodes(ArrayList<Node> nodes) {
@@ -92,23 +74,14 @@ public class LocalStorage {
     }
 
     public ArrayList<Edge> getEdges() {
-        if (this.edges == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.edges != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.edges == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.edges == null) {
-            return null;
-        } else {
-            return (ArrayList<Edge>) this.edges.clone();
-        }
+        return (ArrayList<Edge>) this.edges.clone();
     }
 
     public void setEdges(ArrayList<Edge> edges) {
@@ -125,23 +98,21 @@ public class LocalStorage {
             return null;
         }
 
-        if (this.registrations == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.registrations != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.registrations == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.registrations == null) {
-            return null;
-        } else {
-            return (ArrayList<UserRegistration>) this.registrations.clone();
-        }
+
+        ArrayList<UserRegistration> ret = (ArrayList<UserRegistration>) this.registrations.clone();
+        ret.sort(new Comparator<UserRegistration>() {
+            public int compare(UserRegistration r1, UserRegistration r2) {
+                return (int) (r2.getSubmittedAt() - r1.getSubmittedAt());
+            }
+        });
+        return ret;
     }
 
     public void linkEdges() {
@@ -181,29 +152,20 @@ public class LocalStorage {
             return null;
         }
 
-        if (this.masterStorages == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.masterStorages != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.reservedParkingSpaces == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.masterStorages == null) {
-            return null;
-        } else {
-            ArrayList<MasterServiceRequestStorage> ret = (ArrayList<MasterServiceRequestStorage>) this.masterStorages.clone();
-            ret.sort(new Comparator<MasterServiceRequestStorage>() {
-                public int compare(MasterServiceRequestStorage r1, MasterServiceRequestStorage r2) {
-                    return r2.getId() - r1.getId();
-                }
-            });
-            return ret;
-        }
+        ArrayList<MasterServiceRequestStorage> ret = (ArrayList<MasterServiceRequestStorage>) this.masterStorages.clone();
+        ret.sort(new Comparator<MasterServiceRequestStorage>() {
+            public int compare(MasterServiceRequestStorage r1, MasterServiceRequestStorage r2) {
+                return r2.getId() - r1.getId();
+            }
+        });
+        return ret;
     }
 
     public ArrayList<User> getUsers() {
@@ -211,22 +173,13 @@ public class LocalStorage {
             return null;
         }
 
-        if (this.users == null) {
-            for (int i = 0; i < 100; i++) {
-                if (this.users != null) {
-                    break;
-                }
-                try {
-                    TimeUnit.MILLISECONDS.sleep((long) 200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.users == null) {
+            try {
+                TimeUnit.MILLISECONDS.sleep((long) 200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        if (this.users == null) {
-            return null;
-        } else {
-            return (ArrayList<User>) this.users.clone();
-        }
+        return (ArrayList<User>) this.users.clone();
     }
 }

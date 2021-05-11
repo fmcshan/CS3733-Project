@@ -102,6 +102,11 @@ public class ChangeManager extends Thread {
                 Initiator.getInstance().triggerRegistration(_change.getUserRegistration());
                 break;
 
+            case "check_in_updated":
+                LocalStorage.getInstance().setRegistrations(_change.getUserRegistrations());
+                Initiator.getInstance().triggerRegistrationRefresh();
+                break;
+
             case "submit_gift_delivery":
                 LocalStorage.getInstance().addMasterStorage(_change.getGiftDelivery());
                 Initiator.getInstance().triggerGiftDelivery(_change.getGiftDelivery());

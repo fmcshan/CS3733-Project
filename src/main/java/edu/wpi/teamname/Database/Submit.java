@@ -10,24 +10,27 @@ import java.util.UUID;
 
 public class Submit {
     private static final Submit instance = new Submit();
-    private Submit() {}
+    String SERVER_URL = Config.getInstance().getServerUrl();
+
+    private Submit() {
+    }
 
     public static synchronized Submit getInstance() {
         return instance;
     }
 
-    String SERVER_URL = Config.getInstance().getServerUrl();
-
     public void submitUserRegistration(UserRegistration _form) {
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         _form.getReasonsForVisit().forEach(r -> reasons.append("'").append(r).append("', "));
-        reasons.setLength(reasons.length()-2);
+        reasons.setLength(reasons.length() - 2);
         reasons.append("]");
 
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("uuid", _form.getUuid());
         data.put("name", _form.getName());
+        data.put("submittedAt", String.valueOf(_form.getSubmittedAt()));
         data.put("reasons", reasons.toString());
         data.put("date", _form.getDate());
         data.put("phone", _form.getPhoneNumber());
@@ -40,12 +43,40 @@ public class Submit {
         AsynchronousQueue.getInstance().add(task);
     }
 
+    public void editUserRegistration(UserRegistration _form) {
+        StringBuilder reasons = new StringBuilder();
+        reasons.append("[");
+        try {
+            _form.getReasonsForVisit().forEach(r -> reasons.append("'").append(r).append("', "));
+            reasons.setLength(reasons.length() - 2);
+        } catch (Exception ignored) {}
+        reasons.append("]");
+
+        JSONObject data = new JSONObject();
+        data.put("CHANGE_ID", UUID.randomUUID().toString());
+        data.put("uuid", _form.getUuid());
+        data.put("name", _form.getName());
+        data.put("reasons", reasons.toString());
+        data.put("rating", String.valueOf(_form.getRating()));
+        data.put("details", _form.getDetails());
+        data.put("cleared", String.valueOf(_form.getCleared()));
+        data.put("date", _form.getDate());
+        data.put("phone", _form.getPhoneNumber());
+        data.put("ack", String.valueOf(_form.isAcknowledged()));
+        data.put("ackAt", String.valueOf(_form.getAcknowledgedAt()));
+
+        String url = SERVER_URL + "/api/edit-check-in";
+
+        AsynchronousTask task = new AsynchronousTask(url, data, "POST");
+        AsynchronousQueue.getInstance().add(task);
+    }
+
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
         StringBuilder items = new StringBuilder();
         items.append("[");
         if (_form.getRequestedItems().size() > 0) {
             _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
-            items.setLength(items.length()-2);
+            items.setLength(items.length() - 2);
         }
         items.append("]");
 
@@ -71,7 +102,7 @@ public class Submit {
         StringBuilder items = new StringBuilder();
         items.append("[");
         _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
-        items.setLength(items.length()-2);
+        items.setLength(items.length() - 2);
         items.append("]");
 
         JSONObject data = new JSONObject();
@@ -192,7 +223,7 @@ public class Submit {
         AsynchronousQueue.getInstance().add(task);
     }
 
-    public void addEdge(Edge _form ) {
+    public void addEdge(Edge _form) {
         modifyEdge(_form, "add");
     }
 

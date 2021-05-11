@@ -186,7 +186,7 @@
                         <Insets left="25.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="askLocation" text="Please enter the location for dropoff and pick-up." textFill="#868686">
+                  <Label fx:id="askLocation" text="Please enter the location for drop off and pick-up." textFill="#868686">
                      <font>
                         <Font size="16.0" />
                      </font>

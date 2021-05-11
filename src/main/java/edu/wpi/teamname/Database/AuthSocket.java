@@ -67,6 +67,15 @@ public class AuthSocket extends WebSocketClient {
             return;
         }
 
+        if (payloadId.equals("check_in_updated")) {
+            payload = payload.getJSONObject("data");
+            Change change = new Change("check_in_updated");
+            change.setUserRegistrations(Parser.parseUserRegistrations(payload.getJSONArray("registrations")));
+
+            ChangeManager.getInstance().processChange(change);
+            return;
+        }
+
         if (payloadId.equals("submit_gift_delivery")) {
             payload = payload.getJSONObject("data");
             Change change = new Change("submit_gift_delivery");
@@ -100,8 +109,6 @@ public class AuthSocket extends WebSocketClient {
             ChangeManager.getInstance().processChange(change);
             return;
         }
-
-
     }
 
     @Override
@@ -110,6 +117,5 @@ public class AuthSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-        System.out.println("Auth socket error");
     }
 }

@@ -1,6 +1,7 @@
 package edu.wpi.teamname.Authentication;
 
-import com.google.api.client.json.Json;
+import edu.wpi.teamname.Database.LocalFailover;
+import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Requests;
 import edu.wpi.teamname.simplify.Response;
@@ -21,6 +22,10 @@ public class AuthenticationManager {
         return instance;
     }
 
+    public void setUser(User _user) {
+        this.user = _user;
+    }
+
     public Boolean isAuthenticated() {
         return (user != null);
     }
@@ -38,6 +43,27 @@ public class AuthenticationManager {
     }
 
     public void loginWithEmailAndPassword(String _email, String _password) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            try {
+                LocalStorage.getInstance().getUsers().forEach(u -> {
+                    if (u.getEmail().toLowerCase().equals(_email.toLowerCase())) {
+                        if (u.getPassword().equals(_password)) {
+                            AuthenticationManager.getInstance().setUser(u);
+
+                            for (AuthListener ull : listeners) {
+                                try {
+                                    ull.userLogin();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                });
+                return;
+            } catch (Exception ignored) {
+            }
+        }
         try {
             JSONObject data = new JSONObject();
             data.put("email", _email);
@@ -57,15 +83,20 @@ public class AuthenticationManager {
             boolean isAdmin;
             if (body.has("admin")) {
                 isAdmin = body.getBoolean("admin");
-            } else { isAdmin = false; }
+            } else {
+                isAdmin = false;
+            }
 
             boolean isEmployee;
             if (body.has("employee")) {
                 isEmployee = body.getBoolean("employee");
-            } else { isEmployee = false; }
+            } else {
+                isEmployee = false;
+            }
 
             user = new User(
                     payload.getString("idToken"),
+                    payload.getString("refreshToken"),
                     payload.getString("displayName"),
                     payload.getString("email"),
                     payload.getString("localId"),
@@ -77,7 +108,9 @@ public class AuthenticationManager {
             for (AuthListener ull : listeners) {
                 try {
                     ull.userLogin();
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             if (isAdmin || isEmployee) {
@@ -105,4 +138,14 @@ public class AuthenticationManager {
         return user.getIdToken();
     }
 
+    public void refreshUser() {
+        JSONObject data = new JSONObject();
+        data.put("grant_type", "refresh_token");
+        data.put("refresh_token", user.getRefreshToken());
+
+        // Refresh endpoint
+        Response res = Requests.post("https://securetoken.googleapis.com/v1/token?key=AIzaSyDmVqldcnj6B21Ah339Zj_aJgC7p5Jq1zE", data);
+        JSONObject payload = res.json();
+        user.refresh(payload.getString("id_token"), payload.getString("refresh_token"));
+    }
 }

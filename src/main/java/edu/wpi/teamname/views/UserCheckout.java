@@ -4,7 +4,9 @@ import com.jfoenix.controls.*;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.Database.UserRegistration;
 import edu.wpi.teamname.views.manager.ButtonManager;
+import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -35,12 +37,11 @@ public class UserCheckout {
         HashMap<String, Node> mapNodes = new HashMap<>();
         HashMap<String, Node> mapNodes2 = new HashMap<>();
         @FXML
-        void initialize(){
-           refreshSpaces();
-            //System.out.println("ONCE");
+        void initialize() {
+            refreshSpaces();
         }
 
-        void refreshSpaces(){
+        void refreshSpaces() {
 
             listOfNodes = LocalStorage.getInstance().getNodes();
             for (Node n: listOfNodes
@@ -62,12 +63,23 @@ public class UserCheckout {
             LoadFXML.setCurrentWindow("");
             defaultPage.toggleCheckIn();
             SceneManager.getInstance().getDefaultPage().closeWindows();
-            if (!(parkingBox.getValue() == null)){
+            if (!(parkingBox.getValue() == null)) {
                 Submit.getInstance().removeParking(mapNodes2.get(parkingBox.getValue()).getNodeID());
                 Submit.getInstance().removeParking(parkingBox.getValue());
                 ButtonManager.remove_class();
             }
-        }
 
+            if (NavManager.getInstance().getUserRegistration() != null) {
+                UserRegistration formData = NavManager.getInstance().getUserRegistration();
+                formData.setRating((int) experienceSlider.getValue());
+                formData.setDetails(additionalComments.getText());
+                Submit.getInstance().editUserRegistration(formData);
+                NavManager.getInstance().setUserRegistration(null);
+            }
+
+            successPop.setPrefWidth(657.0);
+            Success success = new Success(this);
+            success.loadSuccess("You have successfully checked out. Thank you for visiting Brigham and Women's Hospital!", successPop);
+        }
     }
 

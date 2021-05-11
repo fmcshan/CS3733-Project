@@ -6,13 +6,11 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teamname.Algo.Algorithms.*;
 import edu.wpi.teamname.Algo.Node;
-import edu.wpi.teamname.Algo.Pathfinding.NavigationHelper;
+import edu.wpi.teamname.Algo.Pathfinding.TextDirections;
 import edu.wpi.teamname.Algo.Pathfinding.NodeSortComparator;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Database.LocalStorage;
-import edu.wpi.teamname.views.manager.LevelChangeListener;
-import edu.wpi.teamname.views.manager.LevelManager;
-import edu.wpi.teamname.views.manager.SceneManager;
+import edu.wpi.teamname.views.manager.*;
 import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -46,13 +45,13 @@ import static javafx.scene.effect.BlurType.GAUSSIAN;
  *
  * @author Anthony LoPresti, Lauren Sowerbutts, Justin Luce
  */
-public class Navigation implements LevelChangeListener {
+public class Navigation implements LevelChangeListener, ChatBotCommand {
 
     ArrayList<Node> listOfNodes = new ArrayList<>(); // create a list of nodes
     HashMap<String, Node> nodesMap = new HashMap<>();
     ArrayList<String> listOfNodeNames = new ArrayList<>();
     ArrayList<Node> nodeNameNodes = new ArrayList<>();
-    SearchContext searchAlgorithm = new SearchContext(new AStar());
+    SearchContext searchAlgorithm;
     boolean pathCanceled = false;
     @FXML
     private ComboBox<String> toCombo, algoCombo; // destination drop down
@@ -84,12 +83,12 @@ public class Navigation implements LevelChangeListener {
 
     public void setToCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(toCombo);
-        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+        box.setValue(node.getLongName() + " [" + node.getFloor() + "]");
     }
 
     public void setFromCombo(Node node) {
         AutoCompleteComboBoxListener box = new AutoCompleteComboBoxListener(fromCombo);
-        box.setValue(node.getLongName() + "[" + node.getFloor() + "]");
+        box.setValue(node.getLongName() + " [" + node.getFloor() + "]");
     }
 
     /**
@@ -112,15 +111,17 @@ public class Navigation implements LevelChangeListener {
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             algoBox.setVisible(true);
-            algoCombo.setStyle("-fx-font-size: 24");
+            scrollBar.setMinHeight(249);
+           // algoCombo.setStyle("-fx-font-size: 24; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         } else {
             algoBox.setVisible(false);
-            algoCombo.setStyle("-fx-font-size: .1");
+            scrollBar.setMinHeight(322);
+           // algoCombo.setStyle("-fx-font-size: .1; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         }
 
         if (COVIDMessage.covid) {
             AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener(toCombo);
-            listener.setValue("Emergency Department Entrance[1]");
+            listener.setValue("Emergency Department Entrance [1]");
             COVIDMessage.covid = false;
         }
 
@@ -140,8 +141,11 @@ public class Navigation implements LevelChangeListener {
         scrollBar.setFitToHeight(true);
         SceneManager.getInstance().getDefaultPage().getStartNode();
         SceneManager.getInstance().getDefaultPage().getEndNode();
-        AStar aStar = new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), false);
-        SearchContext searchAlgorithm = new SearchContext(aStar);
+        AStar aStar = new AStar();
+        searchAlgorithm = new SearchContext(aStar);
+
+        NavManager.getInstance().addChatBotCommandListener(this);
+        navigateChat();
     }
 
     public HBox generateNavElem(String _direction) {
@@ -215,7 +219,7 @@ public class Navigation implements LevelChangeListener {
                 return;
             }
             nodesMap.put(n.getNodeID(), n); // put the nodes in the hashmap
-            listOfNodeNames.add(n.getLongName() + "[" + n.getFloor() + "]");
+            listOfNodeNames.add(n.getLongName() + " [" + n.getFloor() + "]");
             //Collections.sort(listOfNodeNames);
             nodeNameNodes.add(n);
 
@@ -260,10 +264,13 @@ public class Navigation implements LevelChangeListener {
      * When both comboboxes are filled calculate a path using AStar
      */
     public void calcPath() {
+        //searchAlgorithm = new SearchContext(new AStar());
         if (fromCombo.getValue() == null || !listOfNodeNames.contains(fromCombo.getValue())) { // if combobox is null or the key does not exist
             return;
         }
         SceneManager.getInstance().getDefaultPage().setStartNode(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue()))); // get starting location
+        LevelManager.getInstance().setFloor(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())).getFloor()); // switch to the floor that the selected node is on
+        selectButtonBasedOnFloor();
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getStartNode());
         SceneManager.getInstance().getDefaultPage().displayNodes(SceneManager.getInstance().getDefaultPage().getStartAndEnd(), .8, false);
         if (toCombo.getValue() == null || !listOfNodeNames.contains(toCombo.getValue())) { // if combobox is null or the key does not exist
@@ -282,24 +289,26 @@ public class Navigation implements LevelChangeListener {
 
         SceneManager.getInstance().getDefaultPage().setEndNode(nodeNameNodes.get(listOfNodeNames.indexOf(toCombo.getValue()))); // get ending location
         SceneManager.getInstance().getDefaultPage().addStartAndEnd(SceneManager.getInstance().getDefaultPage().getEndNode());
-        if (handicap)
+        if (handicap )
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
-        else if(!(algoCombo.getValue() == null))
+        else if(algoCombo.getValue() == null)
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
-        else
+        else if(algoCombo.getValue().equals("AStar"))
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
-        System.out.println(handicap);
+        //System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
+        System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
+        System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
-        String currentFloor = LevelManager.getInstance().getFloor();
-        mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
+        System.out.println(searchAlgorithm.getAlgorithm());
+        //System.out.println(path);
         ArrayList<String> relevantFloors = searchAlgorithm.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
         for (String floor : allFloors) {
             if (!relevantFloors.contains(floor))
                 unusedFloors.add(floor);
         }
-        NavigationHelper nav = new NavigationHelper(searchAlgorithm);
+        TextDirections nav = new TextDirections(searchAlgorithm);
         nav.getTextDirections().forEach(t -> {
             navBox.getChildren().add(generateNavElem(t));
             VBox spacer = new VBox();
@@ -333,10 +342,38 @@ public class Navigation implements LevelChangeListener {
         if (!pathCanceled) {
             String currentFloor = LevelManager.getInstance().getFloor();
             if (searchAlgorithm == null) {
+                System.out.println("hello");
                 return;
             }
-            mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor));
+            if (toCombo.getValue() == null || fromCombo.getValue() == null) {
+                return;
+            }
+            if(!(searchAlgorithm.getPath().size() == 0))
+                mapDisplay.drawPath(searchAlgorithm.getFloorPaths(currentFloor), true);
             SceneManager.getInstance().getDefaultPage().displayNodes(path, .8, false);
+        }
+    }
+
+    private void selectButtonBasedOnFloor() {
+        switch(nodeNameNodes.get(listOfNodeNames.indexOf(fromCombo.getValue())).getFloor()) {
+            case "L2":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().L2Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "L1":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().L1Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "G":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().groundBttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "1":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor1Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "2":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor2Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
+            case "3":
+                ButtonManager.selectButton(SceneManager.getInstance().getDefaultPage().floor3Bttn, "floor-btn-selected", ButtonManager.floors);
+                break;
         }
     }
 
@@ -348,6 +385,7 @@ public class Navigation implements LevelChangeListener {
         allFloors.add("1");
         allFloors.add("2");
         allFloors.add("3");
+        mapDisplay.resetZoomAndPan();
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         SceneManager.getInstance().getDefaultPage().listOfNode.clear();
@@ -401,5 +439,32 @@ public class Navigation implements LevelChangeListener {
                 calcPath();
                 break;
         }
+    }
+
+    public void navigateChat() {
+        String from = NavManager.getInstance().getStartNode();
+        String to = NavManager.getInstance().getEndNode();
+        if (from == null || to == null || from.equals("") || to.equals("")) {
+            return;
+        }
+        NavManager.getInstance().resetNodes();
+        navigate(from, to);
+    }
+
+    @Override
+    public void navigate(String _from, String _to) {
+        Node startNode;
+        Node endNode;
+        ArrayList<String> nodeLongNames = new ArrayList<>();
+        for (Node node : listOfNodes) {
+            nodeLongNames.add(node.getLongName());
+        }
+        startNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
+        endNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
+
+        setFromCombo(startNode);
+        setToCombo(endNode);
+
+        calcPath();
     }
 }

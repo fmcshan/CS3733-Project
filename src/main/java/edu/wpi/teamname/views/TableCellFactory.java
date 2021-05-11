@@ -2,9 +2,12 @@ package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.MasterServiceRequestStorage;
 import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.Database.UserRegistration;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -29,6 +32,7 @@ public class TableCellFactory {
         status.setStyle("-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;");
         VBox.setMargin(status, new Insets(0,0,0,15));
         statusWrapper.getChildren().add(status);
+//        statusWrapper.setStyle("-fx-border-color: black;");
 
         String base_style = "-fx-font-size: 14px; -fx-padding: 0 15px 0 15px;-fx-background-radius: 4px;";
         if (_req.isCompleted()) {
@@ -46,6 +50,66 @@ public class TableCellFactory {
         }
 
         return statusWrapper;
+    }
+
+    private static HBox generate_clear_cell(UserRegistration _reg) {
+        HBox clearWrapper = new HBox();
+        clearWrapper.setPrefWidth(50);
+        clearWrapper.setAlignment(Pos.TOP_CENTER);
+        HBox.setMargin(clearWrapper, new Insets(0,0,0,5));
+
+        MaterialDesignIconView clearedIcon;
+        if (_reg.getCleared()) {
+            clearedIcon = new MaterialDesignIconView(MaterialDesignIcon.CHECKBOX_MARKED_CIRCLE);
+            clearedIcon.setGlyphSize(25);
+            clearedIcon.setFill(Color.valueOf("317fb8"));
+            clearWrapper.getChildren().add(clearedIcon);
+        }
+
+        return clearWrapper;
+    }
+
+    private static MaterialDesignIconView generate_star(boolean empty) {
+        MaterialDesignIconView star;
+        if (empty) {
+            star = new MaterialDesignIconView(MaterialDesignIcon.STAR_OUTLINE);
+        } else {
+            star = new MaterialDesignIconView(MaterialDesignIcon.STAR);
+        }
+        star.setFill(Color.valueOf("317fb8"));
+        star.setGlyphSize(20);
+        return star;
+    }
+
+    private static HBox generate_rating_cell(UserRegistration _reg) {
+        HBox ratingWrapper = new HBox();
+        ratingWrapper.setPrefWidth(160);
+        ratingWrapper.setAlignment(Pos.TOP_CENTER);
+        HBox.setMargin(ratingWrapper, new Insets(0,0,10,0));
+
+        HBox starWrapper = new HBox();
+        starWrapper.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 0 0 0 4;");
+        starWrapper.setPrefWidth(160);
+        starWrapper.setAlignment(Pos.TOP_CENTER);
+
+        if (_reg.getRating() == -1) {
+            for (int i = 0; i < 5; i++) {
+                starWrapper.getChildren().add(generate_star(true));
+            }
+            return starWrapper;
+        }
+
+        for (int i = 0; i < _reg.getRating(); i++) {
+            starWrapper.getChildren().add(generate_star(false));
+        }
+
+        for (int i = 0; i < 5 -_reg.getRating(); i++) {
+            starWrapper.getChildren().add(generate_star(true));
+        }
+
+        ratingWrapper.getChildren().add(starWrapper);
+
+        return ratingWrapper;
     }
 
     private static void addHoverListener(HBox _toAdd) {
@@ -133,6 +197,41 @@ public class TableCellFactory {
             }
         });
 
+        return menuWrapper;
+    }
+
+    private static VBox generate_context_menu_check_in(UserRegistration _reg) {
+        VBox menuWrapper = new VBox();
+        menuWrapper.setPrefWidth(60);
+        menuWrapper.setAlignment(Pos.CENTER);
+        JFXButton btn = new JFXButton();
+        btn.setText("...");
+        btn.setStyle("-fx-font-size: 28px; -fx-font-weight: 800; -fx-padding: -15px 0 0 0px;");
+        menuWrapper.getChildren().add(btn);
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem cleared = new MenuItem("Mark as Cleared");
+        MenuItem reset = new MenuItem("Reset");
+        cleared.setStyle("-fx-font-weight: 400; -fx-font-size: 14");
+        reset.setStyle("-fx-font-weight: 400; -fx-font-size: 14");
+        if (!_reg.getCleared()) {
+            contextMenu.getItems().add(cleared);
+        } else {
+            contextMenu.getItems().add(reset);
+        }
+        btn.setOnAction(b -> contextMenu.show(btn, Side.BOTTOM, 0, 0));
+        contextMenu.setOnAction(e -> {
+            switch (((MenuItem) e.getTarget()).getText()) {
+                case "Mark as Cleared":
+                    _reg.setCleared(true);
+                    Submit.getInstance().editUserRegistration(_reg);
+                    break;
+                case "Reset":
+                    _reg.setCleared(false);
+                    Submit.getInstance().editUserRegistration(_reg);
+                    break;
+            }
+        });
         return menuWrapper;
     }
 
@@ -256,6 +355,22 @@ public class TableCellFactory {
         VBox contextMenu = generate_context_menu(_req);
 
         wrap_elements(cellWrapper, name, urgency, reason, location, employeeSelection, statusCell, contextMenu);
+        return cellWrapper;
+    }
+
+    public static HBox generate_check_in(UserRegistration _reg) {
+        HBox cellWrapper = generate_row();
+        Label name = generate_label(_reg.getName(), 200);
+        Label date = generate_label(_reg.getDate(), 100);
+        String reasonText = String.join(", ", _reg.getReasonsForVisit());
+        Label reason = generate_label(reasonText, 200);
+        Label phone = generate_label(_reg.getPhoneNumber(), 115);
+        HBox clearCell = generate_clear_cell(_reg);
+        HBox ratingCell = generate_rating_cell(_reg);
+        Label comments = generate_label(_reg.getDetails(), 375);
+        VBox contextMenu = generate_context_menu_check_in(_reg);
+
+        wrap_elements(cellWrapper, name, date, reason, phone, clearCell, ratingCell, comments, contextMenu);
         return cellWrapper;
     }
 }

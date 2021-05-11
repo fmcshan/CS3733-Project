@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXButton fx:id="mapEditorButton" alignment="BASELINE_LEFT" onAction="#openMapEditor" prefHeight="52.0" prefWidth="325.0" styleClass="navigation" stylesheets="@../images/buttonHover.css" text="Map Editor" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditorButton">
+<JFXButton fx:id="mapEditorButton" alignment="BASELINE_LEFT" onAction="#openMapEditor" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css" text="Map Editor" textAlignment="CENTER" textFill="#9e9e9e" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapEditorButton">
    <font>
       <Font size="24.0" />
    </font>
@@ -16,7 +16,7 @@
    <graphic>
       <VBox>
          <children>
-            <MaterialDesignIconView fill="#c3c3c3" glyphName="VECTOR_LINE" size="36" />
+            <MaterialDesignIconView fill="#c3c3c3" glyphName="VECTOR_LINE" size="36" styleClass="nav-icon" />
          </children>
          <padding>
             <Insets right="10.0" />
