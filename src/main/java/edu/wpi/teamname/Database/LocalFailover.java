@@ -196,7 +196,6 @@ public class LocalFailover implements DataListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        refreshData();
     }
 
     // Save arraylist of nodes to JSON
@@ -275,8 +274,9 @@ public class LocalFailover implements DataListener {
             newUsers.put(newUser);
         });
 
-        this.db.put("edges", newUsers);
+        this.db.put("users", newUsers);
         saveDb();
+        refreshData();
         Initiator.getInstance().triggerUserRefresh();
     }
 

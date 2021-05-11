@@ -239,6 +239,7 @@ public class Submit {
     public void newUser(User _form) {
         if (LocalFailover.getInstance().hasFailedOver()) {
             ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            _form.setFailoverId(UUID.randomUUID().toString());
             users.add(_form);
             LocalFailover.getInstance().setUsers(users);
             return;
