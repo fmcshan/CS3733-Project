@@ -198,7 +198,7 @@ public class GoogleMapForm {
     public String cleanTags(String s) {
         s = s.replaceAll("<[^>]*>", "");
         s = s.replaceAll("Destination", "\nDestination");
-        lowDir = lowDir.replaceAll("&nbsp;", "");
+        s = s.replace("&nbsp;"," ");
         return s;
     }
 
