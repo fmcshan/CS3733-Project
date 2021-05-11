@@ -4,6 +4,8 @@ import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.Snapshot;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -12,21 +14,29 @@ import java.util.concurrent.TimeUnit;
 
 public class LocalStorage {
     private static final LocalStorage instance = new LocalStorage();
-    private LocalStorage() {};
+
+    private LocalStorage() {
+    }
+
+    ;
 
     private List<DataListener> listeners = new ArrayList<DataListener>();
-
+    private ArrayList<Event> events;
+    private ArrayList<Snapshot> snapshots;
     private ArrayList<Node> nodes;
     private HashMap<String, Node> nodeMap;
+    private HashMap<String, Event> eventMap;
+    private HashMap<String, Snapshot> snapMap;
     private ArrayList<Edge> edges;
     private ArrayList<UserRegistration> registrations;
     private ArrayList<MasterServiceRequestStorage> masterStorages;
     private ArrayList<User> users;
     private ArrayList<String> reservedParkingSpaces;
 
-    public void setReservedParkingSpaces(ArrayList<String> spaces){
+    public void setReservedParkingSpaces(ArrayList<String> spaces) {
         this.reservedParkingSpaces = spaces;
     }
+
     public ArrayList<String> getReservedParkingSpaces() {
         while (this.reservedParkingSpaces == null) {
             try {
@@ -37,7 +47,6 @@ public class LocalStorage {
         }
         return (ArrayList<String>) this.reservedParkingSpaces.clone();
     }
-
 
 
     public static synchronized LocalStorage getInstance() {
@@ -62,15 +71,44 @@ public class LocalStorage {
     public void setNodes(ArrayList<Node> nodes) {
         this.nodes = nodes;
         nodeMap = new HashMap<String, Node>();
-        nodes.forEach( n -> {
+        nodes.forEach(n -> {
             nodeMap.put(n.getNodeID(), n);
         });
 
         for (DataListener dl : listeners) {
             try {
                 dl.nodesSet(nodes);
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+        eventMap = new HashMap<String, Event>();
+        events.forEach(e -> {
+            eventMap.put(e.getId(), e);
+        });
+
+//        for (DataListener dl : listeners) {
+//            try {
+//                dl.nodesSet(nodes);
+//            } catch (Exception e) { e.printStackTrace(); }
+//        }
+    }
+    public ArrayList<Event> getEvents() {
+        return (ArrayList<Event>) this.events.clone();
+    }
+    public ArrayList<Snapshot> getSnapshots() {
+        return (ArrayList<Snapshot>) this.snapshots.clone();
+    }
+    public void setSnapshots(ArrayList<Snapshot> snapshots) {
+        this.snapshots = snapshots;
+        snapMap = new HashMap<String, Snapshot>();
+        snapshots.forEach(s -> {
+            snapMap.put(s.getId(), s);
+        });
     }
 
     public ArrayList<Edge> getEdges() {
@@ -89,7 +127,9 @@ public class LocalStorage {
         for (DataListener dl : listeners) {
             try {
                 dl.edgesSet(edges);
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

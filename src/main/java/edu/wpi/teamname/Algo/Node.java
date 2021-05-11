@@ -1,5 +1,8 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.Action;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
@@ -342,5 +345,6 @@ public class Node {
     public int hashCode() {
         return Objects.hash(nodeID);
     }
+
 
 }

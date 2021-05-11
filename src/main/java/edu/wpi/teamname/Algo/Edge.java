@@ -1,9 +1,12 @@
 package edu.wpi.teamname.Algo;
 
+import edu.wpi.teamname.Database.Submit;
+import edu.wpi.teamname.views.manager.Action;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Edge {
+public class Edge  {
 
     private String edgeID;
 
@@ -53,4 +56,6 @@ public class Edge {
     public int hashCode() {
         return Objects.hash(edgeID);
     }
+
+
 }

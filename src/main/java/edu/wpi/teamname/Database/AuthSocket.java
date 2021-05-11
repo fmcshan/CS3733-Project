@@ -1,6 +1,9 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.views.manager.Action;
+import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.Snapshot;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -54,6 +57,37 @@ public class AuthSocket extends WebSocketClient {
 
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
             LocalStorage.getInstance().setUsers(users);
+
+            ArrayList<Snapshot> snaps = Parser.parseSnapshots(payload.getJSONArray("snapshots"));
+            ArrayList<Event> events = Parser.parseEvents(payload.getJSONArray("events"));
+            LocalStorage.getInstance().setEvents(events);
+            LocalStorage.getInstance().setSnapshots(snaps);
+
+
+//            for (Event e: events
+//            ) {
+//                System.out.println(e.toString());
+//
+//            }
+//            for (Snapshot s: snaps
+//                 ) {
+//                System.out.println(s.toString());
+//
+//            }
+
+//            System.out.println(payload.getJSONArray("snapshots"));
+//            System.out.println(payload.getJSONArray("events"));
+
+            // TODO Switch to edit node (instead of remove and add)
+            // TODO Parse snapshots
+            // TODO Parse events
+            // Both stored in revision history
+            // Add snapshots to map
+            // Add events to snapshots
+            // TODO List snapshots and events in rev history menu (generate list programmatically, see TableCellFactory for ex)
+            // TODO On click, generate arraylist of nodes & edges, preview locally
+            // TODO on restore, send arraylists to db (same as csv loading)
+
 
             return;
         }

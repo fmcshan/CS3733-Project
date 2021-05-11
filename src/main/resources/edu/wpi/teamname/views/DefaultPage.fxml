@@ -570,7 +570,8 @@
                   <VBox fx:id="employeePop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="325.0" stylesheets="@../images/buttonHover.css">
                      <VBox.margin>
                         <Insets top="15.0" />
-                     </VBox.margin></VBox>
+                     </VBox.margin>
+                  </VBox>
                </children>
             </VBox>
          </children></VBox>

@@ -6,11 +6,18 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.teamname.Database.*;
 import edu.wpi.teamname.views.manager.*;
 import javafx.animation.PathTransition;
+import javafx.scene.input.*;
+import javafx.scene.input.*;
 import javafx.application.Platform;
 import javafx.scene.shape.*;
+import javafx.animation.Transition;
+import edu.wpi.teamname.Algo.Algorithms.AStar;
 import edu.wpi.teamname.Algo.Edge;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.CSVOperator;
+import edu.wpi.teamname.Database.LocalStorage;
+import edu.wpi.teamname.Database.PathFindingDatabaseManager;
 import edu.wpi.teamname.simplify.Shutdown;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
@@ -28,34 +35,25 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MapDisplay implements LevelChangeListener, DataListener {
     @FXML
-    private VBox addBtwn;
-    @FXML
-    private VBox removeBtwn;
-    @FXML
-    private JFXComboBox<String> comboRemoveBtwn;
-    @FXML
     public Navigation navigation;
-    double scaledWidth = 5000;
-    double scaledHeight = 3400.0;
-    double scaledX = 0;
+   public double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
-    double scaledY = 0;
-    double mapWidth; //= 1000.0;
-    double mapHeight;// = 680.0;
-    double fileWidth; //= 5000.0;
-    double fileHeight;// = 3400.0;
+    double mapWidth, mapHeight, fileWidth, fileHeight;
     double fileFxWidthRatio = mapWidth / fileWidth;
     double fileFxHeightRatio = mapHeight / fileHeight;
     int xGridSize = 8;
@@ -73,121 +71,78 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     HashMap<Line, Edge> renderedEdgeMap = new HashMap<>();
     HashMap<Node, ArrayList<Edge>> edgesBetweenFloors = new HashMap<>();
     HashMap<String, Edge> doubleEdges = new HashMap<>();
+    List<String> allActions = new ArrayList<>();
     boolean nodeBeingDragged = false;
     Circle renderedAddNode;
     int addNodeX;
     int addNodeY;
-    Circle dragStart;
-    Circle dragEnd;
+    Circle dragStart, dragEnd, draggedCircle;
     Line renderedEdgePreview;
-    Node addEdgeStart;
-    Node addEdgeEnd;
-    Node selectedNode;
-    Node tempNode;
-    @FXML
-    private JFXComboBox<String> btwnEdge;
+    Node addEdgeStart, addEdgeEnd, selectedNode, tempNode,
+            draggedNode, startNode, endNode;
+
     Edge selectedEdge;
-    Circle draggedCircle;
-    Node draggedNode;
-    Node startNode;
-    Node endNode;
+     private Boolean revisionHistoryMode = false;
+    ArrayList<Node> revisionNodes = new ArrayList<>();
+    ArrayList<Edge> revisionEdges = new ArrayList<>();
+
     HashMap<String, ArrayList<Text>> nodeToTextMap = new HashMap<>();
     HashMap<Text, Edge> textToEdgeMap = new HashMap<>();
     ArrayList<Text> allText = new ArrayList<>();
-    HashMap<Text, Node> textToNodeMap = new HashMap<>();
     HashMap<String, Node> portalNodeMap = new HashMap<>();
     HashMap<Node, Circle> edgeCircles = new HashMap<>();
-    HashMap<Node, ArrayList<String>> textLevels = new HashMap<>();
-    boolean start = false;
-    boolean end = false;
-    boolean animationFlag = false;
-    Node sNode;
-    Node fNode;
+
+    public void setRevisionHistoryMode(Boolean revisionHistoryMode) {
+        this.revisionHistoryMode = revisionHistoryMode;
+    }
+
+    public Boolean getRevisionHistoryMode() {
+        return revisionHistoryMode;
+    }
+
     @FXML
-    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop; // vbox to populate with different fxml such as Navigation/Requests/Login
+    VBox popPop, popPop2, adminPop, requestPop, registrationPop, employeePop, editHistoryBox; // vbox to populate with different fxml such as Navigation/Requests/Login
     @FXML
     Path tonysPath; // the path displayed on the map
     @FXML
-    JFXButton adminButton; // button that allows you to sign in
-    @FXML
     ImageView hospitalMap;
-    @FXML
-    AnchorPane topElements;
-    @FXML
-    AnchorPane onTopOfTopElements;
     @FXML
     StackPane stackPane; // the pane the map is housed in
     @FXML
-    VBox addNodeField;
+    VBox addNodeField, addEdgeField;
     @FXML
-    VBox addEdgeField;
+    AnchorPane pathAnchor, anchor, topElements, onTopOfTopElements;
+    ZoomAndPan zoom;
     @FXML
-    AnchorPane pathAnchor;
+    private JFXButton edge_3, edge_2, edge_1, edge_g, edge_l1, edge_l2;              //floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
     @FXML
-    AnchorPane anchor;
-    @FXML
-    JFXTextField edgeIdPreview;
-    ZoomAndPan zooM;
-    @FXML
-    public JFXButton floor3Bttn, floor2Bttn, floor1Bttn, L1Bttn, L2Bttn, groundBttn;
-    @FXML
-    private JFXButton edge_3;
-    @FXML
-    private JFXButton edge_2;
-    @FXML
-    private JFXButton edge_1;
-    @FXML
-    private JFXButton edge_g;
-    @FXML
-    private JFXButton edge_l1;
-    @FXML
-    private JFXButton edge_l2;
-    @FXML
-    private JFXTextField nodeId;
-    @FXML
-    private JFXTextField nodeBuilding;
-    @FXML
-    private JFXTextField nodeType;
-    @FXML
-    private JFXTextField nodeShortName;
-    @FXML
-    private JFXTextField nodeLongName;
+    private JFXTextField nodeId, nodeBuilding, nodeType, nodeShortName, nodeLongName, edgeIdPreview,
+            editNodeBuilding, editNodeType, editNodeShortName, editNodeLongName, deleteEdgeId;
     @FXML
     private Label addEdgeWarning;
     @FXML
-    private VBox editNode; // Edit node menu
-    @FXML
-    private VBox edgeBetweenFloors;
-    @FXML
-    private JFXTextField editNodeBuilding;
-    @FXML
-    private JFXTextField editNodeType;
-    @FXML
-    private JFXTextField editNodeShortName;
-    @FXML
-    private JFXTextField editNodeLongName;
-    @FXML
-    private VBox deleteEdge;
-    @FXML
-    private JFXTextField deleteEdgeId;
-    @FXML
-    private VBox rightClick;
+    private VBox editNode, edgeBetweenFloors, deleteEdge, rightClick;
+
     PathTransition pathTransition;
     @FXML
-    JFXButton navButton, reqButton, checkButton, exitButton;
-    @FXML
-    SubmittedRequestsButton submittedRequestsButton;
-    @FXML
-    EmployeeTableButton employeeTableButton;
-    @FXML
-    SubmittedRegistrationsButton submittedRegistrationsButton;
-    @FXML
-    MapEditorButton mapEditorButton;
+    JFXButton navButton, reqButton, checkButton, exitButton, adminButton, L1Bttn, L2Bttn,
+            groundBttn, floor1Bttn, floor3Bttn, floor2Bttn;
+
+//    @FXML
+//    SubmittedRequestsButton submittedRequestsButton;
+//    @FXML
+//    EmployeeTableButton employeeTableButton;
+//    @FXML
+//    SubmittedRegistrationsButton submittedRegistrationsButton;
+//    @FXML
+//    MapEditorButton mapEditorButton;
+//
+//    static  DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
 
     public MapDisplay() {
-        zooM = new ZoomAndPan(this);
+        zoom = new ZoomAndPan(this);
     }
 
     public Path getTonysPath() {
@@ -314,6 +269,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             }
                         });
 
+
+
                 if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                     return; // Don't process drags outside of the map editor.
                 }
@@ -332,7 +289,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                         return;
                     }
                     nodeBeingDragged = false;
-                    Submit.getInstance().editNode(new Node(
+                    List<Action> list = new LinkedList<>();
+                    Node oldNode = localNodesMap.get(draggedNode.getNodeID());
+                    Node newNode = new Node(
                             draggedNode.getNodeID(),
                             (int) actualX(draggedCircle.getCenterX()),
                             (int) actualY(draggedCircle.getCenterY()),
@@ -340,8 +299,41 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             draggedNode.getBuilding(),
                             draggedNode.getNodeType(),
                             draggedNode.getLongName(),
-                            draggedNode.getShortName()
-                    ));
+                            draggedNode.getShortName());
+                    list.add(new ManageEdit(oldNode,newNode));
+//                    list.add(new ManageDelete(localNodesMap.get(draggedNode.getNodeID()), new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName())));
+
+//                    System.out.println(localNodesMap.get(draggedNode.getNodeID()));
+//                    list.add(new ManageAdd(new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName()
+//                    )));
+                    RevisionManager.getInstance().execute(list);
+                    refreshHistory();
+//                    Submit.getInstance().editNode(new Node(
+//                            draggedNode.getNodeID(),
+//                            (int) actualX(draggedCircle.getCenterX()),
+//                            (int) actualY(draggedCircle.getCenterY()),
+//                            draggedNode.getFloor(),
+//                            draggedNode.getBuilding(),
+//                            draggedNode.getNodeType(),
+//                            draggedNode.getLongName(),
+//                            draggedNode.getShortName()
+//                    ));
                     draggedCircle = null;
                     draggedNode = null;
                     refreshData();
@@ -418,6 +410,21 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         });
     }
 
+    public void rebootMapEditor(){
+
+        LocalStorage.getInstance().addListener(this);
+        LevelManager.getInstance().addListener(this);
+        popPop.setPickOnBounds(false); // Set popPop to disregard clicks
+        popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
+
+//        displayEdges(.6); // Render edges at 0.6 opacity
+//        displayNodes(.8); // Render nodes at 0.8 opacity
+        undoRedo();
+        //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
+        onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
+        addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
+       // zoom.zoomAndPan();
+    }
     /**
      * Initialize the map editor/display
      */
@@ -428,12 +435,13 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         popPop2.setPickOnBounds(false); // Set popPop to disregard clicks
         displayEdges(.6); // Render edges at 0.6 opacity
         displayNodes(.8); // Render nodes at 0.8 opacity
-
+        undoRedo();
         //   onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_CLICKED, this::processClick); // Handled in zoom/pan now
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
         addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
+
     }
 
     private void addEscListener(javafx.scene.Node _toAdd) {
@@ -503,17 +511,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     public double xCoordOnTopElement(int _x) {
         int x = xGridSnap(_x);
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((x - scaledX) / viewportSmallestScale) * windowSmallestScale;
+        return ((x - scaledX) / smallestScales().get(0)) * smallestScales().get(1);
     }
 
     /**
@@ -523,17 +521,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * @return The actual (non-scaled) x coordinate
      */
     public double actualX(double _x) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return (((_x / windowSmallestScale) * viewportSmallestScale) + scaledX);
+        return (((_x / smallestScales().get(1)) * smallestScales().get(0)) + scaledX);
     }
 
     /**
@@ -544,6 +532,10 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      */
     public double yCoordOnTopElement(int _y) {
         int y = yGridSnap(_y);
+        return ((y - scaledY) / smallestScales().get(0)) * smallestScales().get(1);
+    }
+
+    public LinkedList<Double> smallestScales() {
         double fileWidth = 5000.0;
         double fileHeight = 3400.0;
 
@@ -554,7 +546,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
         double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
         double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return ((y - scaledY) / viewportSmallestScale) * windowSmallestScale;
+        LinkedList<Double> smallestScales = new LinkedList<>();
+        smallestScales.add(viewportSmallestScale);
+        smallestScales.add(windowSmallestScale);
+
+        return smallestScales;
     }
 
     /**
@@ -564,17 +560,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * @return The actual (non-scaled) x coordinate
      */
     public double actualY(double _y) {
-        double fileWidth = 5000.0;
-        double fileHeight = 3400.0;
-
-        double widthScale = scaledWidth / fileWidth;
-        double heightScale = scaledHeight / fileHeight;
-
-        double windowWidth = hospitalMap.boundsInParentProperty().get().getWidth() / fileWidth;
-        double windowHeight = hospitalMap.boundsInParentProperty().get().getHeight() / fileHeight;
-        double windowSmallestScale = Math.max(Math.min(windowHeight, windowWidth), 0);
-        double viewportSmallestScale = Math.max(Math.min(heightScale, widthScale), 0);
-        return (((_y / windowSmallestScale) * viewportSmallestScale) + scaledY);
+        return (((_y / smallestScales().get(1)) * smallestScales().get(0)) + scaledY);
     }
 
     private void refreshDraggedEdges() {
@@ -671,6 +657,52 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
     }
 
+//    public ArrayList<>
+    public void displayNodesAndEdgesPreveiw(ArrayList<Node> nodes, ArrayList<Edge> edges) {
+//zoom.zoomAndPan();
+//        if(!revisionHistoryMode){
+//            System.out.println("again");
+         revisionHistoryMode = true;
+             revisionNodes = nodes;
+             revisionEdges = edges;//}
+
+        HashMap<String, Node> nodeHash = new HashMap<>();
+        for (Node n : nodes
+        ) {
+            if (nodeWithinSpec(n)) {
+                nodeHash.put(n.getNodeID(), n);
+            }
+        }
+        edges.forEach(e ->
+
+        { // For edge in localEdges
+            if (nodeHash.containsKey(e.getStartNode()) && nodeHash.containsKey(e.getEndNode())) { // If nodes exist
+                if (onScreen(nodeHash.get(e.getStartNode())) || onScreen(nodeHash.get(e.getEndNode()))) { //draw the edge if one of the ends is on screen.
+                    double startX = xCoordOnTopElement(nodeHash.get(e.getStartNode()).getX());
+                    double startY = yCoordOnTopElement(nodeHash.get(e.getStartNode()).getY());
+                    double endX = xCoordOnTopElement(nodeHash.get(e.getEndNode()).getX());
+                    double endY = yCoordOnTopElement(nodeHash.get(e.getEndNode()).getY());
+                    // Create edge
+                    LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
+                    Line edge = edgeLocation.stroke(Color.RED).strokeWidth(3).build(); // Style edge
+                    onTopOfTopElements.getChildren().add(edge); // Render edge
+                }
+            }
+        });
+        for (Node n : nodes
+        ) {
+            if (nodeWithinSpec(n) && onScreen(n)) {
+                Tooltip tooltip = new Tooltip(n.getLongName());
+                Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
+                circle.setStrokeWidth(4); // Set the stroke with to 4
+                circle.setStroke(Color.TRANSPARENT);
+                circle.setFill(Color.valueOf("2f6d99")); // Set node color to olive
+//            circle.setOpacity(_opacity); // Set node opacity (input param)
+                onTopOfTopElements.getChildren().add(circle);
+            }
+        }
+    }
+
     /**
      * Process click events. Handles showing/hiding the add node
      * and add edge popups, as well as add edge tracking vars.
@@ -713,32 +745,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
         if (t.getTarget() instanceof Circle) { // If a circle object is clicked
 
-//            if (!start && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-//                start = true;
-//                sNode = renderedNodeMap.get(((Circle) t.getTarget()));
-//                System.out.println("start " + start);
-//            } else if (!end && (renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("STAI") || renderedNodeMap.get((Circle) t.getTarget()).getNodeType().equals("ELEV"))) {
-//                fNode = renderedNodeMap.get(((Circle) t.getTarget()));
-//                end = true;
-//                System.out.println("end " + end);
-//            }
-//            if (start && end) {
-//                Submit.getInstance().addEdge(new Edge(sNode.getNodeID() + "_" + fNode.getNodeID(), sNode.getNodeID(), fNode.getNodeID()));
-//                System.out.println("edge submitted");
-//                refreshData();
-//                renderMap();
-//                start = false;
-//                end = false;
-//                fNode = null;
-//                sNode = null;
-//                floor1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                floor2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                floor3Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-//                L1Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                L2Bttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(10), new Insets(0))));
-//                groundBttn.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-//                return;
-//            }
             if (dragStart == null) { // If dragStart isn't null (IE: If the user has started to create an edge)
                 hidePopups(); // Hide all popups
                 dragStart = (Circle) t.getTarget(); // Set selected circle as dragStart (new edge start)
@@ -819,7 +825,12 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     private void processRightClick(MouseEvent t) {
         if (t.getTarget() instanceof Text) {
             Edge toRemove = textToEdgeMap.get(t.getTarget());
-            Submit.getInstance().removeEdge(toRemove);
+            //System.out.println("Gotcha");
+            //Submit.getInstance().removeEdge(toRemove);
+            List<Action> list = new LinkedList<>();
+            list.add(new ManageDelete(toRemove));
+            RevisionManager.getInstance().execute(list);
+            refreshHistory();
             refreshData();
             renderMap();
             return;
@@ -873,20 +884,28 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     }
 
     @FXML
-    void press1(ActionEvent event) {
+    void pressX(JFXButton edgeX, String num) {
         tempNode = selectedNode;
-        if (edge_1.getTextFill().toString().equals("0x9e9e9eff")) {
+        if (edgeX.getTextFill().toString().equals("0x9e9e9eff")) {
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 for (Edge e : edgesBetweenFloors.get(tempNode)
                 ) {
                     //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("1")) {
+                    if (nodesMap.get(e.getEndNode()).getFloor().equals(num)) {
                         String otherEdge = e.getEndNode() + "_" + e.getStartNode();
                         Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
                         edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        //Submit.getInstance().removeEdge(e); // Remove the selected edge
+                        List<Action> list = new LinkedList<>();
+                        list.add(new ManageDelete(e));
+                        RevisionManager.getInstance().execute(list);
+                        refreshHistory();
                         edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+                        //Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
+                        List<Action> list2 = new LinkedList<>();
+                        list2.add(new ManageDelete(newEdge));
+                        RevisionManager.getInstance().execute(list2);
+                        refreshHistory();
 
                     }
                 }
@@ -899,7 +918,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             listOfNodes = LocalStorage.getInstance().getNodes();
             for (Node n : listOfNodes
             ) {
-                if (n.getFloor().equals("1")) {
+                if (n.getFloor().equals(num)) {
                     double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
                     if (temporary < distance) {
                         tempNode2 = n;
@@ -908,9 +927,13 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 }
 
             }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
+//            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
             Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
+            //Submit.getInstance().addEdge(newEdge);
+            List<Action> list2 = new LinkedList<>();
+            list2.add(new ManageAdd(newEdge));
+            RevisionManager.getInstance().execute(list2);
+            refreshHistory();
             if (edgesBetweenFloors.containsKey(tempNode2)) {
                 edgesBetweenFloors.get(tempNode2).add(newEdge);
             } else {
@@ -919,7 +942,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 edgesBetweenFloors.put(tempNode2, list);
             }
             Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
+            //Submit.getInstance().addEdge(newEdge2);
+            List<Action> list3 = new LinkedList<>();
+            list3.add(new ManageAdd(newEdge2));
+            RevisionManager.getInstance().execute(list3);
+            refreshHistory();
             if (edgesBetweenFloors.containsKey(tempNode)) {
                 edgesBetweenFloors.get(tempNode).add(newEdge2);
             } else {
@@ -932,324 +959,39 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
         renderMap(); // Render/refresh the map (with the updated data)
+    }
+
+    @FXML
+    void press1(ActionEvent event) {
+        pressX(edge_1, "1");
     }
 
     @FXML
     void press2(ActionEvent event) {
-        tempNode = selectedNode;
-        if (edge_2.getTextFill().toString().equals("0x9e9e9eff")) {
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                for (Edge e : edgesBetweenFloors.get(tempNode)
-                ) {
-                    //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("2")) {
-                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
-                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
-                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
-                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
-
-                    }
-                }
-            }
-
-
-        } else {
-            Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
-            listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n : listOfNodes
-            ) {
-                if (n.getFloor().equals("2")) {
-                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
-                    if (temporary < distance) {
-                        tempNode2 = n;
-                        distance = temporary;
-                    }
-                }
-
-            }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
-            if (edgesBetweenFloors.containsKey(tempNode2)) {
-                edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge);
-                edgesBetweenFloors.put(tempNode2, list);
-            }
-            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge2);
-                edgesBetweenFloors.put(tempNode, list);
-            }
-
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the data from LocalStorage
-        renderMap(); // Render/refresh the map (with the updated data)
-
+        pressX(edge_2, "2");
     }
 
     @FXML
     void press3(ActionEvent event) {
-        tempNode = selectedNode;
-        if (edge_3.getTextFill().toString().equals("0x9e9e9eff")) {
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                for (Edge e : edgesBetweenFloors.get(tempNode)
-                ) {
-                    //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("3")) {
-                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
-                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
-                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
-                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
-
-                    }
-                }
-            }
-
-
-        } else {
-            Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
-            listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n : listOfNodes
-            ) {
-                if (n.getFloor().equals("3")) {
-                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
-                    if (temporary < distance) {
-                        tempNode2 = n;
-                        distance = temporary;
-                    }
-                }
-
-            }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
-            if (edgesBetweenFloors.containsKey(tempNode2)) {
-                edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge);
-                edgesBetweenFloors.put(tempNode2, list);
-            }
-            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge2);
-                edgesBetweenFloors.put(tempNode, list);
-            }
-
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the data from LocalStorage
-        renderMap(); // Render/refresh the map (with the updated data)
-
-
+        pressX(edge_3, "3");
     }
 
 
     @FXML
     void pressG(ActionEvent event) {
-        tempNode = selectedNode;
-        if (edge_g.getTextFill().toString().equals("0x9e9e9eff")) {
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                for (Edge e : edgesBetweenFloors.get(tempNode)
-                ) {
-                    //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("G")) {
-                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
-                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
-                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
-                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
-
-                    }
-                }
-            }
-
-
-        } else {
-            Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
-            listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n : listOfNodes
-            ) {
-                if (n.getFloor().equals("G")) {
-                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
-                    if (temporary < distance) {
-                        tempNode2 = n;
-                        distance = temporary;
-                    }
-                }
-
-            }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
-            if (edgesBetweenFloors.containsKey(tempNode2)) {
-                edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge);
-                edgesBetweenFloors.put(tempNode2, list);
-            }
-            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge2);
-                edgesBetweenFloors.put(tempNode, list);
-            }
-
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the data from LocalStorage
-        renderMap(); // Render/refresh the map (with the updated data)
-
+        pressX(edge_g, "G");
     }
 
 
     @FXML
     void pressL1(ActionEvent event) {
-        tempNode = selectedNode;
-        if (edge_l1.getTextFill().toString().equals("0x9e9e9eff")) {
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                for (Edge e : edgesBetweenFloors.get(tempNode)
-                ) {
-                    //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L1")) {
-                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
-                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
-                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
-                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
-
-                    }
-                }
-            }
-
-
-        } else {
-            Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
-            listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n : listOfNodes
-            ) {
-                if (n.getFloor().equals("L1")) {
-                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
-                    if (temporary < distance) {
-                        tempNode2 = n;
-                        distance = temporary;
-                    }
-                }
-
-            }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
-            if (edgesBetweenFloors.containsKey(tempNode2)) {
-                edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge);
-                edgesBetweenFloors.put(tempNode2, list);
-            }
-            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge2);
-                edgesBetweenFloors.put(tempNode, list);
-            }
-
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the data from LocalStorage
-        renderMap(); // Render/refresh the map (with the updated data)
+        pressX(edge_l1, "L1");
     }
 
 
     @FXML
     void pressL2(ActionEvent event) {
-        tempNode = selectedNode;
-        if (edge_l2.getTextFill().toString().equals("0x9e9e9eff")) {
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                for (Edge e : edgesBetweenFloors.get(tempNode)
-                ) {
-                    //System.out.println(e.getEdgeID());
-                    if (nodesMap.get(e.getEndNode()).getFloor().equals("L2")) {
-                        String otherEdge = e.getEndNode() + "_" + e.getStartNode();
-                        Edge newEdge = new Edge(otherEdge, e.getEndNode(), e.getStartNode());
-                        edgesBetweenFloors.remove(tempNode, edgesMap.get(e));
-                        Submit.getInstance().removeEdge(e); // Remove the selected edge
-                        edgesBetweenFloors.remove(nodesMap.get(e.getEndNode()), otherEdge);
-                        Submit.getInstance().removeEdge(newEdge); // Remove the selected edge
-
-                    }
-                }
-            }
-
-
-        } else {
-            Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
-            listOfNodes = LocalStorage.getInstance().getNodes();
-            for (Node n : listOfNodes
-            ) {
-                if (n.getFloor().equals("L2")) {
-                    double temporary = Math.sqrt(Math.pow(n.getX() - selectedNode.getX(), 2) + Math.pow(n.getY() - selectedNode.getY(), 2));
-                    if (temporary < distance) {
-                        tempNode2 = n;
-                        distance = temporary;
-                    }
-                }
-
-            }
-            System.out.println("TEMP NODE 2: " + tempNode2.getLongName());
-            Edge newEdge = new Edge(tempNode2.getNodeID() + "_" + tempNode.getNodeID(), tempNode2.getNodeID(), tempNode.getNodeID());
-            Submit.getInstance().addEdge(newEdge);
-            if (edgesBetweenFloors.containsKey(tempNode2)) {
-                edgesBetweenFloors.get(tempNode2).add(newEdge);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge);
-                edgesBetweenFloors.put(tempNode2, list);
-            }
-            Edge newEdge2 = new Edge(tempNode.getNodeID() + "_" + tempNode2.getNodeID(), tempNode.getNodeID(), tempNode2.getNodeID());
-            Submit.getInstance().addEdge(newEdge2);
-            if (edgesBetweenFloors.containsKey(tempNode)) {
-                edgesBetweenFloors.get(tempNode).add(newEdge2);
-            } else {
-                ArrayList<Edge> list = new ArrayList<>();
-                list.add(newEdge2);
-                edgesBetweenFloors.put(tempNode, list);
-            }
-
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the data from LocalStorage
-        renderMap(); // Render/refresh the map (with the updated data)
-
+        pressX(edge_l2, "L2");
     }
 
     /**
@@ -1266,7 +1008,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         editNodeShortName.setText(_toEdit.getShortName()); // Set the short name field
         editNodeLongName.setText(_toEdit.getLongName()); // Set the long name field
 
-        // TODO enable edge buttons
         if (edgesBetweenFloors.get(_toEdit) != null) {
             edgesBetweenFloors.get(_toEdit).forEach(e -> {
                 switch (nodesMap.get(e.getEndNode()).getFloor()) {
@@ -1413,7 +1154,17 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 editNodeLongName.getText(),
                 editNodeShortName.getText()
         );
-        Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
+        //Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
+        List<Action> list = new LinkedList<>();
+        ManageEdit edit = new ManageEdit(localNodesMap.get(newNode.getNodeID()),newNode);
+//        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()), newNode);
+//        ManageAdd add = new ManageAdd(newNode);
+        //list.add(delete);
+//        list.add(add);
+        list.add(edit);
+        RevisionManager.getInstance().execute(list);
+        refreshHistory();
+        hidePopups(); // Hide all popups
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the data from LocalStorage
         renderMap(); // Render/refresh the map (with the updated data)
@@ -1426,7 +1177,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      */
     @FXML
     private void confirmDeleteEdge(ActionEvent e) {
-        Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
+        //Submit.getInstance().removeEdge(selectedEdge); // Remove the selected edge
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageDelete(selectedEdge));
+        RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1439,7 +1194,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      */
     @FXML
     private void deleteNode(ActionEvent e) {
-        Submit.getInstance().removeNode(selectedNode); // Remove the selected node
+        //Submit.getInstance().removeNode(selectedNode); // Remove the selected node
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageDelete(selectedNode));
+        RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
@@ -1475,50 +1234,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         }
     }
 
-    @FXML
-    void addBetween() {
-        addBtwn.setVisible(true);
-        Edge newEdge = new Edge(tempNode.getNodeID() + "_" + btwnEdge.getValue(), tempNode.getNodeID(), btwnEdge.getValue());
-        Submit.getInstance().addEdge(newEdge);
-        if (edgesBetweenFloors.containsKey(tempNode)) {
-            if (!(edgesBetweenFloors.get(tempNode).contains(tempNode))) {
-                edgesBetweenFloors.get(tempNode).add(newEdge);
-            }
-
-        } else {
-            ArrayList<Edge> list = new ArrayList<>();
-            list.add(newEdge);
-            edgesBetweenFloors.put(tempNode, list);
-        }
-        Edge newEdge2 = new Edge(btwnEdge.getValue() + "_" + tempNode.getNodeID(), btwnEdge.getValue(), tempNode.getNodeID());
-        Submit.getInstance().addEdge(newEdge2);
-        if (edgesBetweenFloors.containsKey(nodesMap.get(btwnEdge.getValue()))) {
-            if (!(edgesBetweenFloors.get(nodesMap.get(btwnEdge.getValue())).contains(newEdge2))) {
-                edgesBetweenFloors.get(nodesMap.get(btwnEdge.getValue())).add(newEdge2);
-            }
-        } else {
-            ArrayList<Edge> list2 = new ArrayList<>();
-            list2.add(newEdge2);
-            edgesBetweenFloors.put(nodesMap.get(btwnEdge.getValue()), list2);
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the node and edge data from LocalStorage
-        renderMap();
-    }
-
-    @FXML
-    void removeBetween() {
-        if (!(comboRemoveBtwn.getValue() == null)) {
-            String otherEdge = doubleEdges.get(comboRemoveBtwn.getValue()).getEndNode() + "_" + doubleEdges.get(comboRemoveBtwn.getValue()).getStartNode();
-            edgesBetweenFloors.remove(tempNode, edgesMap.get(comboRemoveBtwn.getValue()));
-            Submit.getInstance().removeEdge(doubleEdges.get(comboRemoveBtwn.getValue())); // Remove the selected edge
-            edgesBetweenFloors.remove(nodesMap.get(doubleEdges.get(comboRemoveBtwn.getValue()).getEndNode()), otherEdge);
-            Submit.getInstance().removeEdge(doubleEdges.get(otherEdge)); // Remove the selected edge
-        }
-        hidePopups(); // Hide all popups
-        refreshData(); // Refresh the node and edge data from LocalStorage
-        renderMap();
-    }
 
     /**
      * Hide add edge confirmation popup
@@ -1597,7 +1312,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
-            zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
+            zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
         for (ArrayList<Node> listOfNode : _listOfNodes) {
             Node firstNode = listOfNode.get(0);
@@ -1758,10 +1473,29 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             return; // Don't add edge
         }
         Edge edge = new Edge(edgeId, addEdgeStart.getNodeID(), addEdgeEnd.getNodeID()); // Create new edge
-        Submit.getInstance().addEdge(edge); // Add the edge
+        //Submit.getInstance().addEdge(edge); // Add the edge
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageAdd(edge));
+        RevisionManager.getInstance().execute(list);
+        refreshHistory();
         hidePopups(); // Hide all popups
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
+    }
+
+    @FXML
+    void undoChange() {
+        RevisionManager.getInstance().undo();
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
+
+    }
+
+    @FXML
+    void redoChange() {
+        RevisionManager.getInstance().redo();
+        refreshData(); // Refresh the node and edge data from LocalStorage
+        renderMap();
     }
 
     /**
@@ -1795,9 +1529,14 @@ public class MapDisplay implements LevelChangeListener, DataListener {
      * @param nodeShortName Node short name
      * @param nodeLongName  Node long name
      */
-    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String nodeType, String nodeShortName, String nodeLongName) {
+    private void addNodeInternal(int x, int y, String nodeFloor, String nodeId, String nodeBuilding, String
+            nodeType, String nodeShortName, String nodeLongName) {
         Node node = new Node(nodeId, x, y, nodeFloor, nodeBuilding, nodeType, nodeLongName, nodeShortName); // Create a node
-        Submit.getInstance().addNode(node); // Add the node
+        //Submit.getInstance().addNode(node); // Add the node
+        List<Action> list = new LinkedList<>();
+        list.add(new ManageAdd(node));
+        RevisionManager.getInstance().execute(list);
+        refreshHistory();
         refreshData(); // Refresh the node and edge data from LocalStorage
         renderMap(); // Render/display the map (with the updated information)
         dragStart = null; // Reset dragStart
@@ -1873,8 +1612,10 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         floor3Bttn.setTextFill(Paint.valueOf("9e9e9e"));
     }
 
+
     @FXML
     private void setFloor0(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1885,6 +1626,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @FXML
     private void setFloor1(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1895,6 +1637,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @FXML
     private void setFloor2(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1905,6 +1648,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @FXML
     private void setFloor3(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1915,6 +1659,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @FXML
     private void setFloor4(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1925,6 +1670,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
     @FXML
     private void setFloor5(ActionEvent e) {
+        RevisionManager.getInstance().clearQueues();
         if (ButtonManager.floors.size() == 1) {
             ButtonManager.remove_class("floor-btn-selected", ButtonManager.floors);
         }
@@ -1933,9 +1679,23 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         resetFloors();
     }
 
-    private void updateAndDisplay() {
+  public void updateAndDisplay() {
+//        System.out.println(LoadFXML.getCurrentWindow());
+
+        if(revisionHistoryMode &&LoadFXML.getCurrentWindow().equals("revisionHistory")){
+            clearMap();
+            displayNodesAndEdgesPreveiw(revisionNodes, revisionEdges);
+//            System.out.println("after call");;
+        }
+//        if(history){
+//            displayNodesAndEdgesPreveiw();
+//        }
+
         refreshData(); // Update localNodes with new floor
-        switch (LoadFXML.getCurrentWindow()) {
+      if(LoadFXML.getCurrentWindow().equals("revisionHistory")&& !revisionHistoryMode){
+          renderMap();
+      }
+      switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
                 renderMap(); // Render/refresh map (with updated data)
                 break;
@@ -1945,13 +1705,69 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 break;
         }
     }
+//
+
+    public void undoRedo() {
+        final KeyCombination controlZ = new KeyCodeCombination(KeyCode.Z,
+                KeyCombination.CONTROL_DOWN);
+        final KeyCombination controlY = new KeyCodeCombination(KeyCode.Y,
+                KeyCombination.CONTROL_DOWN);
+        anchor.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent event) {
+//                System.out.println("here");
+//                if(event.getCode() == KeyCode.Z){
+//                    System.out.println("ahaha");
+//                }
+                if (controlZ.match(event)) {
+//                    if(!RevisionManager.getInstance().normalQueueIsEmpty()){
+//                        undoing = true;
+//                    }
+                    undoChange();
+//                    System.out.println("Ctrl+R pressed");
+
+                    refreshHistory();
+                }
+                if (controlY.match(event)) {
+//                    System.out.println("Ctrl+R pressed");
+                    redoChange();
+                    refreshHistory();
+                }
+
+            }
+
+        });
+    }
+
+    int size = 0;
+
+    public void refreshHistory() {
+
+
+        RevisionManager.getInstance().getActionHistory().forEach(history -> {
+            // if(!(allActions.contains(history))){
+            allActions.add(history);
+            //    }
+        });
+
+        // List<String> allActions = RevisionManager.getInstance().getActionHistory();
+        // if(allActions.size()!= size) {
+//            editHistoryBox.getChildren().clear();
+        size = allActions.size();
+        allActions.forEach(a -> {
+//            if (!(editHistoryBox.getChildren().contains(new Text(a)))) {
+
+//            }
+        });
+    }
 
     public void resetZoomAndPan() {
         scaledX = 0;
         scaledY = 0;
         scaledWidth = fileWidth;
         scaledHeight = fileHeight;
-        zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
+        zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
     }
 
     @Override
@@ -1979,3 +1795,4 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         });
     }
 }
+//}

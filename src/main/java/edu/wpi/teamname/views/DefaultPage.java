@@ -9,6 +9,7 @@ import edu.wpi.teamname.Authentication.AuthenticationManager;
 import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.RevisionManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -18,8 +19,6 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -129,7 +128,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             }
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
@@ -142,11 +141,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         refreshData();
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     private void displayAuthPages() {
@@ -207,6 +206,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void toggleMapEditor() {
         helpButton.setVisible(true);
+        RevisionManager.getInstance().clearQueues();
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -222,11 +222,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         startAndEnd.clear();
         startNode = null;
         endNode = null;
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
             return;
         }
         LoadFXML.setCurrentWindow("mapEditorBar");
@@ -290,7 +290,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML
@@ -317,10 +317,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         helpButton.setVisible(false);
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
+
     }
 
     public void initGoogleForm() {
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML
