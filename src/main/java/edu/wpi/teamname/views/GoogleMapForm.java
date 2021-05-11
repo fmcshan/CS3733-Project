@@ -17,6 +17,7 @@ import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -100,6 +101,7 @@ public class GoogleMapForm {
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
         errorMes.setText("Please enter a valid address");
         errorMes.setVisible(false);
+        navBox.getChildren().clear();
         if ((items.containsKey(addressFill.getSelectionModel().getSelectedItem()))) {
             lowDir = "";
             allDirFran = "";
@@ -209,6 +211,11 @@ public class GoogleMapForm {
     }
 
     public String cleanTags(String s) {
+        if (s.lastIndexOf("Continue") > 1) {
+            StringBuilder sb = new StringBuilder(s);
+            sb.insert(s.lastIndexOf("Continue"), "\n");
+            s = sb.toString();
+        }
         s = s.replaceAll("<[^>]*>", "");
         s = s.replaceAll("Destination", "\nDestination");
         s = s.replace("&nbsp;"," ");
@@ -255,9 +262,9 @@ public class GoogleMapForm {
         directionGuiWrapper.setMaxWidth(445);
 
         VBox navIconWrapper = new VBox();
-        navIconWrapper.setStyle("-fx-background-color: #317fb8; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-padding: 4 0 0 4;");
-        navIconWrapper.setPrefSize(64, 64);
-        navIconWrapper.setMinSize(64, 64);
+        navIconWrapper.setStyle("-fx-background-color: #317fb8; -fx-background-radius: 10px; -fx-border-radius: 10px");
+        navIconWrapper.setPrefSize(46, 46);
+        navIconWrapper.setMinSize(46, 46);
         MaterialDesignIconView navigationIcon;
         if (directionText.contains("straight") || directionText.contains("head")) {
             navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD);
@@ -280,8 +287,9 @@ public class GoogleMapForm {
         }
 
         navigationIcon.setFill(Paint.valueOf("#ffffff"));
-        navigationIcon.setGlyphSize(56);
+        navigationIcon.setGlyphSize(40);
         navIconWrapper.getChildren().add(navigationIcon);
+        navIconWrapper.setAlignment(Pos.CENTER);
 
         VBox spacer = new VBox();
         spacer.setPrefSize(10, 1);
