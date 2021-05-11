@@ -325,7 +325,6 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             return;
         }
         popPop.setPrefWidth(350);
-        helpButton.setVisible(false);
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
 
