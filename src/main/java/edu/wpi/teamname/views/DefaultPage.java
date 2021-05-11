@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -77,6 +78,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     private JFXButton testingButton;
     @FXML
     private AnchorPane closedChatBot;
+    @FXML
+    private HBox typingImageBox = new HBox();
+    @FXML
+    private ImageView typing = new ImageView();
+    public long lastMessageTime;
+    public boolean loadingShowing = false;
 
     /**
      * run on startup
@@ -91,6 +98,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LevelManager.getInstance().setFloor(3);
         AuthenticationManager.getInstance().addListener(this);
         LoadFXML.setCurrentWindow("");
+
+        // Initialize typing indicator HBox and Image
+        typing.setFitWidth(75);
+        typing.setPreserveRatio(true);
+
+        try {
+            Image image = new Image(getClass().getResource("/edu/wpi/teamname/images/typingImage.gif").toURI().toString());
+            typing.setImage(image);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        VBox.setMargin(typingImageBox, new Insets(0, 0, 5, 10));
+        typingImageBox.getChildren().add(typing);
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             displayAuthPages();
@@ -170,12 +190,14 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         MaterialDesignIconView signOut = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_BOX_OUTLINE);
         if (navigation != null) {
             navigation.cancelNavigation();
+            onTopOfTopElements.getChildren().clear();
         }
         signOut.setFill(Paint.valueOf("#c3c3c3"));
         signOut.setGlyphSize(52);
         adminButton.setGraphic(signOut);
         popPop.getChildren().clear();
         helpButton.setVisible(true);
+        ButtonManager.remove_class();
         LoadFXML.setCurrentWindow("");
     }
 
@@ -327,8 +349,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatButton.setGraphic(messageIcon);
     }
 
+    // blue message in chat bot
     @FXML
-    void sendMessage() { //317fb8
+    void sendMessage() {
         String message = enteredMessage.getText();
         if (message.isEmpty()) {
             return;
@@ -343,8 +366,8 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         HBox sentBox = new HBox(sentMessage);
         sentBox.setStyle("-fx-background-color: #317fb8; " + "-fx-background-radius: 20 20 0 20;" +
-                "-fx-min-width: 50; -fx-padding: 10 10 10 10");
-        sentBox.setAlignment(Pos.BOTTOM_LEFT);
+                "-fx-min-width: 40; -fx-padding: 10 10 10 10");
+        sentBox.setAlignment(Pos.TOP_CENTER);
 
         AnchorPane sentPane = new AnchorPane(sentBox);
         AnchorPane.setRightAnchor(sentBox, 0.0);
@@ -353,7 +376,13 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         VBox.setMargin(sentPane, new Insets(0, 0, 10, 50));
 
         sentMessage.setText(message);
+
+        if (loadingShowing) {
+            chatBox.getChildren().remove(typingImageBox);
+        }
         chatBox.getChildren().add(sentPane);
+        chatBox.getChildren().add(typingImageBox);
+        loadingShowing = true;
         enteredMessage.clear();
 
         chatBox.heightProperty().addListener(
@@ -365,6 +394,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         ChatBot.getInstance().sendMessage(message);
     }
 
+    // grey message in chat bot
     public void receiveMessage(String _msg) {
         Platform.runLater(new Runnable() {
             @Override
@@ -372,9 +402,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 Text sentMessage = new Text();
                 sentMessage.setStyle("-fx-font-size: 16; -fx-font-family: 'Nunito';");
                 HBox sentBox = new HBox(sentMessage);
+
                 sentMessage.setText(_msg);
 
-                if (_msg.length() >= 30) {
+                Bounds bounds = TextBuilder.create().text(_msg).build().getLayoutBounds();
+                if (bounds.getWidth() >= 186) {
                     sentMessage.setWrappingWidth(255);
                 }
 
@@ -395,29 +427,34 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     sentBox2.setAlignment(Pos.BOTTOM_LEFT);
                     closedChatBox.getChildren().add(sentBox2);
 
-                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.2), sentBox2);
-                    translateTransition.setFromX(10);
-                    translateTransition.setToX(0);
+                    PauseTransition firstPause = new PauseTransition(Duration.seconds(3.0));
+                    sentBox2.setOpacity(0);
+                    firstPause.setOnFinished(event1 -> {
+                        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.2), sentBox2);
+                        translateTransition.setFromX(10);
+                        translateTransition.setToX(0);
 
-                    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), sentBox2);
-                    fadeIn.setFromValue(0.4);
-                    fadeIn.setToValue(1.0);
+                        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.3), sentBox2);
+                        fadeIn.setFromValue(0.4);
+                        fadeIn.setToValue(1.0);
 
-                    ParallelTransition pt = new ParallelTransition(translateTransition, fadeIn);
-                    pt.play();
+                        ParallelTransition pt = new ParallelTransition(translateTransition, fadeIn);
+                        pt.play();
 
-                    PauseTransition pause = new PauseTransition(Duration.seconds(7));
-                    pause.setOnFinished(event -> {
-                                FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), sentBox2);
-                                fadeOut.setFromValue(1.0);
-                                fadeOut.setToValue(0);
-                                fadeOut.play();
-                                fadeOut.setOnFinished(s -> {
-                                    closedChatBox.getChildren().remove(sentBox2);
-                                });
-                            }
-                    );
-                    pause.play();
+                        PauseTransition pause = new PauseTransition(Duration.seconds(7));
+                        pause.setOnFinished(event2 -> {
+                                    FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), sentBox2);
+                                    fadeOut.setFromValue(1.0);
+                                    fadeOut.setToValue(0);
+                                    fadeOut.play();
+                                    fadeOut.setOnFinished(s -> {
+                                        closedChatBox.getChildren().remove(sentBox2);
+                                    });
+                                }
+                        );
+                        pause.play();
+                    });
+                    firstPause.play();
 
                 }  // if chat bot is open
                 sentBox.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 20 0;" +
@@ -427,8 +464,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                 AnchorPane openChat = new AnchorPane(sentBox);
                 openChat.setMaxWidth(275);
                 VBox.setMargin(openChat, new Insets(0, 0, 10, -50));
-
                 sentMessage.setText(_msg);
+                chatBox.getChildren().remove(typingImageBox);
+                loadingShowing = false;
                 chatBox.getChildren().add(openChat);
                 enteredMessage.clear();
 

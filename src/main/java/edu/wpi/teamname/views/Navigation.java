@@ -111,10 +111,12 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
 
         if (AuthenticationManager.getInstance().isAuthenticated()) {
             algoBox.setVisible(true);
-            algoCombo.setStyle("-fx-font-size: 24");
+            scrollBar.setMinHeight(249);
+           // algoCombo.setStyle("-fx-font-size: 24; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         } else {
             algoBox.setVisible(false);
-            algoCombo.setStyle("-fx-font-size: .1");
+            scrollBar.setMinHeight(322);
+           // algoCombo.setStyle("-fx-font-size: .1; -fx-border-color: #c3c3c3; -fx-border-radius: 8");
         }
 
         if (COVIDMessage.covid) {
@@ -141,6 +143,9 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         SceneManager.getInstance().getDefaultPage().getEndNode();
         AStar aStar = new AStar();
         searchAlgorithm = new SearchContext(aStar);
+
+        NavManager.getInstance().addChatBotCommandListener(this);
+        navigateChat();
     }
 
     public HBox generateNavElem(String _direction) {
@@ -380,6 +385,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         allFloors.add("1");
         allFloors.add("2");
         allFloors.add("3");
+        mapDisplay.resetZoomAndPan();
         refreshNodes();
         SceneManager.getInstance().getDefaultPage().clearStartAndEnd();
         SceneManager.getInstance().getDefaultPage().listOfNode.clear();
@@ -435,23 +441,30 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         }
     }
 
+    public void navigateChat() {
+        String from = NavManager.getInstance().getStartNode();
+        String to = NavManager.getInstance().getEndNode();
+        if (from == null || to == null || from.equals("") || to.equals("")) {
+            return;
+        }
+        NavManager.getInstance().resetNodes();
+        navigate(from, to);
+    }
+
     @Override
     public void navigate(String _from, String _to) {
-        String startNode = "";
-        String endNode = "";
+        Node startNode;
+        Node endNode;
         ArrayList<String> nodeLongNames = new ArrayList<>();
         for (Node node : listOfNodes) {
             nodeLongNames.add(node.getLongName());
         }
-        // TODO Oi, Demi & Bryan, put your code in here
-        startNode = FuzzySearch.extractOne(_from, nodeLongNames).getString();
-        endNode = FuzzySearch.extractOne(_to, nodeLongNames).getString();
+        startNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
+        endNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
 
-        AutoCompleteComboBoxListener listenerFrom = new AutoCompleteComboBoxListener(fromCombo);
-        listenerFrom.setValue(startNode);
+        setFromCombo(startNode);
+        setToCombo(endNode);
 
-        AutoCompleteComboBoxListener listenerTo = new AutoCompleteComboBoxListener(toCombo);
-        listenerTo.setValue(endNode);
-
+        calcPath();
     }
 }

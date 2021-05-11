@@ -227,19 +227,19 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 Circle circle = new Circle(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY()), 8); // New node/cicle
                 circle.setStrokeWidth(4); // Set the stroke with to 4
                 circle.setStroke(Color.TRANSPARENT);
-                circle.setFill(Color.valueOf("607548")); // Set node color to olive
+                circle.setFill(Color.valueOf("2f6d99")); // Set node color to olive
                 circle.setOpacity(_opacity); // Set node opacity (input param)
 
                 renderedNodeMap.put(circle, n); // Link the rendered circle to the node in renderedNodeMap
                 onTopOfTopElements.getChildren().add(circle); // Render the node
 
                 if (n.equals(startNode) || n.equals(endNode)) {
-                    circle.setFill(Color.RED);
+                    circle.setFill(Color.MAROON);
                     circle.setRadius(10);
                 }
 
                 if (listOfNode.contains(n) && !n.equals(startNode) && !n.equals(endNode)) {
-                    circle.setFill(Color.RED);
+                    circle.setFill(Color.MAROON); //Color.valueOf("ad0202")
                     circle.setRadius(6);
                 }
 
@@ -370,7 +370,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 circle.setCenterX(xCoordOnTopElement(n.getX()));
                 circle.setCenterY(yCoordOnTopElement(n.getY()));
                 circle.setRadius(15);
-                circle.setFill(Color.YELLOW);
+                circle.setFill(Color.valueOf("00fff7"));
                 onTopOfTopElements.getChildren().add(circle);
             }
         });
@@ -392,7 +392,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                     }
                     // Create edge
                     LineBuilder<?> edgeLocation = LineBuilder.create().startX(startX).startY(startY).endX(endX).endY(endY);
-                    Line edge = edgeLocation.stroke(Color.BLUE).strokeWidth(3).opacity(_opacity).build(); // Style edge
+                    Line edge = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(_opacity).build(); // Style edge
                     renderedEdgeMap.put(edge, e);
                     onTopOfTopElements.getChildren().add(edge); // Render edge
 
@@ -483,7 +483,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 topElements.getChildren().remove(renderedEdgePreview);
             }
             LineBuilder<?> edgeLocation = LineBuilder.create().startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(t.getX()).endY(t.getY());
-            this.renderedEdgePreview = edgeLocation.stroke(Color.TOMATO).strokeWidth(3).opacity(1).build();
+            this.renderedEdgePreview = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(1).build();
             this.renderedEdgePreview.setPickOnBounds(false);
             topElements.getChildren().add(renderedEdgePreview);
         }
@@ -754,7 +754,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 // Build line between dragStart and dragEnd (potential new edge)
                 LineBuilder<?> edgeLocation = LineBuilder.create().startX(dragStart.getCenterX()).startY(dragStart.getCenterY()).endX(dragEnd.getCenterX()).endY(dragEnd.getCenterY());
                 topElements.getChildren().remove(renderedEdgePreview); // Remove previously displayed edge preview
-                this.renderedEdgePreview = edgeLocation.stroke(Color.RED).strokeWidth(3).opacity(1).build(); // Set potential edge styling
+                this.renderedEdgePreview = edgeLocation.stroke(Color.TOMATO).strokeWidth(3).opacity(1).build(); // Set potential edge styling
                 topElements.getChildren().add(renderedEdgePreview); // Display potential edge
 
                 // Edge popup
@@ -1304,11 +1304,11 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             double midY = (maxY[0] + minY[0]) / 2;
             double windowWidth = 1427;
             double navBarWidth = 370;
-            double ref = Math.max(diffX * fileHeight/fileWidth, diffY);
+            double ref = Math.max(diffX * fileHeight / fileWidth, diffY);
             double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * fileWidth/fileHeight * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
-            scaledHeight = ref * (1 + spacing) * windowWidth/(windowWidth - navBarWidth);
-            scaledX = midX - (ref * fileWidth/fileHeight * (1 + spacing) * (windowWidth + navBarWidth)/(windowWidth-navBarWidth)) / 2;
+            scaledWidth = ref * fileWidth / fileHeight * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+            scaledHeight = ref * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+            scaledX = midX - (ref * fileWidth / fileHeight * (1 + spacing) * (windowWidth + navBarWidth) / (windowWidth - navBarWidth)) / 2;
             //leaving this behind to make sure I can still understand this in the future
             //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
             scaledY = midY - scaledHeight / 2;
@@ -1331,9 +1331,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 0.0, 15.0,
                 5.0, 7.5
         );
-        triangle.setFill(Color.RED); //RED
-        triangle.setStroke(Color.RED); //RED
-        triangle.setStrokeWidth(1.0);
+        triangle.setFill(Color.MAROON); //RED Color.valueOf("ad0202")
+        triangle.setStroke(Color.MAROON); //RED
+        triangle.setStrokeWidth(1.5);
         triangle.setOpacity(1.0);
         onTopOfTopElements.getChildren().add(triangle);
         pathTransition.setDuration(Duration.seconds(4));
@@ -1760,6 +1760,14 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
 //            }
         });
+    }
+
+    public void resetZoomAndPan() {
+        scaledX = 0;
+        scaledY = 0;
+        scaledWidth = fileWidth;
+        scaledHeight = fileHeight;
+        zooM.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
     }
 
     @Override
