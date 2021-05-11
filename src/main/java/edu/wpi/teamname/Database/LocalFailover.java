@@ -54,6 +54,7 @@ public class LocalFailover implements DataListener {
         System.out.println("Reduced functionality: ");
         System.out.println("   Authentication");
         System.out.println("   Chatbot");
+        System.out.println("   Revision History");
         System.out.println("   Slightly degraded performance\n");
         System.out.println("Credentials: ");
         System.out.println("   Username: admin@admin.com");
@@ -69,8 +70,6 @@ public class LocalFailover implements DataListener {
         parseEmployees();
         parseRequests();
         parseCheckins();
-
-        Initiator.getInstance().triggerUserRefresh();
     }
 
     // Load JSON
@@ -278,6 +277,7 @@ public class LocalFailover implements DataListener {
 
         this.db.put("edges", newUsers);
         saveDb();
+        Initiator.getInstance().triggerUserRefresh();
     }
 
     // Save requests to JSON
