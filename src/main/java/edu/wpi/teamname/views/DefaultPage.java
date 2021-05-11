@@ -422,7 +422,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     closedChatBox.setVisible(true);
                     closedChatBox.setPickOnBounds(true);
                     sentBox2.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 0 20;" +
-                            "-fx-min-width: 50; -fx-padding: 10 10 10 10;");
+                            "-fx-min-width: 50; -fx-padding: 10 10 10 10; -fx-effect: dropshadow(three-pass-box, #a4a4a4, 10.0, 0.0, 0.0, 0.0);");
                     sentBox2.setAlignment(Pos.BOTTOM_LEFT);
                     closedChatBox.getChildren().add(sentBox2);
 
