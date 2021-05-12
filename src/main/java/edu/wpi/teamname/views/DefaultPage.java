@@ -535,6 +535,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         }
     }
 
+    public boolean isCheckedIn() {
+        return checkButton.getText().equals("Check-In");
+    }
+
     @FXML
     public void openCheckIn() {
         popPop.setPrefWidth(657);
