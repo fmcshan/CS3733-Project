@@ -48,8 +48,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
     double mapWidth, mapHeight, fileWidth, fileHeight;
-    double fileFxWidthRatio = mapWidth / fileWidth;
-    double fileFxHeightRatio = mapHeight / fileHeight;
     int xGridSize = 8;
     int yGridSize = 8;
     ArrayList<Node> listOfNodes;
@@ -458,8 +456,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         mapHeight = hospitalMap.boundsInParentProperty().get().getHeight();
         fileWidth = hospitalMap.getImage().getWidth();
         fileHeight = hospitalMap.getImage().getHeight();
-        fileFxWidthRatio = mapWidth / fileWidth;
-        fileFxHeightRatio = mapHeight / fileHeight;
     }
 
     private int xGridSnap(int _x) {
