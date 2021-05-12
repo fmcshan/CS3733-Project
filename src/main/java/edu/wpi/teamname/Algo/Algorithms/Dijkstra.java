@@ -51,6 +51,6 @@ public class Dijkstra extends Algorithm{
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         Dijkstra example = new Dijkstra(nodes, nodes.get(10), nodes.get(76));
-        System.out.println(example.getPath().size());
+//        System.out.println(example.getPath().size());
     }
 }

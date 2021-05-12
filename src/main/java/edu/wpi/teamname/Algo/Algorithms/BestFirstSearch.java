@@ -60,8 +60,8 @@ public class BestFirstSearch extends Algorithm{
         AStar example1 = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")), false);
         BFS example2 = new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
         BestFirstSearch example = new BestFirstSearch(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
-        System.out.println(example.getPath());
-        System.out.println(example.getPath().size());
-        System.out.println(example1.getPath().size());
+//        System.out.println(example.getPath());
+//        System.out.println(example.getPath().size());
+//        System.out.println(example1.getPath().size());
     }
 }
