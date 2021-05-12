@@ -4,6 +4,7 @@ import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.views.manager.ChatBotCommand;
 import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.application.Platform;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -56,14 +57,25 @@ public class ChatSocket extends WebSocketClient {
 
         if (payloadId.equals("client_command")) {
             payload = payload.getJSONObject("data");
-            JSONObject params = payload.getJSONObject("params");
-            String start = params.getString("from");
-            String end = params.getString("to");
-            NavManager.getInstance().triggerNavigationCommand(start, end);
+            if (payload.getString("command").equals("navigate")) {
+                JSONObject params = payload.getJSONObject("params");
+                String start = params.getString("from");
+                String end = params.getString("to");
+                NavManager.getInstance().triggerNavigationCommand(start, end);
+            } else if (payload.getString("command").equals("checkin")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (SceneManager.getInstance().getDefaultPage().isCheckedIn()) {
+                            SceneManager.getInstance().getDefaultPage().toggleCheckIn();
+                        }
+                    }
+                });
+
+            }
+
             return;
         }
-
-
     }
 
     @Override

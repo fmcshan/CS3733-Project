@@ -82,4 +82,17 @@ public class User {
 
     public void setPhone(String _phone) { this.phone = _phone; }
 
+    public void setFailoverId(String _id) {
+        this.localId = _id;
+        this.refreshToken = _id;
+        this.idToken = _id;
+    }
+
+    public void grantAdmin() {
+        this.admin = true;
+    }
+
+    public void revokeAdmin() {
+        this.admin = false;
+    }
 }

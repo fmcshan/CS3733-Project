@@ -37,7 +37,7 @@
             </Text>
             <JFXTabPane prefHeight="779.0" prefWidth="1264.0" styleClass="jfx-tab-pane" stylesheets="@../images/tabPane.css">
                <tabs>
-                  <Tab style="-fx-background-color: #0067b1;" text="All">
+                  <Tab text="All">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -72,7 +72,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Gift Delivery">
+                  <Tab text="Gift Delivery">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -155,7 +155,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Food Delivery">
+                  <Tab text="Food Delivery">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -238,7 +238,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Computer Service">
+                  <Tab text="Computer Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -329,7 +329,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Facilities Maintenance">
+                  <Tab text="Facilities Maintenance">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -420,7 +420,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Laundry Service">
+                  <Tab text="Laundry Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -511,7 +511,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Medicine Delivery">
+                  <Tab text="Medicine Delivery">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -594,7 +594,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Patient Transportation">
+                  <Tab text="Patient Transportation">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -677,7 +677,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab style="-fx-background-color: #0067b1;" text="Sanitation Service">
+                  <Tab text="Sanitation Service">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -762,7 +762,7 @@
                   </Tab>
                </tabs>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </JFXTabPane>
          </children>

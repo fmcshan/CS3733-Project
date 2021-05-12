@@ -11,12 +11,19 @@ import com.google.maps.model.*;
 import com.google.maps.*;
 import com.google.maps.GeoApiContext;
 import com.jfoenix.controls.JFXTextArea;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.views.manager.SceneManager;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.json.*;
@@ -49,18 +56,20 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static javafx.scene.effect.BlurType.GAUSSIAN;
+
 public class GoogleMapHome {
 
     @FXML
-    private JFXTextField numInput;
-    @FXML
     private JFXComboBox<String> addressFill;
-    @FXML
-    private JFXTextArea directionSpace;
     @FXML
     private Text errorMes;
     @FXML
     private ImageView imageBox;
+    @FXML
+    private VBox navBox;
+    @FXML
+    private Navigation navigation;
 
     String allDirFran = "";
     String allDirWhit = "";
@@ -69,19 +78,17 @@ public class GoogleMapHome {
     GeoApiContext context;
     String chosenPark = "";
 
-    static  DefaultPage defaultPage =SceneManager.getInstance().getDefaultPage();
+    static DefaultPage defaultPage = SceneManager.getInstance().getDefaultPage();
     static ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
     private HashMap<String, String> items = new HashMap<>();
 
     @FXML
     public void initialize() {
-        directionSpace.setVisible(false);
         errorMes.setVisible(false);
         context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyDsCE050FgQ8Q0VnfBP5XymPyTlWLht_88")
                 .build();
         token = new PlaceAutocompleteRequest.SessionToken();
-       // displayParkingSpots();
         defaultPage.initGoogleForm();
         addressFill.setEditable(true);
 
@@ -89,22 +96,33 @@ public class GoogleMapHome {
 
     @FXML
     void submit() throws URISyntaxException, IOException, InterruptedException, ApiException, PrinterException {
-
+        errorMes.setText("Please enter a valid address");
+        navBox.getChildren().clear();
+        errorMes.setVisible(false);
         if ((items.containsKey(addressFill.getSelectionModel().getSelectedItem()))) {
-            directionSpace.setText("");
             lowDir = "";
             allDirFran = "";
             allDirWhit = "";
             Duration durationFran = new Duration();
             Duration durationWhit = new Duration();
             String origin = addressFill.getValue();
-            DirectionsResult results = DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).await();
+            DirectionsResult results = DirectionsApi.getDirections(context, "75 Francis Street, Boston MA", origin).mode(TravelMode.DRIVING).awaitIgnoreError();
+            if(results == null){
+                errorMes.setText("There is no driving directions available for this address");
+                errorMes.setVisible(true);
+                return;
+            }
             DirectionsLeg[] feet = results.routes[0].legs;
 
             for (DirectionsLeg foot : feet) {
                 durationFran = foot.duration;
             }
-            DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).await();
+            DirectionsResult results2 = DirectionsApi.getDirections(context, "15 New Whitney St, Boston MA", origin).mode(TravelMode.DRIVING).awaitIgnoreError();
+            if(results2 == null){
+                errorMes.setText("There is no driving directions available for this address");
+                errorMes.setVisible(true);
+                return;
+            }
             DirectionsLeg[] feet2 = results2.routes[0].legs;
 
             for (DirectionsLeg foot : feet2) {
@@ -116,8 +134,12 @@ public class GoogleMapHome {
                 for (DirectionsLeg foot : feet) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);
-//                        System.out.println(step.htmlInstructions);
+                        navBox.getChildren().add(generateNavElem(cleanTags(newStep)));
                         lowDir = lowDir + newStep + "\n";
+                        VBox spacer = new VBox();
+                        spacer.setPrefSize(1, 10);
+                        spacer.setMinSize(1, 10);
+                        navBox.getChildren().add(spacer);
                     }
                 }
                 chosenPark = "75 Francis Street, Boston MA";
@@ -126,15 +148,18 @@ public class GoogleMapHome {
                 for (DirectionsLeg foot : feet2) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);
-                        System.out.println(step.htmlInstructions);
+                        newStep.replace("&nbsp;", " ");
+                        navBox.getChildren().add(generateNavElem(cleanTags(newStep)));
                         lowDir = lowDir + "\n" + newStep;
+                        VBox spacer = new VBox();
+                        spacer.setPrefSize(1, 10);
+                        spacer.setMinSize(1, 10);
+                        navBox.getChildren().add(spacer);
                     }
                 }
                 chosenPark = "15 New Whitney St, Boston MA";
             }
 
-            directionSpace.setVisible(true);
-            directionSpace.setText(lowDir);
             Size size = new Size(500, 400);
             StaticMapsRequest request = StaticMapsApi.newRequest(context, size);
             request.center(origin);
@@ -177,9 +202,14 @@ public class GoogleMapHome {
     }
 
     public String cleanTags(String s) {
+        if (s.lastIndexOf("Continue") > 1) {
+            StringBuilder sb = new StringBuilder(s);
+            sb.insert(s.lastIndexOf("Continue"), "\n");
+            s = sb.toString();
+        }
         s = s.replaceAll("<[^>]*>", "");
         s = s.replaceAll("Destination", "\nDestination");
-        lowDir = lowDir.replaceAll("&nbsp;","");
+        s = s.replace("&nbsp;", " ");
         return s;
     }
 
@@ -201,26 +231,77 @@ public class GoogleMapHome {
     }
 
 
-    public List <String> getAddresses(String lookup){
-        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context,lookup, token).awaitIgnoreError();
-        List<String>  results = new ArrayList<>();
-        if(autocompletePredictions!=null){
+    public List<String> getAddresses(String lookup) {
+        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(context, lookup, token).awaitIgnoreError();
+        List<String> results = new ArrayList<>();
+        if (autocompletePredictions != null) {
             for (int i = 0; i < autocompletePredictions.length; i++) {
                 results.add(autocompletePredictions[i].description);
-            }}
+            }
+        }
         return results;
     }
 
+    public HBox generateNavElem(String _direction) {
+        String directionText = _direction.toLowerCase();
+        HBox directionGuiWrapper = new HBox();
+        directionGuiWrapper.setStyle("-fx-background-color: #fafafa; -fx-background-radius: 10px; -fx-margin: 0 0 0 0;");
+        DropShadow shadow = new DropShadow();
+        shadow.setBlurType(GAUSSIAN);
+        shadow.setSpread(0.33);
+        shadow.setColor(Color.valueOf("#ebebeb"));
+        directionGuiWrapper.setEffect(shadow);
+        directionGuiWrapper.setMaxWidth(445);
 
-    public static void displayParkingSpots(){
-        System.out.println(LoadFXML.getCurrentWindow());
-        nodes.forEach(n ->{
-            if (n.getNodeType().equals("PARK")){
-                Circle circle = new Circle(defaultPage.xCoordOnTopElement(n.getX()), defaultPage.yCoordOnTopElement(n.getY()), 8); // New node/circle
-                circle.setStrokeWidth(4);
-                circle.setFill(Color.valueOf("145c0a")); // Set node color to olive
-                defaultPage.topElements.getChildren().add(circle);
-            }
-        });
+        VBox navIconWrapper = new VBox();
+        navIconWrapper.setStyle("-fx-background-color: #317fb8; -fx-background-radius: 10px; -fx-border-radius: 10px");
+        navIconWrapper.setPrefSize(46, 46);
+        navIconWrapper.setMinSize(46, 46);
+        MaterialDesignIconView navigationIcon;
+        if (directionText.contains("straight") || directionText.contains("head")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD);
+        } else if (directionText.contains("left")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_LEFT_BOLD);
+        } else if (directionText.contains("right")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_RIGHT_BOLD);
+        } else if (directionText.contains("stair")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.STAIRS);
+        } else if (directionText.contains("elevator")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD_CIRCLE_OUTLINE);
+        } else if (directionText.contains("escalator")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ESCALATOR);
+        } else if (directionText.contains("destination")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.MAP_MARKER);
+        } else if (directionText.contains("ferry") && directionText.contains("take")) {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.FERRY);
+        } else {
+            navigationIcon = new MaterialDesignIconView(MaterialDesignIcon.ARROW_UP_BOLD);
+        }
+
+        navigationIcon.setFill(Paint.valueOf("#ffffff"));
+        navigationIcon.setGlyphSize(40);
+        navIconWrapper.getChildren().add(navigationIcon);
+        navIconWrapper.setAlignment(Pos.CENTER);
+
+        VBox spacer = new VBox();
+        spacer.setPrefSize(10, 1);
+        spacer.setMinSize(10, 1);
+
+        VBox navLabelWrapper = new VBox();
+        Text navigationLabel = new Text(_direction);
+        navigationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-padding: 10 0 0 10;");
+        navigationLabel.setWrappingWidth(400);
+        navLabelWrapper.getChildren().add(navigationLabel);
+        navigationLabel.prefWidth(200);
+        navigationLabel.prefHeight(60);
+
+        directionGuiWrapper.getChildren().add(navIconWrapper);
+        directionGuiWrapper.getChildren().add(spacer);
+        directionGuiWrapper.getChildren().add(navLabelWrapper);
+        return directionGuiWrapper;
+    }
+
+    public void backToNav() {
+        SceneManager.getInstance().getDefaultPage().toggleNav();
     }
 }

@@ -1,227 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="930.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.RevisionHistory">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(from 20% 45% to 45% 20%, #ffffff, #f0f9ff); -fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.RevisionHistory">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="930.0" prefWidth="350.0" style="-fx-background-radius: 15px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="TOP_CENTER">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <children>
+                  <Label alignment="CENTER" text="History">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                  </Label>
+                  <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="View and restore the map editor history/changes." textAlignment="CENTER" wrappingWidth="330.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+            </VBox>
+            <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="720.0" prefWidth="330.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
+               <content>
+                  <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="711.0" prefWidth="329.0" />
+               </content>
+               <VBox.margin>
+                  <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="66.0" prefWidth="350.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#closeWindows" prefHeight="42.0" prefWidth="100.0" style="-fx-border-color: #c3c3c3; -fx-border-radius: 8;" text="Close" textFill="#bbbbbb">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#bcbbbb" />
+                     </effect>
+                  </JFXButton>
+                  <JFXButton fx:id="restoreButton" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#restore" prefHeight="42.0" prefWidth="100.0" style="-fx-background-radius: 8; -fx-background-color: #287ab5; -fx-text-fill: white;" text="Restore" textFill="#bbbbbb">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#bcbbbb" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="cancelButton" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cancel" prefHeight="42.0" prefWidth="100.0" style="-fx-background-radius: 8; -fx-background-color: #287ab5; -fx-text-fill: white;" text="Cancel" textFill="#bbbbbb">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#bcbbbb" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
    <effect>
       <DropShadow color="#a4a4a4" />
    </effect>
-   <children>
-      <Label text="History">
-         <font>
-            <Font name="System Bold" size="48.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="25.0" top="20.0" />
-         </VBox.margin>
-      </Label>
-      <Text fill="#868686" strokeType="OUTSIDE" strokeWidth="0.0" text="View and restore the map editor history/changes." wrappingWidth="315.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="25.0" />
-         </VBox.margin>
-      </Text>
-      <ScrollPane fx:id="scrollBar" hbarPolicy="NEVER" pannable="true" prefHeight="743.0" prefWidth="330.0" style="-fx-background-color: white;" vbarPolicy="NEVER">
-         <content>
-            <VBox fx:id="navBox" alignment="TOP_CENTER" prefHeight="749.0" prefWidth="329.0" style="-fx-background-color: white;">
-               <children>
-                  <HBox prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
-                     <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
-                           <children>
-                              <MaterialDesignIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="56" />
-                           </children>
-                           <padding>
-                              <Insets left="4.0" top="4.0" />
-                           </padding>
-                        </VBox>
-                        <VBox prefHeight="64.0" prefWidth="257.0">
-                           <children>
-                              <HBox prefHeight="32.0" prefWidth="191.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="136.0" text="Add Node">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="182.0" text="2d ago - Admin" textFill="#363636">
-                                       <font>
-                                          <Font name="Segoe UI Semibold Italic" size="14.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                     <effect>
-                        <DropShadow color="#00000033" />
-                     </effect>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
-                     <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
-                           <children>
-                              <MaterialDesignIconView fill="WHITE" glyphName="MINUS_CIRCLE" size="56" />
-                           </children>
-                           <padding>
-                              <Insets left="4.0" top="4.0" />
-                           </padding>
-                        </VBox>
-                        <VBox prefHeight="64.0" prefWidth="257.0">
-                           <children>
-                              <HBox prefHeight="32.0" prefWidth="191.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="165.0" text="Remove Node">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="182.0" text="2d ago - Admin" textFill="#363636">
-                                       <font>
-                                          <Font name="Segoe UI Semibold Italic" size="14.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                     <effect>
-                        <DropShadow color="#00000033" />
-                     </effect>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="89.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
-                     <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
-                           <children>
-                              <MaterialDesignIconView fill="WHITE" glyphName="UPLOAD" size="56" />
-                           </children>
-                           <padding>
-                              <Insets left="4.0" top="4.0" />
-                           </padding>
-                        </VBox>
-                        <VBox prefHeight="64.0" prefWidth="257.0">
-                           <children>
-                              <HBox prefHeight="32.0" prefWidth="191.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="136.0" text="Add Node">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="182.0" text="2d ago - Admin" textFill="#363636">
-                                       <font>
-                                          <Font name="Segoe UI Semibold Italic" size="14.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                     <effect>
-                        <DropShadow color="#00000033" />
-                     </effect>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="153.0" prefHeight="64.0" prefWidth="329.0" style="-fx-background-color: #fafafa; -fx-background-radius: 8px;">
-                     <children>
-                        <VBox maxHeight="64.0" maxWidth="64.0" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #37d461; -fx-background-radius: 8px;">
-                           <children>
-                              <MaterialDesignIconView fill="WHITE" glyphName="PENCIL" size="56" />
-                           </children>
-                           <padding>
-                              <Insets left="4.0" top="4.0" />
-                           </padding>
-                        </VBox>
-                        <VBox prefHeight="64.0" prefWidth="257.0">
-                           <children>
-                              <HBox prefHeight="32.0" prefWidth="191.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="136.0" text="Add Node">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="30.0" prefWidth="182.0" text="2d ago - Admin" textFill="#363636">
-                                       <font>
-                                          <Font name="Segoe UI Semibold Italic" size="14.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                     <effect>
-                        <DropShadow color="#00000033" />
-                     </effect>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-               </children>
-            </VBox>
-         </content>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="40.0" />
-         </VBox.margin>
-      </ScrollPane>
-   </children>
-</VBox>
+</AnchorPane>

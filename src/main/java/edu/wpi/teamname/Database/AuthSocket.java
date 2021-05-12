@@ -1,6 +1,10 @@
 package edu.wpi.teamname.Database;
 
 import edu.wpi.teamname.Authentication.User;
+import edu.wpi.teamname.Database.socketListeners.Initiator;
+import edu.wpi.teamname.views.manager.Action;
+import edu.wpi.teamname.views.manager.Event;
+import edu.wpi.teamname.views.manager.Snapshot;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -55,6 +59,11 @@ public class AuthSocket extends WebSocketClient {
             ArrayList<User> users = Parser.parseUsers(payload.getJSONArray("users"));
             LocalStorage.getInstance().setUsers(users);
 
+            ArrayList<Snapshot> snaps = Parser.parseSnapshots(payload.getJSONArray("snapshots"));
+            ArrayList<Event> events = Parser.parseEvents(payload.getJSONArray("events"));
+            LocalStorage.getInstance().setEvents(events);
+            LocalStorage.getInstance().setSnapshots(snaps);
+
             return;
         }
 
@@ -108,6 +117,15 @@ public class AuthSocket extends WebSocketClient {
             change.setUser(Parser.parseUser(payload.getJSONObject("user")));
             ChangeManager.getInstance().processChange(change);
             return;
+        }
+
+        if (payloadId.equals("update_revisions")) {
+            payload = payload.getJSONObject("data");
+            ArrayList<Snapshot> snaps = Parser.parseSnapshots(payload.getJSONArray("snapshots"));
+            ArrayList<Event> events = Parser.parseEvents(payload.getJSONArray("events"));
+            LocalStorage.getInstance().setEvents(events);
+            LocalStorage.getInstance().setSnapshots(snaps);
+            Initiator.getInstance().triggerRevisionRefresh();
         }
     }
 

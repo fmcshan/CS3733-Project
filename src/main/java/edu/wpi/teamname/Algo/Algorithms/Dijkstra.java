@@ -2,25 +2,23 @@ package edu.wpi.teamname.Algo.Algorithms;
 
 import edu.wpi.teamname.Algo.Node;
 import edu.wpi.teamname.Algo.NodeCostComparator;
-import edu.wpi.teamname.Algo.Parser;
 import edu.wpi.teamname.Database.LocalStorage;
 import edu.wpi.teamname.Database.SocketManager;
 import edu.wpi.teamname.simplify.Config;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.Stack;
 
-public class Djikstra extends Algorithm{
+public class Dijkstra extends Algorithm{
     private PriorityQueue<Node> openNodes;
 
-    public Djikstra(ArrayList<Node> nodes, Node start, Node goal) {
+    public Dijkstra(ArrayList<Node> nodes, Node start, Node goal) {
         super(nodes, start, goal);
         openNodes = new PriorityQueue<Node>(new NodeCostComparator());
         this.process();
     }
 
-    public Djikstra(){
+    public Dijkstra(){
         openNodes = new PriorityQueue<>(new NodeCostComparator());
     }
 
@@ -52,7 +50,7 @@ public class Djikstra extends Algorithm{
         Config.getInstance().setEnv("staging"); // dev staging production
         SocketManager.getInstance().startDataSocket();
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
-        Djikstra example = new Djikstra(nodes, nodes.get(10), nodes.get(76));
+        Dijkstra example = new Dijkstra(nodes, nodes.get(10), nodes.get(76));
         System.out.println(example.getPath().size());
     }
 }

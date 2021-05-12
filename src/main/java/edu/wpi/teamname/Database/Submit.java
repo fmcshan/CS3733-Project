@@ -6,6 +6,7 @@ import edu.wpi.teamname.Authentication.User;
 import edu.wpi.teamname.simplify.Config;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Submit {
@@ -20,6 +21,12 @@ public class Submit {
     }
 
     public void submitUserRegistration(UserRegistration _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+            registrations.add(_form);
+            LocalFailover.getInstance().setCheckins(registrations);
+            return;
+        }
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         _form.getReasonsForVisit().forEach(r -> reasons.append("'").append(r).append("', "));
@@ -44,6 +51,21 @@ public class Submit {
     }
 
     public void editUserRegistration(UserRegistration _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<UserRegistration> registrations = LocalStorage.getInstance().getRegistrations();
+            for (int i = 0; i < registrations.size(); i++) {
+                UserRegistration reg = registrations.get(i);
+                if (reg.getUuid().equals(_form.getUuid())) {
+                    reg.setCleared(_form.getCleared());
+                    reg.setDetails(_form.getDetails());
+                    reg.setRating(_form.getRating());
+                    registrations.set(i, reg);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setCheckins(registrations);
+            return;
+        }
         StringBuilder reasons = new StringBuilder();
         reasons.append("[");
         try {
@@ -72,6 +94,13 @@ public class Submit {
     }
 
     public void submitGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            _form.setUUID();
+            requests.add(_form);
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         StringBuilder items = new StringBuilder();
         items.append("[");
         if (_form.getRequestedItems().size() > 0) {
@@ -99,6 +128,19 @@ public class Submit {
     }
 
     public void updateGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            for (int i = 0; i < requests.size(); i++) {
+                MasterServiceRequestStorage req = requests.get(i);
+                if (req.getUUID().equals(_form.getUUID())) {
+                    req.setAssignTo(_form.getAssignTo());
+                    req.setCompleted(_form.isCompleted());
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         StringBuilder items = new StringBuilder();
         items.append("[");
         _form.getRequestedItems().forEach(r -> items.append("'").append(r).append("', "));
@@ -124,6 +166,18 @@ public class Submit {
     }
 
     public void deleteGiftDelivery(MasterServiceRequestStorage _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<MasterServiceRequestStorage> requests = LocalStorage.getInstance().getMasterStorages();
+            for (int i = 0; i < requests.size(); i++) {
+                MasterServiceRequestStorage req = requests.get(i);
+                if (req.getUUID().equals(_form.getUUID())) {
+                    requests.remove(req);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setRequests(requests);
+            return;
+        }
         JSONObject data = new JSONObject();
         data.put("CHANGE_ID", UUID.randomUUID().toString());
         data.put("id", String.valueOf(_form.getId()));
@@ -236,6 +290,13 @@ public class Submit {
     }
 
     public void newUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            _form.setFailoverId(UUID.randomUUID().toString());
+            users.add(_form);
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -252,6 +313,21 @@ public class Submit {
     }
 
     public void editUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.setPhone(_form.getPhone());
+                    user.setEmail(_form.getEmail());
+                    user.setName(_form.getName());
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -267,6 +343,19 @@ public class Submit {
     }
 
     public void grantAdmin(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.grantAdmin();
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -279,6 +368,19 @@ public class Submit {
     }
 
     public void revokeAdmin(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    user.revokeAdmin();
+                    users.set(i, user);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -291,6 +393,18 @@ public class Submit {
     }
 
     public void deleteUser(User _form) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<User> users = LocalStorage.getInstance().getUsers();
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                if (user.getLocalId().equals(_form.getLocalId())) {
+                    users.remove(i);
+                    break;
+                }
+            }
+            LocalFailover.getInstance().setUsers(users);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);
@@ -303,6 +417,12 @@ public class Submit {
     }
 
     public void reserveParking(String toReserve) {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            ArrayList<String> spaces = LocalStorage.getInstance().getReservedParkingSpaces();
+            spaces.add(toReserve);
+            LocalFailover.getInstance().setSpaces(spaces);
+            return;
+        }
         JSONObject data = new JSONObject();
         String changeId = UUID.randomUUID().toString();
         data.put("CHANGE_ID", changeId);

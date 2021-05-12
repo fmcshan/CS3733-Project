@@ -42,9 +42,9 @@
                   <Insets left="1175.0" />
                </VBox.margin>
             </JFXButton>
-            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 8px;">
+            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1238.0" style="-fx-background-color: #287ab5; -fx-background-radius: 8px;">
                <children>
-                  <Label prefHeight="35.0" prefWidth="300.0" text="Name">
+                  <Label prefHeight="35.0" prefWidth="300.0" text="Name" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -55,7 +55,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label prefHeight="35.0" prefWidth="300.0" text="Email Address">
+                  <Label prefHeight="35.0" prefWidth="300.0" text="Email Address" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -66,7 +66,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label prefWidth="300.0" text="Admin">
+                  <Label prefWidth="300.0" text="Admin" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -77,7 +77,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label prefWidth="300.0" text="Phone Number">
+                  <Label prefWidth="300.0" text="Phone Number" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -88,7 +88,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label alignment="CENTER" prefWidth="73.0" text="Actions">
+                  <Label alignment="CENTER" prefWidth="73.0" text="Actions" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

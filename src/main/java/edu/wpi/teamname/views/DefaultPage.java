@@ -6,9 +6,11 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import edu.wpi.teamname.Authentication.AuthListener;
 import edu.wpi.teamname.Authentication.AuthenticationManager;
+import edu.wpi.teamname.Database.LocalFailover;
 import edu.wpi.teamname.bot.ChatBot;
 import edu.wpi.teamname.views.manager.ButtonManager;
 import edu.wpi.teamname.views.manager.LevelManager;
+import edu.wpi.teamname.views.manager.RevisionManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -18,8 +20,6 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -91,7 +91,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void initialize() {
         ButtonManager.selectButton(floor1Bttn, "floor-btn-selected", ButtonManager.floors);
-        receiveMessage("Hi, how can I help you?");
+
+        if (!LocalFailover.getInstance().hasFailedOver()) {
+            receiveMessage("Hi, how can I help you?");
+        } else {
+            receiveMessage("It looks like you failed over... Unfortunately, the chatbot doesn't work with the local failover/database.");
+        }
         SceneManager.getInstance().setDefaultPage(this);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Regular.ttf"), 24);
         Font.loadFont(getClass().getResourceAsStream("/edu/wpi/teamname/images/Nunito-Bold.ttf"), 24);
@@ -129,7 +134,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
             }
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
@@ -142,11 +147,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
             topElements.getChildren().clear();
             resizingInfo();
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
         });
 
         refreshData();
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     private void displayAuthPages() {
@@ -207,6 +212,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
      */
     public void toggleMapEditor() {
         helpButton.setVisible(true);
+        RevisionManager.getInstance().clearQueues();
         if (navigation != null) {
             navigation.cancelNavigation();
         }
@@ -222,11 +228,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         startAndEnd.clear();
         startNode = null;
         endNode = null;
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
-            zooM.zoomAndPan();
+            zoom.zoomAndPan();
             return;
         }
         LoadFXML.setCurrentWindow("mapEditorBar");
@@ -273,6 +279,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMaps() {
+        helpButton.setVisible(false);
         scaledX = 0;
         scaledY = 0;
         scaledWidth = 5000;
@@ -284,11 +291,12 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void toggleGoogleMapsHome() {
+        helpButton.setVisible(false);
         clearMap();
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML
@@ -312,12 +320,18 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
     @FXML
     private void openHistory() {
+        if (LocalFailover.getInstance().hasFailedOver()) {
+            receiveMessage("Unfortunately, revision history doesn't work with the local failover/database.");
+            return;
+        }
+        popPop.setPrefWidth(350);
         hidePopups();
         LoadFXML.getInstance().loadWindow("RevisionHistoryDashboard", "revisionHistory", popPop);
+
     }
 
     public void initGoogleForm() {
-        zooM.zoomAndPan();
+        zoom.zoomAndPan();
     }
 
     @FXML
@@ -348,8 +362,9 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         chatButton.setGraphic(messageIcon);
     }
 
+    // blue message in chat bot
     @FXML
-    void sendMessage() { //317fb8
+    void sendMessage() {
         String message = enteredMessage.getText();
         if (message.isEmpty()) {
             return;
@@ -392,6 +407,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         ChatBot.getInstance().sendMessage(message);
     }
 
+    // grey message in chat bot
     public void receiveMessage(String _msg) {
         Platform.runLater(new Runnable() {
             @Override
@@ -420,7 +436,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
                     closedChatBox.setVisible(true);
                     closedChatBox.setPickOnBounds(true);
                     sentBox2.setStyle("-fx-background-color: #eeeeee; " + "-fx-background-radius: 20 20 0 20;" +
-                            "-fx-min-width: 50; -fx-padding: 10 10 10 10;");
+                            "-fx-min-width: 50; -fx-padding: 10 10 10 10; -fx-effect: dropshadow(three-pass-box, #a4a4a4, 10.0, 0.0, 0.0, 0.0);");
                     sentBox2.setAlignment(Pos.BOTTOM_LEFT);
                     closedChatBox.getChildren().add(sentBox2);
 
@@ -517,6 +533,10 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         } else {
             checkButton.setText("Check-In");
         }
+    }
+
+    public boolean isCheckedIn() {
+        return checkButton.getText().equals("Check-In");
     }
 
     @FXML
