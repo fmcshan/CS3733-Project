@@ -890,7 +890,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 
         } else {
             Node tempNode2 = selectedNode;
-            double distance = 100000000.0;
+            double distance = Double.MAX_VALUE;
             listOfNodes = LocalStorage.getInstance().getNodes();
             for (Node n : listOfNodes
             ) {
