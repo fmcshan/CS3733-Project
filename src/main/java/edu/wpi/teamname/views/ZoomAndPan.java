@@ -35,19 +35,16 @@ public class ZoomAndPan {
                 page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), page.fileWidth, page.fileHeight));
             } else {
                 //<messy> TODO
-//                System.out.println(page.scaledWidth);
-//                System.out.println(page.scaledHeight);
-//                System.out.println(page.anchor.getWidth());
-//                System.out.println(page.anchor.getHeight());
                 double yes = page.anchor.getWidth() - 375;
                 double no = page.anchor.getHeight();
-                double width = page.scaledWidth / 1427 * yes;
-                double height = page.scaledHeight / 970 * no;
+                double width = page.scaledWidth * 1427 / yes;
+                double height = page.scaledHeight * 970 / no;
                 System.out.println(yes);
                 System.out.println(no);
                 System.out.println(width);
                 System.out.println(height);
-                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
+                //uncomment this to see the progress so far!
+                //page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
                 //</messy>
             }
         }
@@ -115,7 +112,6 @@ public class ZoomAndPan {
             page.processClick(e, dragged);
             dragged = false;
         });
-        System.out.println(page.hospitalMap.getViewport().getWidth());
     }
 
     private void render() {
