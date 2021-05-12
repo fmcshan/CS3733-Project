@@ -32,14 +32,20 @@ public class ZoomAndPan {
             reset(page.hospitalMap, page.fileWidth, page.fileHeight);
         } else {
             if (page.hospitalMap.getViewport().getWidth() == 0) {
-                page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), 5000, 3400));
+                page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), page.fileWidth, page.fileHeight));
             } else {
-                //<messy>
-                System.out.println(page.scaledX);
-                System.out.println(page.scaledY);
+                //<messy> TODO
                 System.out.println(page.scaledWidth);
                 System.out.println(page.scaledHeight);
-                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight));
+                System.out.println(page.anchor.getWidth());
+                System.out.println(page.anchor.getHeight());
+                double yes = page.anchor.getWidth() - 375;
+                double no = page.anchor.getHeight();
+                double width = page.scaledWidth * 1427 / yes;
+                double height = page.scaledHeight * 970 / no;
+                System.out.println(yes);
+                System.out.println(no);
+                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
                 //</messy>
             }
         }
