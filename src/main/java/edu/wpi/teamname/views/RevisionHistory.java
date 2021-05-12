@@ -73,6 +73,7 @@ public class RevisionHistory implements RevisionListener {
     public void closeWindows() {
         defaultPage.setHelpButton(true);
         defaultPage.getPopPop().getChildren().clear();
+        defaultPage.getPopPop2().getChildren().clear();
         LoadFXML.setCurrentWindow("mapEditorBar");
         defaultPage.rebootMapEditor();
         defaultPage.renderMap();

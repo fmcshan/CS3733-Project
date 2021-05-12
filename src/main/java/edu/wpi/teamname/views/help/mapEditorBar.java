@@ -8,4 +8,8 @@ public class mapEditorBar {
         SceneManager.getInstance().getDefaultPage().getPopPop().getChildren().clear();
         LoadFXML.setCurrentHelp("");
     }
+    public void closeWindow2() {
+        SceneManager.getInstance().getDefaultPage().getPopPop2().getChildren().clear();
+        LoadFXML.setCurrentHelp("");
+    }
 }

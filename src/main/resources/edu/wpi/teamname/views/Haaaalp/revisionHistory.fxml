@@ -107,7 +107,7 @@
       </VBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="825.0">
          <children>
-            <JFXButton onAction="#closeWindow" prefHeight="50.0" prefWidth="250.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
+            <JFXButton onAction="#closeWindow2" prefHeight="50.0" prefWidth="250.0" style="-fx-border-radius: 8px; -fx-border-color: #bbbbbb;" text="Close" textFill="#c3c3c3">
                <font>
                   <Font size="24.0" />
                </font>
