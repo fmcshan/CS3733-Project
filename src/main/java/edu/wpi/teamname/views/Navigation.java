@@ -13,6 +13,7 @@ import edu.wpi.teamname.views.manager.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -290,10 +291,10 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
             searchAlgorithm.setContext(new AStar(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode(), handicap));
         //System.out.println(handicap);
         searchAlgorithm.loadNodes(listOfNodes, SceneManager.getInstance().getDefaultPage().getStartNode(), SceneManager.getInstance().getDefaultPage().getEndNode());
-        System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
-        System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
+//        System.out.println(SceneManager.getInstance().getDefaultPage().getStartNode().getNodeID());
+//        System.out.println(SceneManager.getInstance().getDefaultPage().getEndNode().getNodeID());
         ArrayList<Node> path = searchAlgorithm.getPath(); // list the nodes found using AStar to create a path
-        System.out.println(searchAlgorithm.getAlgorithm());
+//        System.out.println(searchAlgorithm.getAlgorithm());
         //System.out.println(path);
         ArrayList<String> relevantFloors = searchAlgorithm.getRelevantFloors();
         ArrayList<String> unusedFloors = new ArrayList<>();
@@ -302,12 +303,31 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
                 unusedFloors.add(floor);
         }
         TextDirections nav = new TextDirections(searchAlgorithm);
-        nav.getTextDirections().forEach(t -> {
+        ArrayList<String> textDirections = nav.getTextDirections();
+        ArrayList<String> textDirectionFloors = nav.getDirectionFloors();
+        for (int i = 0; i < textDirections.size(); i++) {
+            if ((i - 1) == -1 || !textDirectionFloors.get(i).equals(textDirectionFloors.get(i - 1))) {
+                VBox floorSpacer = new VBox();
+                Label floorLabel = new Label("Floor " + textDirectionFloors.get(i));
+                floorLabel.setTextFill(Color.valueOf("#FFFFFF"));
+                floorLabel.setStyle("-fx-font-weight: 800; -fx-font-size: 18px; -fx-padding: 0 0 0 10px;");
+                floorSpacer.setStyle("-fx-background-color: #317fb8; -fx-background-radius: 4px; -fx-padding: 2px 2px 2px 2px;");
+                floorSpacer.setPrefWidth(300);
+                floorSpacer.setMaxWidth(300);
+                VBox.setMargin(floorSpacer, new Insets(10, 0, 5, 0));
+                floorSpacer.getChildren().add(floorLabel);
+                navBox.getChildren().add(floorSpacer);
+            }
+            String t = textDirections.get(i);
             navBox.getChildren().add(generateNavElem(t));
             VBox spacer = new VBox();
             spacer.setPrefSize(1, 10);
             spacer.setMinSize(1, 10);
             navBox.getChildren().add(spacer);
+        }
+
+        nav.getTextDirections().forEach(t -> {
+
         });
         LevelManager.getInstance().setFloor(SceneManager.getInstance().getDefaultPage().getStartNode().getFloor());
         SceneManager.getInstance().getDefaultPage().disableButtons(unusedFloors);

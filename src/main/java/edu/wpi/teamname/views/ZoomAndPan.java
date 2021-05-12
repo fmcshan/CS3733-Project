@@ -39,10 +39,10 @@ public class ZoomAndPan {
                 double no = page.anchor.getHeight();
                 double width = page.scaledWidth * 1427 / yes;
                 double height = page.scaledHeight * 970 / no;
-                System.out.println(yes);
-                System.out.println(no);
-                System.out.println(width);
-                System.out.println(height);
+//                System.out.println(yes);
+//                System.out.println(no);
+//                System.out.println(width);
+//                System.out.println(height);
                 //uncomment this to see the progress so far!
                 //page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
                 //</messy>

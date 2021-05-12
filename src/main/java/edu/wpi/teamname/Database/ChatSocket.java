@@ -1,7 +1,5 @@
 package edu.wpi.teamname.Database;
 
-import edu.wpi.teamname.Authentication.User;
-import edu.wpi.teamname.views.manager.ChatBotCommand;
 import edu.wpi.teamname.views.manager.NavManager;
 import edu.wpi.teamname.views.manager.SceneManager;
 import javafx.application.Platform;
@@ -13,7 +11,6 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 public class ChatSocket extends WebSocketClient {
 
@@ -71,9 +68,7 @@ public class ChatSocket extends WebSocketClient {
                         }
                     }
                 });
-
             }
-
             return;
         }
     }
