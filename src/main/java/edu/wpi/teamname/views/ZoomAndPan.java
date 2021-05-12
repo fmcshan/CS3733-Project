@@ -27,13 +27,20 @@ public class ZoomAndPan {
     }
 
     public void zoomAndPan(boolean reset) {
-        updateVars();
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
-        if (reset){
-            reset(page.hospitalMap, page.mapWidth, page.mapHeight);
+        if (reset) {
+            reset(page.hospitalMap, page.fileWidth, page.fileHeight);
         } else {
             if (page.hospitalMap.getViewport().getWidth() == 0) {
                 page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), 5000, 3400));
+            } else {
+                //<messy>
+                System.out.println(page.scaledX);
+                System.out.println(page.scaledY);
+                System.out.println(page.scaledWidth);
+                System.out.println(page.scaledHeight);
+                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, page.scaledWidth, page.scaledHeight));
+                //</messy>
             }
         }
 
@@ -56,7 +63,6 @@ public class ZoomAndPan {
             mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
         });
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
-            updateVars();
             double mouseDeltaY = mouseEvent.getDeltaY();
             Rectangle2D viewportOfImage = page.hospitalMap.getViewport();
 
@@ -104,7 +110,7 @@ public class ZoomAndPan {
     }
 
     private void render() {
-        if (page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")){
+        if (page.getRevisionHistoryMode() && LoadFXML.getCurrentWindow().equals("revisionHistory")) {
 //            System.out.println("called");
             page.updateAndDisplay();
         }
@@ -122,16 +128,6 @@ public class ZoomAndPan {
         }
     }
 
-    private void updateVars() {
-        windowWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / page.fileWidth;
-        windowHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / page.fileHeight;
-        windowSmallestScale = ensureRange(windowHeight, 0, windowWidth);
-
-        page.hospitalMap.fitWidthProperty().bind(page.anchor.widthProperty());
-        page.mapWidth = page.hospitalMap.boundsInParentProperty().get().getWidth() / windowSmallestScale;
-        page.mapHeight = page.hospitalMap.boundsInParentProperty().get().getHeight() / windowSmallestScale;
-    }
-
     private static void reset(ImageView map, double width, double height) {
         Rectangle2D newViewPort = new Rectangle2D(0, 0, width, height);
         map.setViewport(newViewPort);
@@ -142,10 +138,6 @@ public class ZoomAndPan {
 
         Rectangle2D viewport = inputMap.getViewport();
         return new Point2D(viewport.getMinX() + (Xcoord / bounds.getWidth()) * viewport.getWidth(), viewport.getMinY() + (Ycoord / bounds.getHeight()) * viewport.getHeight());
-    }
-
-    private static double ensureRange(double value, double min, double max) {
-        return Math.min(Math.max(value, min), max);
     }
 
     public void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
