@@ -1375,8 +1375,8 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     public void clearMap() {
         onTopOfTopElements.getChildren().clear();
         topElements.getChildren().clear(); // Clear top elements
-          currentPath.clear();
-          tonysPath.getElements().clear(); // Clear Tony's path
+        currentPath.clear();
+        tonysPath.getElements().clear(); // Clear Tony's path
         hidePopups(); // Hide all popups
     }
 
@@ -1694,8 +1694,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 renderMap(); // Render/refresh map (with updated data)
                 break;
             case "navBar":
-                onTopOfTopElements.getChildren().clear();
-                topElements.getChildren().clear(); // Clear top elements
+                clearMap();
                 displayHotspots(.8);
                 break;
         }
