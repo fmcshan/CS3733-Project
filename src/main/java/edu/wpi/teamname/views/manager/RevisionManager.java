@@ -129,7 +129,7 @@ public class RevisionManager {
         return reverseQueueIsEmpty();
     }
     public List<String> getActionHistory() {
-//        System.out.println(lastActionSnapshot.size());
+        System.out.println(lastActionSnapshot.size());
         return lastActionSnapshot;
     }
 

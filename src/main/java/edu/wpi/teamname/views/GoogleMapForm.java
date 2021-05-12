@@ -132,6 +132,7 @@ public class GoogleMapForm {
                 durationWhit = foot.duration;
             }
             if (durationFran.inSeconds < durationWhit.inSeconds) {
+                System.out.println("Francis shorter");
                 for (DirectionsLeg foot : feet) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);
@@ -145,6 +146,7 @@ public class GoogleMapForm {
                 }
                 chosenPark = "75 Francis Street, Boston MA";
             } else {
+                System.out.println("Whitney shorter");
                 for (DirectionsLeg foot : feet2) {
                     for (DirectionsStep step : foot.steps) {
                         String newStep = cleanTags(step.htmlInstructions);

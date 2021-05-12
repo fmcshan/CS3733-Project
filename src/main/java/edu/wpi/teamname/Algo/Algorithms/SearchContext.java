@@ -67,7 +67,7 @@ public class SearchContext {
         ArrayList<Node> DijkstraPaths = searchAlgorithms.getPath();
         searchAlgorithms.setContext(new BestFirstSearch(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01"))));
         ArrayList<Node> BestFirstSearchPaths = searchAlgorithms.getPath();
-//        System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DijkstraPaths.size() + " " + BestFirstSearchPaths.size());
+        System.out.println(aStarPaths.size() + " " + DFSPaths.size() + " " + BFSPaths.size() + " " + DijkstraPaths.size() + " " + BestFirstSearchPaths.size());
     }
 
 }

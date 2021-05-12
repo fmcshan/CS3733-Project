@@ -30,9 +30,9 @@ public class OldDFS {
         // The first instance would be the starting node and the second is the end node
         ArrayList<String> answer = DoDFS(nodes.get(0),
                 nodes.get(600));
-//        System.out.println(DFSwatch.elapsedTime());
+        System.out.println(DFSwatch.elapsedTime());
         Stopwatch loadnodes = new Stopwatch();
-//        System.out.println(loadnodes.elapsedTime());
+        System.out.println(loadnodes.elapsedTime());
 
     }
 
@@ -40,7 +40,7 @@ public class OldDFS {
         ArrayList<String> l= new ArrayList<>(); //ArrayList of Nodes
         ArrayList<Node> o= new ArrayList<>(); //ArrayList of Nodes
         ArrayList<String> a= DFS(Start, End, l, o, 1, Start);
-//        System.out.println("answer" + a);
+        System.out.println("answer" + a);
         return a;
     }
     public static ArrayList<String> DFS(Node start, Node end, ArrayList<String> answer, ArrayList<Node> visited, int flag, Node temp) {

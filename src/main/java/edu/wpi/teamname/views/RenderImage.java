@@ -15,7 +15,7 @@ public class RenderImage {
             imageView.setFitHeight(imageHeight);
             topElements.getChildren().add(imageView);
         } catch (Exception e) {
-            System.out.println("Wrong file path you absolute clown.");
+            System.out.println("Wrong file path you absolute clown");
         }
     }
 }

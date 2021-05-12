@@ -189,7 +189,7 @@ public class AStar extends Algorithm {
         Stopwatch timer = new Stopwatch();
         AStar example = new AStar(nodes, nodes.get(Parser.indexOfNode(nodes, "WELEV00M01")), nodes.get(Parser.indexOfNode(nodes, "WELEV00E01")), false);
         ArrayList<String> nodeTypes = new ArrayList<>();
-//        System.out.println(example.getPath().size());
+        System.out.println(example.getPath().size());
         /*for (ArrayList<Node> floorPath : example.getFloorPaths()) {
             System.out.println("Floor " + floorPath.get(0).getFloor() + ":");
             for (Node node : floorPath) {
@@ -197,6 +197,6 @@ public class AStar extends Algorithm {
             }
         }*/
         //System.out.println(example.getFloorPaths().size());
-//        System.out.println(timer.elapsedTime());
+        System.out.println(timer.elapsedTime());
     }
 }
