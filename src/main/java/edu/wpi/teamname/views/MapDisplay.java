@@ -1253,43 +1253,54 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         }
         currentPath = _listOfNodes;
         tonysPath.getElements().clear();
-        if (autoZoomAndPan) {
-            final double[] minX = {fileWidth}; // for auto zoom&pan
-            final double[] minY = {fileHeight}; // for auto zoom&pan
-            final double[] maxX = {0}; // for auto zoom&pan
-            final double[] maxY = {0}; // for auto zoom&pan
-            for (ArrayList<Node> listOfNode : _listOfNodes) {
-                listOfNode.forEach(n -> {
-                    if (n.getX() < minX[0]) {
-                        minX[0] = n.getX();
-                    }
-                    if (n.getX() > maxX[0]) {
-                        maxX[0] = n.getX();
-                    }
-                    if (n.getY() < minY[0]) {
-                        minY[0] = n.getY();
-                    }
-                    if (n.getY() > maxY[0]) {
-                        maxY[0] = n.getY();
-                    }
-                });
+        final int[] counter1 = {0};
+        _listOfNodes.forEach(n -> {
+            n.forEach(h -> {
+                if (h.getFloor().equals(LevelManager.getInstance().getFloor())) {
+                    counter1[0]++;
+                }
+            });
+        });
+        if (counter1[0] > _listOfNodes.size()) {
+            if (autoZoomAndPan) {
+                final double[] minX = {fileWidth}; // for auto zoom&pan
+                final double[] minY = {fileHeight}; // for auto zoom&pan
+                final double[] maxX = {0}; // for auto zoom&pan
+                final double[] maxY = {0}; // for auto zoom&pan
+                for (ArrayList<Node> listOfNode : _listOfNodes) {
+                    listOfNode.forEach(n -> {
+                        if (n.getX() < minX[0]) {
+                            minX[0] = n.getX();
+                        }
+                        if (n.getX() > maxX[0]) {
+                            maxX[0] = n.getX();
+                        }
+                        if (n.getY() < minY[0]) {
+                            minY[0] = n.getY();
+                        }
+                        if (n.getY() > maxY[0]) {
+                            maxY[0] = n.getY();
+                        }
+                    });
+                }
+                double diffX = maxX[0] - minX[0];
+                double diffY = maxY[0] - minY[0];
+                double midX = (maxX[0] + minX[0]) / 2;
+                double midY = (maxY[0] + minY[0]) / 2;
+                double windowWidth = 1427;
+                double navBarWidth = 370;
+                double ref = Math.max(diffX * fileHeight / fileWidth, diffY);
+                double spacing = 0.4; //how much blank space around
+                scaledWidth = ref * fileWidth / fileHeight * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+                scaledHeight = ref * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
+                scaledX = midX - (ref * fileWidth / fileHeight * (1 + spacing) * (windowWidth + navBarWidth) / (windowWidth - navBarWidth)) / 2;
+                //leaving this behind to make sure I can still understand this in the future
+                //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
+                scaledY = midY - scaledHeight / 2;
+                zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
             }
-            double diffX = maxX[0] - minX[0];
-            double diffY = maxY[0] - minY[0];
-            double midX = (maxX[0] + minX[0]) / 2;
-            double midY = (maxY[0] + minY[0]) / 2;
-            double windowWidth = 1427;
-            double navBarWidth = 370;
-            double ref = Math.max(diffX * fileHeight / fileWidth, diffY);
-            double spacing = 0.4; //how much blank space around
-            scaledWidth = ref * fileWidth / fileHeight * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
-            scaledHeight = ref * (1 + spacing) * windowWidth / (windowWidth - navBarWidth);
-            scaledX = midX - (ref * fileWidth / fileHeight * (1 + spacing) * (windowWidth + navBarWidth) / (windowWidth - navBarWidth)) / 2;
-            //leaving this behind to make sure I can still understand this in the future
-            //scaledX = midX - ref * 5000/3400 * (1 + spacing) * 370/(1427-370) - diffX/2 * (1 + spacing);//midX + diffX/2 * (1 + spacing) - scaledWidth;
-            scaledY = midY - scaledHeight / 2;
-            zoom.setViewPort(scaledX, scaledY, scaledWidth, scaledHeight);
         }
+
         for (ArrayList<Node> listOfNode : _listOfNodes) {
             Node firstNode = listOfNode.get(0);
             MoveTo start = new MoveTo(xCoordOnTopElement(firstNode.getX()), yCoordOnTopElement(firstNode.getY()));
@@ -1298,7 +1309,17 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 tonysPath.getElements().add(new LineTo(xCoordOnTopElement(n.getX()), yCoordOnTopElement(n.getY())));
             });
         }
-
+        final int[] counter2 = {0};
+        _listOfNodes.forEach(n -> {
+            n.forEach(h -> {
+                if (h.getFloor().equals(LevelManager.getInstance().getFloor())) {
+                    counter2[0]++;
+                }
+            });
+        });
+        if (counter2[0] <= _listOfNodes.size()) {
+            return;
+        }
         pathTransition = new PathTransition();
         Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
