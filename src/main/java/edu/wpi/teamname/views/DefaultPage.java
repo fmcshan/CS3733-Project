@@ -126,28 +126,29 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         LoadFXML.setCurrentWindow(""); // set the open window to nothing
 
         anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            topElements.getChildren().clear();
+            resizingInfo();
+            zoom.zoomAndPan(false);
+            updateAndDisplay();
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
             }
-            topElements.getChildren().clear();
-            resizingInfo();
-            zoom.zoomAndPan(false);
         });
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
+            topElements.getChildren().clear();
+            resizingInfo();
+            zoom.zoomAndPan(false);
+            updateAndDisplay();
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
                 drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
             }
-
-            topElements.getChildren().clear();
-            resizingInfo();
-            zoom.zoomAndPan(false);
         });
 
         refreshData();

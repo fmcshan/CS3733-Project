@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class ZoomAndPan {
     MapDisplay page;
     boolean dragged = false;
+    double w1 = 5000;
+    double h1 = 3400;
+    double w2 = 1427;
+    double h2 = 970;
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
@@ -29,17 +33,8 @@ public class ZoomAndPan {
             if (page.hospitalMap.getViewport().getWidth() == 0) {
                 page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), page.fileWidth, page.fileHeight));
             } else {
-                //<messy> TODO
-                double yes = page.anchor.getWidth() - 375;
-                double no = page.anchor.getHeight();
-                double width = page.scaledWidth * 1427 / yes;
-                double height = page.scaledHeight * 970 / no;
-                System.out.println(yes);
-                System.out.println(no);
-                System.out.println(width);
-                System.out.println(height);
-                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
-                //</messy>
+                page.hospitalMap.setFitWidth(page.anchor.getWidth() - 375);
+                page.hospitalMap.setFitHeight(page.anchor.getHeight());
             }
         }
 
