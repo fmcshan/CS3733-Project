@@ -401,7 +401,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
 
         addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
-        zoom.zoomAndPan();
+        zoom.zoomAndPan(true);
 
     }
 

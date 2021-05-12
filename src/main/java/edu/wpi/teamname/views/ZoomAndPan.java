@@ -26,10 +26,20 @@ public class ZoomAndPan {
         _listOfNodes = page.listOfNodes;
     }
 
-    public void zoomAndPan() {
+    public void zoomAndPan(boolean reset) {
         updateVars();
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
-        reset(page.hospitalMap, page.mapWidth, page.mapHeight);
+        if (reset){
+            reset(page.hospitalMap, page.mapWidth, page.mapHeight);
+        } else {
+            Rectangle2D newViewPort;
+            if (page.hospitalMap.getViewport().getWidth() == 0) {
+                newViewPort = new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), 5000, 3400);
+            } else {
+                newViewPort = new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), page.hospitalMap.getViewport().getWidth(), page.hospitalMap.getViewport().getHeight());
+            }
+            page.hospitalMap.setViewport(newViewPort);
+        }
 
         SimpleObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
