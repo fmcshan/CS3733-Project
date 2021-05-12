@@ -437,7 +437,7 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
     public void navigateChat() {
         String from = NavManager.getInstance().getStartNode();
         String to = NavManager.getInstance().getEndNode();
-        if (from == null || to == null || from.equals("") || to.equals("")) {
+        if (from == null || to == null) {
             return;
         }
         NavManager.getInstance().resetNodes();
@@ -452,12 +452,17 @@ public class Navigation implements LevelChangeListener, ChatBotCommand {
         for (Node node : listOfNodes) {
             nodeLongNames.add(node.getLongName());
         }
-        startNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
-        endNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
 
-        setFromCombo(startNode);
+        if (!_to.equals("")) {
+            startNode = listOfNodes.get(FuzzySearch.extractOne(_to, nodeLongNames).getIndex());
+            setFromCombo(startNode);
+        }
+
+        endNode = listOfNodes.get(FuzzySearch.extractOne(_from, nodeLongNames).getIndex());
         setToCombo(endNode);
 
-        calcPath();
+        if (!_from.equals("") && !_to.equals("")) {
+            calcPath();
+        }
     }
 }

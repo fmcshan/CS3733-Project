@@ -60,7 +60,7 @@ public class RequestAdmin implements GiftDeliveryListener {
                     cellHolder.getChildren().add(TableCellFactory.generate_food_delivery_request(_req));
                     break;
 
-                case "Computer Services":
+                case "Computer Service":
                     computerCellHolder.getChildren().add(TableCellFactory.generate_computer_service_request(_req));
                     cellHolder.getChildren().add(TableCellFactory.generate_computer_service_request(_req));
                     break;
