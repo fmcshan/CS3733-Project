@@ -127,19 +127,19 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath, true);
+                drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
             }
             topElements.getChildren().clear();
             resizingInfo();
-            zoom.zoomAndPan();
+            zoom.zoomAndPan(false);
         });
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath, true);
+                drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
@@ -147,11 +147,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
             topElements.getChildren().clear();
             resizingInfo();
-            zoom.zoomAndPan();
+            zoom.zoomAndPan(false);
         });
 
         refreshData();
-        zoom.zoomAndPan();
+        zoom.zoomAndPan(true);
     }
 
     private void displayAuthPages() {
@@ -228,11 +228,11 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         startAndEnd.clear();
         startNode = null;
         endNode = null;
-        zoom.zoomAndPan();
+        zoom.zoomAndPan(true);
         if (LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
             topElements.getChildren().clear();
             LoadFXML.setCurrentWindow("");
-            zoom.zoomAndPan();
+            zoom.zoomAndPan(true);
             return;
         }
         LoadFXML.setCurrentWindow("mapEditorBar");
@@ -296,7 +296,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
         popPop.setPrefWidth(400);
         popPop.getChildren().clear();
         LoadFXML.getInstance().loadWindow("GoogleMapHome", "googleMapHomeBar", popPop);
-        zoom.zoomAndPan();
+        zoom.zoomAndPan(true);
     }
 
     @FXML
@@ -331,7 +331,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
     }
 
     public void initGoogleForm() {
-        zoom.zoomAndPan();
+        zoom.zoomAndPan(true);
     }
 
     @FXML

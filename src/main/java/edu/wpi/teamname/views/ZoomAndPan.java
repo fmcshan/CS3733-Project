@@ -26,10 +26,16 @@ public class ZoomAndPan {
         _listOfNodes = page.listOfNodes;
     }
 
-    public void zoomAndPan() {
+    public void zoomAndPan(boolean reset) {
         updateVars();
         page.hospitalMap.setPreserveRatio(true); //make sure that the image (the hospitalMap) is bound to its original image dimensions (aka the aspect ratio)
-        reset(page.hospitalMap, page.mapWidth, page.mapHeight);
+        if (reset){
+            reset(page.hospitalMap, page.mapWidth, page.mapHeight);
+        } else {
+            if (page.hospitalMap.getViewport().getWidth() == 0) {
+                page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), 5000, 3400));
+            }
+        }
 
         SimpleObjectProperty<Point2D> mouseClickDown = new SimpleObjectProperty<>();
 
