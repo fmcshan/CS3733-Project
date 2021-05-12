@@ -75,6 +75,6 @@ public class BFS extends Algorithm {
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         BFS bfs = new BFS(nodes, nodes.get(Parser.indexOfNode(nodes, "FDEPT00501")), nodes.get(Parser.indexOfNode(nodes, "EINFO00101")));
         ArrayList<Node> path = bfs.getPath();
-//        System.out.println(path.size());
+        System.out.println(path.size());
     }
 }

@@ -53,7 +53,7 @@ public class DFS extends Algorithm {
         ArrayList<Node> nodes = LocalStorage.getInstance().getNodes();
         DFS dfs= new DFS(nodes, nodes.get(Parser.indexOfNode(nodes, "CHALL010L2")), nodes.get(Parser.indexOfNode(nodes, "CHALL009L2")));
         ArrayList<Node> path = dfs.getPath();
-//        System.out.println(path.size());
+        System.out.println(path.size());
     }
 }
 

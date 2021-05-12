@@ -44,7 +44,7 @@ import java.util.List;
 public class MapDisplay implements LevelChangeListener, DataListener {
     @FXML
     public Navigation navigation;
-    public double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
+   public double scaledWidth = 5000, scaledHeight = 3400.0, scaledX = 0, scaledY = 0;
     ArrayList<ArrayList<Node>> currentPath = new ArrayList<>();
     ArrayList<Node> listOfNode = new ArrayList<>();
     double mapWidth, mapHeight, fileWidth, fileHeight;
@@ -74,7 +74,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             draggedNode, startNode, endNode;
 
     Edge selectedEdge;
-    private Boolean revisionHistoryMode = false;
+     private Boolean revisionHistoryMode = false;
     ArrayList<Node> revisionNodes = new ArrayList<>();
     ArrayList<Edge> revisionEdges = new ArrayList<>();
 
@@ -83,6 +83,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     ArrayList<Text> allText = new ArrayList<>();
     HashMap<String, Node> portalNodeMap = new HashMap<>();
     HashMap<Node, Circle> edgeCircles = new HashMap<>();
+    Polygon triangle = new Polygon();
 
     public void setRevisionHistoryMode(Boolean revisionHistoryMode) {
         this.revisionHistoryMode = revisionHistoryMode;
@@ -114,7 +115,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     private Label addEdgeWarning;
     @FXML
     private VBox editNode, edgeBetweenFloors, deleteEdge, rightClick;
-
+    
     @FXML
     JFXButton navButton, reqButton, checkButton, exitButton, adminButton, L1Bttn, L2Bttn,
             groundBttn, floor1Bttn, floor3Bttn, floor2Bttn;
@@ -261,6 +262,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                         });
 
 
+
                 if (!LoadFXML.getCurrentWindow().equals("mapEditorBar")) {
                     return; // Don't process drags outside of the map editor.
                 }
@@ -293,7 +295,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                             draggedNode.getNodeType(),
                             draggedNode.getLongName(),
                             draggedNode.getShortName());
-                    list.add(new ManageEdit(oldNode, newNode));
+                    list.add(new ManageEdit(oldNode,newNode));
                     RevisionManager.getInstance().execute(list);
                     refreshHistory();
                     draggedCircle = null;
@@ -372,7 +374,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         });
     }
 
-    public void rebootMapEditor() {
+    public void rebootMapEditor(){
 
         LocalStorage.getInstance().addListener(this);
         LevelManager.getInstance().addListener(this);
@@ -382,7 +384,6 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         onTopOfTopElements.addEventHandler(MouseEvent.MOUSE_MOVED, this::processMovement); // Process mouse movement events
         addEscListeners(addNodeField, addEdgeField, editNode, deleteEdge, rightClick, anchor);
     }
-
     /**
      * Initialize the map editor/display
      */
@@ -551,9 +552,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
                 localNodes.add(n); // Add to local nodes
             }
             nodesMap.put(n.getNodeID(), n);
-            if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
-                portalNodeMap.put(n.getNodeID(), n);
-            }
+                    if (n.getNodeType().equals("STAI") || n.getNodeType().equals("ELEV")) {
+                        portalNodeMap.put(n.getNodeID(), n);
+                    }
         });
 
         localNodesMap.clear(); // CLear the node map
@@ -616,12 +617,12 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         dragEnd = null; // Reset dragEnd (IE: user clicks away)
     }
 
-    //    public ArrayList<>
+//    public ArrayList<>
     public void displayNodesAndEdgesPreview(ArrayList<Node> nodes, ArrayList<Edge> edges) {
 
-        revisionHistoryMode = true;
-        revisionNodes = nodes;
-        revisionEdges = edges;
+         revisionHistoryMode = true;
+             revisionNodes = nodes;
+             revisionEdges = edges;
 
         HashMap<String, Node> nodeHash = new HashMap<>();
         for (Node n : nodes
@@ -1127,7 +1128,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         );
         //Submit.getInstance().editNode(newNode); // Update LocalStorage/the database
         List<Action> list = new LinkedList<>();
-        ManageEdit edit = new ManageEdit(localNodesMap.get(newNode.getNodeID()), newNode);
+        ManageEdit edit = new ManageEdit(localNodesMap.get(newNode.getNodeID()),newNode);
 //        ManageDelete delete = new ManageDelete(localNodesMap.get(newNode.getNodeID()), newNode);
 //        ManageAdd add = new ManageAdd(newNode);
         //list.add(delete);
@@ -1316,18 +1317,17 @@ public class MapDisplay implements LevelChangeListener, DataListener {
             return;
         }
         PathTransition pathTransition = new PathTransition();
-        Polygon triangle = new Polygon();
         triangle.getPoints().setAll(
-                -20.0, -20.0,
-                0.0, -12.5,
-                -20.0, -5.0,
-                -15.0, -12.5
+                0.0, 0.0,
+                20.0, 7.5,
+                0.0, 15.0,
+                5.0, 7.5
         );
         triangle.setFill(Color.MAROON); //RED Color.valueOf("ad0202")
         triangle.setStroke(Color.MAROON); //RED
         triangle.setStrokeWidth(1.5);
         triangle.setOpacity(1.0);
-        if (!onTopOfTopElements.getChildren().contains(triangle)) {
+        if (!onTopOfTopElements.getChildren().contains(triangle)){
             onTopOfTopElements.getChildren().add(triangle);
         }
         pathTransition.setDuration(Duration.seconds(4));
@@ -1673,10 +1673,10 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         resetFloors();
     }
 
-    public void updateAndDisplay() {
+  public void updateAndDisplay() {
 //        System.out.println(LoadFXML.getCurrentWindow());
 
-        if (revisionHistoryMode && LoadFXML.getCurrentWindow().equals("revisionHistory")) {
+        if(revisionHistoryMode && LoadFXML.getCurrentWindow().equals("revisionHistory")){
             clearMap();
             displayNodesAndEdgesPreview(revisionNodes, revisionEdges);
 //            System.out.println("after call");;
@@ -1686,10 +1686,10 @@ public class MapDisplay implements LevelChangeListener, DataListener {
 //        }
 
         refreshData(); // Update localNodes with new floor
-        if (LoadFXML.getCurrentWindow().equals("revisionHistory") && !revisionHistoryMode) {
-            renderMap();
-        }
-        switch (LoadFXML.getCurrentWindow()) {
+      if(LoadFXML.getCurrentWindow().equals("revisionHistory")&& !revisionHistoryMode){
+          renderMap();
+      }
+      switch (LoadFXML.getCurrentWindow()) {
             case "mapEditorBar":
                 renderMap(); // Render/refresh map (with updated data)
                 break;

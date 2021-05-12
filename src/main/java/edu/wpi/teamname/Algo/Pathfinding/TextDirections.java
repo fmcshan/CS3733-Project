@@ -170,6 +170,6 @@ public class TextDirections {
         Node goal = nodes.get(Parser.indexOfNode(nodes, "WELEV00E02"));
         Stopwatch timer = new Stopwatch();
         TextDirections dir = new TextDirections(nodes, start, goal);
-//        System.out.println(dir.getDirectionFloors());
+        System.out.println(dir.getDirectionFloors());
     }
 }

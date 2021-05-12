@@ -39,7 +39,7 @@ public class ManageAdd implements Action{
     @Override
     public void undo() {
         if(object instanceof Edge){
-//            System.out.println(object);
+            System.out.println(object);
             Submit.getInstance().removeEdge((Edge) object);
             actionName = "removed edge between:" + ((Edge) object).getStartNode() + " " +((Edge) object).getEndNode();
         }

@@ -94,9 +94,9 @@ public class ManageDelete implements Action{
 
     @Override
     public void undo() {
-//        System.out.println(object);
+        System.out.println(object);
         if(object instanceof Edge){
-//            System.out.println(object);
+            System.out.println(object);
             Submit.getInstance().addEdge((Edge) object);
         }
 
