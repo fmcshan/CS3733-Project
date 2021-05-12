@@ -127,7 +127,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         anchor.heightProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath, true);
+                drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
@@ -139,7 +139,7 @@ public class DefaultPage extends MapDisplay implements AuthListener {
 
         anchor.widthProperty().addListener((obs, oldVal, newVal) -> { // adjust the path and the map to the window as it changes
             if (currentPath.size() > 0 && LoadFXML.getCurrentWindow().equals("navBar")) {
-                drawPath(currentPath, true);
+                drawPath(currentPath, false);
             }
             if (!LoadFXML.getCurrentWindow().equals("navBar")) {
                 currentPath = new ArrayList();
