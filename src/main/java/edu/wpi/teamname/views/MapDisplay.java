@@ -85,6 +85,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     ArrayList<Text> allText = new ArrayList<>();
     HashMap<String, Node> portalNodeMap = new HashMap<>();
     HashMap<Node, Circle> edgeCircles = new HashMap<>();
+    Polygon triangle = new Polygon();
 
     public void setRevisionHistoryMode(Boolean revisionHistoryMode) {
         this.revisionHistoryMode = revisionHistoryMode;
@@ -116,8 +117,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
     private Label addEdgeWarning;
     @FXML
     private VBox editNode, edgeBetweenFloors, deleteEdge, rightClick;
-
-    PathTransition pathTransition;
+    
     @FXML
     JFXButton navButton, reqButton, checkButton, exitButton, adminButton, L1Bttn, L2Bttn,
             groundBttn, floor1Bttn, floor3Bttn, floor2Bttn;
@@ -1320,8 +1320,7 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         if (counter2[0] <= _listOfNodes.size()) {
             return;
         }
-        pathTransition = new PathTransition();
-        Polygon triangle = new Polygon();
+        PathTransition pathTransition = new PathTransition();
         triangle.getPoints().setAll(
                 0.0, 0.0,
                 20.0, 7.5,
@@ -1332,7 +1331,9 @@ public class MapDisplay implements LevelChangeListener, DataListener {
         triangle.setStroke(Color.MAROON); //RED
         triangle.setStrokeWidth(1.5);
         triangle.setOpacity(1.0);
-        onTopOfTopElements.getChildren().add(triangle);
+        if (!onTopOfTopElements.getChildren().contains(triangle)){
+            onTopOfTopElements.getChildren().add(triangle);
+        }
         pathTransition.setDuration(Duration.seconds(4));
         pathTransition.setPath(tonysPath);
         pathTransition.setNode(triangle);
