@@ -15,10 +15,15 @@ import java.util.ArrayList;
 
 public class ZoomAndPan {
     MapDisplay page;
+    ArrayList<Node> _listOfNodes;
+    double windowWidth;
+    double windowHeight;
+    double windowSmallestScale;
     boolean dragged = false;
 
     public ZoomAndPan(MapDisplay page) {
         this.page = page;
+        _listOfNodes = page.listOfNodes;
     }
 
     public void zoomAndPan(boolean reset) {
@@ -38,7 +43,8 @@ public class ZoomAndPan {
                 System.out.println(no);
                 System.out.println(width);
                 System.out.println(height);
-                page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
+                //uncomment this to see the progress so far!
+                //page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
                 //</messy>
             }
         }
