@@ -35,16 +35,18 @@ public class ZoomAndPan {
                 page.hospitalMap.setViewport(new Rectangle2D(page.hospitalMap.getViewport().getMinX(), page.hospitalMap.getViewport().getMinY(), page.fileWidth, page.fileHeight));
             } else {
                 //<messy> TODO
-                System.out.println(page.scaledWidth);
-                System.out.println(page.scaledHeight);
-                System.out.println(page.anchor.getWidth());
-                System.out.println(page.anchor.getHeight());
+//                System.out.println(page.scaledWidth);
+//                System.out.println(page.scaledHeight);
+//                System.out.println(page.anchor.getWidth());
+//                System.out.println(page.anchor.getHeight());
                 double yes = page.anchor.getWidth() - 375;
                 double no = page.anchor.getHeight();
-                double width = page.scaledWidth * 1427 / yes;
-                double height = page.scaledHeight * 970 / no;
+                double width = page.scaledWidth / 1427 * yes;
+                double height = page.scaledHeight / 970 * no;
                 System.out.println(yes);
                 System.out.println(no);
+                System.out.println(width);
+                System.out.println(height);
                 page.hospitalMap.setViewport(new Rectangle2D(page.scaledX, page.scaledY, width, height));
                 //</messy>
             }
@@ -65,7 +67,7 @@ public class ZoomAndPan {
 
             Point2D pointToDragFrom = viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY());
             Point2D valueOfShift = pointToDragFrom.subtract(mouseClickDown.get());
-            shiftedImage(page.hospitalMap, valueOfShift, page.onTopOfTopElements);
+            shiftedImage(page.hospitalMap, valueOfShift);
             mouseClickDown.set(viewportToImageView(page.hospitalMap, mouseEvent.getX(), mouseEvent.getY()));
         });
         page.onTopOfTopElements.setOnScroll(mouseEvent -> {
@@ -113,6 +115,7 @@ public class ZoomAndPan {
             page.processClick(e, dragged);
             dragged = false;
         });
+        System.out.println(page.hospitalMap.getViewport().getWidth());
     }
 
     private void render() {
@@ -146,7 +149,7 @@ public class ZoomAndPan {
         return new Point2D(viewport.getMinX() + (Xcoord / bounds.getWidth()) * viewport.getWidth(), viewport.getMinY() + (Ycoord / bounds.getHeight()) * viewport.getHeight());
     }
 
-    public void shiftedImage(ImageView inputMap, Point2D changeInShift, AnchorPane topElements) {
+    public void shiftedImage(ImageView inputMap, Point2D changeInShift) {
         Rectangle2D theViewPort = inputMap.getViewport();
 
         double viewPortWidth = theViewPort.getWidth();
